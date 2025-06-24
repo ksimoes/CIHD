@@ -24,6 +24,7 @@ Partial Class Search
     Private Sub InitializeComponent()
         TabControl1 = New TabControl()
         TabPage5 = New TabPage()
+        Button1 = New Button()
         btnSearchAll = New Button()
         GroupBox5 = New GroupBox()
         txtMaxTotPatRevAll = New TextBox()
@@ -104,6 +105,7 @@ Partial Class Search
         lblStateAll = New Label()
         lblZipCodeDemoAll = New Label()
         TabPage1 = New TabPage()
+        Button2 = New Button()
         TextBox7 = New TextBox()
         TextBox6 = New TextBox()
         TextBox5 = New TextBox()
@@ -121,6 +123,7 @@ Partial Class Search
         TextBox1 = New TextBox()
         lblCmsCertNumDemo = New Label()
         TabPage2 = New TabPage()
+        Button3 = New Button()
         TextBox17 = New TextBox()
         TextBox16 = New TextBox()
         TextBox15 = New TextBox()
@@ -147,6 +150,7 @@ Partial Class Search
         lblSpecial = New Label()
         lblRoutine = New Label()
         TabPage3 = New TabPage()
+        Button4 = New Button()
         TextBox20 = New TextBox()
         TextBox19 = New TextBox()
         TextBox18 = New TextBox()
@@ -162,6 +166,7 @@ Partial Class Search
         lblCmsUrbRur = New Label()
         lblUrbRur = New Label()
         TabPage4 = New TabPage()
+        Button5 = New Button()
         ComboBox8 = New ComboBox()
         ComboBox7 = New ComboBox()
         ComboBox6 = New ComboBox()
@@ -180,11 +185,6 @@ Partial Class Search
         lblService = New Label()
         lblMedicare = New Label()
         lblFacility = New Label()
-        Button1 = New Button()
-        Button2 = New Button()
-        Button3 = New Button()
-        Button4 = New Button()
-        Button5 = New Button()
         TabControl1.SuspendLayout()
         TabPage5.SuspendLayout()
         GroupBox5.SuspendLayout()
@@ -224,6 +224,15 @@ Partial Class Search
         TabPage5.TabIndex = 4
         TabPage5.Text = "All"
         TabPage5.UseVisualStyleBackColor = True
+        ' 
+        ' Button1
+        ' 
+        Button1.Location = New Point(574, 517)
+        Button1.Name = "Button1"
+        Button1.Size = New Size(294, 55)
+        Button1.TabIndex = 95
+        Button1.Text = "Clear"
+        Button1.UseVisualStyleBackColor = True
         ' 
         ' btnSearchAll
         ' 
@@ -1039,6 +1048,15 @@ Partial Class Search
         TabPage1.TabIndex = 0
         TabPage1.Text = "Demographics"
         ' 
+        ' Button2
+        ' 
+        Button2.Location = New Point(1228, 598)
+        Button2.Name = "Button2"
+        Button2.Size = New Size(294, 55)
+        Button2.TabIndex = 95
+        Button2.Text = "Search!"
+        Button2.UseVisualStyleBackColor = True
+        ' 
         ' TextBox7
         ' 
         TextBox7.Location = New Point(223, 539)
@@ -1213,6 +1231,15 @@ Partial Class Search
         TabPage2.Size = New Size(1560, 681)
         TabPage2.TabIndex = 1
         TabPage2.Text = "Utilization"
+        ' 
+        ' Button3
+        ' 
+        Button3.Location = New Point(1227, 603)
+        Button3.Name = "Button3"
+        Button3.Size = New Size(294, 55)
+        Button3.TabIndex = 95
+        Button3.Text = "Search!"
+        Button3.UseVisualStyleBackColor = True
         ' 
         ' TextBox17
         ' 
@@ -1458,6 +1485,15 @@ Partial Class Search
         TabPage3.TabIndex = 2
         TabPage3.Text = "Geographic"
         ' 
+        ' Button4
+        ' 
+        Button4.Location = New Point(1226, 595)
+        Button4.Name = "Button4"
+        Button4.Size = New Size(294, 55)
+        Button4.TabIndex = 95
+        Button4.Text = "Search!"
+        Button4.UseVisualStyleBackColor = True
+        ' 
         ' TextBox20
         ' 
         TextBox20.Location = New Point(527, 71)
@@ -1609,6 +1645,15 @@ Partial Class Search
         TabPage4.Size = New Size(1560, 681)
         TabPage4.TabIndex = 3
         TabPage4.Text = "Characteristics"
+        ' 
+        ' Button5
+        ' 
+        Button5.Location = New Point(1224, 602)
+        Button5.Name = "Button5"
+        Button5.Size = New Size(294, 55)
+        Button5.TabIndex = 95
+        Button5.Text = "Search!"
+        Button5.UseVisualStyleBackColor = True
         ' 
         ' ComboBox8
         ' 
@@ -1779,51 +1824,6 @@ Partial Class Search
         lblFacility.Size = New Size(128, 21)
         lblFacility.TabIndex = 5
         lblFacility.Text = "Type of Facility"
-        ' 
-        ' Button1
-        ' 
-        Button1.Location = New Point(574, 517)
-        Button1.Name = "Button1"
-        Button1.Size = New Size(294, 55)
-        Button1.TabIndex = 95
-        Button1.Text = "Clear"
-        Button1.UseVisualStyleBackColor = True
-        ' 
-        ' Button2
-        ' 
-        Button2.Location = New Point(1228, 598)
-        Button2.Name = "Button2"
-        Button2.Size = New Size(294, 55)
-        Button2.TabIndex = 95
-        Button2.Text = "Search!"
-        Button2.UseVisualStyleBackColor = True
-        ' 
-        ' Button3
-        ' 
-        Button3.Location = New Point(1227, 603)
-        Button3.Name = "Button3"
-        Button3.Size = New Size(294, 55)
-        Button3.TabIndex = 95
-        Button3.Text = "Search!"
-        Button3.UseVisualStyleBackColor = True
-        ' 
-        ' Button4
-        ' 
-        Button4.Location = New Point(1226, 595)
-        Button4.Name = "Button4"
-        Button4.Size = New Size(294, 55)
-        Button4.TabIndex = 95
-        Button4.Text = "Search!"
-        Button4.UseVisualStyleBackColor = True
-        ' 
-        ' Button5
-        ' 
-        Button5.Location = New Point(1224, 602)
-        Button5.Name = "Button5"
-        Button5.Size = New Size(294, 55)
-        Button5.TabIndex = 95
-        Button5.Text = "Search!"
-        Button5.UseVisualStyleBackColor = True
         ' 
         ' Search
         ' 
