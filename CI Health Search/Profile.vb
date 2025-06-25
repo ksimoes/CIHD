@@ -8,24 +8,10 @@ Public Class Profile
     ' Now accepts a state parameter
     Public Sub ShowProfile(hospitalId As Integer, state As String)
         Dim query As String = ""
-        Dim colName As String = ""
-        Dim colPhone As String = ""
-        Dim colAdmin As String = ""
-        Dim colCounty As String = ""
-
-        ' Set table and column names based on state
         If state = "TN" Then
             query = "SELECT * FROM tn.AdminCon WHERE LicenseNum = @LicenseNum"
-            colName = "Facility Name"
-            colPhone = "Phone"
-            colAdmin = "Admin"
-            colCounty = "County"
         ElseIf state = "TX" Then
             query = "SELECT * FROM tx.Utilization WHERE id = @id"
-            colName = "Facility Name"
-            colPhone = "City"
-            colAdmin = "Ownership"
-            colCounty = "County"
         Else
             MessageBox.Show("Unsupported state selected.")
             Exit Sub
@@ -41,16 +27,20 @@ Public Class Profile
                 conn.Open()
                 Using reader = cmd.ExecuteReader()
                     If reader.Read() Then
-                        lblNameAddressResult.Text = If(IsDBNull(reader(colName)), "No result", reader(colName).ToString())
-                        lblPhoneNumResult.Text = If(IsDBNull(reader(colPhone)), "No result", reader(colPhone).ToString())
-                        lblCeoPresResult.Text = If(IsDBNull(reader(colAdmin)), "No result", reader(colAdmin).ToString())
-                        lblCountyFipsResult.Text = If(IsDBNull(reader(colCounty)), "No result", reader(colCounty).ToString())
-                        ' Add more mappings as needed
+                        Dim schemaTable = reader.GetSchemaTable()
+                        Dim columns = schemaTable.Rows.Cast(Of DataRow)().Select(Function(r) r("ColumnName").ToString()).ToList()
+
+                        lblNameAddressResult.Text = If(columns.Contains("Facility Name") AndAlso Not IsDBNull(reader("Facility Name")), reader("Facility Name").ToString(), "N/A")
+                        lblPhoneNumResult.Text = If(columns.Contains("Phone") AndAlso Not IsDBNull(reader("Phone")), reader("Phone").ToString(), If(columns.Contains("ContactNumber") AndAlso Not IsDBNull(reader("ContactNumber")), reader("ContactNumber").ToString(), "N/A"))
+                        lblCeoPresResult.Text = If(columns.Contains("Admin") AndAlso Not IsDBNull(reader("Admin")), reader("Admin").ToString(), If(columns.Contains("CEO") AndAlso Not IsDBNull(reader("CEO")), reader("CEO").ToString(), "N/A"))
+                        lblCountyFipsResult.Text = If(columns.Contains("County") AndAlso Not IsDBNull(reader("County")), reader("County").ToString(), "N/A")
+                        lblTotalPatientDaysResult.Text = If(columns.Contains("Inpatient Days") AndAlso Not IsDBNull(reader("Inpatient Days")), reader("Inpatient Days").ToString(), "N/A")
                     Else
                         lblNameAddressResult.Text = "No result"
                         lblPhoneNumResult.Text = "No result"
                         lblCeoPresResult.Text = "No result"
                         lblCountyFipsResult.Text = "No result"
+                        lblTotalPatientDaysResult.Text = "No result"
                     End If
                 End Using
             End Using
@@ -66,6 +56,7 @@ Public Class Profile
     Private Sub Button3_Click(sender As Object, e As EventArgs) Handles btnFinancialProfile.Click
         Me.Hide()
         Financial.Show()
+        Financial.ShowFinancialData(Results.SelectedHospitalContext.HospitalId, Results.SelectedHospitalContext.State)
     End Sub
 
     Private Sub Button4_Click(sender As Object, e As EventArgs) Handles btnFinIndProfile.Click

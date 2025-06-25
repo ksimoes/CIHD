@@ -1,31 +1,49 @@
-﻿Public Class Financial
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles btnProfileFinancial.Click
-        Me.Hide()
-        Profile.Show()
+﻿Imports System.Data.SqlClient
+
+Public Class Financial
+    Private connectionString As String = "Data Source=cihg-sql1.database.windows.net;Initial Catalog=CIHData;User ID=cihgadmin;Password=P!bxbFrHw4-jCvU*;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+
+    ' Call this method to load data for the selected hospital
+    Public Sub ShowFinancialData(hospitalId As Integer, state As String)
+        Dim query As String = ""
+
+        ' Choose the correct table based on state
+        If state = "TN" Then
+            query = "SELECT * FROM tn.Financials WHERE LicenseNum = @LicenseNum"
+        ElseIf state = "TX" Then
+            query = "SELECT * FROM tx.Finance WHERE id = @id"
+        Else
+            MessageBox.Show("Unsupported state selected.")
+            Exit Sub
+        End If
+
+        Using conn As New SqlConnection(connectionString)
+            Using cmd As New SqlCommand(query, conn)
+                If state = "TN" Then
+                    cmd.Parameters.AddWithValue("@LicenseNum", hospitalId)
+                ElseIf state = "TX" Then
+                    cmd.Parameters.AddWithValue("@id", hospitalId)
+                End If
+                conn.Open()
+                Using reader = cmd.ExecuteReader()
+                    If reader.Read() Then
+                        ' Example: Set your labels or controls here
+                        lbligrresult.Text = If(Not IsDBNull(reader("Total Gross Inpatient Revenue")), reader("Total Gross Inpatient Revenue").ToString(), "N/A")
+                        lblogrresult.Text = If(Not IsDBNull(reader("Total Gross Outpatient Revenue")), reader("Total Gross Outpatient Revenue").ToString(), "N/A")
+                        ' Add more fields as needed
+                    Else
+                        lbligrresult.Text = "No result"
+                        lblogrresult.Text = "No result"
+                    End If
+                End Using
+            End Using
+        End Using
     End Sub
 
-    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles btnDepartmentsFinancial.Click
-        Me.Hide()
-        Departments.Show()
-    End Sub
-
-    Private Sub Button4_Click(sender As Object, e As EventArgs) Handles btnFInIndFinancial.Click
-        Me.Hide()
-        FinInd.Show()
-    End Sub
-
-    Private Sub Button5_Click(sender As Object, e As EventArgs) Handles btnQualityFinancial.Click
-        Me.Hide()
-        Quality.Show()
-    End Sub
-
-    Private Sub Button6_Click(sender As Object, e As EventArgs) Handles btnInpatientFinancial.Click
-        Me.Hide()
-        Inpatient.Show()
-    End Sub
-
-    Private Sub Button7_Click(sender As Object, e As EventArgs) Handles btnOutpatientFinancial.Click
-        Me.Hide()
-        Outpatient.Show()
+    ' Optionally, call this automatically when the form loads
+    Private Sub Financial_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        If Results.SelectedHospitalContext IsNot Nothing Then
+            ShowFinancialData(Results.SelectedHospitalContext.HospitalId, Results.SelectedHospitalContext.State)
+        End If
     End Sub
 End Class

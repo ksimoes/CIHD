@@ -23,7 +23,7 @@ Partial Class Financial
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         GroupBox1 = New GroupBox()
-        Label1 = New Label()
+        lbligr = New Label()
         gbIncomeStatement = New GroupBox()
         Label2 = New Label()
         gbUncompensatedCare = New GroupBox()
@@ -33,13 +33,19 @@ Partial Class Financial
         btnFInIndFinancial = New Button()
         btnDepartmentsFinancial = New Button()
         btnProfileFinancial = New Button()
+        lblogr = New Label()
+        lblogrresult = New Label()
+        lbligrresult = New Label()
         GroupBox1.SuspendLayout()
         gbIncomeStatement.SuspendLayout()
         SuspendLayout()
         ' 
         ' GroupBox1
         ' 
-        GroupBox1.Controls.Add(Label1)
+        GroupBox1.Controls.Add(lbligrresult)
+        GroupBox1.Controls.Add(lblogrresult)
+        GroupBox1.Controls.Add(lblogr)
+        GroupBox1.Controls.Add(lbligr)
         GroupBox1.Location = New Point(12, 12)
         GroupBox1.Name = "GroupBox1"
         GroupBox1.Size = New Size(646, 360)
@@ -47,14 +53,14 @@ Partial Class Financial
         GroupBox1.TabStop = False
         GroupBox1.Text = "GroupBox1"
         ' 
-        ' Label1
+        ' lbligr
         ' 
-        Label1.AutoSize = True
-        Label1.Location = New Point(144, 28)
-        Label1.Name = "Label1"
-        Label1.Size = New Size(376, 15)
-        Label1.TabIndex = 0
-        Label1.Text = "Needs to be table with static rows, but coulmns with past 4 years or so"
+        lbligr.AutoSize = True
+        lbligr.Location = New Point(24, 36)
+        lbligr.Name = "lbligr"
+        lbligr.Size = New Size(74, 15)
+        lbligr.TabIndex = 0
+        lbligr.Text = "Inp gross rev"
         ' 
         ' gbIncomeStatement
         ' 
@@ -138,6 +144,33 @@ Partial Class Financial
         btnProfileFinancial.Text = "Profile"
         btnProfileFinancial.UseVisualStyleBackColor = True
         ' 
+        ' lblogr
+        ' 
+        lblogr.AutoSize = True
+        lblogr.Location = New Point(24, 61)
+        lblogr.Name = "lblogr"
+        lblogr.Size = New Size(31, 15)
+        lblogr.TabIndex = 1
+        lblogr.Text = "OGR"
+        ' 
+        ' lblogrresult
+        ' 
+        lblogrresult.AutoSize = True
+        lblogrresult.Location = New Point(92, 61)
+        lblogrresult.Name = "lblogrresult"
+        lblogrresult.Size = New Size(31, 15)
+        lblogrresult.TabIndex = 2
+        lblogrresult.Text = "OGR"
+        ' 
+        ' lbligrresult
+        ' 
+        lbligrresult.AutoSize = True
+        lbligrresult.Location = New Point(123, 36)
+        lbligrresult.Name = "lbligrresult"
+        lbligrresult.Size = New Size(74, 15)
+        lbligrresult.TabIndex = 3
+        lbligrresult.Text = "Inp gross rev"
+        ' 
         ' Financial
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
@@ -163,7 +196,7 @@ Partial Class Financial
     End Sub
 
     Friend WithEvents GroupBox1 As GroupBox
-    Friend WithEvents Label1 As Label
+    Friend WithEvents lbligr As Label
     Friend WithEvents gbIncomeStatement As GroupBox
     Friend WithEvents gbUncompensatedCare As GroupBox
     Friend WithEvents btnOutpatientFinancial As Button
@@ -173,4 +206,7 @@ Partial Class Financial
     Friend WithEvents btnDepartmentsFinancial As Button
     Friend WithEvents btnProfileFinancial As Button
     Friend WithEvents Label2 As Label
+    Friend WithEvents lblogr As Label
+    Friend WithEvents lbligrresult As Label
+    Friend WithEvents lblogrresult As Label
 End Class

@@ -1,10 +1,10 @@
 ﻿Public Class Results
 
     Public Property SelectedState As String
-    ' ... rest of your code ...
-
-
     Private resultsTable As DataTable
+
+    ' Shared context for selected hospital
+    Public Shared SelectedHospitalContext As New HospitalContext()
 
     ' Call this from Search form to set and display results
     Public Sub SetResults(dt As DataTable)
@@ -14,7 +14,6 @@
             ' Display hospital name, but store HospitalID for lookup
             CheckedListBox1.Items.Add(row("Facility Name").ToString())
         Next
-
     End Sub
 
     ' Profile button click
@@ -33,6 +32,10 @@
                 MessageBox.Show("State information is missing.")
                 Return
             End If
+
+            ' Set the shared context
+            SelectedHospitalContext.HospitalId = hospitalId
+            SelectedHospitalContext.State = SelectedState
 
             Profile.ShowProfile(hospitalId, SelectedState)
             Hide()
