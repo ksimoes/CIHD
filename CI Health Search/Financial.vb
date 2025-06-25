@@ -8,14 +8,15 @@ Public Class Financial
         Dim query As String = ""
 
         ' Choose the correct table based on state
-        If state = "TN" Then
-            query = "SELECT * FROM tn.Financials WHERE LicenseNum = @LicenseNum"
-        ElseIf state = "TX" Then
-            query = "SELECT * FROM tx.Finance WHERE id = @id"
-        Else
-            MessageBox.Show("Unsupported state selected.")
-            Exit Sub
-        End If
+        Select Case state
+            Case "TN"
+                query = "SELECT * FROM tn.Financials WHERE LicenseNum = @LicenseNum"
+            Case "TX"
+                query = "SELECT * FROM tx.Finance WHERE id = @id"
+            Case Else
+                MessageBox.Show("Unsupported state selected.")
+                Exit Sub
+        End Select
 
         Using conn As New SqlConnection(connectionString)
             Using cmd As New SqlCommand(query, conn)
@@ -30,6 +31,7 @@ Public Class Financial
                         ' Example: Set your labels or controls here
                         lbligrresult.Text = If(Not IsDBNull(reader("Total Gross Inpatient Revenue")), reader("Total Gross Inpatient Revenue").ToString(), "N/A")
                         lblogrresult.Text = If(Not IsDBNull(reader("Total Gross Outpatient Revenue")), reader("Total Gross Outpatient Revenue").ToString(), "N/A")
+
                         ' Add more fields as needed
                     Else
                         lbligrresult.Text = "No result"
@@ -46,4 +48,5 @@ Public Class Financial
             ShowFinancialData(Results.SelectedHospitalContext.HospitalId, Results.SelectedHospitalContext.State)
         End If
     End Sub
+
 End Class

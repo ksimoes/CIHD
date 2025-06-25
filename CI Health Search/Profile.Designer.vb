@@ -259,7 +259,7 @@ Partial Class Profile
         ' lblCountyFipsResult
         ' 
         lblCountyFipsResult.AutoSize = True
-        lblCountyFipsResult.Location = New Point(157, 501)
+        lblCountyFipsResult.Location = New Point(157, 491)
         lblCountyFipsResult.Name = "lblCountyFipsResult"
         lblCountyFipsResult.Size = New Size(47, 15)
         lblCountyFipsResult.TabIndex = 70
@@ -270,9 +270,9 @@ Partial Class Profile
         lblTotalPatientRevenueResult.AutoSize = True
         lblTotalPatientRevenueResult.Location = New Point(162, 476)
         lblTotalPatientRevenueResult.Name = "lblTotalPatientRevenueResult"
-        lblTotalPatientRevenueResult.Size = New Size(47, 15)
+        lblTotalPatientRevenueResult.Size = New Size(39, 15)
         lblTotalPatientRevenueResult.TabIndex = 69
-        lblTotalPatientRevenueResult.Text = "Label17"
+        lblTotalPatientRevenueResult.Text = "Result"
         ' 
         ' lblTotalPatientDaysResult
         ' 
@@ -483,7 +483,7 @@ Partial Class Profile
         ' 
         lblCountyFips.AutoSize = True
         lblCountyFips.Font = New Font("Times New Roman", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        lblCountyFips.Location = New Point(6, 501)
+        lblCountyFips.Location = New Point(4, 491)
         lblCountyFips.Name = "lblCountyFips"
         lblCountyFips.Size = New Size(112, 15)
         lblCountyFips.TabIndex = 50

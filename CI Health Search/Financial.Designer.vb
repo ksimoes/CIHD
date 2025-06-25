@@ -23,6 +23,9 @@ Partial Class Financial
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         GroupBox1 = New GroupBox()
+        lbligrresult = New Label()
+        lblogrresult = New Label()
+        lblogr = New Label()
         lbligr = New Label()
         gbIncomeStatement = New GroupBox()
         Label2 = New Label()
@@ -33,9 +36,6 @@ Partial Class Financial
         btnFInIndFinancial = New Button()
         btnDepartmentsFinancial = New Button()
         btnProfileFinancial = New Button()
-        lblogr = New Label()
-        lblogrresult = New Label()
-        lbligrresult = New Label()
         GroupBox1.SuspendLayout()
         gbIncomeStatement.SuspendLayout()
         SuspendLayout()
@@ -53,6 +53,33 @@ Partial Class Financial
         GroupBox1.TabStop = False
         GroupBox1.Text = "GroupBox1"
         ' 
+        ' lbligrresult
+        ' 
+        lbligrresult.AutoSize = True
+        lbligrresult.Location = New Point(123, 36)
+        lbligrresult.Name = "lbligrresult"
+        lbligrresult.Size = New Size(74, 15)
+        lbligrresult.TabIndex = 3
+        lbligrresult.Text = "Inp gross rev"
+        ' 
+        ' lblogrresult
+        ' 
+        lblogrresult.AutoSize = True
+        lblogrresult.Location = New Point(92, 61)
+        lblogrresult.Name = "lblogrresult"
+        lblogrresult.Size = New Size(31, 15)
+        lblogrresult.TabIndex = 2
+        lblogrresult.Text = "OGR"
+        ' 
+        ' lblogr
+        ' 
+        lblogr.AutoSize = True
+        lblogr.Location = New Point(24, 61)
+        lblogr.Name = "lblogr"
+        lblogr.Size = New Size(31, 15)
+        lblogr.TabIndex = 1
+        lblogr.Text = "OGR"
+        ' 
         ' lbligr
         ' 
         lbligr.AutoSize = True
@@ -67,7 +94,7 @@ Partial Class Financial
         gbIncomeStatement.Controls.Add(Label2)
         gbIncomeStatement.Location = New Point(664, 48)
         gbIncomeStatement.Name = "gbIncomeStatement"
-        gbIncomeStatement.Size = New Size(647, 567)
+        gbIncomeStatement.Size = New Size(604, 567)
         gbIncomeStatement.TabIndex = 1
         gbIncomeStatement.TabStop = False
         gbIncomeStatement.Text = "Income Statement"
@@ -143,33 +170,6 @@ Partial Class Financial
         btnProfileFinancial.TabIndex = 14
         btnProfileFinancial.Text = "Profile"
         btnProfileFinancial.UseVisualStyleBackColor = True
-        ' 
-        ' lblogr
-        ' 
-        lblogr.AutoSize = True
-        lblogr.Location = New Point(24, 61)
-        lblogr.Name = "lblogr"
-        lblogr.Size = New Size(31, 15)
-        lblogr.TabIndex = 1
-        lblogr.Text = "OGR"
-        ' 
-        ' lblogrresult
-        ' 
-        lblogrresult.AutoSize = True
-        lblogrresult.Location = New Point(92, 61)
-        lblogrresult.Name = "lblogrresult"
-        lblogrresult.Size = New Size(31, 15)
-        lblogrresult.TabIndex = 2
-        lblogrresult.Text = "OGR"
-        ' 
-        ' lbligrresult
-        ' 
-        lbligrresult.AutoSize = True
-        lbligrresult.Location = New Point(123, 36)
-        lbligrresult.Name = "lbligrresult"
-        lbligrresult.Size = New Size(74, 15)
-        lbligrresult.TabIndex = 3
-        lbligrresult.Text = "Inp gross rev"
         ' 
         ' Financial
         ' 

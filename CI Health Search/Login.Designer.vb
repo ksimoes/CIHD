@@ -26,8 +26,8 @@ Partial Class Login
         Label80 = New Label()
         Label1 = New Label()
         Label2 = New Label()
-        TextBox1 = New TextBox()
-        TextBox2 = New TextBox()
+        txtUsername = New TextBox()
+        txtPassword = New TextBox()
         SuspendLayout()
         ' 
         ' Button1
@@ -69,27 +69,27 @@ Partial Class Login
         Label2.TabIndex = 30
         Label2.Text = "Password"
         ' 
-        ' TextBox1
+        ' txtUsername
         ' 
-        TextBox1.Location = New Point(194, 149)
-        TextBox1.Name = "TextBox1"
-        TextBox1.Size = New Size(169, 23)
-        TextBox1.TabIndex = 31
+        txtUsername.Location = New Point(194, 149)
+        txtUsername.Name = "txtUsername"
+        txtUsername.Size = New Size(169, 23)
+        txtUsername.TabIndex = 31
         ' 
-        ' TextBox2
+        ' txtPassword
         ' 
-        TextBox2.Location = New Point(194, 207)
-        TextBox2.Name = "TextBox2"
-        TextBox2.Size = New Size(169, 23)
-        TextBox2.TabIndex = 32
+        txtPassword.Location = New Point(194, 207)
+        txtPassword.Name = "txtPassword"
+        txtPassword.Size = New Size(169, 23)
+        txtPassword.TabIndex = 32
         ' 
         ' Login
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(868, 476)
-        Controls.Add(TextBox2)
-        Controls.Add(TextBox1)
+        Controls.Add(txtPassword)
+        Controls.Add(txtUsername)
         Controls.Add(Label2)
         Controls.Add(Label1)
         Controls.Add(Label80)
@@ -104,6 +104,6 @@ Partial Class Login
     Friend WithEvents Label80 As Label
     Friend WithEvents Label1 As Label
     Friend WithEvents Label2 As Label
-    Friend WithEvents TextBox1 As TextBox
-    Friend WithEvents TextBox2 As TextBox
+    Friend WithEvents txtUsername As TextBox
+    Friend WithEvents txtPassword As TextBox
 End Class

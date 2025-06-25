@@ -7,18 +7,23 @@ Public Class Profile
 
     ' Now accepts a state parameter
     Public Sub ShowProfile(hospitalId As Integer, state As String)
-        Dim query As String = ""
+        Dim queryProfile As String = ""
+        Dim queryFinance As String = ""
+
         If state = "TN" Then
-            query = "SELECT * FROM tn.AdminCon WHERE LicenseNum = @LicenseNum"
+            queryProfile = "SELECT * FROM tn.AdminCon WHERE LicenseNum = @LicenseNum"
+            queryFinance = "SELECT [Total Gross Patient Revenue] FROM tn.Financials WHERE LicenseNum = @LicenseNum"
         ElseIf state = "TX" Then
-            query = "SELECT * FROM tx.Utilization WHERE id = @id"
+            queryProfile = "SELECT * FROM tx.Utilization WHERE id = @id"
+            queryFinance = "SELECT [Total Gross Patient Revenue] FROM tx.Finance WHERE id = @id"
         Else
             MessageBox.Show("Unsupported state selected.")
             Exit Sub
         End If
 
+        ' --- Query 1: General Profile Info ---
         Using conn As New SqlConnection(connectionString)
-            Using cmd As New SqlCommand(query, conn)
+            Using cmd As New SqlCommand(queryProfile, conn)
                 If state = "TN" Then
                     cmd.Parameters.AddWithValue("@LicenseNum", hospitalId)
                 ElseIf state = "TX" Then
@@ -41,6 +46,26 @@ Public Class Profile
                         lblCeoPresResult.Text = "No result"
                         lblCountyFipsResult.Text = "No result"
                         lblTotalPatientDaysResult.Text = "No result"
+                    End If
+                End Using
+                conn.Close()
+            End Using
+        End Using
+
+        ' --- Query 2: Financial Info ---
+        Using conn2 As New SqlConnection(connectionString)
+            Using cmd2 As New SqlCommand(queryFinance, conn2)
+                If state = "TN" Then
+                    cmd2.Parameters.AddWithValue("@LicenseNum", hospitalId)
+                ElseIf state = "TX" Then
+                    cmd2.Parameters.AddWithValue("@id", hospitalId)
+                End If
+                conn2.Open()
+                Using reader2 = cmd2.ExecuteReader()
+                    If reader2.Read() AndAlso Not IsDBNull(reader2(0)) Then
+                        lblTotalPatientRevenueResult.Text = reader2(0).ToString()
+                    Else
+                        lblTotalPatientRevenueResult.Text = "N/A"
                     End If
                 End Using
             End Using
