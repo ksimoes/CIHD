@@ -36,8 +36,17 @@ Partial Class Financial
         btnFInIndFinancial = New Button()
         btnDepartmentsFinancial = New Button()
         btnProfileFinancial = New Button()
+        Label1 = New Label()
+        lblUncompResult = New Label()
+        Label3 = New Label()
+        Label4 = New Label()
+        Labl2 = New Label()
+        lblucpctResult = New Label()
+        lblTotUcResult = New Label()
+        lblCcResult = New Label()
         GroupBox1.SuspendLayout()
         gbIncomeStatement.SuspendLayout()
+        gbUncompensatedCare.SuspendLayout()
         SuspendLayout()
         ' 
         ' GroupBox1
@@ -110,6 +119,14 @@ Partial Class Financial
         ' 
         ' gbUncompensatedCare
         ' 
+        gbUncompensatedCare.Controls.Add(lblCcResult)
+        gbUncompensatedCare.Controls.Add(lblTotUcResult)
+        gbUncompensatedCare.Controls.Add(lblucpctResult)
+        gbUncompensatedCare.Controls.Add(Labl2)
+        gbUncompensatedCare.Controls.Add(Label4)
+        gbUncompensatedCare.Controls.Add(Label3)
+        gbUncompensatedCare.Controls.Add(lblUncompResult)
+        gbUncompensatedCare.Controls.Add(Label1)
         gbUncompensatedCare.Location = New Point(12, 378)
         gbUncompensatedCare.Name = "gbUncompensatedCare"
         gbUncompensatedCare.Size = New Size(633, 246)
@@ -171,6 +188,78 @@ Partial Class Financial
         btnProfileFinancial.Text = "Profile"
         btnProfileFinancial.UseVisualStyleBackColor = True
         ' 
+        ' Label1
+        ' 
+        Label1.AutoSize = True
+        Label1.Location = New Point(24, 42)
+        Label1.Name = "Label1"
+        Label1.Size = New Size(101, 15)
+        Label1.TabIndex = 4
+        Label1.Text = "Bad Debt Charges"
+        ' 
+        ' lblUncompResult
+        ' 
+        lblUncompResult.AutoSize = True
+        lblUncompResult.Location = New Point(185, 42)
+        lblUncompResult.Name = "lblUncompResult"
+        lblUncompResult.Size = New Size(39, 15)
+        lblUncompResult.TabIndex = 5
+        lblUncompResult.Text = "Result"
+        ' 
+        ' Label3
+        ' 
+        Label3.AutoSize = True
+        Label3.Location = New Point(24, 164)
+        Label3.Name = "Label3"
+        Label3.Size = New Size(36, 15)
+        Label3.TabIndex = 6
+        Label3.Text = "UC %"
+        ' 
+        ' Label4
+        ' 
+        Label4.AutoSize = True
+        Label4.Location = New Point(24, 84)
+        Label4.Name = "Label4"
+        Label4.Size = New Size(91, 15)
+        Label4.TabIndex = 6
+        Label4.Text = "Charity Charges"
+        ' 
+        ' Labl2
+        ' 
+        Labl2.AutoSize = True
+        Labl2.Location = New Point(24, 123)
+        Labl2.Name = "Labl2"
+        Labl2.Size = New Size(150, 15)
+        Labl2.TabIndex = 7
+        Labl2.Text = "Total Uncompensated Care"
+        ' 
+        ' lblucpctResult
+        ' 
+        lblucpctResult.AutoSize = True
+        lblucpctResult.Location = New Point(185, 164)
+        lblucpctResult.Name = "lblucpctResult"
+        lblucpctResult.Size = New Size(39, 15)
+        lblucpctResult.TabIndex = 8
+        lblucpctResult.Text = "Result"
+        ' 
+        ' lblTotUcResult
+        ' 
+        lblTotUcResult.AutoSize = True
+        lblTotUcResult.Location = New Point(197, 123)
+        lblTotUcResult.Name = "lblTotUcResult"
+        lblTotUcResult.Size = New Size(39, 15)
+        lblTotUcResult.TabIndex = 9
+        lblTotUcResult.Text = "Result"
+        ' 
+        ' lblCcResult
+        ' 
+        lblCcResult.AutoSize = True
+        lblCcResult.Location = New Point(185, 84)
+        lblCcResult.Name = "lblCcResult"
+        lblCcResult.Size = New Size(39, 15)
+        lblCcResult.TabIndex = 10
+        lblCcResult.Text = "Result"
+        ' 
         ' Financial
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
@@ -192,6 +281,8 @@ Partial Class Financial
         GroupBox1.PerformLayout()
         gbIncomeStatement.ResumeLayout(False)
         gbIncomeStatement.PerformLayout()
+        gbUncompensatedCare.ResumeLayout(False)
+        gbUncompensatedCare.PerformLayout()
         ResumeLayout(False)
     End Sub
 
@@ -209,4 +300,12 @@ Partial Class Financial
     Friend WithEvents lblogr As Label
     Friend WithEvents lbligrresult As Label
     Friend WithEvents lblogrresult As Label
+    Friend WithEvents lblUncompResult As Label
+    Friend WithEvents Label1 As Label
+    Friend WithEvents lblCcResult As Label
+    Friend WithEvents lblTotUcResult As Label
+    Friend WithEvents lblucpctResult As Label
+    Friend WithEvents Labl2 As Label
+    Friend WithEvents Label4 As Label
+    Friend WithEvents Label3 As Label
 End Class
