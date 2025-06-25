@@ -5,20 +5,52 @@ Public Class Profile
     ' Use your actual Azure SQL connection string
     Private connectionString As String = "Data Source=cihg-sql1.database.windows.net;Initial Catalog=CIHData;User ID=cihgadmin;Password=P!bxbFrHw4-jCvU*;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
 
-    Public Sub ShowProfile(hospitalId As Integer)
-        ' Query for full details
-        Dim query As String = "SELECT * FROM tn.AdminCon WHERE LicenseNum = @LicenseNum"
+    ' Now accepts a state parameter
+    Public Sub ShowProfile(hospitalId As Integer, state As String)
+        Dim query As String = ""
+        Dim colName As String = ""
+        Dim colPhone As String = ""
+        Dim colAdmin As String = ""
+        Dim colCounty As String = ""
+
+        ' Set table and column names based on state
+        If state = "TN" Then
+            query = "SELECT * FROM tn.AdminCon WHERE LicenseNum = @LicenseNum"
+            colName = "Facility Name"
+            colPhone = "Phone"
+            colAdmin = "Admin"
+            colCounty = "County"
+        ElseIf state = "TX" Then
+            query = "SELECT * FROM tx.Utilization WHERE id = @id"
+            colName = "Facility Name"
+            colPhone = "City"
+            colAdmin = "Ownership"
+            colCounty = "County"
+        Else
+            MessageBox.Show("Unsupported state selected.")
+            Exit Sub
+        End If
+
         Using conn As New SqlConnection(connectionString)
             Using cmd As New SqlCommand(query, conn)
-                cmd.Parameters.AddWithValue("@LicenseNum", hospitalId)
+                If state = "TN" Then
+                    cmd.Parameters.AddWithValue("@LicenseNum", hospitalId)
+                ElseIf state = "TX" Then
+                    cmd.Parameters.AddWithValue("@id", hospitalId)
+                End If
                 conn.Open()
                 Using reader = cmd.ExecuteReader()
                     If reader.Read() Then
-                        ' Replace with your actual label names and column names
-                        lblNameAddressResult.Text = reader("Facility Name").ToString()
-                        lblPhoneNumResult.Text = reader("Phone").ToString()
-                        'lblCmsCertNumProfileResult.Text = reader("CMSCertNum").ToString()
-                        ' ...populate other labels as needed
+                        lblNameAddressResult.Text = If(IsDBNull(reader(colName)), "No result", reader(colName).ToString())
+                        lblPhoneNumResult.Text = If(IsDBNull(reader(colPhone)), "No result", reader(colPhone).ToString())
+                        lblCeoPresResult.Text = If(IsDBNull(reader(colAdmin)), "No result", reader(colAdmin).ToString())
+                        lblCountyFipsResult.Text = If(IsDBNull(reader(colCounty)), "No result", reader(colCounty).ToString())
+                        ' Add more mappings as needed
+                    Else
+                        lblNameAddressResult.Text = "No result"
+                        lblPhoneNumResult.Text = "No result"
+                        lblCeoPresResult.Text = "No result"
+                        lblCountyFipsResult.Text = "No result"
                     End If
                 End Using
             End Using

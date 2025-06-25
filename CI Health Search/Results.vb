@@ -1,4 +1,9 @@
 ﻿Public Class Results
+
+    Public Property SelectedState As String
+    ' ... rest of your code ...
+
+
     Private resultsTable As DataTable
 
     ' Call this from Search form to set and display results
@@ -19,14 +24,20 @@
             Return
         End If
 
-        ' Get selected hospital's HospitalID
-        Dim selectedName As String = CheckedListBox1.SelectedItem.ToString()
+        Dim selectedName As String = CheckedListBox1.SelectedItem.ToString().Trim()
         Dim selectedRow = resultsTable.Select($"[Facility Name] = '{selectedName.Replace("'", "''")}'").FirstOrDefault()
         If selectedRow IsNot Nothing Then
             Dim hospitalId As Integer = CInt(selectedRow("LicenseNum"))
-            Profile.ShowProfile(hospitalId)
+
+            If String.IsNullOrEmpty(SelectedState) Then
+                MessageBox.Show("State information is missing.")
+                Return
+            End If
+
+            Profile.ShowProfile(hospitalId, SelectedState)
             Hide()
             Profile.Show()
         End If
     End Sub
+
 End Class

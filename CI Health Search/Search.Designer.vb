@@ -119,7 +119,7 @@ Partial Class Search
         lblCityDemo = New Label()
         lblTaxDemo = New Label()
         lblNpiDemo = New Label()
-        ListBox2 = New ListBox()
+        lbStateDemo = New ListBox()
         TextBox1 = New TextBox()
         lblCmsCertNumDemo = New Label()
         TabPage2 = New TabPage()
@@ -886,7 +886,7 @@ Partial Class Search
         ' 
         lbStateAll.FormattingEnabled = True
         lbStateAll.ItemHeight = 15
-        lbStateAll.Items.AddRange(New Object() {"Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Lousiana", "Maine", "Maryland", "Massachussetts", "Michigan", "Minnesota", "Mississippi ", "Missouri", "Montana", "Nerbraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "TN", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia ", "Wisconsin", "Wyoming"})
+        lbStateAll.Items.AddRange(New Object() {"Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Lousiana", "Maine", "Maryland", "Massachussetts", "Michigan", "Minnesota", "Mississippi ", "Missouri", "Montana", "Nerbraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "TN", "TX", "Utah", "Vermont", "Virginia", "Washington", "West Virginia ", "Wisconsin", "Wyoming"})
         lbStateAll.Location = New Point(304, 244)
         lbStateAll.Name = "lbStateAll"
         lbStateAll.Size = New Size(100, 94)
@@ -1038,7 +1038,7 @@ Partial Class Search
         TabPage1.Controls.Add(lblCityDemo)
         TabPage1.Controls.Add(lblTaxDemo)
         TabPage1.Controls.Add(lblNpiDemo)
-        TabPage1.Controls.Add(ListBox2)
+        TabPage1.Controls.Add(lbStateDemo)
         TabPage1.Controls.Add(TextBox1)
         TabPage1.Controls.Add(lblCmsCertNumDemo)
         TabPage1.Location = New Point(4, 24)
@@ -1169,15 +1169,15 @@ Partial Class Search
         lblNpiDemo.TabIndex = 3
         lblNpiDemo.Text = "NPI"
         ' 
-        ' ListBox2
+        ' lbStateDemo
         ' 
-        ListBox2.FormattingEnabled = True
-        ListBox2.ItemHeight = 15
-        ListBox2.Items.AddRange(New Object() {"Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Lousiana", "Maine", "Maryland", "Massachussetts", "Michigan", "Minnesota", "Mississippi ", "Missouri", "Montana", "Nerbraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennesse", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia ", "Wisconsin", "Wyoming"})
-        ListBox2.Location = New Point(223, 287)
-        ListBox2.Name = "ListBox2"
-        ListBox2.Size = New Size(100, 94)
-        ListBox2.TabIndex = 2
+        lbStateDemo.FormattingEnabled = True
+        lbStateDemo.ItemHeight = 15
+        lbStateDemo.Items.AddRange(New Object() {"Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Lousiana", "Maine", "Maryland", "Massachussetts", "Michigan", "Minnesota", "Mississippi ", "Missouri", "Montana", "Nerbraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "TN", "TX", "Utah", "Vermont", "Virginia", "Washington", "West Virginia ", "Wisconsin", "Wyoming"})
+        lbStateDemo.Location = New Point(223, 287)
+        lbStateDemo.Name = "lbStateDemo"
+        lbStateDemo.Size = New Size(100, 94)
+        lbStateDemo.TabIndex = 2
         ' 
         ' TextBox1
         ' 
@@ -1864,7 +1864,7 @@ Partial Class Search
     Friend WithEvents ListBox1 As ListBox
     Friend WithEvents TextBox1 As TextBox
     Friend WithEvents lblCmsCertNumDemo As Label
-    Friend WithEvents ListBox2 As ListBox
+    Friend WithEvents lbStateDemo As ListBox
     Friend WithEvents TextBox7 As TextBox
     Friend WithEvents TextBox6 As TextBox
     Friend WithEvents TextBox5 As TextBox

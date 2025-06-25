@@ -8,13 +8,24 @@ Public Class Search
         ' Get selected state from the ListBox
         Dim selectedState As String = TryCast(lbStateAll.SelectedItem, String)
 
-        ' Build SQL query with filters
-        Dim query As String = "SELECT LicenseNum,[Facility Name],State FROM tn.AdminCon WHERE 1=1"
-        If Not String.IsNullOrEmpty(selectedState) Then
-            query &= " AND State = @State"
+        Dim query As String = ""
+        Dim dt As New DataTable()
+
+        If selectedState = "TN" Then
+            query = "SELECT LicenseNum,[Facility Name],State FROM tn.AdminCon WHERE 1=1"
+            If Not String.IsNullOrEmpty(selectedState) Then
+                query &= " AND State = @State"
+            End If
+        ElseIf selectedState = "TX" Then
+            query = "SELECT id AS LicenseNum, [Facility Name], State FROM tx.Utilization WHERE 1=1"
+            If Not String.IsNullOrEmpty(selectedState) Then
+                query &= " AND State = @State"
+            End If
+        Else
+            MessageBox.Show("Please select a valid state.")
+            Return
         End If
 
-        Dim dt As New DataTable()
         Using conn As New SqlConnection(connectionString)
             Using cmd As New SqlCommand(query, conn)
                 If Not String.IsNullOrEmpty(selectedState) Then
@@ -27,6 +38,7 @@ Public Class Search
 
         ' Pass results to Results form
         Results.SetResults(dt)
+        Results.SelectedState = selectedState
         Hide()
         Results.Show()
     End Sub
