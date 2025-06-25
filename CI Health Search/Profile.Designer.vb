@@ -412,9 +412,10 @@ Partial Class Profile
         ' lblNameAddressResult
         ' 
         lblNameAddressResult.AutoSize = True
+        lblNameAddressResult.Font = New Font("Segoe UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         lblNameAddressResult.Location = New Point(144, 19)
         lblNameAddressResult.Name = "lblNameAddressResult"
-        lblNameAddressResult.Size = New Size(39, 15)
+        lblNameAddressResult.Size = New Size(39, 13)
         lblNameAddressResult.TabIndex = 56
         lblNameAddressResult.Text = "Result"
         ' 

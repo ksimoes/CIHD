@@ -886,7 +886,7 @@ Partial Class Search
         ' 
         lbStateAll.FormattingEnabled = True
         lbStateAll.ItemHeight = 15
-        lbStateAll.Items.AddRange(New Object() {"Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Lousiana", "Maine", "Maryland", "Massachussetts", "Michigan", "Minnesota", "Mississippi ", "Missouri", "Montana", "Nerbraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennesse", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia ", "Wisconsin", "Wyoming"})
+        lbStateAll.Items.AddRange(New Object() {"Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Lousiana", "Maine", "Maryland", "Massachussetts", "Michigan", "Minnesota", "Mississippi ", "Missouri", "Montana", "Nerbraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "TN", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia ", "Wisconsin", "Wyoming"})
         lbStateAll.Location = New Point(304, 244)
         lbStateAll.Name = "lbStateAll"
         lbStateAll.Size = New Size(100, 94)

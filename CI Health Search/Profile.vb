@@ -1,4 +1,31 @@
-﻿Public Class Profile
+﻿Imports System.ComponentModel
+Imports System.Data.SqlClient
+
+Public Class Profile
+    ' Use your actual Azure SQL connection string
+    Private connectionString As String = "Data Source=cihg-sql1.database.windows.net;Initial Catalog=CIHData;User ID=cihgadmin;Password=P!bxbFrHw4-jCvU*;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+
+    Public Sub ShowProfile(hospitalId As Integer)
+        ' Query for full details
+        Dim query As String = "SELECT * FROM tn.AdminCon WHERE LicenseNum = @LicenseNum"
+        Using conn As New SqlConnection(connectionString)
+            Using cmd As New SqlCommand(query, conn)
+                cmd.Parameters.AddWithValue("@LicenseNum", hospitalId)
+                conn.Open()
+                Using reader = cmd.ExecuteReader()
+                    If reader.Read() Then
+                        ' Replace with your actual label names and column names
+                        lblNameAddressResult.Text = reader("Facility Name").ToString()
+                        lblPhoneNumResult.Text = reader("Phone").ToString()
+                        'lblCmsCertNumProfileResult.Text = reader("CMSCertNum").ToString()
+                        ' ...populate other labels as needed
+                    End If
+                End Using
+            End Using
+        End Using
+    End Sub
+
+    ' Navigation buttons (already in your code)
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles btnDepartmentProfile.Click
         Me.Hide()
         Departments.Show()
@@ -28,31 +55,4 @@
         Me.Hide()
         Outpatient.Show()
     End Sub
-
-    Private Sub GroupBox1_Enter(sender As Object, e As EventArgs) Handles GroupBox1.Enter
-
-    End Sub
-
-    Private Sub lblNameAddressResult_Click(sender As Object, e As EventArgs) Handles lblNameAddressResult.Click
-
-    End Sub
-
-    Private Sub Profile_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-
-    End Sub
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 End Class
