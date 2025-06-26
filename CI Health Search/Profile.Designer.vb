@@ -122,6 +122,8 @@ Partial Class Profile
         btnFinIndProfile = New Button()
         btnFinancialProfile = New Button()
         btnDepartmentProfile = New Button()
+        Label1 = New Label()
+        lbladdy = New Label()
         GroupBox1.SuspendLayout()
         GroupBox2.SuspendLayout()
         gbTax.SuspendLayout()
@@ -132,6 +134,8 @@ Partial Class Profile
         ' 
         ' GroupBox1
         ' 
+        GroupBox1.Controls.Add(lbladdy)
+        GroupBox1.Controls.Add(Label1)
         GroupBox1.Controls.Add(lblMedicareCertifiedBedsResult)
         GroupBox1.Controls.Add(lblCmsUrbRurDesigResult)
         GroupBox1.Controls.Add(lblMedicareAdministrativeContractResult)
@@ -403,7 +407,7 @@ Partial Class Profile
         ' lblPhoneNumResult
         ' 
         lblPhoneNumResult.AutoSize = True
-        lblPhoneNumResult.Location = New Point(144, 44)
+        lblPhoneNumResult.Location = New Point(128, 59)
         lblPhoneNumResult.Name = "lblPhoneNumResult"
         lblPhoneNumResult.Size = New Size(39, 15)
         lblPhoneNumResult.TabIndex = 57
@@ -693,7 +697,7 @@ Partial Class Profile
         ' 
         lblPhoneNum.AutoSize = True
         lblPhoneNum.Font = New Font("Times New Roman", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        lblPhoneNum.Location = New Point(6, 44)
+        lblPhoneNum.Location = New Point(5, 59)
         lblPhoneNum.Name = "lblPhoneNum"
         lblPhoneNum.Size = New Size(108, 15)
         lblPhoneNum.TabIndex = 29
@@ -1119,6 +1123,26 @@ Partial Class Profile
         btnDepartmentProfile.Text = "Departments"
         btnDepartmentProfile.UseVisualStyleBackColor = False
         ' 
+        ' Label1
+        ' 
+        Label1.AutoSize = True
+        Label1.Font = New Font("Times New Roman", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        Label1.Location = New Point(6, 34)
+        Label1.Name = "Label1"
+        Label1.Size = New Size(108, 15)
+        Label1.TabIndex = 77
+        Label1.Text = "Name and Address"
+        ' 
+        ' lbladdy
+        ' 
+        lbladdy.AutoSize = True
+        lbladdy.Font = New Font("Segoe UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        lbladdy.Location = New Point(144, 36)
+        lbladdy.Name = "lbladdy"
+        lbladdy.Size = New Size(39, 13)
+        lbladdy.TabIndex = 78
+        lbladdy.Text = "Result"
+        ' 
         ' Profile
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
@@ -1262,4 +1286,6 @@ Partial Class Profile
     Friend WithEvents Column4 As DataGridViewTextBoxColumn
     Friend WithEvents Column5 As DataGridViewTextBoxColumn
     Friend WithEvents Column6 As DataGridViewTextBoxColumn
+    Friend WithEvents Label1 As Label
+    Friend WithEvents lbladdy As Label
 End Class

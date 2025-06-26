@@ -1,10 +1,12 @@
 ﻿Imports System.Data.SqlClient
+Imports System.Net.Http
+Imports Newtonsoft.Json.Linq
 
 Public Class Financial
     Private connectionString As String = "Data Source=cihg-sql1.database.windows.net;Initial Catalog=CIHData;User ID=cihgadmin;Password=P!bxbFrHw4-jCvU*;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
 
     ' Call this method to load data for the selected hospital
-    Public Sub ShowFinancialData(hospitalId As Integer, state As String)
+    Public Async Function ShowFinancialData(hospitalId As Integer, state As String) As Task
         Dim queryFinance As String = ""
         Dim queryCharity As String = ""
 
@@ -12,13 +14,13 @@ Public Class Financial
         Select Case state
             Case "TN"
                 queryFinance = "SELECT * FROM tn.Financials WHERE LicenseNum = @LicenseNum"
-            ' Add TN charity query here if needed
             Case "TX"
                 queryFinance = "SELECT * FROM tx.Finance WHERE id = @id"
                 queryCharity = "SELECT * FROM tx.Charity WHERE id = @id"
             Case Else
-                MessageBox.Show("Unsupported state selected.")
-                Exit Sub
+                ' For all other states, use API
+                Await ShowFinancialDataApi(Results.SelectedHospitalContext.CMSNum)
+                Exit Function
         End Select
 
         ' --- Query 1: Finance Table ---
@@ -32,12 +34,12 @@ Public Class Financial
                 conn.Open()
                 Using reader = cmd.ExecuteReader()
                     If reader.Read() Then
-                        lbligrresult.Text = If(Not IsDBNull(reader("Total Gross Inpatient Revenue")), reader("Total Gross Inpatient Revenue").ToString(), "N/A")
-                        lblogrresult.Text = If(Not IsDBNull(reader("Total Gross Outpatient Revenue")), reader("Total Gross Outpatient Revenue").ToString(), "N/A")
-                        ' Add more fields as needed
+                        lblPedResult.Text = If(Not IsDBNull(reader("Total Gross Inpatient Revenue")), reader("Total Gross Inpatient Revenue").ToString(), "N/A")
+                        lblNumMonthsPeriodResult.Text = If(Not IsDBNull(reader("Total Gross Outpatient Revenue")), reader("Total Gross Outpatient Revenue").ToString(), "N/A")
+                        ' Add more fields as needed for TN/TX
                     Else
-                        lbligrresult.Text = "No result"
-                        lblogrresult.Text = "No result"
+                        lblPedResult.Text = "No result"
+                        lblNumMonthsPeriodResult.Text = "No result"
                     End If
                 End Using
                 conn.Close()
@@ -52,13 +54,10 @@ Public Class Financial
                     conn2.Open()
                     Using reader2 = cmd2.ExecuteReader()
                         If reader2.Read() Then
-                            ' Example: Set your labels or controls for charity data here
-                            ' For example, if you have a column "CharityCareAmount":
                             lblTotUcResult.Text = If(Not IsDBNull(reader2("Total Uncompensated Care")), reader2("Total Uncompensated Care").ToString(), "N/A")
                             lblUncompResult.Text = If(Not IsDBNull(reader2("Bad Debt Charges")), reader2("Bad Debt Charges").ToString(), "N/A")
                             lblCcResult.Text = If(Not IsDBNull(reader2("Charity Charges")), reader2("Charity Charges").ToString(), "N/A")
                             lblucpctResult.Text = If(Not IsDBNull(reader2("Uncompensated Care as pcnt of GPR")), reader2("Uncompensated Care as pcnt of GPR").ToString(), "N/A")
-                            ' Add more fields as needed
                         Else
                             lblTotUcResult.Text = "No result"
                             lblUncompResult.Text = "No result"
@@ -69,13 +68,78 @@ Public Class Financial
                 End Using
             End Using
         End If
+    End Function
+
+    ' API-based financial data for non-TN/TX
+    Public Async Function ShowFinancialDataApi(cmsNum As String) As Task
+        Dim apiUrl As String = "https://data.cms.gov/data-api/v1/dataset/8015f175-35cc-4cab-a664-b7c87d91a027/data?keyword=" & Uri.EscapeDataString(cmsNum) & "&size=1000"
+
+        Using client As New HttpClient()
+            Dim response As HttpResponseMessage = Await client.GetAsync(apiUrl)
+            If response.IsSuccessStatusCode Then
+                Dim json As String = Await response.Content.ReadAsStringAsync()
+                Dim data As JArray = JArray.Parse(json)
+                If data.Count > 0 Then
+                    ' Find the exact match for Provider CCN if possible
+                    Dim provider = data.FirstOrDefault(Function(x) x("Provider CCN") IsNot Nothing AndAlso x("Provider CCN").ToString() = cmsNum)
+                    If provider Is Nothing Then provider = data(0)
+
+                    lblPedResult.Text = If(provider("Fiscal Year End Date") IsNot Nothing, provider("Fiscal Year End Date").ToString(), "N/A")
+                    lblCurAssetResult.Text = If(provider("Total Current Assets") IsNot Nothing, provider("Total Current Assets").ToString(), "N/A")
+                    lblFixAssetsResult.Text = If(provider("Total Fixed Assets") IsNot Nothing, provider("Total Fixed Assets").ToString(), "N/A")
+                    lblOtherAssetsResult.Text = If(provider("Total Other Assets") IsNot Nothing, provider("Total Other Assets").ToString(), "N/A")
+                    lblTotAssetsResult.Text = If(provider("Total Assets") IsNot Nothing, provider("Total Assets").ToString(), "N/A")
+
+                    lblCurLiabilitiesRes.Text = If(provider("Total Current Liabilities") IsNot Nothing, provider("Total Current Liabilities").ToString(), "N/A")
+                    lblLtResult.Text = If(provider("Total Long Term Liabilities") IsNot Nothing, provider("Total Long Term Liabilities").ToString(), "N/A")
+                    lblTlResult.Text = If(provider("Total Liabilities") IsNot Nothing, provider("Total Liabilities").ToString(), "N/A")
+                    lblTotFbResult.Text = If(provider("Total Fund Balances") IsNot Nothing, provider("Total Fund Balances").ToString(), "N/A")
+                    lblTotLandFbResult.Text = If(provider("Total Liabilities and Fund Balances") IsNot Nothing, provider("Total Liabilities and Fund Balances").ToString(), "N/A")
+
+                    lblInpRevResult.Text = If(provider("Inpatient Revenue") IsNot Nothing, provider("Inpatient Revenue").ToString(), "N/A")
+                    lblOutPatResult.Text = If(provider("Outpatient Revenue") IsNot Nothing, provider("Outpatient Revenue").ToString(), "N/A")
+                    lblTotPatRevResult.Text = If(provider("Total Patient Revenue") IsNot Nothing, provider("Total Patient Revenue").ToString(), "N/A")
+
+                    lblNetPatRevResult.Text = If(provider("Net Patient Revenue") IsNot Nothing, provider("Net Patient Revenue").ToString(), "N/A")
+                Else
+                    SetAllFinancialLabels("No result")
+                End If
+            Else
+                SetAllFinancialLabels("API error")
+            End If
+        End Using
+    End Function
+
+    Private Sub SetAllFinancialLabels(val As String)
+        lblPedResult.Text = val
+        lblCurAssetResult.Text = val
+        lblFixAssetsResult.Text = val
+        lblOtherAssetsResult.Text = val
+        lblTotAssetsResult.Text = val
+        lblCurLiabilitiesRes.Text = val
+        lblLtResult.Text = val
+        lblTlResult.Text = val
+        lblTotFbResult.Text = val
+        lblTotLandFbResult.Text = val
+        lblInpRevResult.Text = val
+        lblOutPatResult.Text = val
+        lblTotPatRevResult.Text = val
+        lblNetPatRevResult.Text = val
     End Sub
 
-    ' Optionally, call this automatically when the form loads
-    Private Sub Financial_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    ' Automatically load data when the form loads
+    Private Async Sub Financial_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         If Results.SelectedHospitalContext IsNot Nothing Then
-            ShowFinancialData(Results.SelectedHospitalContext.HospitalId, Results.SelectedHospitalContext.State)
+            Dim state = Results.SelectedHospitalContext.State
+            If state = "TN" Or state = "TX" Then
+                Await ShowFinancialData(Results.SelectedHospitalContext.HospitalId, state)
+            Else
+                Await ShowFinancialDataApi(Results.SelectedHospitalContext.CMSNum)
+            End If
         End If
     End Sub
 
+    Private Sub Label11_Click(sender As Object, e As EventArgs) Handles lblTotLandFbResult.Click
+
+    End Sub
 End Class

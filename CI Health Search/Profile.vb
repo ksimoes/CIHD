@@ -1,76 +1,102 @@
-﻿Imports System.ComponentModel
-Imports System.Data.SqlClient
+﻿Imports System.Data.SqlClient
+Imports System.Net.Http
+Imports Newtonsoft.Json.Linq
 
 Public Class Profile
-    ' Use your actual Azure SQL connection string
     Private connectionString As String = "Data Source=cihg-sql1.database.windows.net;Initial Catalog=CIHData;User ID=cihgadmin;Password=P!bxbFrHw4-jCvU*;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
 
-    ' Now accepts a state parameter
-    Public Sub ShowProfile(hospitalId As Integer, state As String)
-        Dim queryProfile As String = ""
-        Dim queryFinance As String = ""
+    Public Async Sub ShowProfile(hospitalId As Integer, state As String, npi As String, cmsNum As String)
+        Dim useSql As Boolean = (state = "TN" Or state = "TX")
 
-        If state = "TN" Then
-            queryProfile = "SELECT * FROM tn.AdminCon WHERE LicenseNum = @LicenseNum"
-            queryFinance = "SELECT [Total Gross Patient Revenue] FROM tn.Financials WHERE LicenseNum = @LicenseNum"
-        ElseIf state = "TX" Then
-            queryProfile = "SELECT * FROM tx.Utilization WHERE id = @id"
-            queryFinance = "SELECT [Total Gross Patient Revenue] FROM tx.Finance WHERE id = @id"
+        If useSql Then
+            Dim queryProfile As String = If(state = "TN",
+                "SELECT * FROM tn.AdminCon WHERE LicenseNum = @LicenseNum",
+                "SELECT * FROM tx.Utilization WHERE id = @id")
+            Using conn As New SqlConnection(connectionString)
+                Using cmd As New SqlCommand(queryProfile, conn)
+                    If state = "TN" Then
+                        cmd.Parameters.AddWithValue("@LicenseNum", hospitalId)
+                    ElseIf state = "TX" Then
+                        cmd.Parameters.AddWithValue("@id", hospitalId)
+                    End If
+                    conn.Open()
+                    Using reader = cmd.ExecuteReader()
+                        If reader.Read() Then
+                            lblNameAddressResult.Text = SafeGet(reader, "Facility Name")
+                            lblPhoneNumResult.Text = SafeGet(reader, "Phone")
+                            lblCeoPresResult.Text = SafeGet(reader, "Admin")
+                            lblCountyFipsResult.Text = SafeGet(reader, "County")
+                            lblTotalPatientDaysResult.Text = SafeGet(reader, "Inpatient Days")
+                        Else
+                            lblNameAddressResult.Text = "No result"
+                            lblPhoneNumResult.Text = "No result"
+                            lblCeoPresResult.Text = "No result"
+                            lblCountyFipsResult.Text = "No result"
+                            lblTotalPatientDaysResult.Text = "No result"
+                        End If
+                    End Using
+                End Using
+            End Using
         Else
-            MessageBox.Show("Unsupported state selected.")
-            Exit Sub
+            Await ShowApiProfileAsync(npi, cmsNum)
         End If
-
-        ' --- Query 1: General Profile Info ---
-        Using conn As New SqlConnection(connectionString)
-            Using cmd As New SqlCommand(queryProfile, conn)
-                If state = "TN" Then
-                    cmd.Parameters.AddWithValue("@LicenseNum", hospitalId)
-                ElseIf state = "TX" Then
-                    cmd.Parameters.AddWithValue("@id", hospitalId)
-                End If
-                conn.Open()
-                Using reader = cmd.ExecuteReader()
-                    If reader.Read() Then
-                        Dim schemaTable = reader.GetSchemaTable()
-                        Dim columns = schemaTable.Rows.Cast(Of DataRow)().Select(Function(r) r("ColumnName").ToString()).ToList()
-
-                        lblNameAddressResult.Text = If(columns.Contains("Facility Name") AndAlso Not IsDBNull(reader("Facility Name")), reader("Facility Name").ToString(), "N/A")
-                        lblPhoneNumResult.Text = If(columns.Contains("Phone") AndAlso Not IsDBNull(reader("Phone")), reader("Phone").ToString(), If(columns.Contains("ContactNumber") AndAlso Not IsDBNull(reader("ContactNumber")), reader("ContactNumber").ToString(), "N/A"))
-                        lblCeoPresResult.Text = If(columns.Contains("Admin") AndAlso Not IsDBNull(reader("Admin")), reader("Admin").ToString(), If(columns.Contains("CEO") AndAlso Not IsDBNull(reader("CEO")), reader("CEO").ToString(), "N/A"))
-                        lblCountyFipsResult.Text = If(columns.Contains("County") AndAlso Not IsDBNull(reader("County")), reader("County").ToString(), "N/A")
-                        lblTotalPatientDaysResult.Text = If(columns.Contains("Inpatient Days") AndAlso Not IsDBNull(reader("Inpatient Days")), reader("Inpatient Days").ToString(), "N/A")
-                    Else
-                        lblNameAddressResult.Text = "No result"
-                        lblPhoneNumResult.Text = "No result"
-                        lblCeoPresResult.Text = "No result"
-                        lblCountyFipsResult.Text = "No result"
-                        lblTotalPatientDaysResult.Text = "No result"
-                    End If
-                End Using
-                conn.Close()
-            End Using
-        End Using
-
-        ' --- Query 2: Financial Info ---
-        Using conn2 As New SqlConnection(connectionString)
-            Using cmd2 As New SqlCommand(queryFinance, conn2)
-                If state = "TN" Then
-                    cmd2.Parameters.AddWithValue("@LicenseNum", hospitalId)
-                ElseIf state = "TX" Then
-                    cmd2.Parameters.AddWithValue("@id", hospitalId)
-                End If
-                conn2.Open()
-                Using reader2 = cmd2.ExecuteReader()
-                    If reader2.Read() AndAlso Not IsDBNull(reader2(0)) Then
-                        lblTotalPatientRevenueResult.Text = reader2(0).ToString()
-                    Else
-                        lblTotalPatientRevenueResult.Text = "N/A"
-                    End If
-                End Using
-            End Using
-        End Using
     End Sub
+
+    ' Helper function to safely get column value by name
+    Private Function SafeGet(reader As SqlDataReader, columnName As String) As String
+        Try
+            Dim ordinal = reader.GetOrdinal(columnName)
+            If Not reader.IsDBNull(ordinal) Then
+                Return reader.GetValue(ordinal).ToString()
+            End If
+        Catch ex As IndexOutOfRangeException
+            ' Column does not exist
+        End Try
+        Return "N/A"
+    End Function
+
+    Public Async Function ShowApiProfileAsync(npi As String, cmsNum As String) As Task
+        Dim apiUrl As String = "https://data.cms.gov/data-api/v1/dataset/8015f175-35cc-4cab-a664-b7c87d91a027/data?"
+        Dim filters As New List(Of String)
+        If Not String.IsNullOrEmpty(cmsNum) Then filters.Add("keyword=" & Uri.EscapeDataString(cmsNum))
+        If Not String.IsNullOrEmpty(npi) Then filters.Add("keyword=" & Uri.EscapeDataString(npi))
+        apiUrl &= String.Join("&", filters)
+        filters.Add("size=1000")
+
+        Using client As New HttpClient()
+            Dim response As HttpResponseMessage = Await client.GetAsync(apiUrl)
+            If response.IsSuccessStatusCode Then
+                Dim json As String = Await response.Content.ReadAsStringAsync()
+                Dim data As JArray = JArray.Parse(json)
+                If data.Count > 0 Then
+                    ' Find the exact match for Provider CCN if possible
+                    Dim provider = data.FirstOrDefault(Function(x) x("Provider CCN") IsNot Nothing AndAlso x("Provider CCN").ToString() = cmsNum)
+                    If provider Is Nothing Then provider = data(0)
+
+                    lblCmsCertNumProfileResult.Text = If(provider("Provider CCN") IsNot Nothing, provider("Provider CCN").ToString(), "N/A")
+                    lblNameAddressResult.Text = If(provider("Hospital Name") IsNot Nothing, provider("Hospital Name").ToString(), "N/A")
+                    lbladdy.Text = If(provider("Street Address") IsNot Nothing, provider("Street Address").ToString(), "N/A")
+                    lblCountyFipsResult.Text = If(provider("County Name") IsNot Nothing, provider("County Name").ToString(), "N/A")
+                    lblCbsaResult.Text = If(provider("Medicare CBSA Number") IsNot Nothing, provider("Medicare CBSA Number").ToString(), "N/A")
+                    lblGeneralMedSurgBedsResult.Text = If(provider("Number of Beds") IsNot Nothing, provider("Number of Beds").ToString(), "N/A")
+                Else
+                    lblCmsCertNumProfileResult.Text = "No result"
+                    lblNameAddressResult.Text = "No result"
+                    lbladdy.Text = "No result"
+                    lblCountyFipsResult.Text = "No result"
+                    lblCbsaResult.Text = "No result"
+                    lblGeneralMedSurgBedsResult.Text = "No result"
+                End If
+            Else
+                lblCmsCertNumProfileResult.Text = "API error"
+                lblNameAddressResult.Text = "API error"
+                lbladdy.Text = "API error"
+                lblCountyFipsResult.Text = "API error"
+                lblCbsaResult.Text = "API error"
+                lblGeneralMedSurgBedsResult.Text = "API error"
+            End If
+        End Using
+    End Function
 
     ' Navigation buttons (already in your code)
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles btnDepartmentProfile.Click
@@ -102,5 +128,13 @@ Public Class Profile
     Private Sub Button7_Click(sender As Object, e As EventArgs) Handles btnOutpatientProfile.Click
         Me.Hide()
         Outpatient.Show()
+    End Sub
+
+    Private Sub Profile_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
+    End Sub
+
+    Private Sub lblPhoneNum_Click(sender As Object, e As EventArgs) Handles lblPhoneNum.Click
+
     End Sub
 End Class

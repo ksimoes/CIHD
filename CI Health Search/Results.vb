@@ -10,9 +10,19 @@
     Public Sub SetResults(dt As DataTable)
         resultsTable = dt
         CheckedListBox1.Items.Clear()
+
+        ' Determine which column to use for display
+        Dim displayCol As String = ""
+        If dt.Columns.Contains("Facility Name") Then
+            displayCol = "Facility Name"
+        ElseIf dt.Columns.Contains("Hospital Name") Then
+            displayCol = "Hospital Name"
+        ElseIf dt.Columns.Count > 0 Then
+            displayCol = dt.Columns(0).ColumnName ' fallback
+        End If
+
         For Each row As DataRow In dt.Rows
-            ' Display hospital name, but store HospitalID for lookup
-            CheckedListBox1.Items.Add(row("Facility Name").ToString())
+            CheckedListBox1.Items.Add(row(displayCol).ToString())
         Next
     End Sub
 
@@ -24,20 +34,30 @@
         End If
 
         Dim selectedName As String = CheckedListBox1.SelectedItem.ToString().Trim()
-        Dim selectedRow = resultsTable.Select($"[Facility Name] = '{selectedName.Replace("'", "''")}'").FirstOrDefault()
-        If selectedRow IsNot Nothing Then
-            Dim hospitalId As Integer = CInt(selectedRow("LicenseNum"))
+        Dim selectedRow As DataRow = Nothing
 
-            If String.IsNullOrEmpty(SelectedState) Then
-                MessageBox.Show("State information is missing.")
-                Return
+        ' Match on the correct column
+        If resultsTable.Columns.Contains("Facility Name") Then
+            selectedRow = resultsTable.Select($"[Facility Name] = '{selectedName.Replace("'", "''")}'").FirstOrDefault()
+        ElseIf resultsTable.Columns.Contains("Hospital Name") Then
+            selectedRow = resultsTable.Select($"[Hospital Name] = '{selectedName.Replace("'", "''")}'").FirstOrDefault()
+        End If
+
+        If selectedRow IsNot Nothing Then
+            Dim hospitalId As Integer = 0
+            If resultsTable.Columns.Contains("LicenseNum") Then
+                Integer.TryParse(selectedRow("LicenseNum").ToString(), hospitalId)
             End If
 
-            ' Set the shared context
+            Dim npi As String = If(resultsTable.Columns.Contains("NPI"), selectedRow("NPI").ToString(), "")
+            Dim cmsNum As String = If(resultsTable.Columns.Contains("CMSNum"), selectedRow("CMSNum").ToString(), "")
+
             SelectedHospitalContext.HospitalId = hospitalId
             SelectedHospitalContext.State = SelectedState
+            SelectedHospitalContext.NPI = npi
+            SelectedHospitalContext.CMSNum = cmsNum
 
-            Profile.ShowProfile(hospitalId, SelectedState)
+            Profile.ShowProfile(hospitalId, SelectedState, npi, cmsNum)
             Hide()
             Profile.Show()
         End If

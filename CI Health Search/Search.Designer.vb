@@ -886,7 +886,7 @@ Partial Class Search
         ' 
         lbStateAll.FormattingEnabled = True
         lbStateAll.ItemHeight = 15
-        lbStateAll.Items.AddRange(New Object() {"Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Lousiana", "Maine", "Maryland", "Massachussetts", "Michigan", "Minnesota", "Mississippi ", "Missouri", "Montana", "Nerbraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "TN", "TX", "Utah", "Vermont", "Virginia", "Washington", "West Virginia ", "Wisconsin", "Wyoming"})
+        lbStateAll.Items.AddRange(New Object() {"AL  ", "AK  ", "AZ  ", "AR  ", "CA  ", "CO  ", "CT  ", "DE  ", "FL  ", "GA  ", "HI  ", "ID  ", "IL  ", "IN  ", "IA  ", "KS  ", "KY  ", "LA  ", "ME  ", "MD  ", "MA  ", "MI  ", "MN  ", "MS  ", "MO  ", "MT  ", "NE  ", "NV  ", "NH  ", "NJ  ", "NM  ", "NY  ", "NC  ", "ND  ", "OH  ", "OK  ", "OR  ", "PA  ", "RI  ", "SC  ", "SD  ", "TN  ", "TX  ", "UT  ", "VT  ", "VA  ", "WA  ", "WV  ", "WI  ", "WY  "})
         lbStateAll.Location = New Point(304, 244)
         lbStateAll.Name = "lbStateAll"
         lbStateAll.Size = New Size(100, 94)
