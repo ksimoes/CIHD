@@ -144,5 +144,23 @@ Public Class Search
             End If
         End Using
     End Function
+
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        lbStateAll.ClearSelected()
+        txtCityAll.Clear()
+
+
+        txtCmsCertNumDemoAll.Clear()
+        txtNpiAll.Clear()
+        txtHospitalNameAll.Clear()
+        txtAreaCodeAll.Clear()
+
+        txtZipCodeDemoAll.Clear()
+        txtMaxTotalBedsAll.Clear()
+        txtMinTotalBedsAll.Clear()
+        txtNpiAll.Clear()
+
+
+    End Sub
 End Class
 

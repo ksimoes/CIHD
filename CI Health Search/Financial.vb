@@ -34,8 +34,8 @@ Public Class Financial
                 conn.Open()
                 Using reader = cmd.ExecuteReader()
                     If reader.Read() Then
-                        lblPedResult.Text = If(Not IsDBNull(reader("Total Gross Inpatient Revenue")), reader("Total Gross Inpatient Revenue").ToString(), "N/A")
-                        lblNumMonthsPeriodResult.Text = If(Not IsDBNull(reader("Total Gross Outpatient Revenue")), reader("Total Gross Outpatient Revenue").ToString(), "N/A")
+                        lblInpRevResult.Text = If(Not IsDBNull(reader("Total Gross Inpatient Revenue")), reader("Total Gross Inpatient Revenue").ToString(), "N/A")
+                        lblOutPatResult.Text = If(Not IsDBNull(reader("Total Gross Outpatient Revenue")), reader("Total Gross Outpatient Revenue").ToString(), "N/A")
                         ' Add more fields as needed for TN/TX
                     Else
                         lblPedResult.Text = "No result"
