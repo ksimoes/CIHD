@@ -79,6 +79,10 @@ Public Class Profile
                     lblCountyFipsResult.Text = If(provider("County Name") IsNot Nothing, provider("County Name").ToString(), "N/A")
                     lblCbsaResult.Text = If(provider("Medicare CBSA Number") IsNot Nothing, provider("Medicare CBSA Number").ToString(), "N/A")
                     lblGeneralMedSurgBedsResult.Text = If(provider("Number of Beds") IsNot Nothing, provider("Number of Beds").ToString(), "N/A")
+                    lblTotalEmployeesResult.Text = If(provider("FTE - Total Employees On Payroll") IsNot Nothing, provider("FTE - Total Employees On Payroll").ToString(), "N/A")
+                    lblTotalDischargesResult.Text = If(provider("Total Discharges Title V") IsNot Nothing, provider("Total Discharges Title V").ToString(), "N/A")
+
+                    lblCmsUrbRurDesigResult.Text = If(provider("Rural Versus Urban") IsNot Nothing, provider("Rural Versus Urban").ToString(), "N/A")
 
                 Else
                     lblCmsCertNumProfileResult.Text = "No result"
@@ -87,6 +91,10 @@ Public Class Profile
                     lblCountyFipsResult.Text = "No result"
                     lblCbsaResult.Text = "No result"
                     lblGeneralMedSurgBedsResult.Text = "No result"
+                    lblTotalEmployeesResult.Text = "No result"
+                    lblTotalDischargesResult.Text = "No result"
+                    lblCmsUrbRurDesigResult.Text = "No result"
+
                 End If
             Else
                 lblCmsCertNumProfileResult.Text = "API error"
@@ -95,6 +103,10 @@ Public Class Profile
                 lblCountyFipsResult.Text = "API error"
                 lblCbsaResult.Text = "API error"
                 lblGeneralMedSurgBedsResult.Text = "API error"
+                lblTotalEmployeesResult.Text = "API error"
+                lblTotalDischargesResult.Text = "API error"
+                lblCmsUrbRurDesigResult.Text = "API error"
+
             End If
         End Using
     End Function

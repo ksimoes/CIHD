@@ -85,22 +85,22 @@ Public Class Financial
                     If provider Is Nothing Then provider = data(0)
 
                     lblPedResult.Text = If(provider("Fiscal Year End Date") IsNot Nothing, provider("Fiscal Year End Date").ToString(), "N/A")
-                    lblCurAssetResult.Text = If(provider("Total Current Assets") IsNot Nothing, provider("Total Current Assets").ToString(), "N/A")
-                    lblFixAssetsResult.Text = If(provider("Total Fixed Assets") IsNot Nothing, provider("Total Fixed Assets").ToString(), "N/A")
-                    lblOtherAssetsResult.Text = If(provider("Total Other Assets") IsNot Nothing, provider("Total Other Assets").ToString(), "N/A")
+                    lblCurAssetResult.Text = If(provider("Total Current Assets") IsNot Nothing, CDec(provider("Total Current Assets")).ToString("N"), "N/A")
+                    lblFixAssetsResult.Text = If(provider("Total Fixed Assets") IsNot Nothing, CDec(provider("Total Fixed Assets")).ToString("N"), "N/A")
+                    lblOtherAssetsResult.Text = If(provider("Total Other Assets") IsNot Nothing, CDec(provider("Total Other Assets")).ToString("N"), "N/A")
                     lblTotAssetsResult.Text = If(provider("Total Assets") IsNot Nothing, provider("Total Assets").ToString(), "N/A")
 
-                    lblCurLiabilitiesRes.Text = If(provider("Total Current Liabilities") IsNot Nothing, provider("Total Current Liabilities").ToString(), "N/A")
-                    lblLtResult.Text = If(provider("Total Long Term Liabilities") IsNot Nothing, provider("Total Long Term Liabilities").ToString(), "N/A")
-                    lblTlResult.Text = If(provider("Total Liabilities") IsNot Nothing, provider("Total Liabilities").ToString(), "N/A")
-                    lblTotFbResult.Text = If(provider("Total Fund Balances") IsNot Nothing, provider("Total Fund Balances").ToString(), "N/A")
-                    lblTotLandFbResult.Text = If(provider("Total Liabilities and Fund Balances") IsNot Nothing, provider("Total Liabilities and Fund Balances").ToString(), "N/A")
+                    lblCurLiabilitiesRes.Text = If(provider("Total Current Liabilities") IsNot Nothing, CDec(provider("Total Current Liabilities")).ToString("N"), "N/A")
+                    lblLtResult.Text = If(provider("Total Long Term Liabilities") IsNot Nothing, CDec(provider("Total Long Term Liabilities")).ToString("N"), "N/A")
+                    lblTlResult.Text = If(provider("Total Liabilities") IsNot Nothing, CDec(provider("Total Liabilities")).ToString("N"), "N/A")
+                    lblTotFbResult.Text = If(provider("Total Fund Balances") IsNot Nothing, CDec(provider("Total Fund Balances")).ToString("N"), "N/A")
+                    lblTotLandFbResult.Text = If(provider("Total Liabilities and Fund Balances") IsNot Nothing, CDec(provider("Total Liabilities and Fund Balances")).ToString(), "N/A")
 
-                    lblInpRevResult.Text = If(provider("Inpatient Revenue") IsNot Nothing, provider("Inpatient Revenue").ToString(), "N/A")
-                    lblOutPatResult.Text = If(provider("Outpatient Revenue") IsNot Nothing, provider("Outpatient Revenue").ToString(), "N/A")
+                    lblInpRevResult.Text = If(provider("Inpatient Revenue") IsNot Nothing, CDec(provider("Inpatient Revenue")).ToString("N"), "N/A")
+                    lblOutPatResult.Text = If(provider("Outpatient Revenue") IsNot Nothing, CDec(provider("Outpatient Revenue")).ToString("N"), "N/A")
                     lblTotPatRevResult.Text = If(provider("Total Patient Revenue") IsNot Nothing, CDec(provider("Total Patient Revenue")).ToString("N"), "N/A")
 
-                    lblNetPatRevResult.Text = If(provider("Net Patient Revenue") IsNot Nothing, provider("Net Patient Revenue").ToString(), "N/A")
+                    lblNetPatRevResult.Text = If(provider("Net Patient Revenue") IsNot Nothing, CDec(provider("Net Patient Revenue")).ToString("N"), "N/A")
                 Else
                     SetAllFinancialLabels("No result")
                 End If
