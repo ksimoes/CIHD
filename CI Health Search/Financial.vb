@@ -48,28 +48,38 @@ Public Class Financial
 
         ' --- Query 2: Charity Table (TX only) ---
         If state = "TX" Then
-            Using conn2 As New SqlConnection(connectionString)
-                Using cmd2 As New SqlCommand(queryCharity, conn2)
-                    cmd2.Parameters.AddWithValue("@id", hospitalId)
-                    conn2.Open()
-                    Using reader2 = cmd2.ExecuteReader()
-                        If reader2.Read() Then
-                            lblTotUcResult.Text = If(Not IsDBNull(reader2("Total Uncompensated Care")), reader2("Total Uncompensated Care").ToString(), "N/A")
-                            lblUncompResult.Text = If(Not IsDBNull(reader2("Bad Debt Charges")), reader2("Bad Debt Charges").ToString(), "N/A")
-                            lblCcResult.Text = If(Not IsDBNull(reader2("Charity Charges")), reader2("Charity Charges").ToString(), "N/A")
-                            lblucpctResult.Text = If(Not IsDBNull(reader2("Uncompensated Care as pcnt of GPR")), reader2("Uncompensated Care as pcnt of GPR").ToString(), "N/A")
-                        Else
-                            lblTotUcResult.Text = "No result"
-                            lblUncompResult.Text = "No result"
-                            lblCcResult.Text = "No result"
-                            lblucpctResult.Text = "No result"
-                        End If
-                    End Using
-                End Using
-            End Using
+            'Using conn2 As New SqlConnection(connectionString)
+            '    Using cmd2 As New SqlCommand(queryCharity, conn2)
+            '        cmd2.Parameters.AddWithValue("@id", hospitalId)
+            '        conn2.Open()
+            '        Using reader2 = cmd2.ExecuteReader()
+            '            If reader2.Read() Then
+            '                lblTotUcResult.Text = If(Not IsDBNull(reader2("Total Uncompensated Care")), reader2("Total Uncompensated Care").ToString(), "N/A")
+            '                lblUncompResult.Text = If(Not IsDBNull(reader2("Bad Debt Charges")), reader2("Bad Debt Charges").ToString(), "N/A")
+            '                lblCcResult.Text = If(Not IsDBNull(reader2("Charity Charges")), reader2("Charity Charges").ToString(), "N/A")
+            '                lblucpctResult.Text = If(Not IsDBNull(reader2("Uncompensated Care as pcnt of GPR")), reader2("Uncompensated Care as pcnt of GPR").ToString(), "N/A")
+            '            Else
+            '                lblTotUcResult.Text = "No result"
+            '                lblUncompResult.Text = "No result"
+            '                lblCcResult.Text = "No result"
+            '                lblucpctResult.Text = "No result"
+            '            End If
+            '        End Using
+            '    End Using
+            'End Using
+            ShowFinancialDataApi(hospitalId)
         End If
     End Function
 
+
+    Public Function cleanMeUp(strMydata As String) As String
+        If strMydata Is Nothing Or String.IsNullOrEmpty(strMydata) Or strMydata.Length = 0 Then
+            Return "N/A"
+        Else
+            Return CDec(strMydata).ToString("N")
+        End If
+        Return String.IsNullOrEmpty(strMydata) Or strMydata.Length = 0 OrElse strMydata.Trim() = ""
+    End Function
     ' API-based financial data for non-TN/TX
     Public Async Function ShowFinancialDataApi(cmsNum As String) As Task
         Dim apiUrl As String = "https://data.cms.gov/data-api/v1/dataset/8015f175-35cc-4cab-a664-b7c87d91a027/data?keyword=" & Uri.EscapeDataString(cmsNum) & "&size=1000"
@@ -84,11 +94,11 @@ Public Class Financial
                     Dim provider = data.FirstOrDefault(Function(x) x("Provider CCN") IsNot Nothing AndAlso x("Provider CCN").ToString() = cmsNum)
                     If provider Is Nothing Then provider = data(0)
 
-                    lblPedResult.Text = If(provider("Fiscal Year End Date") IsNot Nothing, provider("Fiscal Year End Date").ToString(), "N/A")
-                    lblCurAssetResult.Text = If(provider("Total Current Assets") IsNot Nothing, CDec(provider("Total Current Assets")).ToString("N"), "N/A")
-                    lblFixAssetsResult.Text = If(provider("Total Fixed Assets") IsNot Nothing, CDec(provider("Total Fixed Assets")).ToString("N"), "N/A")
-                    lblOtherAssetsResult.Text = If(provider("Total Other Assets") IsNot Nothing, CDec(provider("Total Other Assets")).ToString("N"), "N/A")
-                    lblTotAssetsResult.Text = If(provider("Total Assets") IsNot Nothing, provider("Total Assets").ToString(), "N/A")
+                    lblPedResult.Text = If(provider("Fiscal Year End Date") IsNot Nothing, CDate(provider("Fiscal Year End Date")).ToString("MM/dd/yyyy"), "N/A")
+                    lblCurAssetResult.Text = cleanMeUp(provider("Total Current Assets"))
+                    lblFixAssetsResult.Text = cleanMeUp(provider("Total Fixed Assets"))
+                    lblOtherAssetsResult.Text = cleanMeUp(provider("Total Other Assets"))
+                    lblTotAssetsResult.Text = cleanMeUp(provider("Total Assets"))
 
                     lblCurLiabilitiesRes.Text = If(provider("Total Current Liabilities") IsNot Nothing, CDec(provider("Total Current Liabilities")).ToString("N"), "N/A")
                     lblLtResult.Text = If(provider("Total Long Term Liabilities") IsNot Nothing, CDec(provider("Total Long Term Liabilities")).ToString("N"), "N/A")
@@ -108,6 +118,15 @@ Public Class Financial
                 SetAllFinancialLabels("API error")
             End If
         End Using
+        Using HospGenClient As New HttpClient()
+            Dim response As HttpResponseMessage = Await HospGenClient.GetAsync(apiUrl)
+            If response.IsSuccessStatusCode Then
+                Dim json As String = Await response.Content.ReadAsStringAsync()
+                Dim data As JArray = JArray.Parse(json)
+            End If
+
+        End Using
+
     End Function
 
     Private Sub SetAllFinancialLabels(val As String)

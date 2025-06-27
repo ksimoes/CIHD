@@ -6,7 +6,7 @@ Public Class Profile
     Private connectionString As String = "Data Source=cihg-sql1.database.windows.net;Initial Catalog=CIHData;User ID=cihgadmin;Password=P!bxbFrHw4-jCvU*;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
 
     Public Async Sub ShowProfile(hospitalId As Integer, state As String, npi As String, cmsNum As String)
-        Dim useSql As Boolean = (state = "TN" Or state = "TX")
+        Dim useSql As Boolean = (state = "TN") 'Or state = "TX")
 
         If useSql Then
             Dim queryProfile As String = If(state = "TN",
@@ -77,9 +77,10 @@ Public Class Profile
                     lblNameAddressResult.Text = If(provider("Hospital Name") IsNot Nothing, provider("Hospital Name").ToString(), "N/A")
                     lbladdy.Text = If(provider("Street Address") IsNot Nothing, provider("Street Address").ToString(), "N/A")
                     lblCountyFipsResult.Text = If(provider("County Name") IsNot Nothing, provider("County Name").ToString(), "N/A")
+                    If lblCountyFipsResult.Text.Equals("N/A") Then lblCountyFipsResult.Text = If(provider("County") IsNot Nothing, provider("County").ToString(), "N/A")
                     lblCbsaResult.Text = If(provider("Medicare CBSA Number") IsNot Nothing, provider("Medicare CBSA Number").ToString(), "N/A")
                     lblGeneralMedSurgBedsResult.Text = If(provider("Number of Beds") IsNot Nothing, provider("Number of Beds").ToString(), "N/A")
-                    lblTotalEmployeesResult.Text = If(provider("FTE - Total Employees On Payroll") IsNot Nothing, provider("FTE - Total Employees On Payroll").ToString(), "N/A")
+                    lblTotalEmployeesResult.Text = If(If(provider("FTE - Total Employees On Payroll") IsNot Nothing, provider("FTE - Total Employees On Payroll").ToString(), "N/A").Equals("N/A"), If(provider("FTE - Employees On Payroll") IsNot Nothing, provider("FTE - Employees On Payroll").ToString(), "N/A"), "N/A")
                     lblTotalDischargesResult.Text = If(provider("Total Discharges Title V") IsNot Nothing, provider("Total Discharges Title V").ToString(), "N/A")
 
                     lblCmsUrbRurDesigResult.Text = If(provider("Rural Versus Urban") IsNot Nothing, provider("Rural Versus Urban").ToString(), "N/A")
