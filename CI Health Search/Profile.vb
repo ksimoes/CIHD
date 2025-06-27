@@ -79,6 +79,7 @@ Public Class Profile
                     lblCountyFipsResult.Text = If(provider("County Name") IsNot Nothing, provider("County Name").ToString(), "N/A")
                     lblCbsaResult.Text = If(provider("Medicare CBSA Number") IsNot Nothing, provider("Medicare CBSA Number").ToString(), "N/A")
                     lblGeneralMedSurgBedsResult.Text = If(provider("Number of Beds") IsNot Nothing, provider("Number of Beds").ToString(), "N/A")
+
                 Else
                     lblCmsCertNumProfileResult.Text = "No result"
                     lblNameAddressResult.Text = "No result"

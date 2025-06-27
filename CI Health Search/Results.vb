@@ -53,14 +53,18 @@
             Dim cmsNum As String = If(resultsTable.Columns.Contains("CMSNum"), selectedRow("CMSNum").ToString(), "")
 
             SelectedHospitalContext.HospitalId = hospitalId
-            SelectedHospitalContext.State = SelectedState
-            SelectedHospitalContext.NPI = npi
-            SelectedHospitalContext.CMSNum = cmsNum
+            SelectedHospitalContext.HospitalId = selectedRow(1)
+            SelectedHospitalContext.State = selectedRow(5)
 
-            Profile.ShowProfile(hospitalId, SelectedState, npi, cmsNum)
+            SelectedHospitalContext.CMSNum = selectedRow(1)
+
+            Profile.ShowProfile(SelectedHospitalContext.HospitalId, SelectedHospitalContext.State, npi, SelectedHospitalContext.CMSNum)
             Hide()
             Profile.Show()
         End If
     End Sub
 
+    Private Sub Results_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
+    End Sub
 End Class

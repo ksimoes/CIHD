@@ -73,7 +73,7 @@ Public Class Financial
     ' API-based financial data for non-TN/TX
     Public Async Function ShowFinancialDataApi(cmsNum As String) As Task
         Dim apiUrl As String = "https://data.cms.gov/data-api/v1/dataset/8015f175-35cc-4cab-a664-b7c87d91a027/data?keyword=" & Uri.EscapeDataString(cmsNum) & "&size=1000"
-
+        Dim decDollarAmount As Decimal
         Using client As New HttpClient()
             Dim response As HttpResponseMessage = Await client.GetAsync(apiUrl)
             If response.IsSuccessStatusCode Then
@@ -98,7 +98,7 @@ Public Class Financial
 
                     lblInpRevResult.Text = If(provider("Inpatient Revenue") IsNot Nothing, provider("Inpatient Revenue").ToString(), "N/A")
                     lblOutPatResult.Text = If(provider("Outpatient Revenue") IsNot Nothing, provider("Outpatient Revenue").ToString(), "N/A")
-                    lblTotPatRevResult.Text = If(provider("Total Patient Revenue") IsNot Nothing, provider("Total Patient Revenue").ToString(), "N/A")
+                    lblTotPatRevResult.Text = If(provider("Total Patient Revenue") IsNot Nothing, CDec(provider("Total Patient Revenue")).ToString("N"), "N/A")
 
                     lblNetPatRevResult.Text = If(provider("Net Patient Revenue") IsNot Nothing, provider("Net Patient Revenue").ToString(), "N/A")
                 Else
