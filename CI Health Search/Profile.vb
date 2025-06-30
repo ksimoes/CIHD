@@ -65,34 +65,32 @@ Public Class Profile
         apiUrl &= String.Join("&", filters)
         filters.Add("size=1000")
         strCMSnum = cmsNum
-        Using client As New HttpClient()
-            Dim response As HttpResponseMessage = Await client.GetAsync(apiUrl)
-            If response.IsSuccessStatusCode Then
-                Dim json As String = Await response.Content.ReadAsStringAsync()
-                Dim data As JArray = JArray.Parse(json)
-                If data.Count > 0 Then
-                    ' Find the exact match for Provider CCN if possible
-                    Dim provider = data.FirstOrDefault(Function(x) x("Provider CCN") IsNot Nothing AndAlso x("Provider CCN").ToString() = cmsNum)
-                    If provider Is Nothing Then provider = data(0)
+        Dim myArray As JArray = GetAPIArray(apiUrl)
 
-                    lblCmsCertNumProfileResult.Text = If(provider("Provider CCN") IsNot Nothing, provider("Provider CCN").ToString(), "N/A")
-                    lblNameAddressResult.Text = If(provider("Hospital Name") IsNot Nothing, provider("Hospital Name").ToString(), "N/A")
-                    lblFacilityResult.Text = If(provider("CCN Facility Type") IsNot Nothing, provider("CCN Facility Type").ToString(), "N/A")
-                    lbladdy.Text = If(provider("Street Address") IsNot Nothing, provider("Street Address").ToString(), "N/A")
-                    lblCountyFipsResult.Text = If(provider("County Name") IsNot Nothing, provider("County Name").ToString(), "N/A")
 
-                    If lblCountyFipsResult.Text.Equals("N/A") Then lblCountyFipsResult.Text = If(provider("County") IsNot Nothing, provider("County").ToString(), "N/A")
-                    lblCbsaResult.Text = If(provider("Medicare CBSA Number") IsNot Nothing, provider("Medicare CBSA Number").ToString(), "N/A")
-                    lblGeneralMedSurgBedsResult.Text = If(provider("Number of Beds") IsNot Nothing, provider("Number of Beds").ToString(), "N/A")
-                    lblTotalEmployeesResult.Text = If(If(provider("FTE - Total Employees On Payroll") IsNot Nothing, provider("FTE - Total Employees On Payroll").ToString(), "N/A").Equals("N/A"), If(provider("FTE - Employees On Payroll") IsNot Nothing, provider("FTE - Employees On Payroll").ToString(), "N/A"), "N/A")
-                    lblTotalDischargesResult.Text = If(provider("Total Discharges Title V") IsNot Nothing, provider("Total Discharges Title V").ToString(), "N/A")
-                    lblTotalPatientRevenueResult.Text = If(provider("Total Patient Revenue") IsNot Nothing, provider("Total Patient Revenue").ToString(), "N/A")
-                    lblTypeControlResult.Text = If(provider("Type of Control") IsNot Nothing, provider("Type of Control").ToString(), "N/A")
+        If myArray.Count > 0 Then
+            ' Find the exact match for Provider CCN if possible
+            Dim provider = myArray.FirstOrDefault(Function(x) x("Provider CCN") IsNot Nothing AndAlso x("Provider CCN").ToString() = cmsNum)
+            If provider Is Nothing Then provider = myArray(0)
 
-                    lblCmsUrbRurDesigResult.Text = If(provider("Rural Versus Urban") IsNot Nothing, provider("Rural Versus Urban").ToString(), "N/A")
+            lblCmsCertNumProfileResult.Text = If(provider("Provider CCN") IsNot Nothing, provider("Provider CCN").ToString(), "N/A")
+            lblNameAddressResult.Text = If(provider("Hospital Name") IsNot Nothing, provider("Hospital Name").ToString(), "N/A")
+            lblFacilityResult.Text = If(provider("CCN Facility Type") IsNot Nothing, provider("CCN Facility Type").ToString(), "N/A")
+            lbladdy.Text = If(provider("Street Address") IsNot Nothing, provider("Street Address").ToString(), "N/A")
+            lblCountyFipsResult.Text = If(provider("County Name") IsNot Nothing, provider("County Name").ToString(), "N/A")
 
-                Else
-                    lblCmsCertNumProfileResult.Text = "No result"
+            If lblCountyFipsResult.Text.Equals("N/A") Then lblCountyFipsResult.Text = If(provider("County") IsNot Nothing, provider("County").ToString(), "N/A")
+            lblCbsaResult.Text = If(provider("Medicare CBSA Number") IsNot Nothing, provider("Medicare CBSA Number").ToString(), "N/A")
+            lblGeneralMedSurgBedsResult.Text = If(provider("Number of Beds") IsNot Nothing, provider("Number of Beds").ToString(), "N/A")
+            lblTotalEmployeesResult.Text = If(If(provider("FTE - Total Employees On Payroll") IsNot Nothing, provider("FTE - Total Employees On Payroll").ToString(), "N/A").Equals("N/A"), If(provider("FTE - Employees On Payroll") IsNot Nothing, provider("FTE - Employees On Payroll").ToString(), "N/A"), "N/A")
+            lblTotalDischargesResult.Text = If(provider("Total Discharges Title V") IsNot Nothing, provider("Total Discharges Title V").ToString(), "N/A")
+            lblTotalPatientRevenueResult.Text = If(provider("Total Patient Revenue") IsNot Nothing, provider("Total Patient Revenue").ToString(), "N/A")
+            lblTypeControlResult.Text = If(provider("Type of Control") IsNot Nothing, provider("Type of Control").ToString(), "N/A")
+
+            lblCmsUrbRurDesigResult.Text = If(provider("Rural Versus Urban") IsNot Nothing, provider("Rural Versus Urban").ToString(), "N/A")
+
+        Else
+            lblCmsCertNumProfileResult.Text = "No result"
                     lblNameAddressResult.Text = "No result"
                     lbladdy.Text = "No result"
                     lblCountyFipsResult.Text = "No result"
@@ -103,36 +101,29 @@ Public Class Profile
                     lblCmsUrbRurDesigResult.Text = "No result"
 
                 End If
-            Else
-                lblCmsCertNumProfileResult.Text = "API error"
-                lblNameAddressResult.Text = "API error"
-                lbladdy.Text = "API error"
-                lblCountyFipsResult.Text = "API error"
-                lblCbsaResult.Text = "API error"
-                lblGeneralMedSurgBedsResult.Text = "API error"
-                lblTotalEmployeesResult.Text = "API error"
-                lblTotalDischargesResult.Text = "API error"
-                lblCmsUrbRurDesigResult.Text = "API error"
+        'Else
+        'lblCmsCertNumProfileResult.Text = "API error"
+        'lblNameAddressResult.Text = "API error"
+        'lbladdy.Text = "API error"
+        'lblCountyFipsResult.Text = "API error"
+        'lblCbsaResult.Text = "API error"
+        'lblGeneralMedSurgBedsResult.Text = "API error"
+        'lblTotalEmployeesResult.Text = "API error"
+        'lblTotalDischargesResult.Text = "API error"
+        'lblCmsUrbRurDesigResult.Text = "API error"
 
-            End If
-        End Using
+        'End If
 
-        Using mainClient As New HttpClient()
-            Dim response As HttpResponseMessage = Await mainClient.GetAsync(mainURL & "filter[PRVDR_NUM]=" & cmsNum & "&offset=0&size=1")
-            If response.IsSuccessStatusCode Then
-                Dim json As String = Await response.Content.ReadAsStringAsync()
-                Dim data As JArray = JArray.Parse(json)
+        Dim dataobject As JArray = GetAPIArray(mainURL & "filter[PRVDR_NUM]=" & cmsNum & "&offset=0&size=1")
+        If dataobject.Count > 0 Then
+            ' Find the exact match for Provider CCN if possible
+            Dim provider = dataobject.FirstOrDefault(Function(x) x("Provider CCN") IsNot Nothing AndAlso x("Provider CCN").ToString() = cmsNum)
+            If provider Is Nothing Then provider = dataobject(0)
+            lblPhoneNumResult.Text = If(provider("PHNE_NUM") IsNot Nothing, provider("PHNE_NUM").ToString(), "N/A")
+            lblCbsaResult.Text = If(provider("CBSA_CD") IsNot Nothing, provider("CBSA_CD").ToString(), "N/A")
+            lblMedicareCertifiedBedsResult.Text = Financial.cleanMeUp(provider("MDCR_SNF_BED_CNT"))
+        End If
 
-                If Data.Count > 0 Then
-                    ' Find the exact match for Provider CCN if possible
-                    Dim provider = Data.FirstOrDefault(Function(x) x("Provider CCN") IsNot Nothing AndAlso x("Provider CCN").ToString() = cmsNum)
-                    If provider Is Nothing Then provider = data(0)
-                    lblPhoneNumResult.Text = If(provider("PHNE_NUM") IsNot Nothing, provider("PHNE_NUM").ToString(), "N/A")
-                    lblCbsaResult.Text = If(provider("CBSA_CD") IsNot Nothing, provider("CBSA_CD").ToString(), "N/A")
-                    lblMedicareCertifiedBedsResult.Text = Financial.cleanMeUp(provider("MDCR_SNF_BED_CNT"))
-                End If
-            End If
-        End Using
 
     End Function
 
@@ -147,6 +138,18 @@ Public Class Profile
         Financial.Show()
         Financial.ShowFinancialData(Results.SelectedHospitalContext.HospitalId, Results.SelectedHospitalContext.State)
     End Sub
+
+
+    Public Function GetAPIArray(strAPIurl As String) As JArray
+        Dim client As New HttpClient()
+        Dim response As HttpResponseMessage = client.GetAsync(strAPIurl).Result
+        If response.IsSuccessStatusCode Then
+            Dim jsonString As String = response.Content.ReadAsStringAsync().Result
+            Return JArray.Parse(jsonString)
+        Else
+            Throw New Exception("API call failed with status: " & response.StatusCode.ToString())
+        End If
+    End Function
 
     Private Sub Button4_Click(sender As Object, e As EventArgs) Handles btnFinIndProfile.Click
         Me.Hide()
