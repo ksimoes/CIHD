@@ -102,15 +102,16 @@ Partial Class Results
         CheckedListBox1.Items.AddRange(New Object() {"1", "2", "3", "4"})
         CheckedListBox1.Location = New Point(221, 129)
         CheckedListBox1.Name = "CheckedListBox1"
-        CheckedListBox1.Size = New Size(617, 364)
+        CheckedListBox1.Size = New Size(771, 400)
         CheckedListBox1.TabIndex = 15
         ' 
         ' Label1
         ' 
         Label1.AutoSize = True
-        Label1.Location = New Point(221, 111)
+        Label1.Font = New Font("Segoe UI", 15F, FontStyle.Bold)
+        Label1.Location = New Point(221, 98)
         Label1.Name = "Label1"
-        Label1.Size = New Size(91, 15)
+        Label1.Size = New Size(162, 28)
         Label1.TabIndex = 16
         Label1.Text = "Hospital Names"
         ' 

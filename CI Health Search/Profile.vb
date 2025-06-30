@@ -131,6 +131,7 @@ Public Class Profile
     Private Sub Button4_Click(sender As Object, e As EventArgs) Handles btnFinIndProfile.Click
         Me.Hide()
         FinInd.Show()
+        FinInd.ShowFinancialDataApi(lblCmsCertNumProfileResult.Text)
     End Sub
 
     Private Sub Button5_Click(sender As Object, e As EventArgs) Handles btnQualityProfile.Click

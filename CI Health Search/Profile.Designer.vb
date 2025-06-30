@@ -1147,7 +1147,8 @@ Partial Class Profile
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
-        ClientSize = New Size(1558, 686)
+        AutoScroll = True
+        ClientSize = New Size(1559, 1061)
         Controls.Add(btnOutpatientProfile)
         Controls.Add(btnInpatientProfile)
         Controls.Add(btnQualityProfile)
@@ -1172,6 +1173,7 @@ Partial Class Profile
         Controls.Add(gbTax)
         Controls.Add(GroupBox2)
         Controls.Add(GroupBox1)
+        MaximumSize = New Size(100000, 100000)
         Name = "Profile"
         StartPosition = FormStartPosition.CenterScreen
         Text = "Profile"
