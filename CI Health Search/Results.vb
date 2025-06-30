@@ -2,7 +2,7 @@
 
     Public Property SelectedState As String
     Private resultsTable As DataTable
-
+    Public strCMSnum As String
     ' Shared context for selected hospital
     Public Shared SelectedHospitalContext As New HospitalContext()
 

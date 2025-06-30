@@ -2,7 +2,7 @@
 Imports Newtonsoft.Json.Linq
 
 Public Class FinInd
-
+    Public strCMSnum As String
     Public Async Function ShowFinancialDataApi(cmsNum As String) As Task
         Dim apiUrl As String = "https://data.cms.gov/data-api/v1/dataset/8015f175-35cc-4cab-a664-b7c87d91a027/data?keyword=" & Uri.EscapeDataString(cmsNum) & "&size=1000"
         Dim decDollarAmount As Decimal

@@ -4,10 +4,10 @@ Imports Newtonsoft.Json.Linq
 
 Public Class Profile
     Private connectionString As String = "Data Source=cihg-sql1.database.windows.net;Initial Catalog=CIHData;User ID=cihgadmin;Password=P!bxbFrHw4-jCvU*;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
-
+    Public strCMSnum As String
     Public Async Sub ShowProfile(hospitalId As Integer, state As String, npi As String, cmsNum As String)
         Dim useSql As Boolean = (state = "TN" Or state = "TX")
-
+        strCMSnum = cmsNum
         If useSql Then
             Dim queryProfile As String = If(state = "TN",
                 "SELECT * FROM tn.AdminCon WHERE LicenseNum = @LicenseNum",
@@ -58,12 +58,13 @@ Public Class Profile
 
     Public Async Function ShowApiProfileAsync(npi As String, cmsNum As String) As Task
         Dim apiUrl As String = "https://data.cms.gov/data-api/v1/dataset/8015f175-35cc-4cab-a664-b7c87d91a027/data?"
+        Dim mainURL As String = "https://data.cms.gov/data-api/v1/dataset/8143cbc7-484f-438b-9dfa-2e81d5d6a1ed/data?"
         Dim filters As New List(Of String)
         If Not String.IsNullOrEmpty(cmsNum) Then filters.Add("keyword=" & Uri.EscapeDataString(cmsNum))
         If Not String.IsNullOrEmpty(npi) Then filters.Add("keyword=" & Uri.EscapeDataString(npi))
         apiUrl &= String.Join("&", filters)
         filters.Add("size=1000")
-
+        strCMSnum = cmsNum
         Using client As New HttpClient()
             Dim response As HttpResponseMessage = Await client.GetAsync(apiUrl)
             If response.IsSuccessStatusCode Then
@@ -79,6 +80,7 @@ Public Class Profile
                     lblFacilityResult.Text = If(provider("CCN Facility Type") IsNot Nothing, provider("CCN Facility Type").ToString(), "N/A")
                     lbladdy.Text = If(provider("Street Address") IsNot Nothing, provider("Street Address").ToString(), "N/A")
                     lblCountyFipsResult.Text = If(provider("County Name") IsNot Nothing, provider("County Name").ToString(), "N/A")
+
                     If lblCountyFipsResult.Text.Equals("N/A") Then lblCountyFipsResult.Text = If(provider("County") IsNot Nothing, provider("County").ToString(), "N/A")
                     lblCbsaResult.Text = If(provider("Medicare CBSA Number") IsNot Nothing, provider("Medicare CBSA Number").ToString(), "N/A")
                     lblGeneralMedSurgBedsResult.Text = If(provider("Number of Beds") IsNot Nothing, provider("Number of Beds").ToString(), "N/A")
@@ -114,6 +116,23 @@ Public Class Profile
 
             End If
         End Using
+
+        Using mainClient As New HttpClient()
+            Dim response As HttpResponseMessage = Await mainClient.GetAsync(mainURL & "filter[PRVDR_NUM]=" & cmsNum & "&offset=0&size=1")
+            If response.IsSuccessStatusCode Then
+                Dim json As String = Await response.Content.ReadAsStringAsync()
+                Dim data As JArray = JArray.Parse(json)
+
+                If Data.Count > 0 Then
+                    ' Find the exact match for Provider CCN if possible
+                    Dim provider = Data.FirstOrDefault(Function(x) x("Provider CCN") IsNot Nothing AndAlso x("Provider CCN").ToString() = cmsNum)
+                    If provider Is Nothing Then provider = data(0)
+                    lblPhoneNumResult.Text = If(provider("PHNE_NUM") IsNot Nothing, provider("PHNE_NUM").ToString(), "N/A")
+                    lblCbsaResult.Text = If(provider("CBSA_CD") IsNot Nothing, provider("CBSA_CD").ToString(), "N/A")
+                End If
+            End If
+        End Using
+
     End Function
 
     ' Navigation buttons (already in your code)

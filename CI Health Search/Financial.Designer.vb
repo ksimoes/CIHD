@@ -134,7 +134,7 @@ Partial Class Financial
         ' Label19
         ' 
         Label19.AutoSize = True
-        Label19.Font = New Font("Segoe UI", 10F, FontStyle.Bold)
+        Label19.Font = New Font("Segoe UI", 10.0F, FontStyle.Bold)
         Label19.Location = New Point(0, 191)
         Label19.Name = "Label19"
         Label19.Size = New Size(199, 19)
@@ -144,7 +144,7 @@ Partial Class Financial
         ' Label18
         ' 
         Label18.AutoSize = True
-        Label18.Font = New Font("Segoe UI", 12F, FontStyle.Bold)
+        Label18.Font = New Font("Segoe UI", 12.0F, FontStyle.Bold)
         Label18.Location = New Point(6, 62)
         Label18.Name = "Label18"
         Label18.Size = New Size(57, 21)
@@ -190,7 +190,7 @@ Partial Class Financial
         ' Label9
         ' 
         Label9.AutoSize = True
-        Label9.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
+        Label9.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
         Label9.Location = New Point(6, 331)
         Label9.Name = "Label9"
         Label9.Size = New Size(192, 15)
@@ -209,7 +209,7 @@ Partial Class Financial
         ' Label12
         ' 
         Label12.AutoSize = True
-        Label12.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
+        Label12.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
         Label12.Location = New Point(6, 275)
         Label12.Name = "Label12"
         Label12.Size = New Size(88, 15)
@@ -282,7 +282,7 @@ Partial Class Financial
         ' Label8
         ' 
         Label8.AutoSize = True
-        Label8.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
+        Label8.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
         Label8.Location = New Point(6, 164)
         Label8.Name = "Label8"
         Label8.Size = New Size(72, 15)
@@ -457,7 +457,7 @@ Partial Class Financial
         ' Label27
         ' 
         Label27.AutoSize = True
-        Label27.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
+        Label27.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
         Label27.Location = New Point(6, 414)
         Label27.Name = "Label27"
         Label27.Size = New Size(122, 15)
@@ -530,7 +530,7 @@ Partial Class Financial
         ' Label17
         ' 
         Label17.AutoSize = True
-        Label17.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
+        Label17.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
         Label17.Location = New Point(6, 210)
         Label17.Name = "Label17"
         Label17.Size = New Size(108, 15)
@@ -808,7 +808,7 @@ Partial Class Financial
         ' 
         ' Financial
         ' 
-        AutoScaleDimensions = New SizeF(7F, 15F)
+        AutoScaleDimensions = New SizeF(7.0F, 15.0F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(1563, 662)
         Controls.Add(btnOutpatientFinancial)
