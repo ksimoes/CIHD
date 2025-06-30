@@ -1,9 +1,24 @@
 ﻿Imports System.Data.SqlClient
 Imports System.Net.Http
+Imports Google.Apis.Requests
 Imports Newtonsoft.Json.Linq
 
 Public Class Search
     Private connectionString As String = "Data Source=cihg-sql1.database.windows.net;Initial Catalog=CIHData;User ID=cihgadmin;Password=P!bxbFrHw4-jCvU*;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+
+    Public Function useSQL(ByRef selectedState As String) As Boolean
+        ' Determine if SQL should be used based on the selected state
+        Using conn As New SqlConnection(connectionString)
+            Using cmd As New SqlCommand("Select UseSql from dbo.States Where StateCode = '" + selectedState + "'", conn)
+                'Dim da As New SqlDataAdapter(cmd)
+                conn.Open()
+
+                Return cmd.ExecuteScalar()
+            End Using
+        End Using
+    End Function
+
+
 
     Private Async Sub btnSearchAll_Click(sender As Object, e As EventArgs) Handles btnSearchAll.Click
         ' Declare filters and parameters at the top so they are always in scope
@@ -16,9 +31,9 @@ Public Class Search
             selectedState = lbStateAll.SelectedItem.ToString().Trim()
         End If
 
-        Dim useSql As Boolean = (selectedState = "TN" Or selectedState = "TX") ' Adjust for your states with SQL data
+        'Dim useSql As Boolean = (selectedState = "TN" Or selectedState = "TX") ' Adjust for your states with SQL data
 
-        If useSql Then
+        If useSQL(selectedState) Then
             ' --- SQL Search ---
             If Not String.IsNullOrEmpty(selectedState) Then
                 filters.Add("State = @State")
@@ -72,6 +87,7 @@ Public Class Search
             Results.SelectedState = selectedState
             Hide()
             Results.Show()
+            Await SearchByApiAsync(selectedState)
         Else
             ' --- API Search ---
             Await SearchByApiAsync(selectedState)

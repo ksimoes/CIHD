@@ -41,6 +41,10 @@
             selectedRow = resultsTable.Select($"[Facility Name] = '{selectedName.Replace("'", "''")}'").FirstOrDefault()
         ElseIf resultsTable.Columns.Contains("Hospital Name") Then
             selectedRow = resultsTable.Select($"[Hospital Name] = '{selectedName.Replace("'", "''")}'").FirstOrDefault()
+            SelectedHospitalContext.CMSNum = selectedRow(1)
+            SelectedHospitalContext.State = selectedRow(5)
+            SelectedHospitalContext.Name = selectedRow(2)
+
         End If
 
         If selectedRow IsNot Nothing Then
@@ -58,9 +62,12 @@
             If (resultsTable.Columns.Count < 6) Then
                 SelectedHospitalContext.State = selectedRow(2)
                 SelectedHospitalContext.HospitalId = selectedRow(0)
+                SelectedHospitalContext.CMSNum = selectedRow(3)
+
             Else
                 SelectedHospitalContext.State = selectedRow(5)
                 SelectedHospitalContext.HospitalId = selectedRow(1)
+                SelectedHospitalContext.CMSNum = cmsNum
             End If
 
 
