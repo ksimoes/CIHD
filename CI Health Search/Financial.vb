@@ -161,4 +161,34 @@ Public Class Financial
     Private Sub Label11_Click(sender As Object, e As EventArgs) Handles lblTotLandFbResult.Click
 
     End Sub
+
+    Private Sub btnProfileFinancial_Click(sender As Object, e As EventArgs) Handles btnProfileFinancial.Click
+        Me.Hide()
+        Profile.ShowProfile(Results.SelectedHospitalContext.HospitalId, Results.SelectedHospitalContext.State, Results.SelectedHospitalContext.NPI, Results.SelectedHospitalContext.CMSNum)
+        Profile.Show()
+    End Sub
+
+
+
+    Private Sub btnFInIndFinancial_Click(sender As Object, e As EventArgs) Handles btnFInIndFinancial.Click
+        Me.Hide()
+        FinInd.Show()
+
+    End Sub
+
+    Private Sub btnQualityFinancial_Click(sender As Object, e As EventArgs) Handles btnQualityFinancial.Click
+        Me.Hide()
+        Quality.Show()
+    End Sub
+
+    Private Sub btnInpatientFinancial_Click(sender As Object, e As EventArgs) Handles btnInpatientFinancial.Click
+        Me.Hide()
+        Inpatient.Show()
+    End Sub
+
+    Private Sub btnDepartmentsFinancial_Click(sender As Object, e As EventArgs) Handles btnDepartmentsFinancial.Click
+        Me.Hide()
+
+        Departments.Show()
+    End Sub
 End Class
