@@ -129,6 +129,7 @@ Public Class Profile
                     If provider Is Nothing Then provider = data(0)
                     lblPhoneNumResult.Text = If(provider("PHNE_NUM") IsNot Nothing, provider("PHNE_NUM").ToString(), "N/A")
                     lblCbsaResult.Text = If(provider("CBSA_CD") IsNot Nothing, provider("CBSA_CD").ToString(), "N/A")
+                    lblMedicareCertifiedBedsResult.Text = Financial.cleanMeUp(provider("MDCR_SNF_BED_CNT"))
                 End If
             End If
         End Using

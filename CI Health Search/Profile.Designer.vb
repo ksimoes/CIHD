@@ -222,9 +222,9 @@ Partial Class Profile
         lblMedicareCertifiedBedsResult.AutoSize = True
         lblMedicareCertifiedBedsResult.Location = New Point(218, 643)
         lblMedicareCertifiedBedsResult.Name = "lblMedicareCertifiedBedsResult"
-        lblMedicareCertifiedBedsResult.Size = New Size(47, 15)
+        lblMedicareCertifiedBedsResult.Size = New Size(39, 15)
         lblMedicareCertifiedBedsResult.TabIndex = 76
-        lblMedicareCertifiedBedsResult.Text = "Label25"
+        lblMedicareCertifiedBedsResult.Text = "Result"
         ' 
         ' lblCmsUrbRurDesigResult
         ' 
