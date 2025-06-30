@@ -129,9 +129,7 @@ Public Class Search
                             row(col.ToString()) = item(col.ToString())
                         Next
                         dt.Rows.Add(row)
-                    Next
-
-                    ' --- Client-side filtering for exact matches ---
+                    Next      ' --- Client-side filtering for exact matches ---
                     If Not String.IsNullOrEmpty(selectedState) AndAlso dt.Columns.Contains("State Code") Then
                         dt = dt.Select($"[State Code] = '{selectedState}'").CopyToDataTable()
                     End If
@@ -176,6 +174,10 @@ Public Class Search
         txtMinTotalBedsAll.Clear()
         txtNpiAll.Clear()
 
+
+    End Sub
+
+    Private Sub Search_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
     End Sub
 End Class

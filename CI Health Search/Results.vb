@@ -9,8 +9,8 @@
     ' Call this from Search form to set and display results
     Public Sub SetResults(dt As DataTable)
         resultsTable = dt
-        CheckedListBox1.Items.Clear()
 
+        CheckedListBox1.Items.Clear()
         ' Determine which column to use for display
         Dim displayCol As String = ""
         If dt.Columns.Contains("Facility Name") Then
@@ -24,6 +24,20 @@
         For Each row As DataRow In dt.Rows
             CheckedListBox1.Items.Add(row(displayCol).ToString())
         Next
+        Dim items As New List(Of String)
+        For Each item In CheckedListBox1.Items
+            items.Add(item.ToString())
+        Next
+
+        ' Sort the list
+        items.Sort()
+
+        ' Clear the CheckedListBox and re-add sorted items
+        CheckedListBox1.Items.Clear()
+        For Each item In items
+            CheckedListBox1.Items.Add(item)
+        Next
+
     End Sub
 
     ' Profile button click
