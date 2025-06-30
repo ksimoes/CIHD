@@ -6,7 +6,7 @@ Public Class Profile
     Private connectionString As String = "Data Source=cihg-sql1.database.windows.net;Initial Catalog=CIHData;User ID=cihgadmin;Password=P!bxbFrHw4-jCvU*;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
 
     Public Async Sub ShowProfile(hospitalId As Integer, state As String, npi As String, cmsNum As String)
-        Dim useSql As Boolean = (state = "TN") 'Or state = "TX")
+        Dim useSql As Boolean = (state = "TN" Or state = "TX")
 
         If useSql Then
             Dim queryProfile As String = If(state = "TN",

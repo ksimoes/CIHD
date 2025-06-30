@@ -1,5 +1,5 @@
 ﻿Public Class Login
-    ' Example: Hardcoded users for demonstration
+    'Example: Hardcoded users For demonstration
     Private validUsers As New Dictionary(Of String, String) From {
         {"admin", "password123"},
         {"user1", "letmein"},

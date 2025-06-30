@@ -52,16 +52,24 @@
             Dim npi As String = If(resultsTable.Columns.Contains("NPI"), selectedRow("NPI").ToString(), "")
             Dim cmsNum As String = If(resultsTable.Columns.Contains("CMSNum"), selectedRow("CMSNum").ToString(), "")
 
-            SelectedHospitalContext.HospitalId = hospitalId
-            SelectedHospitalContext.HospitalId = selectedRow(1)
-            SelectedHospitalContext.State = selectedRow(5)
+            'SelectedHospitalContext.HospitalId = hospitalId
+
+
+            If (resultsTable.Columns.Count < 6) Then
+                SelectedHospitalContext.State = selectedRow(2)
+                SelectedHospitalContext.HospitalId = selectedRow(0)
+            Else
+                SelectedHospitalContext.State = selectedRow(5)
+                SelectedHospitalContext.HospitalId = selectedRow(1)
+            End If
+
 
             SelectedHospitalContext.CMSNum = selectedRow(1)
 
-            Profile.ShowProfile(SelectedHospitalContext.HospitalId, SelectedHospitalContext.State, npi, SelectedHospitalContext.CMSNum)
-            Hide()
-            Profile.Show()
-        End If
+                Profile.ShowProfile(SelectedHospitalContext.HospitalId, SelectedHospitalContext.State, npi, SelectedHospitalContext.CMSNum)
+                Hide()
+                Profile.Show()
+            End If
     End Sub
 
     Private Sub Results_Load(sender As Object, e As EventArgs) Handles MyBase.Load

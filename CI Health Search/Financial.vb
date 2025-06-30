@@ -46,27 +46,27 @@ Public Class Financial
             End Using
         End Using
 
-        ' --- Query 2: Charity Table (TX only) ---
+        '--- Query 2 Charity Table(TX only) - --
         If state = "TX" Then
-            'Using conn2 As New SqlConnection(connectionString)
-            '    Using cmd2 As New SqlCommand(queryCharity, conn2)
-            '        cmd2.Parameters.AddWithValue("@id", hospitalId)
-            '        conn2.Open()
-            '        Using reader2 = cmd2.ExecuteReader()
-            '            If reader2.Read() Then
-            '                lblTotUcResult.Text = If(Not IsDBNull(reader2("Total Uncompensated Care")), reader2("Total Uncompensated Care").ToString(), "N/A")
-            '                lblUncompResult.Text = If(Not IsDBNull(reader2("Bad Debt Charges")), reader2("Bad Debt Charges").ToString(), "N/A")
-            '                lblCcResult.Text = If(Not IsDBNull(reader2("Charity Charges")), reader2("Charity Charges").ToString(), "N/A")
-            '                lblucpctResult.Text = If(Not IsDBNull(reader2("Uncompensated Care as pcnt of GPR")), reader2("Uncompensated Care as pcnt of GPR").ToString(), "N/A")
-            '            Else
-            '                lblTotUcResult.Text = "No result"
-            '                lblUncompResult.Text = "No result"
-            '                lblCcResult.Text = "No result"
-            '                lblucpctResult.Text = "No result"
-            '            End If
-            '        End Using
-            '    End Using
-            'End Using
+            Using conn2 As New SqlConnection(connectionString)
+                Using cmd2 As New SqlCommand(queryCharity, conn2)
+                    cmd2.Parameters.AddWithValue("@id", hospitalId)
+                    conn2.Open()
+                    Using reader2 = cmd2.ExecuteReader()
+                        If reader2.Read() Then
+                            lblTotUcResult.Text = If(Not IsDBNull(reader2("Total Uncompensated Care")), reader2("Total Uncompensated Care").ToString(), "N/A")
+                            lblUncompResult.Text = If(Not IsDBNull(reader2("Bad Debt Charges")), reader2("Bad Debt Charges").ToString(), "N/A")
+                            lblCcResult.Text = If(Not IsDBNull(reader2("Charity Charges")), reader2("Charity Charges").ToString(), "N/A")
+                            lblucpctResult.Text = If(Not IsDBNull(reader2("Uncompensated Care as pcnt of GPR")), reader2("Uncompensated Care as pcnt of GPR").ToString(), "N/A")
+                        Else
+                            lblTotUcResult.Text = "No result"
+                            lblUncompResult.Text = "No result"
+                            lblCcResult.Text = "No result"
+                            lblucpctResult.Text = "No result"
+                        End If
+                    End Using
+                End Using
+            End Using
             ShowFinancialDataApi(hospitalId)
         End If
     End Function
