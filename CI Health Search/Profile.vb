@@ -84,6 +84,8 @@ Public Class Profile
                     lblGeneralMedSurgBedsResult.Text = If(provider("Number of Beds") IsNot Nothing, provider("Number of Beds").ToString(), "N/A")
                     lblTotalEmployeesResult.Text = If(If(provider("FTE - Total Employees On Payroll") IsNot Nothing, provider("FTE - Total Employees On Payroll").ToString(), "N/A").Equals("N/A"), If(provider("FTE - Employees On Payroll") IsNot Nothing, provider("FTE - Employees On Payroll").ToString(), "N/A"), "N/A")
                     lblTotalDischargesResult.Text = If(provider("Total Discharges Title V") IsNot Nothing, provider("Total Discharges Title V").ToString(), "N/A")
+                    lblTotalPatientRevenueResult.Text = If(provider("Total Patient Revenue") IsNot Nothing, provider("Total Patient Revenue").ToString(), "N/A")
+                    lblTypeControlResult.Text = If(provider("Type of Control") IsNot Nothing, provider("Type of Control").ToString(), "N/A")
 
                     lblCmsUrbRurDesigResult.Text = If(provider("Rural Versus Urban") IsNot Nothing, provider("Rural Versus Urban").ToString(), "N/A")
 

@@ -23,6 +23,8 @@ Partial Class Profile
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         GroupBox1 = New GroupBox()
+        lbladdy = New Label()
+        Label1 = New Label()
         lblMedicareCertifiedBedsResult = New Label()
         lblCmsUrbRurDesigResult = New Label()
         lblMedicareAdministrativeContractResult = New Label()
@@ -122,8 +124,6 @@ Partial Class Profile
         btnFinIndProfile = New Button()
         btnFinancialProfile = New Button()
         btnDepartmentProfile = New Button()
-        Label1 = New Label()
-        lbladdy = New Label()
         GroupBox1.SuspendLayout()
         GroupBox2.SuspendLayout()
         gbTax.SuspendLayout()
@@ -196,6 +196,26 @@ Partial Class Profile
         GroupBox1.TabIndex = 0
         GroupBox1.TabStop = False
         GroupBox1.Text = "ID and Characteristics"
+        ' 
+        ' lbladdy
+        ' 
+        lbladdy.AutoSize = True
+        lbladdy.Font = New Font("Segoe UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        lbladdy.Location = New Point(144, 36)
+        lbladdy.Name = "lbladdy"
+        lbladdy.Size = New Size(39, 13)
+        lbladdy.TabIndex = 78
+        lbladdy.Text = "Result"
+        ' 
+        ' Label1
+        ' 
+        Label1.AutoSize = True
+        Label1.Font = New Font("Times New Roman", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        Label1.Location = New Point(6, 34)
+        Label1.Name = "Label1"
+        Label1.Size = New Size(53, 15)
+        Label1.TabIndex = 77
+        Label1.Text = "Address"
         ' 
         ' lblMedicareCertifiedBedsResult
         ' 
@@ -709,9 +729,9 @@ Partial Class Profile
         lblNameAddress.Font = New Font("Times New Roman", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         lblNameAddress.Location = New Point(6, 19)
         lblNameAddress.Name = "lblNameAddress"
-        lblNameAddress.Size = New Size(108, 15)
+        lblNameAddress.Size = New Size(79, 15)
         lblNameAddress.TabIndex = 28
-        lblNameAddress.Text = "Name and Address"
+        lblNameAddress.Text = "Facility Name"
         ' 
         ' GroupBox2
         ' 
@@ -1122,26 +1142,6 @@ Partial Class Profile
         btnDepartmentProfile.TabIndex = 15
         btnDepartmentProfile.Text = "Departments"
         btnDepartmentProfile.UseVisualStyleBackColor = False
-        ' 
-        ' Label1
-        ' 
-        Label1.AutoSize = True
-        Label1.Font = New Font("Times New Roman", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        Label1.Location = New Point(6, 34)
-        Label1.Name = "Label1"
-        Label1.Size = New Size(108, 15)
-        Label1.TabIndex = 77
-        Label1.Text = "Name and Address"
-        ' 
-        ' lbladdy
-        ' 
-        lbladdy.AutoSize = True
-        lbladdy.Font = New Font("Segoe UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        lbladdy.Location = New Point(144, 36)
-        lbladdy.Name = "lbladdy"
-        lbladdy.Size = New Size(39, 13)
-        lbladdy.TabIndex = 78
-        lbladdy.Text = "Result"
         ' 
         ' Profile
         ' 
