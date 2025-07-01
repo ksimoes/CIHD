@@ -110,6 +110,9 @@ Public Class Financial
                     lblTotOtherExpensesResult.Text = If(provider("Total Other Expenses") IsNot Nothing, provider("Total Other Expenses").ToString(), "N/A")
                     lblNetIncomeResult.Text = If(provider("Net Income") IsNot Nothing, CDec(provider("Net Income")).ToString("N"), "N/A")
                     lblDepreciationExpenseResult.Text = If(provider("Depreciation Cost") IsNot Nothing, CDec(provider("Depreciation Cost")).ToString("N"), "N/A")
+                    lblCcResult.Text = If(provider("Cost of Charity Care") IsNot Nothing, CDec(provider("Cost of Charity Care")).ToString("N"), "N/A")
+                    lblUncompResult.Text = If(provider("Total Bad Debt Expense") IsNot Nothing, CDec(provider("Total Bad Debt Expense")).ToString("N"), "N/A")
+                    lblTotUcResult.Text = If(provider("Cost of Uncompensated Care") IsNot Nothing, CDec(provider("Cost of Uncompensated Care")).ToString("N"), "N/A")
 
 
 
@@ -216,5 +219,10 @@ Public Class Financial
         Me.Hide()
 
         Departments.Show()
+    End Sub
+
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        Me.Hide()
+        Search.Show()
     End Sub
 End Class

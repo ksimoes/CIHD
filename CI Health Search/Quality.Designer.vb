@@ -28,6 +28,7 @@ Partial Class Quality
         btnFinancialQuality = New Button()
         btnDepartmentsQuality = New Button()
         btnProfileQuality = New Button()
+        Button1 = New Button()
         SuspendLayout()
         ' 
         ' btnOutpatientQuality
@@ -84,11 +85,21 @@ Partial Class Quality
         btnProfileQuality.Text = "Profile"
         btnProfileQuality.UseVisualStyleBackColor = True
         ' 
+        ' Button1
+        ' 
+        Button1.Location = New Point(1291, 526)
+        Button1.Name = "Button1"
+        Button1.Size = New Size(150, 69)
+        Button1.TabIndex = 21
+        Button1.Text = "Return to Search"
+        Button1.UseVisualStyleBackColor = True
+        ' 
         ' Quality
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(1559, 686)
+        Controls.Add(Button1)
         Controls.Add(btnOutpatientQuality)
         Controls.Add(btnInpatientQuality)
         Controls.Add(btnFinIndQuality)
@@ -107,4 +118,5 @@ Partial Class Quality
     Friend WithEvents btnFinancialQuality As Button
     Friend WithEvents btnDepartmentsQuality As Button
     Friend WithEvents btnProfileQuality As Button
+    Friend WithEvents Button1 As Button
 End Class

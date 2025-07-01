@@ -124,6 +124,7 @@ Partial Class Profile
         btnFinIndProfile = New Button()
         btnFinancialProfile = New Button()
         btnDepartmentProfile = New Button()
+        Button1 = New Button()
         GroupBox1.SuspendLayout()
         GroupBox2.SuspendLayout()
         gbTax.SuspendLayout()
@@ -192,7 +193,7 @@ Partial Class Profile
         GroupBox1.Controls.Add(lblNameAddress)
         GroupBox1.Location = New Point(12, 2)
         GroupBox1.Name = "GroupBox1"
-        GroupBox1.Size = New Size(349, 672)
+        GroupBox1.Size = New Size(349, 975)
         GroupBox1.TabIndex = 0
         GroupBox1.TabStop = False
         GroupBox1.Text = "ID and Characteristics"
@@ -201,7 +202,7 @@ Partial Class Profile
         ' 
         lbladdy.AutoSize = True
         lbladdy.Font = New Font("Segoe UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        lbladdy.Location = New Point(144, 36)
+        lbladdy.Location = New Point(144, 44)
         lbladdy.Name = "lbladdy"
         lbladdy.Size = New Size(39, 13)
         lbladdy.TabIndex = 78
@@ -211,7 +212,7 @@ Partial Class Profile
         ' 
         Label1.AutoSize = True
         Label1.Font = New Font("Times New Roman", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        Label1.Location = New Point(6, 34)
+        Label1.Location = New Point(6, 44)
         Label1.Name = "Label1"
         Label1.Size = New Size(53, 15)
         Label1.TabIndex = 77
@@ -220,7 +221,7 @@ Partial Class Profile
         ' lblMedicareCertifiedBedsResult
         ' 
         lblMedicareCertifiedBedsResult.AutoSize = True
-        lblMedicareCertifiedBedsResult.Location = New Point(218, 643)
+        lblMedicareCertifiedBedsResult.Location = New Point(215, 911)
         lblMedicareCertifiedBedsResult.Name = "lblMedicareCertifiedBedsResult"
         lblMedicareCertifiedBedsResult.Size = New Size(39, 15)
         lblMedicareCertifiedBedsResult.TabIndex = 76
@@ -229,7 +230,7 @@ Partial Class Profile
         ' lblCmsUrbRurDesigResult
         ' 
         lblCmsUrbRurDesigResult.AutoSize = True
-        lblCmsUrbRurDesigResult.Location = New Point(227, 614)
+        lblCmsUrbRurDesigResult.Location = New Point(224, 882)
         lblCmsUrbRurDesigResult.Name = "lblCmsUrbRurDesigResult"
         lblCmsUrbRurDesigResult.Size = New Size(47, 15)
         lblCmsUrbRurDesigResult.TabIndex = 75
@@ -238,7 +239,7 @@ Partial Class Profile
         ' lblMedicareAdministrativeContractResult
         ' 
         lblMedicareAdministrativeContractResult.AutoSize = True
-        lblMedicareAdministrativeContractResult.Location = New Point(227, 587)
+        lblMedicareAdministrativeContractResult.Location = New Point(224, 855)
         lblMedicareAdministrativeContractResult.Name = "lblMedicareAdministrativeContractResult"
         lblMedicareAdministrativeContractResult.Size = New Size(47, 15)
         lblMedicareAdministrativeContractResult.TabIndex = 74
@@ -247,7 +248,7 @@ Partial Class Profile
         ' lblHelipadResult
         ' 
         lblHelipadResult.AutoSize = True
-        lblHelipadResult.Location = New Point(157, 562)
+        lblHelipadResult.Location = New Point(172, 820)
         lblHelipadResult.Name = "lblHelipadResult"
         lblHelipadResult.Size = New Size(47, 15)
         lblHelipadResult.TabIndex = 73
@@ -256,7 +257,7 @@ Partial Class Profile
         ' lblLatLongResult
         ' 
         lblLatLongResult.AutoSize = True
-        lblLatLongResult.Location = New Point(157, 537)
+        lblLatLongResult.Location = New Point(172, 776)
         lblLatLongResult.Name = "lblLatLongResult"
         lblLatLongResult.Size = New Size(47, 15)
         lblLatLongResult.TabIndex = 72
@@ -265,7 +266,7 @@ Partial Class Profile
         ' lblHealthCareSystemResult
         ' 
         lblHealthCareSystemResult.AutoSize = True
-        lblHealthCareSystemResult.Location = New Point(173, 308)
+        lblHealthCareSystemResult.Location = New Point(175, 403)
         lblHealthCareSystemResult.Name = "lblHealthCareSystemResult"
         lblHealthCareSystemResult.Size = New Size(39, 15)
         lblHealthCareSystemResult.TabIndex = 72
@@ -274,7 +275,7 @@ Partial Class Profile
         ' lblCbsaResult
         ' 
         lblCbsaResult.AutoSize = True
-        lblCbsaResult.Location = New Point(157, 516)
+        lblCbsaResult.Location = New Point(172, 739)
         lblCbsaResult.Name = "lblCbsaResult"
         lblCbsaResult.Size = New Size(47, 15)
         lblCbsaResult.TabIndex = 71
@@ -283,7 +284,7 @@ Partial Class Profile
         ' lblCountyFipsResult
         ' 
         lblCountyFipsResult.AutoSize = True
-        lblCountyFipsResult.Location = New Point(157, 491)
+        lblCountyFipsResult.Location = New Point(170, 700)
         lblCountyFipsResult.Name = "lblCountyFipsResult"
         lblCountyFipsResult.Size = New Size(47, 15)
         lblCountyFipsResult.TabIndex = 70
@@ -292,7 +293,7 @@ Partial Class Profile
         ' lblTotalPatientRevenueResult
         ' 
         lblTotalPatientRevenueResult.AutoSize = True
-        lblTotalPatientRevenueResult.Location = New Point(162, 476)
+        lblTotalPatientRevenueResult.Location = New Point(175, 667)
         lblTotalPatientRevenueResult.Name = "lblTotalPatientRevenueResult"
         lblTotalPatientRevenueResult.Size = New Size(39, 15)
         lblTotalPatientRevenueResult.TabIndex = 69
@@ -301,7 +302,7 @@ Partial Class Profile
         ' lblTotalPatientDaysResult
         ' 
         lblTotalPatientDaysResult.AutoSize = True
-        lblTotalPatientDaysResult.Location = New Point(164, 452)
+        lblTotalPatientDaysResult.Location = New Point(172, 629)
         lblTotalPatientDaysResult.Name = "lblTotalPatientDaysResult"
         lblTotalPatientDaysResult.Size = New Size(47, 15)
         lblTotalPatientDaysResult.TabIndex = 68
@@ -310,7 +311,7 @@ Partial Class Profile
         ' lblTotalDischargesResult
         ' 
         lblTotalDischargesResult.AutoSize = True
-        lblTotalDischargesResult.Location = New Point(170, 427)
+        lblTotalDischargesResult.Location = New Point(175, 594)
         lblTotalDischargesResult.Name = "lblTotalDischargesResult"
         lblTotalDischargesResult.Size = New Size(47, 15)
         lblTotalDischargesResult.TabIndex = 67
@@ -319,7 +320,7 @@ Partial Class Profile
         ' lblSpecialCareBedsResult
         ' 
         lblSpecialCareBedsResult.AutoSize = True
-        lblSpecialCareBedsResult.Location = New Point(173, 379)
+        lblSpecialCareBedsResult.Location = New Point(172, 519)
         lblSpecialCareBedsResult.Name = "lblSpecialCareBedsResult"
         lblSpecialCareBedsResult.Size = New Size(47, 15)
         lblSpecialCareBedsResult.TabIndex = 66
@@ -328,7 +329,7 @@ Partial Class Profile
         ' lblParticipates340BResult
         ' 
         lblParticipates340BResult.AutoSize = True
-        lblParticipates340BResult.Location = New Point(173, 253)
+        lblParticipates340BResult.Location = New Point(180, 339)
         lblParticipates340BResult.Name = "lblParticipates340BResult"
         lblParticipates340BResult.Size = New Size(39, 15)
         lblParticipates340BResult.TabIndex = 65
@@ -337,7 +338,7 @@ Partial Class Profile
         ' lblGeneralMedSurgBedsResult
         ' 
         lblGeneralMedSurgBedsResult.AutoSize = True
-        lblGeneralMedSurgBedsResult.Location = New Point(173, 354)
+        lblGeneralMedSurgBedsResult.Location = New Point(175, 484)
         lblGeneralMedSurgBedsResult.Name = "lblGeneralMedSurgBedsResult"
         lblGeneralMedSurgBedsResult.Size = New Size(39, 15)
         lblGeneralMedSurgBedsResult.TabIndex = 65
@@ -346,7 +347,7 @@ Partial Class Profile
         ' lblMedicareDependentResult
         ' 
         lblMedicareDependentResult.AutoSize = True
-        lblMedicareDependentResult.Location = New Point(173, 238)
+        lblMedicareDependentResult.Location = New Point(180, 314)
         lblMedicareDependentResult.Name = "lblMedicareDependentResult"
         lblMedicareDependentResult.Size = New Size(39, 15)
         lblMedicareDependentResult.TabIndex = 64
@@ -355,7 +356,7 @@ Partial Class Profile
         ' lblLowVolumeResult
         ' 
         lblLowVolumeResult.AutoSize = True
-        lblLowVolumeResult.Location = New Point(172, 223)
+        lblLowVolumeResult.Location = New Point(162, 285)
         lblLowVolumeResult.Name = "lblLowVolumeResult"
         lblLowVolumeResult.Size = New Size(39, 15)
         lblLowVolumeResult.TabIndex = 63
@@ -364,7 +365,7 @@ Partial Class Profile
         ' lblTotalEmployeesResult
         ' 
         lblTotalEmployeesResult.AutoSize = True
-        lblTotalEmployeesResult.Location = New Point(173, 403)
+        lblTotalEmployeesResult.Location = New Point(175, 554)
         lblTotalEmployeesResult.Name = "lblTotalEmployeesResult"
         lblTotalEmployeesResult.Size = New Size(41, 15)
         lblTotalEmployeesResult.TabIndex = 63
@@ -373,7 +374,7 @@ Partial Class Profile
         ' lblRuralReferralResult
         ' 
         lblRuralReferralResult.AutoSize = True
-        lblRuralReferralResult.Location = New Point(172, 202)
+        lblRuralReferralResult.Location = New Point(159, 253)
         lblRuralReferralResult.Name = "lblRuralReferralResult"
         lblRuralReferralResult.Size = New Size(39, 15)
         lblRuralReferralResult.TabIndex = 62
@@ -382,7 +383,7 @@ Partial Class Profile
         ' lblTypeControlResult
         ' 
         lblTypeControlResult.AutoSize = True
-        lblTypeControlResult.Location = New Point(173, 278)
+        lblTypeControlResult.Location = New Point(175, 366)
         lblTypeControlResult.Name = "lblTypeControlResult"
         lblTypeControlResult.Size = New Size(39, 15)
         lblTypeControlResult.TabIndex = 62
@@ -391,7 +392,7 @@ Partial Class Profile
         ' lblSoleCommunityHospitalResult
         ' 
         lblSoleCommunityHospitalResult.AutoSize = True
-        lblSoleCommunityHospitalResult.Location = New Point(170, 174)
+        lblSoleCommunityHospitalResult.Location = New Point(159, 223)
         lblSoleCommunityHospitalResult.Name = "lblSoleCommunityHospitalResult"
         lblSoleCommunityHospitalResult.Size = New Size(39, 15)
         lblSoleCommunityHospitalResult.TabIndex = 61
@@ -400,7 +401,7 @@ Partial Class Profile
         ' lblFacilityResult
         ' 
         lblFacilityResult.AutoSize = True
-        lblFacilityResult.Location = New Point(172, 150)
+        lblFacilityResult.Location = New Point(144, 189)
         lblFacilityResult.Name = "lblFacilityResult"
         lblFacilityResult.Size = New Size(39, 15)
         lblFacilityResult.TabIndex = 60
@@ -409,7 +410,7 @@ Partial Class Profile
         ' lblOperatingStatusResult
         ' 
         lblOperatingStatusResult.AutoSize = True
-        lblOperatingStatusResult.Location = New Point(172, 123)
+        lblOperatingStatusResult.Location = New Point(144, 158)
         lblOperatingStatusResult.Name = "lblOperatingStatusResult"
         lblOperatingStatusResult.Size = New Size(39, 15)
         lblOperatingStatusResult.TabIndex = 59
@@ -418,7 +419,7 @@ Partial Class Profile
         ' lblCmsCertNumProfileResult
         ' 
         lblCmsCertNumProfileResult.AutoSize = True
-        lblCmsCertNumProfileResult.Location = New Point(170, 98)
+        lblCmsCertNumProfileResult.Location = New Point(167, 135)
         lblCmsCertNumProfileResult.Name = "lblCmsCertNumProfileResult"
         lblCmsCertNumProfileResult.Size = New Size(39, 15)
         lblCmsCertNumProfileResult.TabIndex = 58
@@ -427,7 +428,7 @@ Partial Class Profile
         ' lblPhoneNumResult
         ' 
         lblPhoneNumResult.AutoSize = True
-        lblPhoneNumResult.Location = New Point(128, 59)
+        lblPhoneNumResult.Location = New Point(144, 74)
         lblPhoneNumResult.Name = "lblPhoneNumResult"
         lblPhoneNumResult.Size = New Size(39, 15)
         lblPhoneNumResult.TabIndex = 57
@@ -437,7 +438,7 @@ Partial Class Profile
         ' 
         lblNameAddressResult.AutoSize = True
         lblNameAddressResult.Font = New Font("Segoe UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        lblNameAddressResult.Location = New Point(144, 19)
+        lblNameAddressResult.Location = New Point(144, 20)
         lblNameAddressResult.Name = "lblNameAddressResult"
         lblNameAddressResult.Size = New Size(39, 13)
         lblNameAddressResult.TabIndex = 56
@@ -447,7 +448,7 @@ Partial Class Profile
         ' 
         lblMedicareCertifiedBeds.AutoSize = True
         lblMedicareCertifiedBeds.Font = New Font("Times New Roman", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        lblMedicareCertifiedBeds.Location = New Point(8, 643)
+        lblMedicareCertifiedBeds.Location = New Point(5, 911)
         lblMedicareCertifiedBeds.Name = "lblMedicareCertifiedBeds"
         lblMedicareCertifiedBeds.Size = New Size(135, 15)
         lblMedicareCertifiedBeds.TabIndex = 55
@@ -457,7 +458,7 @@ Partial Class Profile
         ' 
         lblCmsUrbRurDesig.AutoSize = True
         lblCmsUrbRurDesig.Font = New Font("Times New Roman", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        lblCmsUrbRurDesig.Location = New Point(8, 614)
+        lblCmsUrbRurDesig.Location = New Point(5, 882)
         lblCmsUrbRurDesig.Name = "lblCmsUrbRurDesig"
         lblCmsUrbRurDesig.Size = New Size(170, 15)
         lblCmsUrbRurDesig.TabIndex = 43
@@ -467,7 +468,7 @@ Partial Class Profile
         ' 
         lblMedicareAdministrativeContract.AutoSize = True
         lblMedicareAdministrativeContract.Font = New Font("Times New Roman", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        lblMedicareAdministrativeContract.Location = New Point(8, 587)
+        lblMedicareAdministrativeContract.Location = New Point(5, 855)
         lblMedicareAdministrativeContract.Name = "lblMedicareAdministrativeContract"
         lblMedicareAdministrativeContract.Size = New Size(198, 15)
         lblMedicareAdministrativeContract.TabIndex = 54
@@ -477,7 +478,7 @@ Partial Class Profile
         ' 
         lblHelipad.AutoSize = True
         lblHelipad.Font = New Font("Times New Roman", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        lblHelipad.Location = New Point(8, 562)
+        lblHelipad.Location = New Point(10, 820)
         lblHelipad.Name = "lblHelipad"
         lblHelipad.Size = New Size(54, 15)
         lblHelipad.TabIndex = 53
@@ -487,7 +488,7 @@ Partial Class Profile
         ' 
         lblLatLong.AutoSize = True
         lblLatLong.Font = New Font("Times New Roman", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        lblLatLong.Location = New Point(8, 537)
+        lblLatLong.Location = New Point(10, 776)
         lblLatLong.Name = "lblLatLong"
         lblLatLong.Size = New Size(110, 15)
         lblLatLong.TabIndex = 52
@@ -497,7 +498,7 @@ Partial Class Profile
         ' 
         lblCbsa.AutoSize = True
         lblCbsa.Font = New Font("Times New Roman", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        lblCbsa.Location = New Point(8, 516)
+        lblCbsa.Location = New Point(10, 739)
         lblCbsa.Name = "lblCbsa"
         lblCbsa.Size = New Size(42, 15)
         lblCbsa.TabIndex = 51
@@ -507,7 +508,7 @@ Partial Class Profile
         ' 
         lblCountyFips.AutoSize = True
         lblCountyFips.Font = New Font("Times New Roman", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        lblCountyFips.Location = New Point(4, 491)
+        lblCountyFips.Location = New Point(6, 700)
         lblCountyFips.Name = "lblCountyFips"
         lblCountyFips.Size = New Size(112, 15)
         lblCountyFips.TabIndex = 50
@@ -517,7 +518,7 @@ Partial Class Profile
         ' 
         lblTotalPatientRevenue.AutoSize = True
         lblTotalPatientRevenue.Font = New Font("Times New Roman", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        lblTotalPatientRevenue.Location = New Point(6, 476)
+        lblTotalPatientRevenue.Location = New Point(6, 667)
         lblTotalPatientRevenue.Name = "lblTotalPatientRevenue"
         lblTotalPatientRevenue.Size = New Size(124, 15)
         lblTotalPatientRevenue.TabIndex = 49
@@ -527,7 +528,7 @@ Partial Class Profile
         ' 
         lblTotalPatientDays.AutoSize = True
         lblTotalPatientDays.Font = New Font("Times New Roman", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        lblTotalPatientDays.Location = New Point(4, 452)
+        lblTotalPatientDays.Location = New Point(6, 629)
         lblTotalPatientDays.Name = "lblTotalPatientDays"
         lblTotalPatientDays.Size = New Size(105, 15)
         lblTotalPatientDays.TabIndex = 48
@@ -537,7 +538,7 @@ Partial Class Profile
         ' 
         lblTotalDischarges.AutoSize = True
         lblTotalDischarges.Font = New Font("Times New Roman", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        lblTotalDischarges.Location = New Point(-1, 427)
+        lblTotalDischarges.Location = New Point(10, 594)
         lblTotalDischarges.Name = "lblTotalDischarges"
         lblTotalDischarges.Size = New Size(97, 15)
         lblTotalDischarges.TabIndex = 47
@@ -547,7 +548,7 @@ Partial Class Profile
         ' 
         lblTotalEmployees.AutoSize = True
         lblTotalEmployees.Font = New Font("Times New Roman", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        lblTotalEmployees.Location = New Point(1, 403)
+        lblTotalEmployees.Location = New Point(6, 554)
         lblTotalEmployees.Name = "lblTotalEmployees"
         lblTotalEmployees.Size = New Size(95, 15)
         lblTotalEmployees.TabIndex = 46
@@ -557,7 +558,7 @@ Partial Class Profile
         ' 
         lblSpecialCareBeds.AutoSize = True
         lblSpecialCareBeds.Font = New Font("Times New Roman", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        lblSpecialCareBeds.Location = New Point(1, 379)
+        lblSpecialCareBeds.Location = New Point(5, 519)
         lblSpecialCareBeds.Name = "lblSpecialCareBeds"
         lblSpecialCareBeds.Size = New Size(102, 15)
         lblSpecialCareBeds.TabIndex = 45
@@ -567,7 +568,7 @@ Partial Class Profile
         ' 
         lblGeneralMedSurgBeds.AutoSize = True
         lblGeneralMedSurgBeds.Font = New Font("Times New Roman", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        lblGeneralMedSurgBeds.Location = New Point(0, 354)
+        lblGeneralMedSurgBeds.Location = New Point(6, 476)
         lblGeneralMedSurgBeds.Name = "lblGeneralMedSurgBeds"
         lblGeneralMedSurgBeds.Size = New Size(134, 15)
         lblGeneralMedSurgBeds.TabIndex = 44
@@ -576,7 +577,7 @@ Partial Class Profile
         ' llSystemWebsite
         ' 
         llSystemWebsite.AutoSize = True
-        llSystemWebsite.Location = New Point(173, 329)
+        llSystemWebsite.Location = New Point(170, 440)
         llSystemWebsite.Name = "llSystemWebsite"
         llSystemWebsite.Size = New Size(49, 15)
         llSystemWebsite.TabIndex = 43
@@ -587,7 +588,7 @@ Partial Class Profile
         ' 
         lblSystemWebsite.AutoSize = True
         lblSystemWebsite.Font = New Font("Times New Roman", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        lblSystemWebsite.Location = New Point(0, 329)
+        lblSystemWebsite.Location = New Point(5, 440)
         lblSystemWebsite.Name = "lblSystemWebsite"
         lblSystemWebsite.Size = New Size(93, 15)
         lblSystemWebsite.TabIndex = 42
@@ -597,7 +598,7 @@ Partial Class Profile
         ' 
         lblHealthCareSystem.AutoSize = True
         lblHealthCareSystem.Font = New Font("Times New Roman", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        lblHealthCareSystem.Location = New Point(0, 308)
+        lblHealthCareSystem.Location = New Point(5, 403)
         lblHealthCareSystem.Name = "lblHealthCareSystem"
         lblHealthCareSystem.Size = New Size(111, 15)
         lblHealthCareSystem.TabIndex = 41
@@ -607,7 +608,7 @@ Partial Class Profile
         ' 
         lblTypeControl.AutoSize = True
         lblTypeControl.Font = New Font("Times New Roman", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        lblTypeControl.Location = New Point(0, 278)
+        lblTypeControl.Location = New Point(6, 366)
         lblTypeControl.Name = "lblTypeControl"
         lblTypeControl.Size = New Size(91, 15)
         lblTypeControl.TabIndex = 40
@@ -617,7 +618,7 @@ Partial Class Profile
         ' 
         lblParticipates340B.AutoSize = True
         lblParticipates340B.Font = New Font("Times New Roman", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        lblParticipates340B.Location = New Point(0, 253)
+        lblParticipates340B.Location = New Point(5, 339)
         lblParticipates340B.Name = "lblParticipates340B"
         lblParticipates340B.Size = New Size(111, 15)
         lblParticipates340B.TabIndex = 39
@@ -627,7 +628,7 @@ Partial Class Profile
         ' 
         lblMedicareDependent.AutoSize = True
         lblMedicareDependent.Font = New Font("Times New Roman", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        lblMedicareDependent.Location = New Point(0, 238)
+        lblMedicareDependent.Location = New Point(5, 314)
         lblMedicareDependent.Name = "lblMedicareDependent"
         lblMedicareDependent.Size = New Size(167, 15)
         lblMedicareDependent.TabIndex = 38
@@ -637,7 +638,7 @@ Partial Class Profile
         ' 
         lblLowVolume.AutoSize = True
         lblLowVolume.Font = New Font("Times New Roman", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        lblLowVolume.Location = New Point(5, 223)
+        lblLowVolume.Location = New Point(6, 285)
         lblLowVolume.Name = "lblLowVolume"
         lblLowVolume.Size = New Size(119, 15)
         lblLowVolume.TabIndex = 37
@@ -647,7 +648,7 @@ Partial Class Profile
         ' 
         lblRuralReferral.AutoSize = True
         lblRuralReferral.Font = New Font("Times New Roman", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        lblRuralReferral.Location = New Point(4, 202)
+        lblRuralReferral.Location = New Point(6, 253)
         lblRuralReferral.Name = "lblRuralReferral"
         lblRuralReferral.Size = New Size(117, 15)
         lblRuralReferral.TabIndex = 36
@@ -657,7 +658,7 @@ Partial Class Profile
         ' 
         lblSoleCommunityHospital.AutoSize = True
         lblSoleCommunityHospital.Font = New Font("Times New Roman", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        lblSoleCommunityHospital.Location = New Point(4, 174)
+        lblSoleCommunityHospital.Location = New Point(6, 223)
         lblSoleCommunityHospital.Name = "lblSoleCommunityHospital"
         lblSoleCommunityHospital.Size = New Size(142, 15)
         lblSoleCommunityHospital.TabIndex = 35
@@ -667,7 +668,7 @@ Partial Class Profile
         ' 
         lblFacility.AutoSize = True
         lblFacility.Font = New Font("Times New Roman", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        lblFacility.Location = New Point(8, 150)
+        lblFacility.Location = New Point(6, 189)
         lblFacility.Name = "lblFacility"
         lblFacility.Size = New Size(90, 15)
         lblFacility.TabIndex = 34
@@ -677,7 +678,7 @@ Partial Class Profile
         ' 
         lblOperatingStatus.AutoSize = True
         lblOperatingStatus.Font = New Font("Times New Roman", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        lblOperatingStatus.Location = New Point(6, 123)
+        lblOperatingStatus.Location = New Point(5, 158)
         lblOperatingStatus.Name = "lblOperatingStatus"
         lblOperatingStatus.Size = New Size(97, 15)
         lblOperatingStatus.TabIndex = 33
@@ -687,7 +688,7 @@ Partial Class Profile
         ' 
         lblCmsCertNumProfile.AutoSize = True
         lblCmsCertNumProfile.Font = New Font("Times New Roman", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        lblCmsCertNumProfile.Location = New Point(6, 98)
+        lblCmsCertNumProfile.Location = New Point(6, 135)
         lblCmsCertNumProfile.Name = "lblCmsCertNumProfile"
         lblCmsCertNumProfile.Size = New Size(147, 15)
         lblCmsCertNumProfile.TabIndex = 32
@@ -696,7 +697,7 @@ Partial Class Profile
         ' llHospitalWeb
         ' 
         llHospitalWeb.AutoSize = True
-        llHospitalWeb.Location = New Point(162, 74)
+        llHospitalWeb.Location = New Point(144, 98)
         llHospitalWeb.Name = "llHospitalWeb"
         llHospitalWeb.Size = New Size(49, 15)
         llHospitalWeb.TabIndex = 31
@@ -707,7 +708,7 @@ Partial Class Profile
         ' 
         lblHospitalWeb.AutoSize = True
         lblHospitalWeb.Font = New Font("Times New Roman", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        lblHospitalWeb.Location = New Point(6, 74)
+        lblHospitalWeb.Location = New Point(6, 98)
         lblHospitalWeb.Name = "lblHospitalWeb"
         lblHospitalWeb.Size = New Size(99, 15)
         lblHospitalWeb.TabIndex = 30
@@ -717,7 +718,7 @@ Partial Class Profile
         ' 
         lblPhoneNum.AutoSize = True
         lblPhoneNum.Font = New Font("Times New Roman", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        lblPhoneNum.Location = New Point(5, 59)
+        lblPhoneNum.Location = New Point(3, 74)
         lblPhoneNum.Name = "lblPhoneNum"
         lblPhoneNum.Size = New Size(108, 15)
         lblPhoneNum.TabIndex = 29
@@ -1143,12 +1144,23 @@ Partial Class Profile
         btnDepartmentProfile.Text = "Departments"
         btnDepartmentProfile.UseVisualStyleBackColor = False
         ' 
+        ' Button1
+        ' 
+        Button1.Location = New Point(1325, 962)
+        Button1.Name = "Button1"
+        Button1.Size = New Size(134, 87)
+        Button1.TabIndex = 21
+        Button1.Text = "Return to Search"
+        Button1.UseVisualStyleBackColor = True
+        ' 
         ' Profile
         ' 
-        AutoScaleDimensions = New SizeF(7F, 15F)
+        AutoScaleDimensions = New SizeF(7.0F, 15.0F)
         AutoScaleMode = AutoScaleMode.Font
         AutoScroll = True
+        BackColor = SystemColors.HighlightText
         ClientSize = New Size(1559, 1061)
+        Controls.Add(Button1)
         Controls.Add(btnOutpatientProfile)
         Controls.Add(btnInpatientProfile)
         Controls.Add(btnQualityProfile)
@@ -1290,4 +1302,5 @@ Partial Class Profile
     Friend WithEvents Column6 As DataGridViewTextBoxColumn
     Friend WithEvents Label1 As Label
     Friend WithEvents lbladdy As Label
+    Friend WithEvents Button1 As Button
 End Class

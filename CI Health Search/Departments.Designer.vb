@@ -42,6 +42,7 @@ Partial Class Departments
         btnFinIndDepartments = New Button()
         btnFinancialDepartments = New Button()
         btnProfileDepartments = New Button()
+        Button1 = New Button()
         gbInpatientRoutineCostCenters.SuspendLayout()
         gbAncillaryServiceCost.SuspendLayout()
         gbOtherReimburse.SuspendLayout()
@@ -168,7 +169,7 @@ Partial Class Departments
         ' gbStaffing
         ' 
         gbStaffing.Controls.Add(Label7)
-        gbStaffing.Location = New Point(1270, 574)
+        gbStaffing.Location = New Point(1250, 51)
         gbStaffing.Name = "gbStaffing"
         gbStaffing.Size = New Size(273, 84)
         gbStaffing.TabIndex = 4
@@ -238,11 +239,21 @@ Partial Class Departments
         btnProfileDepartments.Text = "Profile"
         btnProfileDepartments.UseVisualStyleBackColor = True
         ' 
+        ' Button1
+        ' 
+        Button1.Location = New Point(1421, 523)
+        Button1.Name = "Button1"
+        Button1.Size = New Size(122, 78)
+        Button1.TabIndex = 21
+        Button1.Text = "Return to Search"
+        Button1.UseVisualStyleBackColor = True
+        ' 
         ' Departments
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(1555, 670)
+        Controls.Add(Button1)
         Controls.Add(btnOutpatientDepartments)
         Controls.Add(btnInpatientDepartments)
         Controls.Add(btnQualityDepartments)
@@ -296,4 +307,5 @@ Partial Class Departments
     Friend WithEvents btnFinIndDepartments As Button
     Friend WithEvents btnFinancialDepartments As Button
     Friend WithEvents btnProfileDepartments As Button
+    Friend WithEvents Button1 As Button
 End Class

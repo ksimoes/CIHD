@@ -183,6 +183,7 @@ Partial Class FinInd
         Label153 = New Label()
         lblTotLiabilitiesResult3 = New Label()
         Label78 = New Label()
+        Button1 = New Button()
         SuspendLayout()
         ' 
         ' btnOutpatientFinInd
@@ -1652,11 +1653,21 @@ Partial Class FinInd
         Label78.TabIndex = 178
         Label78.Text = "Depreciation Expense"
         ' 
+        ' Button1
+        ' 
+        Button1.Location = New Point(1417, 530)
+        Button1.Name = "Button1"
+        Button1.Size = New Size(124, 73)
+        Button1.TabIndex = 179
+        Button1.Text = "Return to Search"
+        Button1.UseVisualStyleBackColor = True
+        ' 
         ' FinInd
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(1553, 1061)
+        Controls.Add(Button1)
         Controls.Add(Label78)
         Controls.Add(lblDepreciationExpenseResultFinInd4)
         Controls.Add(Label152)
@@ -1986,4 +1997,5 @@ Partial Class FinInd
     Friend WithEvents Label153 As Label
     Friend WithEvents lblTotLiabilitiesResult3 As Label
     Friend WithEvents Label78 As Label
+    Friend WithEvents Button1 As Button
 End Class

@@ -28,6 +28,7 @@ Partial Class Outpatient
         btnFinancialOutpatient = New Button()
         btnDepartmentsOutpatient = New Button()
         btnProfileOutpatient = New Button()
+        Button1 = New Button()
         SuspendLayout()
         ' 
         ' btnInpatientOutpatient
@@ -84,11 +85,21 @@ Partial Class Outpatient
         btnProfileOutpatient.Text = "Profile"
         btnProfileOutpatient.UseVisualStyleBackColor = True
         ' 
+        ' Button1
+        ' 
+        Button1.Location = New Point(1368, 584)
+        Button1.Name = "Button1"
+        Button1.Size = New Size(144, 81)
+        Button1.TabIndex = 20
+        Button1.Text = "Return to Search"
+        Button1.UseVisualStyleBackColor = True
+        ' 
         ' Outpatient
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(1527, 677)
+        Controls.Add(Button1)
         Controls.Add(btnInpatientOutpatient)
         Controls.Add(btnQualityOutpatient)
         Controls.Add(btnFinIndOutpatient)
@@ -106,4 +117,5 @@ Partial Class Outpatient
     Friend WithEvents btnFinancialOutpatient As Button
     Friend WithEvents btnDepartmentsOutpatient As Button
     Friend WithEvents btnProfileOutpatient As Button
+    Friend WithEvents Button1 As Button
 End Class

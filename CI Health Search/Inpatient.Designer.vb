@@ -32,6 +32,7 @@ Partial Class Inpatient
         gbPatientOrigin = New GroupBox()
         gbTrendReport = New GroupBox()
         gbStatsforTop20BaseMsdrg = New GroupBox()
+        Button1 = New Button()
         SuspendLayout()
         ' 
         ' btnOutpatientInpatient
@@ -124,11 +125,21 @@ Partial Class Inpatient
         gbStatsforTop20BaseMsdrg.TabStop = False
         gbStatsforTop20BaseMsdrg.Text = "Stats for Top 20 Base MS-DRGs"
         ' 
+        ' Button1
+        ' 
+        Button1.Location = New Point(1393, 575)
+        Button1.Name = "Button1"
+        Button1.Size = New Size(132, 88)
+        Button1.TabIndex = 24
+        Button1.Text = "Return to Search"
+        Button1.UseVisualStyleBackColor = True
+        ' 
         ' Inpatient
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(1537, 675)
+        Controls.Add(Button1)
         Controls.Add(gbStatsforTop20BaseMsdrg)
         Controls.Add(gbTrendReport)
         Controls.Add(gbPatientOrigin)
@@ -155,4 +166,5 @@ Partial Class Inpatient
     Friend WithEvents gbPatientOrigin As GroupBox
     Friend WithEvents gbTrendReport As GroupBox
     Friend WithEvents gbStatsforTop20BaseMsdrg As GroupBox
+    Friend WithEvents Button1 As Button
 End Class

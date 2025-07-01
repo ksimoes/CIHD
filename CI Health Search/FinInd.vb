@@ -93,6 +93,8 @@ Public Class FinInd
 
         lblTotLongTermLiabilitiesResult.Text = Financial.cleanMeUp(provider("Total Long Term Liabilities"))
 
+        lblLeaseCostResult.Text = Financial.cleanMeUp(provider("Leasehold Improvements"))
+
 
         ' lblInterestExpenseFinIndResult.Text = If(provider("Interest Expense") IsNot Nothing, CDec(provider("Interest Expense")).ToString("N"), "N/A")
 
@@ -133,5 +135,10 @@ Public Class FinInd
 
     Private Sub Label113_Click(sender As Object, e As EventArgs) Handles lblCashonHandResult2.Click
 
+    End Sub
+
+    Private Sub Button1_Click_1(sender As Object, e As EventArgs) Handles Button1.Click
+        Me.Hide()
+        Search.Show()
     End Sub
 End Class
