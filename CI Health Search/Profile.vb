@@ -85,7 +85,7 @@ Public Class Profile
             lblGeneralMedSurgBedsResult.Text = If(provider("Number of Beds") IsNot Nothing, provider("Number of Beds").ToString(), "N/A")
             lblTotalEmployeesResult.Text = If(provider("FTE - Employees on Payroll") IsNot Nothing, provider("FTE - Employees on Payroll").ToString(), "N/A")
             lblTotalDischargesResult.Text = If(provider("Hospital Total Discharges (V + XVIII + XIX + Unknown) For Adult & Peds") IsNot Nothing, provider("Hospital Total Discharges (V + XVIII + XIX + Unknown) For Adult & Peds").ToString(), "N/A")
-            lblTotalPatientRevenueResult.Text = If(provider("Total Patient Revenue") IsNot Nothing, provider("Total Patient Revenue").ToString(), "N/A")
+            lblTotalPatientRevenueResult.Text = If(provider("Total Patient Revenue") IsNot Nothing, CDec(provider("Total Patient Revenue")).ToString("N"), "N/A")
             lblTypeControlResult.Text = If(provider("Type of Control") IsNot Nothing, provider("Type of Control").ToString(), "N/A")
             lblTotalPatientDaysResult.Text = If(provider("Total Days (V + XVIII + XIX + Unknown)") IsNot Nothing, provider("Total Days (V + XVIII + XIX + Unknown)").ToString(), "N/A")
 
@@ -124,6 +124,7 @@ Public Class Profile
             lblPhoneNumResult.Text = If(provider("PHNE_NUM") IsNot Nothing, provider("PHNE_NUM").ToString(), "N/A")
             lblCbsaResult.Text = If(provider("CBSA_CD") IsNot Nothing, provider("CBSA_CD").ToString(), "N/A")
             lblMedicareCertifiedBedsResult.Text = Financial.cleanMeUp(provider("CRTFD_BED_CNT"))
+            lblZipCodeResult.Text = If(provider("ZIP_CD") IsNot Nothing, provider("ZIP_CD").ToString(), "N/A")
         End If
 
 

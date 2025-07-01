@@ -119,7 +119,7 @@ Partial Class Results
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
-        ClientSize = New Size(1423, 661)
+        ClientSize = New Size(1423, 552)
         Controls.Add(Label1)
         Controls.Add(CheckedListBox1)
         Controls.Add(Button7)
@@ -144,4 +144,5 @@ Partial Class Results
     Friend WithEvents Button7 As Button
     Friend WithEvents CheckedListBox1 As CheckedListBox
     Friend WithEvents Label1 As Label
+    Friend WithEvents VScrollBar1 As VScrollBar
 End Class

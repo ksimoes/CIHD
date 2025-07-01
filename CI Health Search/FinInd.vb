@@ -83,7 +83,7 @@ Public Class FinInd
         lblCashonHandResult.Text = If(provider("Cash on Hand and in Banks") IsNot Nothing, CDec(provider("Cash on Hand and in Banks")).ToString("N"), "N/A")
         lblCashonHandResult2.Text = lblCashonHandResult.Text
 
-        lblInventoryResult.Text = If(provider("Inventory") IsNot Nothing, CDec(provider("Inventory")).ToString("N"), "N/A")
+        lblInventoryResult.Text = Financial.cleanMeUp(provider("Inventory"))
         lblInventoryResult2.Text = lblInventoryResult.Text
 
         lblAccountsRecievableResult.Text = If(provider("Accounts Receivable") IsNot Nothing, CDec(provider("Accounts Receivable")).ToString("N"), "N/A")
