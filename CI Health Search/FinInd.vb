@@ -92,6 +92,10 @@ Public Class FinInd
         lblAllowforUncollectRes.Text = Financial.cleanMeUp(provider("Less: Allowances for Uncollectible Notes and Accounts Receivable"))
         lblAllowforUncollectRes2.Text = lblAllowforUncollectRes.Text
 
+        lblTotLongTermLiabilitiesResult.Text = Financial.cleanMeUp(provider("Total Long Term Liabilities"))
+
+
+
         'lblCashonHandResult.Text = If(provider("Cash on Hand and in Banks") IsNot Nothing, CDec(provider("Cash on Hand and in Banks")).ToString("N"), "N/A")
         'lblCashonHandResult2.Text = lblCashonHandResult.Text
 
