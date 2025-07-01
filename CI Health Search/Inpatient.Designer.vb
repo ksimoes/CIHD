@@ -33,6 +33,9 @@ Partial Class Inpatient
         gbTrendReport = New GroupBox()
         gbStatsforTop20BaseMsdrg = New GroupBox()
         Button1 = New Button()
+        Label1 = New Label()
+        Label2 = New Label()
+        gbKeyAttending.SuspendLayout()
         SuspendLayout()
         ' 
         ' btnOutpatientInpatient
@@ -91,9 +94,11 @@ Partial Class Inpatient
         ' 
         ' gbKeyAttending
         ' 
+        gbKeyAttending.Controls.Add(Label2)
+        gbKeyAttending.Controls.Add(Label1)
         gbKeyAttending.Location = New Point(12, 12)
         gbKeyAttending.Name = "gbKeyAttending"
-        gbKeyAttending.Size = New Size(269, 110)
+        gbKeyAttending.Size = New Size(580, 146)
         gbKeyAttending.TabIndex = 21
         gbKeyAttending.TabStop = False
         gbKeyAttending.Text = "Key Attending Providers"
@@ -134,6 +139,26 @@ Partial Class Inpatient
         Button1.Text = "Return to Search"
         Button1.UseVisualStyleBackColor = True
         ' 
+        ' Label1
+        ' 
+        Label1.AutoSize = True
+        Label1.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
+        Label1.Location = New Point(6, 30)
+        Label1.Name = "Label1"
+        Label1.Size = New Size(40, 15)
+        Label1.TabIndex = 25
+        Label1.Text = "Name"
+        ' 
+        ' Label2
+        ' 
+        Label2.AutoSize = True
+        Label2.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
+        Label2.Location = New Point(111, 30)
+        Label2.Name = "Label2"
+        Label2.Size = New Size(37, 15)
+        Label2.TabIndex = 26
+        Label2.Text = "Cases"
+        ' 
         ' Inpatient
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
@@ -153,6 +178,8 @@ Partial Class Inpatient
         Name = "Inpatient"
         StartPosition = FormStartPosition.CenterScreen
         Text = "Inpatient"
+        gbKeyAttending.ResumeLayout(False)
+        gbKeyAttending.PerformLayout()
         ResumeLayout(False)
     End Sub
 
@@ -167,4 +194,6 @@ Partial Class Inpatient
     Friend WithEvents gbTrendReport As GroupBox
     Friend WithEvents gbStatsforTop20BaseMsdrg As GroupBox
     Friend WithEvents Button1 As Button
+    Friend WithEvents Label2 As Label
+    Friend WithEvents Label1 As Label
 End Class

@@ -152,12 +152,12 @@ Partial Class FinInd
         Label122 = New Label()
         Label123 = New Label()
         lblTotOperatingRevResult6 = New Label()
-        Label125 = New Label()
+        lblAllowforUncollectRes2 = New Label()
         lblAccountsRecievableResult = New Label()
         lblAccountsRecievableResult2 = New Label()
-        Label128 = New Label()
+        lblNotesReceivableRes = New Label()
         Label129 = New Label()
-        Label130 = New Label()
+        lblAllowforUncollectRes = New Label()
         lblTotOperatingExpenseFinInd5 = New Label()
         lblTotCurrentLiabilitesResult3 = New Label()
         Label133 = New Label()
@@ -1374,14 +1374,14 @@ Partial Class FinInd
         lblTotOperatingRevResult6.TabIndex = 148
         lblTotOperatingRevResult6.Text = "Result"
         ' 
-        ' Label125
+        ' lblAllowforUncollectRes2
         ' 
-        Label125.AutoSize = True
-        Label125.Location = New Point(960, 450)
-        Label125.Name = "Label125"
-        Label125.Size = New Size(39, 15)
-        Label125.TabIndex = 147
-        Label125.Text = "Result"
+        lblAllowforUncollectRes2.AutoSize = True
+        lblAllowforUncollectRes2.Location = New Point(960, 450)
+        lblAllowforUncollectRes2.Name = "lblAllowforUncollectRes2"
+        lblAllowforUncollectRes2.Size = New Size(39, 15)
+        lblAllowforUncollectRes2.TabIndex = 147
+        lblAllowforUncollectRes2.Text = "Result"
         ' 
         ' lblAccountsRecievableResult
         ' 
@@ -1401,14 +1401,14 @@ Partial Class FinInd
         lblAccountsRecievableResult2.TabIndex = 153
         lblAccountsRecievableResult2.Text = "Result"
         ' 
-        ' Label128
+        ' lblNotesReceivableRes
         ' 
-        Label128.AutoSize = True
-        Label128.Location = New Point(904, 554)
-        Label128.Name = "Label128"
-        Label128.Size = New Size(39, 15)
-        Label128.TabIndex = 152
-        Label128.Text = "Result"
+        lblNotesReceivableRes.AutoSize = True
+        lblNotesReceivableRes.Location = New Point(904, 554)
+        lblNotesReceivableRes.Name = "lblNotesReceivableRes"
+        lblNotesReceivableRes.Size = New Size(39, 15)
+        lblNotesReceivableRes.TabIndex = 152
+        lblNotesReceivableRes.Text = "Result"
         ' 
         ' Label129
         ' 
@@ -1419,14 +1419,14 @@ Partial Class FinInd
         Label129.TabIndex = 151
         Label129.Text = "Result"
         ' 
-        ' Label130
+        ' lblAllowforUncollectRes
         ' 
-        Label130.AutoSize = True
-        Label130.Location = New Point(904, 605)
-        Label130.Name = "Label130"
-        Label130.Size = New Size(39, 15)
-        Label130.TabIndex = 150
-        Label130.Text = "Result"
+        lblAllowforUncollectRes.AutoSize = True
+        lblAllowforUncollectRes.Location = New Point(904, 605)
+        lblAllowforUncollectRes.Name = "lblAllowforUncollectRes"
+        lblAllowforUncollectRes.Size = New Size(39, 15)
+        lblAllowforUncollectRes.TabIndex = 150
+        lblAllowforUncollectRes.Text = "Result"
         ' 
         ' lblTotOperatingExpenseFinInd5
         ' 
@@ -1694,12 +1694,12 @@ Partial Class FinInd
         Controls.Add(Label133)
         Controls.Add(Label134)
         Controls.Add(lblAccountsRecievableResult2)
-        Controls.Add(Label128)
+        Controls.Add(lblNotesReceivableRes)
         Controls.Add(Label129)
-        Controls.Add(Label130)
+        Controls.Add(lblAllowforUncollectRes)
         Controls.Add(Label123)
         Controls.Add(lblTotOperatingRevResult6)
-        Controls.Add(Label125)
+        Controls.Add(lblAllowforUncollectRes2)
         Controls.Add(lblAccountsRecievableResult)
         Controls.Add(lblInvestmentsResultFinInd)
         Controls.Add(lblTotOperatingExpenseFinInd4)
@@ -1966,12 +1966,12 @@ Partial Class FinInd
     Friend WithEvents Label122 As Label
     Friend WithEvents Label123 As Label
     Friend WithEvents lblTotOperatingRevResult6 As Label
-    Friend WithEvents Label125 As Label
+    Friend WithEvents lblAllowforUncollectRes2 As Label
     Friend WithEvents lblAccountsRecievableResult As Label
     Friend WithEvents lblAccountsRecievableResult2 As Label
-    Friend WithEvents Label128 As Label
+    Friend WithEvents lblNotesReceivableRes As Label
     Friend WithEvents Label129 As Label
-    Friend WithEvents Label130 As Label
+    Friend WithEvents lblAllowforUncollectRes As Label
     Friend WithEvents lblTotOperatingExpenseFinInd5 As Label
     Friend WithEvents lblTotCurrentLiabilitesResult3 As Label
     Friend WithEvents Label133 As Label
