@@ -35,12 +35,13 @@ Partial Class Results
         ' 
         ' Button1
         ' 
+        Button1.BackColor = SystemColors.ButtonHighlight
         Button1.Location = New Point(859, 3)
         Button1.Name = "Button1"
         Button1.Size = New Size(75, 26)
         Button1.TabIndex = 7
         Button1.Text = "Profile"
-        Button1.UseVisualStyleBackColor = True
+        Button1.UseVisualStyleBackColor = False
         ' 
         ' Button2
         ' 

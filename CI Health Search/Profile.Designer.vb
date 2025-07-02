@@ -342,9 +342,9 @@ Partial Class Profile
         lblParticipates340BResult.AutoSize = True
         lblParticipates340BResult.Location = New Point(180, 339)
         lblParticipates340BResult.Name = "lblParticipates340BResult"
-        lblParticipates340BResult.Size = New Size(39, 15)
+        lblParticipates340BResult.Size = New Size(16, 15)
         lblParticipates340BResult.TabIndex = 65
-        lblParticipates340BResult.Text = "Result"
+        lblParticipates340BResult.Text = "N"
         ' 
         ' lblGeneralMedSurgBedsResult
         ' 
@@ -360,18 +360,18 @@ Partial Class Profile
         lblMedicareDependentResult.AutoSize = True
         lblMedicareDependentResult.Location = New Point(180, 314)
         lblMedicareDependentResult.Name = "lblMedicareDependentResult"
-        lblMedicareDependentResult.Size = New Size(39, 15)
+        lblMedicareDependentResult.Size = New Size(16, 15)
         lblMedicareDependentResult.TabIndex = 64
-        lblMedicareDependentResult.Text = "Result"
+        lblMedicareDependentResult.Text = "N"
         ' 
         ' lblLowVolumeResult
         ' 
         lblLowVolumeResult.AutoSize = True
         lblLowVolumeResult.Location = New Point(162, 285)
         lblLowVolumeResult.Name = "lblLowVolumeResult"
-        lblLowVolumeResult.Size = New Size(39, 15)
+        lblLowVolumeResult.Size = New Size(16, 15)
         lblLowVolumeResult.TabIndex = 63
-        lblLowVolumeResult.Text = "Result"
+        lblLowVolumeResult.Text = "N"
         ' 
         ' lblTotalEmployeesResult
         ' 
@@ -387,9 +387,9 @@ Partial Class Profile
         lblRuralReferralResult.AutoSize = True
         lblRuralReferralResult.Location = New Point(159, 253)
         lblRuralReferralResult.Name = "lblRuralReferralResult"
-        lblRuralReferralResult.Size = New Size(39, 15)
+        lblRuralReferralResult.Size = New Size(16, 15)
         lblRuralReferralResult.TabIndex = 62
-        lblRuralReferralResult.Text = "Result"
+        lblRuralReferralResult.Text = "N"
         ' 
         ' lblTypeControlResult
         ' 
@@ -405,9 +405,9 @@ Partial Class Profile
         lblSoleCommunityHospitalResult.AutoSize = True
         lblSoleCommunityHospitalResult.Location = New Point(159, 223)
         lblSoleCommunityHospitalResult.Name = "lblSoleCommunityHospitalResult"
-        lblSoleCommunityHospitalResult.Size = New Size(39, 15)
+        lblSoleCommunityHospitalResult.Size = New Size(16, 15)
         lblSoleCommunityHospitalResult.TabIndex = 61
-        lblSoleCommunityHospitalResult.Text = "Result"
+        lblSoleCommunityHospitalResult.Text = "N"
         ' 
         ' lblFacilityResult
         ' 
