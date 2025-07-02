@@ -43,6 +43,7 @@ Partial Class Departments
         btnFinancialDepartments = New Button()
         btnProfileDepartments = New Button()
         Button1 = New Button()
+        Label8 = New Label()
         gbInpatientRoutineCostCenters.SuspendLayout()
         gbAncillaryServiceCost.SuspendLayout()
         gbOtherReimburse.SuspendLayout()
@@ -248,11 +249,22 @@ Partial Class Departments
         Button1.Text = "Return to Search"
         Button1.UseVisualStyleBackColor = True
         ' 
+        ' Label8
+        ' 
+        Label8.AutoSize = True
+        Label8.ForeColor = Color.Red
+        Label8.Location = New Point(481, 607)
+        Label8.Name = "Label8"
+        Label8.Size = New Size(394, 15)
+        Label8.TabIndex = 22
+        Label8.Text = "A decent amount of info for this form is on the #11 or cost report data set"
+        ' 
         ' Departments
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(1555, 670)
+        Controls.Add(Label8)
         Controls.Add(Button1)
         Controls.Add(btnOutpatientDepartments)
         Controls.Add(btnInpatientDepartments)
@@ -285,6 +297,7 @@ Partial Class Departments
         gbStaffing.ResumeLayout(False)
         gbStaffing.PerformLayout()
         ResumeLayout(False)
+        PerformLayout()
     End Sub
 
     Friend WithEvents gbInpatientRoutineCostCenters As GroupBox
@@ -308,4 +321,5 @@ Partial Class Departments
     Friend WithEvents btnFinancialDepartments As Button
     Friend WithEvents btnProfileDepartments As Button
     Friend WithEvents Button1 As Button
+    Friend WithEvents Label8 As Label
 End Class
