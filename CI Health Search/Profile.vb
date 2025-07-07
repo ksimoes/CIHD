@@ -191,4 +191,8 @@ Public Class Profile
         Me.Hide()
         Search.Show()
     End Sub
+
+    Private Sub gbAco_Enter(sender As Object, e As EventArgs) Handles gbAco.Enter
+
+    End Sub
 End Class
