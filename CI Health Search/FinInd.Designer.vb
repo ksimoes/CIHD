@@ -22,6 +22,7 @@ Partial Class FinInd
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        components = New ComponentModel.Container()
         btnOutpatientFinInd = New Button()
         btnInpatientFinInd = New Button()
         btnQualityFinInd = New Button()
@@ -108,7 +109,7 @@ Partial Class FinInd
         lblPedFinIndResult = New Label()
         lblNumMonthsFinIndResult = New Label()
         Label80 = New Label()
-        Label81 = New Label()
+        lblEbitResult = New Label()
         lblNetIncomeFinIndResult = New Label()
         lblInterestExpenseFinIndResult = New Label()
         lblDepAmortExpenseResult = New Label()
@@ -152,12 +153,12 @@ Partial Class FinInd
         Label122 = New Label()
         Label123 = New Label()
         lblTotOperatingRevResult6 = New Label()
-        Label125 = New Label()
+        lblAllowforUncollectRes2 = New Label()
         lblAccountsRecievableResult = New Label()
         lblAccountsRecievableResult2 = New Label()
-        Label128 = New Label()
+        lblNotesReceivableRes = New Label()
         Label129 = New Label()
-        Label130 = New Label()
+        lblAllowforUncollectRes = New Label()
         lblTotOperatingExpenseFinInd5 = New Label()
         lblTotCurrentLiabilitesResult3 = New Label()
         Label133 = New Label()
@@ -183,6 +184,9 @@ Partial Class FinInd
         Label153 = New Label()
         lblTotLiabilitiesResult3 = New Label()
         Label78 = New Label()
+        Button1 = New Button()
+        ToolTip1 = New ToolTip(components)
+        ToolTip2 = New ToolTip(components)
         SuspendLayout()
         ' 
         ' btnOutpatientFinInd
@@ -274,7 +278,8 @@ Partial Class FinInd
         Label4.Name = "Label4"
         Label4.Size = New Size(461, 15)
         Label4.TabIndex = 24
-        Label4.Text = "EDITBAR - (Earnings before Interest, Taxes, Depreciation, Amortization, and Rent)"
+        Label4.Text = "EBITDAR - (Earnings before Interest, Taxes, Depreciation, Amortization, and Rent)"
+        ToolTip1.SetToolTip(Label4, "net income + interest + depreciation and amortization + lease cost")
         ' 
         ' Label5
         ' 
@@ -977,14 +982,14 @@ Partial Class FinInd
         Label80.TabIndex = 103
         Label80.Text = "Result"
         ' 
-        ' Label81
+        ' lblEbitResult
         ' 
-        Label81.AutoSize = True
-        Label81.Location = New Point(490, 118)
-        Label81.Name = "Label81"
-        Label81.Size = New Size(39, 15)
-        Label81.TabIndex = 104
-        Label81.Text = "Result"
+        lblEbitResult.AutoSize = True
+        lblEbitResult.Location = New Point(490, 118)
+        lblEbitResult.Name = "lblEbitResult"
+        lblEbitResult.Size = New Size(39, 15)
+        lblEbitResult.TabIndex = 104
+        lblEbitResult.Text = "Result"
         ' 
         ' lblNetIncomeFinIndResult
         ' 
@@ -1373,14 +1378,14 @@ Partial Class FinInd
         lblTotOperatingRevResult6.TabIndex = 148
         lblTotOperatingRevResult6.Text = "Result"
         ' 
-        ' Label125
+        ' lblAllowforUncollectRes2
         ' 
-        Label125.AutoSize = True
-        Label125.Location = New Point(960, 450)
-        Label125.Name = "Label125"
-        Label125.Size = New Size(39, 15)
-        Label125.TabIndex = 147
-        Label125.Text = "Result"
+        lblAllowforUncollectRes2.AutoSize = True
+        lblAllowforUncollectRes2.Location = New Point(960, 450)
+        lblAllowforUncollectRes2.Name = "lblAllowforUncollectRes2"
+        lblAllowforUncollectRes2.Size = New Size(39, 15)
+        lblAllowforUncollectRes2.TabIndex = 147
+        lblAllowforUncollectRes2.Text = "Result"
         ' 
         ' lblAccountsRecievableResult
         ' 
@@ -1400,14 +1405,14 @@ Partial Class FinInd
         lblAccountsRecievableResult2.TabIndex = 153
         lblAccountsRecievableResult2.Text = "Result"
         ' 
-        ' Label128
+        ' lblNotesReceivableRes
         ' 
-        Label128.AutoSize = True
-        Label128.Location = New Point(904, 554)
-        Label128.Name = "Label128"
-        Label128.Size = New Size(39, 15)
-        Label128.TabIndex = 152
-        Label128.Text = "Result"
+        lblNotesReceivableRes.AutoSize = True
+        lblNotesReceivableRes.Location = New Point(904, 554)
+        lblNotesReceivableRes.Name = "lblNotesReceivableRes"
+        lblNotesReceivableRes.Size = New Size(39, 15)
+        lblNotesReceivableRes.TabIndex = 152
+        lblNotesReceivableRes.Text = "Result"
         ' 
         ' Label129
         ' 
@@ -1418,14 +1423,14 @@ Partial Class FinInd
         Label129.TabIndex = 151
         Label129.Text = "Result"
         ' 
-        ' Label130
+        ' lblAllowforUncollectRes
         ' 
-        Label130.AutoSize = True
-        Label130.Location = New Point(904, 605)
-        Label130.Name = "Label130"
-        Label130.Size = New Size(39, 15)
-        Label130.TabIndex = 150
-        Label130.Text = "Result"
+        lblAllowforUncollectRes.AutoSize = True
+        lblAllowforUncollectRes.Location = New Point(904, 605)
+        lblAllowforUncollectRes.Name = "lblAllowforUncollectRes"
+        lblAllowforUncollectRes.Size = New Size(39, 15)
+        lblAllowforUncollectRes.TabIndex = 150
+        lblAllowforUncollectRes.Text = "Result"
         ' 
         ' lblTotOperatingExpenseFinInd5
         ' 
@@ -1652,11 +1657,21 @@ Partial Class FinInd
         Label78.TabIndex = 178
         Label78.Text = "Depreciation Expense"
         ' 
+        ' Button1
+        ' 
+        Button1.Location = New Point(1417, 530)
+        Button1.Name = "Button1"
+        Button1.Size = New Size(124, 73)
+        Button1.TabIndex = 179
+        Button1.Text = "Return to Search"
+        Button1.UseVisualStyleBackColor = True
+        ' 
         ' FinInd
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(1553, 1061)
+        Controls.Add(Button1)
         Controls.Add(Label78)
         Controls.Add(lblDepreciationExpenseResultFinInd4)
         Controls.Add(Label152)
@@ -1683,12 +1698,12 @@ Partial Class FinInd
         Controls.Add(Label133)
         Controls.Add(Label134)
         Controls.Add(lblAccountsRecievableResult2)
-        Controls.Add(Label128)
+        Controls.Add(lblNotesReceivableRes)
         Controls.Add(Label129)
-        Controls.Add(Label130)
+        Controls.Add(lblAllowforUncollectRes)
         Controls.Add(Label123)
         Controls.Add(lblTotOperatingRevResult6)
-        Controls.Add(Label125)
+        Controls.Add(lblAllowforUncollectRes2)
         Controls.Add(lblAccountsRecievableResult)
         Controls.Add(lblInvestmentsResultFinInd)
         Controls.Add(lblTotOperatingExpenseFinInd4)
@@ -1731,7 +1746,7 @@ Partial Class FinInd
         Controls.Add(lblDepAmortExpenseResult)
         Controls.Add(lblInterestExpenseFinIndResult)
         Controls.Add(lblNetIncomeFinIndResult)
-        Controls.Add(Label81)
+        Controls.Add(lblEbitResult)
         Controls.Add(Label80)
         Controls.Add(lblNumMonthsFinIndResult)
         Controls.Add(lblPedFinIndResult)
@@ -1955,12 +1970,12 @@ Partial Class FinInd
     Friend WithEvents Label122 As Label
     Friend WithEvents Label123 As Label
     Friend WithEvents lblTotOperatingRevResult6 As Label
-    Friend WithEvents Label125 As Label
+    Friend WithEvents lblAllowforUncollectRes2 As Label
     Friend WithEvents lblAccountsRecievableResult As Label
     Friend WithEvents lblAccountsRecievableResult2 As Label
-    Friend WithEvents Label128 As Label
+    Friend WithEvents lblNotesReceivableRes As Label
     Friend WithEvents Label129 As Label
-    Friend WithEvents Label130 As Label
+    Friend WithEvents lblAllowforUncollectRes As Label
     Friend WithEvents lblTotOperatingExpenseFinInd5 As Label
     Friend WithEvents lblTotCurrentLiabilitesResult3 As Label
     Friend WithEvents Label133 As Label
@@ -1986,4 +2001,8 @@ Partial Class FinInd
     Friend WithEvents Label153 As Label
     Friend WithEvents lblTotLiabilitiesResult3 As Label
     Friend WithEvents Label78 As Label
+    Friend WithEvents Button1 As Button
+    Friend WithEvents lblEbitResult As Label
+    Friend WithEvents ToolTip1 As ToolTip
+    Friend WithEvents ToolTip2 As ToolTip
 End Class

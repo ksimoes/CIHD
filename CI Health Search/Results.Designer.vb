@@ -35,12 +35,13 @@ Partial Class Results
         ' 
         ' Button1
         ' 
+        Button1.BackColor = SystemColors.ButtonHighlight
         Button1.Location = New Point(859, 3)
         Button1.Name = "Button1"
         Button1.Size = New Size(75, 26)
         Button1.TabIndex = 7
         Button1.Text = "Profile"
-        Button1.UseVisualStyleBackColor = True
+        Button1.UseVisualStyleBackColor = False
         ' 
         ' Button2
         ' 
@@ -119,7 +120,7 @@ Partial Class Results
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
-        ClientSize = New Size(1423, 661)
+        ClientSize = New Size(1423, 552)
         Controls.Add(Label1)
         Controls.Add(CheckedListBox1)
         Controls.Add(Button7)
@@ -144,4 +145,5 @@ Partial Class Results
     Friend WithEvents Button7 As Button
     Friend WithEvents CheckedListBox1 As CheckedListBox
     Friend WithEvents Label1 As Label
+    Friend WithEvents VScrollBar1 As VScrollBar
 End Class

@@ -56,14 +56,21 @@ Public Class FinInd
         lblOtherExpenseResultFindInd.Text = If(provider("Total Other Expenses") IsNot Nothing, provider("Total Other Expenses").ToString(), "N/A")
 
         lblNetIncomeResult.Text = If(provider("Net Income") IsNot Nothing, CDec(provider("Net Income")).ToString("N"), "N/A")
+
         lblNetIncomeFinIndResult.Text = lblNetIncomeResult.Text
+        ' lblInterestExpenseFinIndResult.Text = Financial.cleanMeUp(provider("Interest Expense"))
+        lblInterestExpenseFinIndResult.Text = "Result"
+        lblDepAmortExpenseResult.Text = "Result"
+        lblLeaseCostResult.Text = Financial.cleanMeUp(provider("Leasehold Improvements"))
+        lblEbitResult.Text = (CDec(Financial.cleanMeUp(lblNetIncomeFinIndResult.Text, True)) + CDec(Financial.cleanMeUp(lblInterestExpenseFinIndResult.Text)) + CDec(Financial.cleanMeUp(lblDepAmortExpenseResult.Text, True) + CDec(Financial.cleanMeUp(lblLeaseCostResult.Text, True)))).ToString
+
         lblNetIncomeResult2.Text = lblNetIncomeResult.Text
-        lblDepreciationExpenseResultFinInd.Text = If(provider("Depreciation Cost") IsNot Nothing, CDec(provider("Depreciation Cost")).ToString("N"), "N/A")
+        lblDepreciationExpenseResultFinInd.Text = Financial.cleanMeUp(provider("Depreciation Cost"))
         lblDepreciationExpenseResultFinInd2.Text = lblDepreciationExpenseResultFinInd.Text
         lblDepreciationExpenseResultFinInd3.Text = lblDepreciationExpenseResultFinInd.Text
         lblDepreciationExpenseResultFinInd4.Text = lblDepreciationExpenseResultFinInd.Text
 
-        lblSalaryExpenseResult.Text = If(provider("Total Salaries (adjusted)") IsNot Nothing, CDec(provider("Total Salaries (adjusted)")).ToString("N"), "N/A")
+        lblSalaryExpenseResult.Text = Financial.cleanMeUp(provider("Total Salaries (adjusted)"))
 
         lblContractLaborResult.Text = If(provider("Contract Labor:Direct Patient Care") IsNot Nothing, CDec(provider("Contract Labor:Direct Patient Care")).ToString("N"), "N/A")
 
@@ -71,19 +78,35 @@ Public Class FinInd
         lblTotLiabilitiesResult2.Text = lblTotLiabilitiesResult.Text
         lblTotLiabilitiesResult3.Text = lblTotLiabilitiesResult.Text
 
+        lblCashonHandResult.Text = Financial.cleanMeUp(provider("Cash on Hand and in Banks"))
+        lblCashonHandResult2.Text = lblCashonHandResult.Text
+
         lblTotCurrentLiabilitiesResult.Text = Financial.cleanMeUp(provider("Total Current Liabilities"))
         lblTotCurrentLiabilitesResult2.Text = lblTotCurrentLiabilitiesResult.Text
         lblTotCurrentLiabilitesResult3.Text = lblTotCurrentLiabilitiesResult.Text
 
-        lblMarketSecuritiesResult.Text = If(provider("Temporary Investments") IsNot Nothing, CDec(provider("Temporary Investments")).ToString("N"), "N/A")
+
+
+        lblMarketSecuritiesResult.Text = Financial.cleanMeUp(provider("Temporary Investments"))
         lblMarketSecuritiesResult2.Text = lblMarketSecuritiesResult.Text
 
-        lblInvestmentsResultFinInd.Text = If(provider("Investments") IsNot Nothing, CDec(provider("Investments")).ToString("N"), "N/A")
+        lblInvestmentsResultFinInd.Text = Financial.cleanMeUp(provider("Investments"))
 
-        lblCashonHandResult.Text = If(provider("Cash on Hand and in Banks") IsNot Nothing, CDec(provider("Cash on Hand and in Banks")).ToString("N"), "N/A")
-        lblCashonHandResult2.Text = lblCashonHandResult.Text
+        lblLeaseCostResult.Text = Financial.cleanMeUp(provider("Leasehold Improvements"))
 
-        lblInventoryResult.Text = If(provider("Inventory") IsNot Nothing, CDec(provider("Inventory")).ToString("N"), "N/A")
+        lblNotesReceivableRes.Text = Financial.cleanMeUp(provider("Notes Receivable"))
+
+        lblAllowforUncollectRes.Text = Financial.cleanMeUp(provider("Less: Allowances for Uncollectible Notes and Accounts Receivable"))
+        lblAllowforUncollectRes2.Text = lblAllowforUncollectRes.Text
+
+        lblTotLongTermLiabilitiesResult.Text = Financial.cleanMeUp(provider("Total Long Term Liabilities"))
+
+
+
+        'lblCashonHandResult.Text = If(provider("Cash on Hand and in Banks") IsNot Nothing, CDec(provider("Cash on Hand and in Banks")).ToString("N"), "N/A")
+        'lblCashonHandResult2.Text = lblCashonHandResult.Text
+
+        lblInventoryResult.Text = Financial.cleanMeUp(provider("Inventory"))
         lblInventoryResult2.Text = lblInventoryResult.Text
 
         lblAccountsRecievableResult.Text = If(provider("Accounts Receivable") IsNot Nothing, CDec(provider("Accounts Receivable")).ToString("N"), "N/A")
@@ -93,8 +116,14 @@ Public Class FinInd
 
         lblTotLongTermLiabilitiesResult.Text = Financial.cleanMeUp(provider("Total Long Term Liabilities"))
 
+        lblLeaseCostResult.Text = Financial.cleanMeUp(provider("Leasehold Improvements"))
 
-        ' lblInterestExpenseFinIndResult.Text = If(provider("Interest Expense") IsNot Nothing, CDec(provider("Interest Expense")).ToString("N"), "N/A")
+        lblNotesReceivableRes.Text = Financial.cleanMeUp(provider("Notes Receivable"))
+
+
+
+
+
 
 
 
@@ -133,5 +162,10 @@ Public Class FinInd
 
     Private Sub Label113_Click(sender As Object, e As EventArgs) Handles lblCashonHandResult2.Click
 
+    End Sub
+
+    Private Sub Button1_Click_1(sender As Object, e As EventArgs) Handles Button1.Click
+        Me.Hide()
+        Search.Show()
     End Sub
 End Class

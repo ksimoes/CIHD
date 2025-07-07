@@ -30,4 +30,13 @@
         Me.Hide()
         Outpatient.Show()
     End Sub
+
+    Private Sub Button1_Click_1(sender As Object, e As EventArgs) Handles Button1.Click
+        Me.Hide()
+        Search.Show()
+    End Sub
+
+    Private Sub Label14_Click(sender As Object, e As EventArgs) Handles Label14.Click
+
+    End Sub
 End Class
