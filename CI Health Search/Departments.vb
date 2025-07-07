@@ -1,5 +1,33 @@
-﻿Public Class Departments
+﻿Imports System.Security.Cryptography.X509Certificates
+Imports Newtonsoft.Json.Linq
+
+Public Class Departments
+    Public Sub ShowDepartmentsDataApi(cmsNum As String)
+        ' This method can be used to show departments data if needed
+        ' Currently, it does not perform any actions
+        Dim newURL As String = "https://data.cms.gov/provider-characteristics/hospitals-and-other-facilities/provider-of-services-file-hospital-non-hospital-facilities/data"
+        Dim filters As New List(Of String)
+        If Not String.IsNullOrEmpty(cmsNum) Then filters.Add("keyword=" & Uri.EscapeDataString(cmsNum))
+        'If Not String.IsNullOrEmpty(npi) Then filters.Add("keyword=" & Uri.EscapeDataString(npi))
+        newURL &= String.Join("&", filters)
+        filters.Add("size=1000")
+
+        Dim myArray As JArray = Profile.GetAPIArray(newURL)
+
+
+        If myArray.Count > 0 Then
+            ' Find the exact match for Provider CCN if possible
+            Dim provider = myArray.FirstOrDefault(Function(x) x("PRVDR_NUM") IsNot Nothing AndAlso x("PRVDR_NUM").ToString() = cmsNum)
+            If provider Is Nothing Then provider = myArray(0)
+        End If
+    End Sub
+
     Private Sub Departments_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        'ShowDepartmentsDataApi() 
+
+
+
+
 
     End Sub
 
