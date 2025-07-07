@@ -56,14 +56,21 @@ Public Class FinInd
         lblOtherExpenseResultFindInd.Text = If(provider("Total Other Expenses") IsNot Nothing, provider("Total Other Expenses").ToString(), "N/A")
 
         lblNetIncomeResult.Text = If(provider("Net Income") IsNot Nothing, CDec(provider("Net Income")).ToString("N"), "N/A")
+
         lblNetIncomeFinIndResult.Text = lblNetIncomeResult.Text
+        ' lblInterestExpenseFinIndResult.Text = Financial.cleanMeUp(provider("Interest Expense"))
+        lblInterestExpenseFinIndResult.Text = "Result"
+        lblDepAmortExpenseResult.Text = "Result"
+        lblLeaseCostResult.Text = Financial.cleanMeUp(provider("Leasehold Improvements"))
+        lblEbitResult.Text = (CDec(Financial.cleanMeUp(lblNetIncomeFinIndResult.Text, True)) + CDec(Financial.cleanMeUp(lblInterestExpenseFinIndResult.Text)) + CDec(Financial.cleanMeUp(lblDepAmortExpenseResult.Text, True) + CDec(Financial.cleanMeUp(lblLeaseCostResult.Text, True)))).ToString
+
         lblNetIncomeResult2.Text = lblNetIncomeResult.Text
-        lblDepreciationExpenseResultFinInd.Text = If(provider("Depreciation Cost") IsNot Nothing, CDec(provider("Depreciation Cost")).ToString("N"), "N/A")
+        lblDepreciationExpenseResultFinInd.Text = Financial.cleanMeUp(provider("Depreciation Cost"))
         lblDepreciationExpenseResultFinInd2.Text = lblDepreciationExpenseResultFinInd.Text
         lblDepreciationExpenseResultFinInd3.Text = lblDepreciationExpenseResultFinInd.Text
         lblDepreciationExpenseResultFinInd4.Text = lblDepreciationExpenseResultFinInd.Text
 
-        lblSalaryExpenseResult.Text = If(provider("Total Salaries (adjusted)") IsNot Nothing, CDec(provider("Total Salaries (adjusted)")).ToString("N"), "N/A")
+        lblSalaryExpenseResult.Text = Financial.cleanMeUp(provider("Total Salaries (adjusted)"))
 
         lblContractLaborResult.Text = If(provider("Contract Labor:Direct Patient Care") IsNot Nothing, CDec(provider("Contract Labor:Direct Patient Care")).ToString("N"), "N/A")
 
@@ -116,7 +123,7 @@ Public Class FinInd
 
 
 
-        ' lblInterestExpenseFinIndResult.Text = Financial.cleanMeUp(provider("Interest Expense"))
+
 
 
 

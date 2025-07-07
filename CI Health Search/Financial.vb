@@ -72,13 +72,17 @@ Public Class Financial
     End Function
 
 
-    Public Function cleanMeUp(strMydata As String) As String
-        If strMydata Is Nothing Or String.IsNullOrEmpty(strMydata) Or strMydata.Length = 0 Then
-            Return "N/A"
+    Public Function cleanMeUp(strMydata As String, Optional ByRef isNumber As Boolean = False) As String
+        If strMydata Is Nothing Or String.IsNullOrEmpty(strMydata) Or strMydata.Length = 0 Or strMydata = "Result" Then
+            If isNumber = True Then
+                Return 0
+            Else
+                Return "N/A"
+            End If
         Else
             Return CDec(strMydata).ToString("N")
         End If
-        Return String.IsNullOrEmpty(strMydata) Or strMydata.Length = 0 OrElse strMydata.Trim() = ""
+        'Return String.IsNullOrEmpty(strMydata) Or strMydata.Length = 0 OrElse strMydata.Trim() = ""
     End Function
     ' API-based financial data for non-TN/TX
     Public Async Function ShowFinancialDataApi(cmsNum As String) As Task
@@ -109,9 +113,9 @@ Public Class Financial
                     lblTotOtherIncomeResult.Text = If(provider("Total Other Income") IsNot Nothing, CDec(provider("Total Other Income")).ToString("N"), "N/A")
                     lblTotOtherExpensesResult.Text = If(provider("Total Other Expenses") IsNot Nothing, provider("Total Other Expenses").ToString(), "N/A")
                     lblNetIncomeResult.Text = If(provider("Net Income") IsNot Nothing, CDec(provider("Net Income")).ToString("N"), "N/A")
-                    lblDepreciationExpenseResult.Text = If(provider("Depreciation Cost") IsNot Nothing, CDec(provider("Depreciation Cost")).ToString("N"), "N/A")
-                    lblCcResult.Text = If(provider("Cost of Charity Care") IsNot Nothing, CDec(provider("Cost of Charity Care")).ToString("N"), "N/A")
-                    lblUncompResult.Text = If(provider("Total Bad Debt Expense") IsNot Nothing, CDec(provider("Total Bad Debt Expense")).ToString("N"), "N/A")
+                    lblDepreciationExpenseResult.Text = cleanMeUp(provider("Depreciation Cost"))
+                    lblCcResult.Text = cleanMeUp(provider("Cost of Charity Care"))
+                    lblUncompResult.Text = cleanMeUp(provider("Total Bad Debt Expense"))
                     lblTotUcResult.Text = If(provider("Cost of Uncompensated Care") IsNot Nothing, CDec(provider("Cost of Uncompensated Care")).ToString("N"), "N/A")
 
 

@@ -22,6 +22,7 @@ Partial Class FinInd
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        components = New ComponentModel.Container()
         btnOutpatientFinInd = New Button()
         btnInpatientFinInd = New Button()
         btnQualityFinInd = New Button()
@@ -108,7 +109,7 @@ Partial Class FinInd
         lblPedFinIndResult = New Label()
         lblNumMonthsFinIndResult = New Label()
         Label80 = New Label()
-        Label81 = New Label()
+        lblEbitResult = New Label()
         lblNetIncomeFinIndResult = New Label()
         lblInterestExpenseFinIndResult = New Label()
         lblDepAmortExpenseResult = New Label()
@@ -184,6 +185,8 @@ Partial Class FinInd
         lblTotLiabilitiesResult3 = New Label()
         Label78 = New Label()
         Button1 = New Button()
+        ToolTip1 = New ToolTip(components)
+        ToolTip2 = New ToolTip(components)
         SuspendLayout()
         ' 
         ' btnOutpatientFinInd
@@ -275,7 +278,8 @@ Partial Class FinInd
         Label4.Name = "Label4"
         Label4.Size = New Size(461, 15)
         Label4.TabIndex = 24
-        Label4.Text = "EDITBAR - (Earnings before Interest, Taxes, Depreciation, Amortization, and Rent)"
+        Label4.Text = "EBITDAR - (Earnings before Interest, Taxes, Depreciation, Amortization, and Rent)"
+        ToolTip1.SetToolTip(Label4, "net income + interest + depreciation and amortization + lease cost")
         ' 
         ' Label5
         ' 
@@ -978,14 +982,14 @@ Partial Class FinInd
         Label80.TabIndex = 103
         Label80.Text = "Result"
         ' 
-        ' Label81
+        ' lblEbitResult
         ' 
-        Label81.AutoSize = True
-        Label81.Location = New Point(490, 118)
-        Label81.Name = "Label81"
-        Label81.Size = New Size(39, 15)
-        Label81.TabIndex = 104
-        Label81.Text = "Result"
+        lblEbitResult.AutoSize = True
+        lblEbitResult.Location = New Point(490, 118)
+        lblEbitResult.Name = "lblEbitResult"
+        lblEbitResult.Size = New Size(39, 15)
+        lblEbitResult.TabIndex = 104
+        lblEbitResult.Text = "Result"
         ' 
         ' lblNetIncomeFinIndResult
         ' 
@@ -1742,7 +1746,7 @@ Partial Class FinInd
         Controls.Add(lblDepAmortExpenseResult)
         Controls.Add(lblInterestExpenseFinIndResult)
         Controls.Add(lblNetIncomeFinIndResult)
-        Controls.Add(Label81)
+        Controls.Add(lblEbitResult)
         Controls.Add(Label80)
         Controls.Add(lblNumMonthsFinIndResult)
         Controls.Add(lblPedFinIndResult)
@@ -1998,4 +2002,7 @@ Partial Class FinInd
     Friend WithEvents lblTotLiabilitiesResult3 As Label
     Friend WithEvents Label78 As Label
     Friend WithEvents Button1 As Button
+    Friend WithEvents lblEbitResult As Label
+    Friend WithEvents ToolTip1 As ToolTip
+    Friend WithEvents ToolTip2 As ToolTip
 End Class
