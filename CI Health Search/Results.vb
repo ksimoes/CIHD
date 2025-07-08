@@ -47,7 +47,15 @@
             Return
         End If
         retrieveProfile()
+        Profile.ShowProfile(SelectedHospital)
+        Hide()
+        Profile.Show()
     End Sub
+
+    Public Function GetSelectedHospital() As HospitalContext
+        retrieveProfile()
+        Return SelectedHospital
+    End Function
 
     Public Sub retrieveProfile()
         Dim selectedName As String = CheckedListBox1.SelectedItem.ToString().Trim()
@@ -102,9 +110,7 @@
 
             SelectedHospital.CMSNum = selectedRow(1)
 
-            Profile.ShowProfile(SelectedHospital)
-            Hide()
-            Profile.Show()
+
         End If
     End Sub
 
