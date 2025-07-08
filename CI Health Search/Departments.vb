@@ -57,7 +57,7 @@ Public Class Departments
 
     Private Sub Departments_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
-        ShowDepartmentsDataApi(Results.SelectedHospitalContext.CMSNum)
+        ShowDepartmentsDataApi(Results.SelectedHospital.CMSNum)
 
 
 

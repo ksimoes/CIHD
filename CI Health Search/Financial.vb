@@ -19,7 +19,7 @@ Public Class Financial
                 queryCharity = "SELECT * FROM tx.Charity WHERE id = @id"
             Case Else
                 ' For all other states, use API
-                Await ShowFinancialDataApi(Results.SelectedHospitalContext.CMSNum)
+                Await ShowFinancialDataApi(Results.SelectedHospital.CMSNum)
                 Exit Function
         End Select
 
@@ -72,18 +72,7 @@ Public Class Financial
     End Function
 
 
-    Public Function cleanMeUp(strMydata As String, Optional ByRef isNumber As Boolean = False) As String
-        If strMydata Is Nothing Or String.IsNullOrEmpty(strMydata) Or strMydata.Length = 0 Or strMydata = "Result" Then
-            If isNumber = True Then
-                Return 0
-            Else
-                Return "N/A"
-            End If
-        Else
-            Return CDec(strMydata).ToString("N")
-        End If
-        'Return String.IsNullOrEmpty(strMydata) Or strMydata.Length = 0 OrElse strMydata.Trim() = ""
-    End Function
+
     ' API-based financial data for non-TN/TX
     Public Async Function ShowFinancialDataApi(cmsNum As String) As Task
         strCMSnum = cmsNum
@@ -100,22 +89,22 @@ Public Class Financial
                     If provider Is Nothing Then provider = data(0)
 
                     lblPedResult.Text = If(provider("Fiscal Year End Date") IsNot Nothing, CDate(provider("Fiscal Year End Date")).ToString("MM/dd/yyyy"), "N/A")
-                    lblCurAssetResult.Text = cleanMeUp(provider("Total Current Assets"))
-                    lblFixAssetsResult.Text = cleanMeUp(provider("Total Fixed Assets"))
-                    lblOtherAssetsResult.Text = cleanMeUp(provider("Total Other Assets"))
-                    lblTotAssetsResult.Text = cleanMeUp(provider("Total Assets"))
-                    lblNetPatRevResult.Text = cleanMeUp(provider("Net Patient Revenue"))
-                    lblTotPatRevResult.Text = cleanMeUp(provider("Total Patient Revenue"))
-                    lblOutPatResult.Text = cleanMeUp(provider("Outpatient Revenue"))
-                    lblInpRevResult.Text = cleanMeUp(provider("Inpatient Revenue"))
+                    lblCurAssetResult.Text = Search.cleanMeUp(provider("Total Current Assets"))
+                    lblFixAssetsResult.Text = Search.cleanMeUp(provider("Total Fixed Assets"))
+                    lblOtherAssetsResult.Text = Search.cleanMeUp(provider("Total Other Assets"))
+                    lblTotAssetsResult.Text = Search.cleanMeUp(provider("Total Assets"))
+                    lblNetPatRevResult.Text = Search.cleanMeUp(provider("Net Patient Revenue"))
+                    lblTotPatRevResult.Text = Search.cleanMeUp(provider("Total Patient Revenue"))
+                    lblOutPatResult.Text = Search.cleanMeUp(provider("Outpatient Revenue"))
+                    lblInpRevResult.Text = Search.cleanMeUp(provider("Inpatient Revenue"))
                     lblTotOperatingExpenseResult.Text = If(provider("Less Total Operating Expense") IsNot Nothing, CDec(provider("Less Total Operating Expense")).ToString("N"), "N/A")
                     lblContractAllowanceResult.Text = If(provider("Less Contractual Allowance and Discounts on Patients' Account") IsNot Nothing, CDec(provider("Less Contractual Allowance and Discounts on Patients' Account")).ToString("N"), "N/A")
-                    lblTotOtherIncomeResult.Text = cleanMeUp(provider("Total Other Income"))
+                    lblTotOtherIncomeResult.Text = Search.cleanMeUp(provider("Total Other Income"))
                     lblTotOtherExpensesResult.Text = If(provider("Total Other Expenses") IsNot Nothing, provider("Total Other Expenses").ToString(), "N/A")
                     lblNetIncomeResult.Text = If(provider("Net Income") IsNot Nothing, CDec(provider("Net Income")).ToString("N"), "N/A")
-                    lblDepreciationExpenseResult.Text = cleanMeUp(provider("Depreciation Cost"))
-                    lblCcResult.Text = cleanMeUp(provider("Cost of Charity Care"))
-                    lblUncompResult.Text = cleanMeUp(provider("Total Bad Debt Expense"))
+                    lblDepreciationExpenseResult.Text = Search.cleanMeUp(provider("Depreciation Cost"))
+                    lblCcResult.Text = Search.cleanMeUp(provider("Cost of Charity Care"))
+                    lblUncompResult.Text = Search.cleanMeUp(provider("Total Bad Debt Expense"))
                     lblTotUcResult.Text = If(provider("Cost of Uncompensated Care") IsNot Nothing, CDec(provider("Cost of Uncompensated Care")).ToString("N"), "N/A")
 
 
@@ -181,12 +170,12 @@ Public Class Financial
 
     ' Automatically load data when the form loads
     Private Async Sub Financial_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        If Results.SelectedHospitalContext IsNot Nothing Then
-            Dim state = Results.SelectedHospitalContext.State
+        If Results.SelectedHospital IsNot Nothing Then
+            Dim state = Results.SelectedHospital.State
             If state = "TN" Or state = "TX" Then
-                Await ShowFinancialData(Results.SelectedHospitalContext.HospitalId, state)
+                Await ShowFinancialData(Results.SelectedHospital.HospitalId, state)
             Else
-                Await ShowFinancialDataApi(Results.SelectedHospitalContext.CMSNum)
+                Await ShowFinancialDataApi(Results.SelectedHospital.CMSNum)
             End If
         End If
     End Sub
@@ -197,7 +186,7 @@ Public Class Financial
 
     Private Sub btnProfileFinancial_Click(sender As Object, e As EventArgs) Handles btnProfileFinancial.Click
         Me.Hide()
-        Profile.ShowProfile(Results.SelectedHospitalContext.HospitalId, Results.SelectedHospitalContext.State, Results.SelectedHospitalContext.NPI, Results.SelectedHospitalContext.CMSNum)
+        Profile.ShowProfile(Results.SelectedHospital)
         Profile.Show()
     End Sub
 
