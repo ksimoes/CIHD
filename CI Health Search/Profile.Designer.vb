@@ -191,6 +191,7 @@ Partial Class Profile
         GroupBox1.Controls.Add(lblHospitalWeb)
         GroupBox1.Controls.Add(lblPhoneNum)
         GroupBox1.Controls.Add(lblNameAddress)
+        GroupBox1.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
         GroupBox1.Location = New Point(12, 2)
         GroupBox1.Name = "GroupBox1"
         GroupBox1.Size = New Size(349, 975)
@@ -241,6 +242,7 @@ Partial Class Profile
         ' lblMedicareCertifiedBedsResult
         ' 
         lblMedicareCertifiedBedsResult.AutoSize = True
+        lblMedicareCertifiedBedsResult.Font = New Font("Segoe UI", 9.0F)
         lblMedicareCertifiedBedsResult.Location = New Point(215, 911)
         lblMedicareCertifiedBedsResult.Name = "lblMedicareCertifiedBedsResult"
         lblMedicareCertifiedBedsResult.Size = New Size(39, 15)
@@ -250,6 +252,7 @@ Partial Class Profile
         ' lblCmsUrbRurDesigResult
         ' 
         lblCmsUrbRurDesigResult.AutoSize = True
+        lblCmsUrbRurDesigResult.Font = New Font("Segoe UI", 9.0F)
         lblCmsUrbRurDesigResult.Location = New Point(224, 882)
         lblCmsUrbRurDesigResult.Name = "lblCmsUrbRurDesigResult"
         lblCmsUrbRurDesigResult.Size = New Size(47, 15)
@@ -259,6 +262,7 @@ Partial Class Profile
         ' lblMedicareAdministrativeContractResult
         ' 
         lblMedicareAdministrativeContractResult.AutoSize = True
+        lblMedicareAdministrativeContractResult.Font = New Font("Segoe UI", 9.0F)
         lblMedicareAdministrativeContractResult.Location = New Point(224, 855)
         lblMedicareAdministrativeContractResult.Name = "lblMedicareAdministrativeContractResult"
         lblMedicareAdministrativeContractResult.Size = New Size(47, 15)
@@ -268,6 +272,7 @@ Partial Class Profile
         ' lblHelipadResult
         ' 
         lblHelipadResult.AutoSize = True
+        lblHelipadResult.Font = New Font("Segoe UI", 9.0F)
         lblHelipadResult.Location = New Point(172, 820)
         lblHelipadResult.Name = "lblHelipadResult"
         lblHelipadResult.Size = New Size(47, 15)
@@ -277,168 +282,187 @@ Partial Class Profile
         ' lblLatLongResult
         ' 
         lblLatLongResult.AutoSize = True
+        lblLatLongResult.Font = New Font("Microsoft Sans Serif", 8.25F)
         lblLatLongResult.Location = New Point(172, 776)
         lblLatLongResult.Name = "lblLatLongResult"
-        lblLatLongResult.Size = New Size(47, 15)
+        lblLatLongResult.Size = New Size(45, 13)
         lblLatLongResult.TabIndex = 72
         lblLatLongResult.Text = "Label20"
         ' 
         ' lblHealthCareSystemResult
         ' 
         lblHealthCareSystemResult.AutoSize = True
+        lblHealthCareSystemResult.Font = New Font("Microsoft Sans Serif", 8.25F)
         lblHealthCareSystemResult.Location = New Point(175, 403)
         lblHealthCareSystemResult.Name = "lblHealthCareSystemResult"
-        lblHealthCareSystemResult.Size = New Size(39, 15)
+        lblHealthCareSystemResult.Size = New Size(37, 13)
         lblHealthCareSystemResult.TabIndex = 72
         lblHealthCareSystemResult.Text = "Result"
         ' 
         ' lblCbsaResult
         ' 
         lblCbsaResult.AutoSize = True
+        lblCbsaResult.Font = New Font("Microsoft Sans Serif", 8.25F)
         lblCbsaResult.Location = New Point(172, 739)
         lblCbsaResult.Name = "lblCbsaResult"
-        lblCbsaResult.Size = New Size(47, 15)
+        lblCbsaResult.Size = New Size(45, 13)
         lblCbsaResult.TabIndex = 71
         lblCbsaResult.Text = "Label19"
         ' 
         ' lblCountyFipsResult
         ' 
         lblCountyFipsResult.AutoSize = True
+        lblCountyFipsResult.Font = New Font("Microsoft Sans Serif", 8.25F)
         lblCountyFipsResult.Location = New Point(170, 700)
         lblCountyFipsResult.Name = "lblCountyFipsResult"
-        lblCountyFipsResult.Size = New Size(47, 15)
+        lblCountyFipsResult.Size = New Size(45, 13)
         lblCountyFipsResult.TabIndex = 70
         lblCountyFipsResult.Text = "Label18"
         ' 
         ' lblTotalPatientRevenueResult
         ' 
         lblTotalPatientRevenueResult.AutoSize = True
+        lblTotalPatientRevenueResult.Font = New Font("Microsoft Sans Serif", 8.25F)
         lblTotalPatientRevenueResult.Location = New Point(175, 667)
         lblTotalPatientRevenueResult.Name = "lblTotalPatientRevenueResult"
-        lblTotalPatientRevenueResult.Size = New Size(39, 15)
+        lblTotalPatientRevenueResult.Size = New Size(37, 13)
         lblTotalPatientRevenueResult.TabIndex = 69
         lblTotalPatientRevenueResult.Text = "Result"
         ' 
         ' lblTotalPatientDaysResult
         ' 
         lblTotalPatientDaysResult.AutoSize = True
+        lblTotalPatientDaysResult.Font = New Font("Microsoft Sans Serif", 8.25F)
         lblTotalPatientDaysResult.Location = New Point(172, 629)
         lblTotalPatientDaysResult.Name = "lblTotalPatientDaysResult"
-        lblTotalPatientDaysResult.Size = New Size(47, 15)
+        lblTotalPatientDaysResult.Size = New Size(45, 13)
         lblTotalPatientDaysResult.TabIndex = 68
         lblTotalPatientDaysResult.Text = "Label16"
         ' 
         ' lblTotalDischargesResult
         ' 
         lblTotalDischargesResult.AutoSize = True
+        lblTotalDischargesResult.Font = New Font("Microsoft Sans Serif", 8.25F)
         lblTotalDischargesResult.Location = New Point(175, 594)
         lblTotalDischargesResult.Name = "lblTotalDischargesResult"
-        lblTotalDischargesResult.Size = New Size(47, 15)
+        lblTotalDischargesResult.Size = New Size(45, 13)
         lblTotalDischargesResult.TabIndex = 67
         lblTotalDischargesResult.Text = "Label15"
         ' 
         ' lblParticipates340BResult
         ' 
         lblParticipates340BResult.AutoSize = True
+        lblParticipates340BResult.Font = New Font("Microsoft Sans Serif", 8.25F)
         lblParticipates340BResult.Location = New Point(180, 339)
         lblParticipates340BResult.Name = "lblParticipates340BResult"
-        lblParticipates340BResult.Size = New Size(16, 15)
+        lblParticipates340BResult.Size = New Size(15, 13)
         lblParticipates340BResult.TabIndex = 65
         lblParticipates340BResult.Text = "N"
         ' 
         ' lblGeneralMedSurgBedsResult
         ' 
         lblGeneralMedSurgBedsResult.AutoSize = True
+        lblGeneralMedSurgBedsResult.Font = New Font("Microsoft Sans Serif", 8.25F)
         lblGeneralMedSurgBedsResult.Location = New Point(232, 488)
         lblGeneralMedSurgBedsResult.Name = "lblGeneralMedSurgBedsResult"
-        lblGeneralMedSurgBedsResult.Size = New Size(39, 15)
+        lblGeneralMedSurgBedsResult.Size = New Size(37, 13)
         lblGeneralMedSurgBedsResult.TabIndex = 65
         lblGeneralMedSurgBedsResult.Text = "Result"
         ' 
         ' lblMedicareDependentResult
         ' 
         lblMedicareDependentResult.AutoSize = True
+        lblMedicareDependentResult.Font = New Font("Microsoft Sans Serif", 8.25F)
         lblMedicareDependentResult.Location = New Point(180, 314)
         lblMedicareDependentResult.Name = "lblMedicareDependentResult"
-        lblMedicareDependentResult.Size = New Size(16, 15)
+        lblMedicareDependentResult.Size = New Size(15, 13)
         lblMedicareDependentResult.TabIndex = 64
         lblMedicareDependentResult.Text = "N"
         ' 
         ' lblLowVolumeResult
         ' 
         lblLowVolumeResult.AutoSize = True
+        lblLowVolumeResult.Font = New Font("Microsoft Sans Serif", 8.25F)
         lblLowVolumeResult.Location = New Point(162, 285)
         lblLowVolumeResult.Name = "lblLowVolumeResult"
-        lblLowVolumeResult.Size = New Size(16, 15)
+        lblLowVolumeResult.Size = New Size(15, 13)
         lblLowVolumeResult.TabIndex = 63
         lblLowVolumeResult.Text = "N"
         ' 
         ' lblTotalEmployeesResult
         ' 
         lblTotalEmployeesResult.AutoSize = True
+        lblTotalEmployeesResult.Font = New Font("Microsoft Sans Serif", 8.25F)
         lblTotalEmployeesResult.Location = New Point(175, 554)
         lblTotalEmployeesResult.Name = "lblTotalEmployeesResult"
-        lblTotalEmployeesResult.Size = New Size(41, 15)
+        lblTotalEmployeesResult.Size = New Size(39, 13)
         lblTotalEmployeesResult.TabIndex = 63
         lblTotalEmployeesResult.Text = "Label9"
         ' 
         ' lblRuralReferralResult
         ' 
         lblRuralReferralResult.AutoSize = True
+        lblRuralReferralResult.Font = New Font("Microsoft Sans Serif", 8.25F)
         lblRuralReferralResult.Location = New Point(159, 253)
         lblRuralReferralResult.Name = "lblRuralReferralResult"
-        lblRuralReferralResult.Size = New Size(16, 15)
+        lblRuralReferralResult.Size = New Size(15, 13)
         lblRuralReferralResult.TabIndex = 62
         lblRuralReferralResult.Text = "N"
         ' 
         ' lblTypeControlResult
         ' 
         lblTypeControlResult.AutoSize = True
+        lblTypeControlResult.Font = New Font("Microsoft Sans Serif", 8.25F)
         lblTypeControlResult.Location = New Point(175, 366)
         lblTypeControlResult.Name = "lblTypeControlResult"
-        lblTypeControlResult.Size = New Size(39, 15)
+        lblTypeControlResult.Size = New Size(37, 13)
         lblTypeControlResult.TabIndex = 62
         lblTypeControlResult.Text = "Result"
         ' 
         ' lblSoleCommunityHospitalResult
         ' 
         lblSoleCommunityHospitalResult.AutoSize = True
+        lblSoleCommunityHospitalResult.Font = New Font("Microsoft Sans Serif", 8.25F)
         lblSoleCommunityHospitalResult.Location = New Point(159, 223)
         lblSoleCommunityHospitalResult.Name = "lblSoleCommunityHospitalResult"
-        lblSoleCommunityHospitalResult.Size = New Size(16, 15)
+        lblSoleCommunityHospitalResult.Size = New Size(15, 13)
         lblSoleCommunityHospitalResult.TabIndex = 61
         lblSoleCommunityHospitalResult.Text = "N"
         ' 
         ' lblFacilityResult
         ' 
         lblFacilityResult.AutoSize = True
+        lblFacilityResult.Font = New Font("Microsoft Sans Serif", 8.25F)
         lblFacilityResult.Location = New Point(144, 189)
         lblFacilityResult.Name = "lblFacilityResult"
-        lblFacilityResult.Size = New Size(39, 15)
+        lblFacilityResult.Size = New Size(37, 13)
         lblFacilityResult.TabIndex = 60
         lblFacilityResult.Text = "Result"
         ' 
         ' lblOperatingStatusResult
         ' 
         lblOperatingStatusResult.AutoSize = True
+        lblOperatingStatusResult.Font = New Font("Microsoft Sans Serif", 8.25F)
         lblOperatingStatusResult.Location = New Point(144, 158)
         lblOperatingStatusResult.Name = "lblOperatingStatusResult"
-        lblOperatingStatusResult.Size = New Size(39, 15)
+        lblOperatingStatusResult.Size = New Size(37, 13)
         lblOperatingStatusResult.TabIndex = 59
         lblOperatingStatusResult.Text = "Result"
         ' 
         ' lblCmsCertNumProfileResult
         ' 
         lblCmsCertNumProfileResult.AutoSize = True
+        lblCmsCertNumProfileResult.Font = New Font("Microsoft Sans Serif", 8.25F)
         lblCmsCertNumProfileResult.Location = New Point(167, 135)
         lblCmsCertNumProfileResult.Name = "lblCmsCertNumProfileResult"
-        lblCmsCertNumProfileResult.Size = New Size(39, 15)
+        lblCmsCertNumProfileResult.Size = New Size(37, 13)
         lblCmsCertNumProfileResult.TabIndex = 58
         lblCmsCertNumProfileResult.Text = "Result"
         ' 
         ' lblPhoneNumResult
         ' 
         lblPhoneNumResult.AutoSize = True
+        lblPhoneNumResult.Font = New Font("Segoe UI", 9.0F)
         lblPhoneNumResult.Location = New Point(144, 85)
         lblPhoneNumResult.Name = "lblPhoneNumResult"
         lblPhoneNumResult.Size = New Size(39, 15)
@@ -568,19 +592,20 @@ Partial Class Profile
         ' lblGeneralMedSurgBeds
         ' 
         lblGeneralMedSurgBeds.AutoSize = True
-        lblGeneralMedSurgBeds.Font = New Font("Times New Roman", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        lblGeneralMedSurgBeds.Font = New Font("Microsoft Sans Serif", 8.25F)
         lblGeneralMedSurgBeds.Location = New Point(4, 488)
         lblGeneralMedSurgBeds.Name = "lblGeneralMedSurgBeds"
-        lblGeneralMedSurgBeds.Size = New Size(212, 15)
+        lblGeneralMedSurgBeds.Size = New Size(194, 13)
         lblGeneralMedSurgBeds.TabIndex = 44
         lblGeneralMedSurgBeds.Text = "General Med/Surg Beds + Special Care"
         ' 
         ' llSystemWebsite
         ' 
         llSystemWebsite.AutoSize = True
+        llSystemWebsite.Font = New Font("Microsoft Sans Serif", 8.25F)
         llSystemWebsite.Location = New Point(170, 440)
         llSystemWebsite.Name = "llSystemWebsite"
-        llSystemWebsite.Size = New Size(49, 15)
+        llSystemWebsite.Size = New Size(46, 13)
         llSystemWebsite.TabIndex = 43
         llSystemWebsite.TabStop = True
         llSystemWebsite.Text = "Website"
@@ -628,10 +653,10 @@ Partial Class Profile
         ' lblMedicareDependent
         ' 
         lblMedicareDependent.AutoSize = True
-        lblMedicareDependent.Font = New Font("Times New Roman", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        lblMedicareDependent.Font = New Font("Microsoft Sans Serif", 8.25F)
         lblMedicareDependent.Location = New Point(5, 314)
         lblMedicareDependent.Name = "lblMedicareDependent"
-        lblMedicareDependent.Size = New Size(167, 15)
+        lblMedicareDependent.Size = New Size(148, 13)
         lblMedicareDependent.TabIndex = 38
         lblMedicareDependent.Text = "Medicare Dependent Hospital"
         ' 
@@ -698,9 +723,10 @@ Partial Class Profile
         ' llHospitalWeb
         ' 
         llHospitalWeb.AutoSize = True
+        llHospitalWeb.Font = New Font("Microsoft Sans Serif", 8.25F)
         llHospitalWeb.Location = New Point(144, 107)
         llHospitalWeb.Name = "llHospitalWeb"
-        llHospitalWeb.Size = New Size(49, 15)
+        llHospitalWeb.Size = New Size(46, 13)
         llHospitalWeb.TabIndex = 31
         llHospitalWeb.TabStop = True
         llHospitalWeb.Text = "Website"
@@ -751,6 +777,7 @@ Partial Class Profile
         GroupBox2.Controls.Add(lblCio)
         GroupBox2.Controls.Add(lblCfo)
         GroupBox2.Controls.Add(lblCeoPres)
+        GroupBox2.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
         GroupBox2.Location = New Point(367, 2)
         GroupBox2.Name = "GroupBox2"
         GroupBox2.Size = New Size(341, 204)
@@ -761,6 +788,7 @@ Partial Class Profile
         ' lblPurchasingMatResult
         ' 
         lblPurchasingMatResult.AutoSize = True
+        lblPurchasingMatResult.Font = New Font("Segoe UI", 9.0F)
         lblPurchasingMatResult.Location = New Point(227, 174)
         lblPurchasingMatResult.Name = "lblPurchasingMatResult"
         lblPurchasingMatResult.Size = New Size(39, 15)
@@ -770,6 +798,7 @@ Partial Class Profile
         ' lblCooResult
         ' 
         lblCooResult.AutoSize = True
+        lblCooResult.Font = New Font("Segoe UI", 9.0F)
         lblCooResult.Location = New Point(227, 150)
         lblCooResult.Name = "lblCooResult"
         lblCooResult.Size = New Size(39, 15)
@@ -779,6 +808,7 @@ Partial Class Profile
         ' lblCnoResult
         ' 
         lblCnoResult.AutoSize = True
+        lblCnoResult.Font = New Font("Segoe UI", 9.0F)
         lblCnoResult.Location = New Point(227, 123)
         lblCnoResult.Name = "lblCnoResult"
         lblCnoResult.Size = New Size(39, 15)
@@ -788,6 +818,7 @@ Partial Class Profile
         ' lblCioResult
         ' 
         lblCioResult.AutoSize = True
+        lblCioResult.Font = New Font("Segoe UI", 9.0F)
         lblCioResult.Location = New Point(227, 74)
         lblCioResult.Name = "lblCioResult"
         lblCioResult.Size = New Size(39, 15)
@@ -797,6 +828,7 @@ Partial Class Profile
         ' lblCfoResult
         ' 
         lblCfoResult.AutoSize = True
+        lblCfoResult.Font = New Font("Segoe UI", 9.0F)
         lblCfoResult.Location = New Point(227, 44)
         lblCfoResult.Name = "lblCfoResult"
         lblCfoResult.Size = New Size(39, 15)
@@ -806,6 +838,7 @@ Partial Class Profile
         ' lblCmoResult
         ' 
         lblCmoResult.AutoSize = True
+        lblCmoResult.Font = New Font("Segoe UI", 9.0F)
         lblCmoResult.Location = New Point(227, 98)
         lblCmoResult.Name = "lblCmoResult"
         lblCmoResult.Size = New Size(39, 15)
@@ -815,6 +848,7 @@ Partial Class Profile
         ' lblCeoPresResult
         ' 
         lblCeoPresResult.AutoSize = True
+        lblCeoPresResult.Font = New Font("Segoe UI", 9.0F)
         lblCeoPresResult.Location = New Point(227, 19)
         lblCeoPresResult.Name = "lblCeoPresResult"
         lblCeoPresResult.Size = New Size(39, 15)
@@ -894,6 +928,7 @@ Partial Class Profile
         ' gbTax
         ' 
         gbTax.Controls.Add(DataGridView2)
+        gbTax.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
         gbTax.Location = New Point(367, 211)
         gbTax.Name = "gbTax"
         gbTax.Size = New Size(341, 160)
@@ -927,6 +962,7 @@ Partial Class Profile
         ' 
         ' gbGpo
         ' 
+        gbGpo.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
         gbGpo.Location = New Point(723, 109)
         gbGpo.Name = "gbGpo"
         gbGpo.Size = New Size(431, 110)
@@ -936,6 +972,7 @@ Partial Class Profile
         ' 
         ' gbBillingNpis
         ' 
+        gbBillingNpis.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
         gbBillingNpis.Location = New Point(367, 589)
         gbBillingNpis.Name = "gbBillingNpis"
         gbBillingNpis.Size = New Size(341, 85)
@@ -945,6 +982,7 @@ Partial Class Profile
         ' 
         ' gbAssociatedNpis
         ' 
+        gbAssociatedNpis.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
         gbAssociatedNpis.Location = New Point(723, 2)
         gbAssociatedNpis.Name = "gbAssociatedNpis"
         gbAssociatedNpis.Size = New Size(200, 100)
@@ -954,6 +992,7 @@ Partial Class Profile
         ' 
         ' gbComponents
         ' 
+        gbComponents.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
         gbComponents.Location = New Point(367, 507)
         gbComponents.Name = "gbComponents"
         gbComponents.Size = New Size(341, 76)
@@ -964,6 +1003,7 @@ Partial Class Profile
         ' gbBodGm
         ' 
         gbBodGm.Controls.Add(DataGridView3)
+        gbBodGm.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
         gbBodGm.Location = New Point(367, 381)
         gbBodGm.Name = "gbBodGm"
         gbBodGm.Size = New Size(341, 120)
@@ -997,6 +1037,7 @@ Partial Class Profile
         ' 
         ' gbAco
         ' 
+        gbAco.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
         gbAco.Location = New Point(723, 225)
         gbAco.Name = "gbAco"
         gbAco.Size = New Size(431, 100)
@@ -1006,6 +1047,7 @@ Partial Class Profile
         ' 
         ' gbEhr
         ' 
+        gbEhr.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
         gbEhr.Location = New Point(723, 331)
         gbEhr.Name = "gbEhr"
         gbEhr.Size = New Size(431, 100)
@@ -1015,6 +1057,7 @@ Partial Class Profile
         ' 
         ' gbUtalizationStatsbyPayor
         ' 
+        gbUtalizationStatsbyPayor.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
         gbUtalizationStatsbyPayor.Location = New Point(723, 454)
         gbUtalizationStatsbyPayor.Name = "gbUtalizationStatsbyPayor"
         gbUtalizationStatsbyPayor.Size = New Size(431, 100)
@@ -1024,6 +1067,7 @@ Partial Class Profile
         ' 
         ' gbHmoUtil
         ' 
+        gbHmoUtil.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
         gbHmoUtil.Location = New Point(723, 574)
         gbHmoUtil.Name = "gbHmoUtil"
         gbHmoUtil.Size = New Size(431, 100)
@@ -1033,6 +1077,7 @@ Partial Class Profile
         ' 
         ' gbJointCommissionAccredit
         ' 
+        gbJointCommissionAccredit.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
         gbJointCommissionAccredit.Location = New Point(1160, 297)
         gbJointCommissionAccredit.Name = "gbJointCommissionAccredit"
         gbJointCommissionAccredit.Size = New Size(386, 100)
@@ -1042,6 +1087,7 @@ Partial Class Profile
         ' 
         ' gbEstimatePatientVolumes
         ' 
+        gbEstimatePatientVolumes.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
         gbEstimatePatientVolumes.Location = New Point(1160, 50)
         gbEstimatePatientVolumes.Name = "gbEstimatePatientVolumes"
         gbEstimatePatientVolumes.Size = New Size(386, 125)
@@ -1051,6 +1097,7 @@ Partial Class Profile
         ' 
         ' gbClinicalServices
         ' 
+        gbClinicalServices.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
         gbClinicalServices.Location = New Point(1160, 181)
         gbClinicalServices.Name = "gbClinicalServices"
         gbClinicalServices.Size = New Size(386, 110)
@@ -1060,6 +1107,7 @@ Partial Class Profile
         ' 
         ' gbVerifiedTrauma
         ' 
+        gbVerifiedTrauma.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
         gbVerifiedTrauma.Location = New Point(1160, 405)
         gbVerifiedTrauma.Name = "gbVerifiedTrauma"
         gbVerifiedTrauma.Size = New Size(386, 100)
@@ -1069,6 +1117,7 @@ Partial Class Profile
         ' 
         ' gbUniversityAff
         ' 
+        gbUniversityAff.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
         gbUniversityAff.Location = New Point(1160, 511)
         gbUniversityAff.Name = "gbUniversityAff"
         gbUniversityAff.Size = New Size(386, 100)
@@ -1078,6 +1127,7 @@ Partial Class Profile
         ' 
         ' gbTeaching
         ' 
+        gbTeaching.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
         gbTeaching.Location = New Point(929, 2)
         gbTeaching.Name = "gbTeaching"
         gbTeaching.Size = New Size(225, 100)

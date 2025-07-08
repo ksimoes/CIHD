@@ -110,7 +110,7 @@ Public Class Financial
                     lblInpRevResult.Text = cleanMeUp(provider("Inpatient Revenue"))
                     lblTotOperatingExpenseResult.Text = If(provider("Less Total Operating Expense") IsNot Nothing, CDec(provider("Less Total Operating Expense")).ToString("N"), "N/A")
                     lblContractAllowanceResult.Text = If(provider("Less Contractual Allowance and Discounts on Patients' Account") IsNot Nothing, CDec(provider("Less Contractual Allowance and Discounts on Patients' Account")).ToString("N"), "N/A")
-                    lblTotOtherIncomeResult.Text = If(provider("Total Other Income") IsNot Nothing, CDec(provider("Total Other Income")).ToString("N"), "N/A")
+                    lblTotOtherIncomeResult.Text = cleanMeUp(provider("Total Other Income"))
                     lblTotOtherExpensesResult.Text = If(provider("Total Other Expenses") IsNot Nothing, provider("Total Other Expenses").ToString(), "N/A")
                     lblNetIncomeResult.Text = If(provider("Net Income") IsNot Nothing, CDec(provider("Net Income")).ToString("N"), "N/A")
                     lblDepreciationExpenseResult.Text = cleanMeUp(provider("Depreciation Cost"))

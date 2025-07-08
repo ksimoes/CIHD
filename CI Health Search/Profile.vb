@@ -59,7 +59,6 @@ Public Class Profile
     Public Async Function ShowApiProfileAsync(npi As String, cmsNum As String) As Task
         Dim apiUrl As String = "https://data.cms.gov/data-api/v1/dataset/8015f175-35cc-4cab-a664-b7c87d91a027/data?"
         Dim mainURL As String = "https://data.cms.gov/data-api/v1/dataset/8143cbc7-484f-438b-9dfa-2e81d5d6a1ed/data?"
-        ' Dim newURL As String = ""
         Dim filters As New List(Of String)
         If Not String.IsNullOrEmpty(cmsNum) Then filters.Add("keyword=" & Uri.EscapeDataString(cmsNum))
         If Not String.IsNullOrEmpty(npi) Then filters.Add("keyword=" & Uri.EscapeDataString(npi))
@@ -83,26 +82,25 @@ Public Class Profile
             If lblCountyFipsResult.Text.Equals("N/A") Then lblCountyFipsResult.Text = If(provider("County") IsNot Nothing, provider("County").ToString(), "N/A")
             lblCbsaResult.Text = If(provider("Medicare CBSA Number") IsNot Nothing, provider("Medicare CBSA Number").ToString(), "N/A")
             lblGeneralMedSurgBedsResult.Text = If(provider("Number of Beds") IsNot Nothing, provider("Number of Beds").ToString(), "N/A")
-            lblTotalEmployeesResult.Text = If(provider("FTE - Employees on Payroll") IsNot Nothing, provider("FTE - Employees on Payroll").ToString(), "N/A")
-            lblTotalDischargesResult.Text = If(provider("Hospital Total Discharges (V + XVIII + XIX + Unknown) For Adult & Peds") IsNot Nothing, provider("Hospital Total Discharges (V + XVIII + XIX + Unknown) For Adult & Peds").ToString(), "N/A")
-            lblTotalPatientRevenueResult.Text = If(provider("Total Patient Revenue") IsNot Nothing, CDec(provider("Total Patient Revenue")).ToString("N"), "N/A")
+            lblTotalEmployeesResult.Text = If(If(provider("FTE - Total Employees On Payroll") IsNot Nothing, provider("FTE - Total Employees On Payroll").ToString(), "N/A").Equals("N/A"), If(provider("FTE - Employees On Payroll") IsNot Nothing, provider("FTE - Employees On Payroll").ToString(), "N/A"), "N/A")
+            lblTotalDischargesResult.Text = If(provider("Total Discharges Title V") IsNot Nothing, provider("Total Discharges Title V").ToString(), "N/A")
+            lblTotalPatientRevenueResult.Text = If(provider("Total Patient Revenue") IsNot Nothing, provider("Total Patient Revenue").ToString(), "N/A")
             lblTypeControlResult.Text = If(provider("Type of Control") IsNot Nothing, provider("Type of Control").ToString(), "N/A")
-            lblTotalPatientDaysResult.Text = If(provider("Total Days (V + XVIII + XIX + Unknown)") IsNot Nothing, provider("Total Days (V + XVIII + XIX + Unknown)").ToString(), "N/A")
 
             lblCmsUrbRurDesigResult.Text = If(provider("Rural Versus Urban") IsNot Nothing, provider("Rural Versus Urban").ToString(), "N/A")
 
         Else
             lblCmsCertNumProfileResult.Text = "No result"
-            lblNameAddressResult.Text = "No result"
-            lbladdy.Text = "No result"
-            lblCountyFipsResult.Text = "No result"
-            lblCbsaResult.Text = "No result"
-            lblGeneralMedSurgBedsResult.Text = "No result"
-            lblTotalEmployeesResult.Text = "No result"
-            lblTotalDischargesResult.Text = "No result"
-            lblCmsUrbRurDesigResult.Text = "No result"
+                    lblNameAddressResult.Text = "No result"
+                    lbladdy.Text = "No result"
+                    lblCountyFipsResult.Text = "No result"
+                    lblCbsaResult.Text = "No result"
+                    lblGeneralMedSurgBedsResult.Text = "No result"
+                    lblTotalEmployeesResult.Text = "No result"
+                    lblTotalDischargesResult.Text = "No result"
+                    lblCmsUrbRurDesigResult.Text = "No result"
 
-        End If
+                End If
         'Else
         'lblCmsCertNumProfileResult.Text = "API error"
         'lblNameAddressResult.Text = "API error"
@@ -123,8 +121,7 @@ Public Class Profile
             If provider Is Nothing Then provider = dataobject(0)
             lblPhoneNumResult.Text = If(provider("PHNE_NUM") IsNot Nothing, provider("PHNE_NUM").ToString(), "N/A")
             lblCbsaResult.Text = If(provider("CBSA_CD") IsNot Nothing, provider("CBSA_CD").ToString(), "N/A")
-            lblMedicareCertifiedBedsResult.Text = Financial.cleanMeUp(provider("CRTFD_BED_CNT"))
-            lblZipCodeResult.Text = If(provider("ZIP_CD") IsNot Nothing, provider("ZIP_CD").ToString(), "N/A")
+            lblMedicareCertifiedBedsResult.Text = Financial.cleanMeUp(provider("MDCR_SNF_BED_CNT"))
         End If
 
 
@@ -180,14 +177,5 @@ Public Class Profile
 
     Private Sub lblPhoneNum_Click(sender As Object, e As EventArgs) Handles lblPhoneNum.Click
 
-    End Sub
-
-    Private Sub lblMedicareCertifiedBedsResult_Click(sender As Object, e As EventArgs) Handles lblMedicareCertifiedBedsResult.Click
-
-    End Sub
-
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-        Me.Hide()
-        Search.Show()
     End Sub
 End Class

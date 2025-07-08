@@ -44,25 +44,39 @@ Public Class FinInd
         lblTotOperatingRevResult5.Text = lblTotOperatingRevFinIndResult.Text
         lblTotOperatingRevResult6.Text = lblTotOperatingRevFinIndResult.Text
 
+        lblInventoryResult.Text = Financial.cleanMeUp(provider("Inventory"))
+        lblInventoryResult2.Text = lblInventoryResult.Text
+
+        lblAccountsRecievableResult.Text = Financial.cleanMeUp(provider("Accounts Receivable"))
+        lblAccountsRecievableResult2.Text = lblAccountsRecievableResult.Text
+
+        lblOtherExpenseResultFindInd.Text = Financial.cleanMeUp(provider("Total Other Expenses"))
+
+        lblTotLongTermLiabilitiesResult.Text = Financial.cleanMeUp(provider("Total Long Term Liabilities"))
+
+        lblLeaseCostResult.Text = Financial.cleanMeUp(provider("Leasehold Improvements"))
+
+        lblNotesReceivableRes.Text = Financial.cleanMeUp(provider("Notes Receivable"))
 
 
-        lblTotOperatingExpenseFinIndResult.Text = If(provider("Less Total Operating Expense") IsNot Nothing, CDec(provider("Less Total Operating Expense")).ToString("N"), "N/A")
+
+        lblTotOperatingExpenseFinIndResult.Text = Financial.cleanMeUp(provider("Less Total Operating Expense"))
         lblTotOperatingExpenseFinInd2.Text = lblTotOperatingExpenseFinIndResult.Text
         lblTotOperatingExpenseFinInd3.Text = lblTotOperatingExpenseFinIndResult.Text
         lblTotOperatingExpenseFinInd4.Text = lblTotOperatingExpenseFinIndResult.Text
         lblTotOperatingExpenseFinInd5.Text = lblTotOperatingExpenseFinIndResult.Text
 
 
-        lblOtherExpenseResultFindInd.Text = If(provider("Total Other Expenses") IsNot Nothing, provider("Total Other Expenses").ToString(), "N/A")
+        lblOtherExpenseResultFindInd.Text = Financial.cleanMeUp(provider("Total Other Expenses"))
 
-        lblNetIncomeResult.Text = If(provider("Net Income") IsNot Nothing, CDec(provider("Net Income")).ToString("N"), "N/A")
+        lblNetIncomeResult.Text = Financial.cleanMeUp(provider("Net Income"))
 
         lblNetIncomeFinIndResult.Text = lblNetIncomeResult.Text
         ' lblInterestExpenseFinIndResult.Text = Financial.cleanMeUp(provider("Interest Expense"))
         lblInterestExpenseFinIndResult.Text = "Result"
         lblDepAmortExpenseResult.Text = "Result"
         lblLeaseCostResult.Text = Financial.cleanMeUp(provider("Leasehold Improvements"))
-        lblEbitResult.Text = (CDec(Financial.cleanMeUp(lblNetIncomeFinIndResult.Text, True)) + CDec(Financial.cleanMeUp(lblInterestExpenseFinIndResult.Text)) + CDec(Financial.cleanMeUp(lblDepAmortExpenseResult.Text, True) + CDec(Financial.cleanMeUp(lblLeaseCostResult.Text, True)))).ToString
+        lblEbitResult.Text = (CDec(Financial.cleanMeUp(lblNetIncomeFinIndResult.Text, True)) + CDec(Financial.cleanMeUp(lblInterestExpenseFinIndResult.Text, True)) + CDec(Financial.cleanMeUp(lblDepAmortExpenseResult.Text, True)) + CDec(Financial.cleanMeUp(lblLeaseCostResult.Text, True))).ToString
 
         lblNetIncomeResult2.Text = lblNetIncomeResult.Text
         lblDepreciationExpenseResultFinInd.Text = Financial.cleanMeUp(provider("Depreciation Cost"))
@@ -87,14 +101,17 @@ Public Class FinInd
 
 
 
-        lblMarketSecuritiesResult.Text = Financial.cleanMeUp(provider("Temporary Investments"))
-        lblMarketSecuritiesResult2.Text = lblMarketSecuritiesResult.Text
 
-        lblInvestmentsResultFinInd.Text = Financial.cleanMeUp(provider("Investments"))
 
-        lblLeaseCostResult.Text = Financial.cleanMeUp(provider("Leasehold Improvements"))
 
-        lblNotesReceivableRes.Text = Financial.cleanMeUp(provider("Notes Receivable"))
+        ' lblMarketSecuritiesResult.Text = Financial.cleanMeUp(provider("Temporary Investments"))
+        ' lblMarketSecuritiesResult2.Text = lblMarketSecuritiesResult.Text
+
+        ' lblInvestmentsResultFinInd.Text = Financial.cleanMeUp(provider("Investments"))
+
+        'lblLeaseCostResult.Text = Financial.cleanMeUp(provider("Leasehold Improvements"))
+        '
+        'lblNotesReceivableRes.Text = Financial.cleanMeUp(provider("Notes Receivable"))
 
         lblAllowforUncollectRes.Text = Financial.cleanMeUp(provider("Less: Allowances for Uncollectible Notes and Accounts Receivable"))
         lblAllowforUncollectRes2.Text = lblAllowforUncollectRes.Text
@@ -106,19 +123,19 @@ Public Class FinInd
         'lblCashonHandResult.Text = If(provider("Cash on Hand and in Banks") IsNot Nothing, CDec(provider("Cash on Hand and in Banks")).ToString("N"), "N/A")
         'lblCashonHandResult2.Text = lblCashonHandResult.Text
 
-        lblInventoryResult.Text = Financial.cleanMeUp(provider("Inventory"))
-        lblInventoryResult2.Text = lblInventoryResult.Text
+        'lblInventoryResult.Text = Financial.cleanMeUp(provider("Inventory"))
+        'lblInventoryResult2.Text = lblInventoryResult.Text
 
-        lblAccountsRecievableResult.Text = If(provider("Accounts Receivable") IsNot Nothing, CDec(provider("Accounts Receivable")).ToString("N"), "N/A")
-        lblAccountsRecievableResult2.Text = lblAccountsRecievableResult.Text
+        'lblAccountsRecievableResult.Text = If(provider("Accounts Receivable") IsNot Nothing, CDec(provider("Accounts Receivable")).ToString("N"), "N/A")
+        'lblAccountsRecievableResult2.Text = lblAccountsRecievableResult.Text
 
-        lblOtherExpenseResultFindInd.Text = If(provider("Total Other Expenses") IsNot Nothing, CDec(provider("Total Other Expenses")).ToString("N"), "N/A")
+        'lblOtherExpenseResultFindInd.Text = If(provider("Total Other Expenses") IsNot Nothing, CDec(provider("Total Other Expenses")).ToString("N"), "N/A")
 
-        lblTotLongTermLiabilitiesResult.Text = Financial.cleanMeUp(provider("Total Long Term Liabilities"))
+        'lblTotLongTermLiabilitiesResult.Text = Financial.cleanMeUp(provider("Total Long Term Liabilities"))
 
-        lblLeaseCostResult.Text = Financial.cleanMeUp(provider("Leasehold Improvements"))
+        'lblLeaseCostResult.Text = Financial.cleanMeUp(provider("Leasehold Improvements"))
 
-        lblNotesReceivableRes.Text = Financial.cleanMeUp(provider("Notes Receivable"))
+        'lblNotesReceivableRes.Text = Financial.cleanMeUp(provider("Notes Receivable"))
 
 
 
