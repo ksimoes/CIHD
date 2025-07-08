@@ -90,7 +90,7 @@ Public Class Profile
             lblTotalEmployeesResult.Text = foundHosp.NumOfEmployees
             lblTotalDischargesResult.Text = foundHosp.TotalDischarges.ToString()
             lblCmsUrbRurDesigResult.Text = foundHosp.RuralOUrban
-
+            lblZipCodeResult.Text = foundHosp.Zip
 
             'lblCbsaResult.Text = If(provider("Medicare CBSA Number") IsNot Nothing, provider("Medicare CBSA Number").ToString(), "N/A")
             'lblGeneralMedSurgBedsResult.Text = If(provider("Number of Beds") IsNot Nothing, provider("Number of Beds").ToString(), "N/A")
