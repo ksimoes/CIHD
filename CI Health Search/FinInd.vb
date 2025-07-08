@@ -22,15 +22,23 @@ Public Class FinInd
         ' Find the exact match for Provider CCN if possible
 
 
+
+
+        'Fiscal Year End Date
         lblPedFinIndResult.Text = If(provider("Fiscal Year End Date") IsNot Nothing, CDate(provider("Fiscal Year End Date")).ToString("MM/dd/yyyy"), "N/A")
+
+        'Total Current Assets
         lblTotCurrentAssetsResult.Text = Search.CleanMeUp(provider("Total Current Assets"))
         lblTotCurrentAssetsResult2.Text = lblTotCurrentAssetsResult.Text
+
+        'Total Assets
         lblTotAssetsResult.Text = Search.CleanMeUp(provider("Total Assets"))
         lblTotAssetsResult2.Text = lblTotAssetsResult.Text
         lblTotAssetsResult3.Text = lblTotAssetsResult.Text
         lblTotAssetsResult4.Text = lblTotAssetsResult.Text
         lblTotAssetsResult5.Text = lblTotAssetsResult.Text
 
+        'Total Operating Revenue
         lblTotOperatingRevFinIndResult.Text = Search.CleanMeUp(provider("Net Patient Revenue"))
         lblTotOperatingRevenueFinInd2.Text = lblTotOperatingRevFinIndResult.Text
         lblTotOperatingRevResult3.Text = lblTotOperatingRevFinIndResult.Text
@@ -38,98 +46,100 @@ Public Class FinInd
         lblTotOperatingRevResult5.Text = lblTotOperatingRevFinIndResult.Text
         lblTotOperatingRevResult6.Text = lblTotOperatingRevFinIndResult.Text
 
+        'Total Inventory
         lblInventoryResult.Text = Search.CleanMeUp(provider("Inventory"))
         lblInventoryResult2.Text = lblInventoryResult.Text
 
+        'Accounts Recievable
         lblAccountsRecievableResult.Text = Search.CleanMeUp(provider("Accounts Receivable"))
         lblAccountsRecievableResult2.Text = lblAccountsRecievableResult.Text
 
+        'Other Expenses
         lblOtherExpenseResultFindInd.Text = Search.CleanMeUp(provider("Total Other Expenses"))
 
+        'Total Long Term Liabilities
         lblTotLongTermLiabilitiesResult.Text = Search.CleanMeUp(provider("Total Long Term Liabilities"))
 
+        'Lease Cost
         lblLeaseCostResult.Text = Search.CleanMeUp(provider("Leasehold Improvements"))
 
+        'Notes Receivable
         lblNotesReceivableRes.Text = Search.CleanMeUp(provider("Notes Receivable"))
 
+        'Total Liabilities
+        lblTotLiabilitiesResult.Text = Search.CleanMeUp(provider("Total Liabilities"))
+        lblTotLiabilitiesResult2.Text = lblTotLiabilitiesResult.Text
+        lblTotLiabilitiesResult3.Text = lblTotLiabilitiesResult.Text
+
+        'Cash on Hand
+        lblCashonHandResult.Text = Search.CleanMeUp(provider("Cash on Hand and in Banks"))
+        lblCashonHandResult2.Text = lblCashonHandResult.Text
+
+        'Total Current Liabilities
+        lblTotCurrentLiabilitiesResult.Text = Search.CleanMeUp(provider("Total Current Liabilities"))
+        lblTotCurrentLiabilitesResult2.Text = lblTotCurrentLiabilitiesResult.Text
+        lblTotCurrentLiabilitesResult3.Text = lblTotCurrentLiabilitiesResult.Text
 
 
+        'Total Operating Expense
         lblTotOperatingExpenseFinIndResult.Text = Search.CleanMeUp(provider("Less Total Operating Expense"))
         lblTotOperatingExpenseFinInd2.Text = lblTotOperatingExpenseFinIndResult.Text
         lblTotOperatingExpenseFinInd3.Text = lblTotOperatingExpenseFinIndResult.Text
         lblTotOperatingExpenseFinInd4.Text = lblTotOperatingExpenseFinIndResult.Text
         lblTotOperatingExpenseFinInd5.Text = lblTotOperatingExpenseFinIndResult.Text
 
-
-        lblOtherExpenseResultFindInd.Text = Search.CleanMeUp(provider("Total Other Expenses"))
-
+        'Net Income
         lblNetIncomeResult.Text = Search.CleanMeUp(provider("Net Income"))
-
         lblNetIncomeFinIndResult.Text = lblNetIncomeResult.Text
+        lblNetIncomeResult2.Text = lblNetIncomeResult.Text
         ' lblInterestExpenseFinIndResult.Text = Search.CleanMeUp(provider("Interest Expense"))
+
+
+
+
+
         lblInterestExpenseFinIndResult.Text = "Result"
         lblDepAmortExpenseResult.Text = "Result"
-        lblLeaseCostResult.Text = Search.CleanMeUp(provider("Leasehold Improvements"))
-        lblEbitResult.Text = (CDec(Search.CleanMeUp(lblNetIncomeFinIndResult.Text, True)) + CDec(Search.CleanMeUp(lblInterestExpenseFinIndResult.Text, True)) + CDec(Search.CleanMeUp(lblDepAmortExpenseResult.Text, True)) + CDec(Search.CleanMeUp(lblLeaseCostResult.Text, True))).ToString
 
-        lblNetIncomeResult2.Text = lblNetIncomeResult.Text
+
+        'EBITDAR (earnings before interest, taxes, depreciation, amortization, and rent)
+        lblEbitResult.Text = (CDec(Search.CleanMeUp(lblNetIncomeFinIndResult.Text, True)) + CDec(Search.CleanMeUp(lblInterestExpenseFinIndResult.Text, True)) + CDec(Search.CleanMeUp(lblDepAmortExpenseResult.Text, True)) + CDec(Search.CleanMeUp(lblLeaseCostResult.Text, True))).ToString
+        'Operating Margin
+        lblOperatingMarginFinIndResult.Text = (CDec(Search.CleanMeUp(lblTotOperatingRevFinIndResult.Text, True)) - CDec(Search.CleanMeUp(lblTotOperatingExpenseFinIndResult.Text, True)) / CDec(Search.CleanMeUp(lblTotOperatingRevFinIndResult.Text, True))) * 100
+        '''Excess Margin (need non operating revenue)
+        '(need non operating rev) lblExcessMarginResult.Text = (CDec(Search.cleanMeUp(lblTotOperatingRevFinIndResult.Text, True)) - CDec(Search.cleanMeUp(lblTotOperatingExpenseFinIndResult.Text, True)) - CDec(Search.cleanMeUp(lblOtherExpenseResultFindInd.Text, True))) / CDec(Search.cleanMeUp(lblTotOperatingRevFinIndResult.Text, True)) * 100)))
+
+        'ROE (Return on Equity)
+        lblROEResult.Text = ((CDec(Search.CleanMeUp(lblNetIncomeFinIndResult.Text, True)) / ((CDec(Search.CleanMeUp(lblTotAssetsResult.Text, True)) - (CDec(Search.CleanMeUp(lblTotLiabilitiesResult.Text, True)))))) * 100).ToString("N2") & "%"
+        'ROA (Return on Assets)
+        lblRoaResult.Text = ((CDec(Search.CleanMeUp(lblNetIncomeFinIndResult.Text, True)) / CDec(Search.CleanMeUp(lblTotAssetsResult.Text, True))) * 100).ToString("N2") & "%"
+        'Current Ratio
+        lblCurrentRatioResult.Text = ((CDec(Search.CleanMeUp(lblTotCurrentAssetsResult.Text, True)) / CDec(Search.CleanMeUp(lblTotCurrentLiabilitiesResult.Text, True))))
+        ''Quick Ratio
+        lblQuickRatioResult.Text = ((CDec(Search.CleanMeUp(lblTotCurrentAssetsResult.Text, True)) - CDec(Search.CleanMeUp(lblInventoryResult.Text, True))) / CDec(Search.CleanMeUp(lblTotCurrentLiabilitiesResult.Text, True))).ToString("N2")
+        'Long Term Debt to Net Assets Ratio
+        lblLtdtnaResult.Text = ((CDec(Search.CleanMeUp(lblTotLongTermLiabilitiesResult.Text, True)) / (CDec(Search.CleanMeUp(lblTotAssetsResult.Text, True) - CDec(Search.CleanMeUp(lblTotLiabilitiesResult.Text)))).ToString("N2")))
+        'Total Debt to Net Assets Ratio
+        lblTdtna.Text = ((CDec(Search.CleanMeUp(lblTotLiabilitiesResult.Text, True)) / (CDec(Search.CleanMeUp(lblTotAssetsResult.Text, True) - CDec(Search.CleanMeUp(lblTotLiabilitiesResult.Text))).ToString("N2"))))
+
+        'Depreciation Expense
         lblDepreciationExpenseResultFinInd.Text = Search.CleanMeUp(provider("Depreciation Cost"))
         lblDepreciationExpenseResultFinInd2.Text = lblDepreciationExpenseResultFinInd.Text
         lblDepreciationExpenseResultFinInd3.Text = lblDepreciationExpenseResultFinInd.Text
         lblDepreciationExpenseResultFinInd4.Text = lblDepreciationExpenseResultFinInd.Text
 
+        'Salary Expense
         lblSalaryExpenseResult.Text = Search.CleanMeUp(provider("Total Salaries (adjusted)"))
-
+        'comtract labor
         lblContractLaborResult.Text = If(provider("Contract Labor:Direct Patient Care") IsNot Nothing, CDec(provider("Contract Labor:Direct Patient Care")).ToString("N"), "N/A")
-
-        lblTotLiabilitiesResult.Text = Search.CleanMeUp(provider("Total Liabilities"))
-        lblTotLiabilitiesResult2.Text = lblTotLiabilitiesResult.Text
-        lblTotLiabilitiesResult3.Text = lblTotLiabilitiesResult.Text
-
-        lblCashonHandResult.Text = Search.CleanMeUp(provider("Cash on Hand and in Banks"))
-        lblCashonHandResult2.Text = lblCashonHandResult.Text
-
-        lblTotCurrentLiabilitiesResult.Text = Search.CleanMeUp(provider("Total Current Liabilities"))
-        lblTotCurrentLiabilitesResult2.Text = lblTotCurrentLiabilitiesResult.Text
-        lblTotCurrentLiabilitesResult3.Text = lblTotCurrentLiabilitiesResult.Text
-
-
-
-
-
-
-        ' lblMarketSecuritiesResult.Text = Search.CleanMeUp(provider("Temporary Investments"))
-        ' lblMarketSecuritiesResult2.Text = lblMarketSecuritiesResult.Text
-
-        ' lblInvestmentsResultFinInd.Text = Search.CleanMeUp(provider("Investments"))
-
-        'lblLeaseCostResult.Text = Search.CleanMeUp(provider("Leasehold Improvements"))
-        '
-        'lblNotesReceivableRes.Text = Search.CleanMeUp(provider("Notes Receivable"))
-
+        'Allowances for Uncollectible Notes and Accounts Receivable
         lblAllowforUncollectRes.Text = Search.CleanMeUp(provider("Less: Allowances for Uncollectible Notes and Accounts Receivable"))
         lblAllowforUncollectRes2.Text = lblAllowforUncollectRes.Text
 
-        lblTotLongTermLiabilitiesResult.Text = Search.CleanMeUp(provider("Total Long Term Liabilities"))
 
 
 
-        'lblCashonHandResult.Text = If(provider("Cash on Hand and in Banks") IsNot Nothing, CDec(provider("Cash on Hand and in Banks")).ToString("N"), "N/A")
-        'lblCashonHandResult2.Text = lblCashonHandResult.Text
 
-        'lblInventoryResult.Text = Search.CleanMeUp(provider("Inventory"))
-        'lblInventoryResult2.Text = lblInventoryResult.Text
-
-        'lblAccountsRecievableResult.Text = If(provider("Accounts Receivable") IsNot Nothing, CDec(provider("Accounts Receivable")).ToString("N"), "N/A")
-        'lblAccountsRecievableResult2.Text = lblAccountsRecievableResult.Text
-
-        'lblOtherExpenseResultFindInd.Text = If(provider("Total Other Expenses") IsNot Nothing, CDec(provider("Total Other Expenses")).ToString("N"), "N/A")
-
-        'lblTotLongTermLiabilitiesResult.Text = Search.CleanMeUp(provider("Total Long Term Liabilities"))
-
-        'lblLeaseCostResult.Text = Search.CleanMeUp(provider("Leasehold Improvements"))
-
-        'lblNotesReceivableRes.Text = Search.CleanMeUp(provider("Notes Receivable"))
 
 
 
