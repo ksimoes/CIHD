@@ -4,7 +4,7 @@
     Private resultsTable As DataTable
     Public strCMSnum As String
     ' Shared context for selected hospital
-    Public Shared SelectedHospitalContext As New HospitalContext()
+    Public Shared SelectedHospital As New HospitalContext()
 
     ' Call this from Search form to set and display results
     Public Sub SetResults(dt As DataTable)
@@ -41,12 +41,15 @@
     End Sub
 
     ' Profile button click
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+    Private Async Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         If CheckedListBox1.SelectedIndex = -1 Then
             MessageBox.Show("Select a hospital first.")
             Return
         End If
+        retrieveProfile()
+    End Sub
 
+    Public Sub retrieveProfile()
         Dim selectedName As String = CheckedListBox1.SelectedItem.ToString().Trim()
         Dim selectedRow As DataRow = Nothing
 
@@ -55,10 +58,22 @@
             selectedRow = resultsTable.Select($"[Facility Name] = '{selectedName.Replace("'", "''")}'").FirstOrDefault()
         ElseIf resultsTable.Columns.Contains("Hospital Name") Then
             selectedRow = resultsTable.Select($"[Hospital Name] = '{selectedName.Replace("'", "''")}'").FirstOrDefault()
-            SelectedHospitalContext.CMSNum = selectedRow(1)
-            SelectedHospitalContext.State = selectedRow(5)
-            SelectedHospitalContext.Name = selectedRow(2)
-
+            SelectedHospital.CMSNum = Search.CleanMeUp(selectedRow(1))
+            SelectedHospital.State = selectedRow(5)
+            SelectedHospital.Name = Search.CleanMeUp(selectedRow(2))
+            SelectedHospital.Address = Search.CleanMeUp(selectedRow(3))
+            SelectedHospital.City = Search.CleanMeUp(selectedRow(4))
+            SelectedHospital.CBSAnum = Search.CleanMeUp(selectedRow(8))
+            SelectedHospital.TotalDays = Search.CleanMeUp(selectedRow(20), True)
+            SelectedHospital.FacilityType = Search.CleanMeUp(selectedRow(10))
+            SelectedHospital.NumOfBeds = Search.CleanMeUp(selectedRow(21), True)
+            SelectedHospital.NumOfEmployees = Search.CleanMeUp(selectedRow(15))
+            SelectedHospital.TotalDischarges = Search.CleanMeUp(selectedRow(26), True)
+            SelectedHospital.TotalPatientRev = Search.CleanMeUp(selectedRow(105), True)
+            SelectedHospital.NetPatientRev = Search.CleanMeUp(selectedRow(107), True)
+            SelectedHospital.RuralOUrban = Search.CleanMeUp(selectedRow(9))
+            SelectedHospital.charityCost = Search.CleanMeUp(selectedRow(38),True)
+            SelectedHospital.uncompensatedCost = Search.CleanMeUp(selectedRow(40), True)
         End If
 
         If selectedRow IsNot Nothing Then
@@ -70,24 +85,24 @@
             Dim npi As String = If(resultsTable.Columns.Contains("NPI"), selectedRow("NPI").ToString(), "")
             Dim cmsNum As String = If(resultsTable.Columns.Contains("CMSNum"), selectedRow("CMSNum").ToString(), "")
 
-            'SelectedHospitalContext.HospitalId = hospitalId
+            'SelectedHospital.HospitalId = hospitalId
 
 
             If (resultsTable.Columns.Count < 6) Then
-                SelectedHospitalContext.State = selectedRow(2)
-                SelectedHospitalContext.HospitalId = selectedRow(0)
-                SelectedHospitalContext.CMSNum = selectedRow(3)
+                SelectedHospital.State = selectedRow(2)
+                SelectedHospital.HospitalId = selectedRow(0)
+                SelectedHospital.CMSNum = selectedRow(3)
 
             Else
-                SelectedHospitalContext.State = selectedRow(5)
-                SelectedHospitalContext.HospitalId = selectedRow(1)
-                SelectedHospitalContext.CMSNum = cmsNum
+                SelectedHospital.State = selectedRow(5)
+                SelectedHospital.HospitalId = selectedRow(1)
+                SelectedHospital.CMSNum = cmsNum
             End If
 
 
-            SelectedHospitalContext.CMSNum = selectedRow(1)
+            SelectedHospital.CMSNum = selectedRow(1)
 
-            Profile.ShowProfile(SelectedHospitalContext.HospitalId, SelectedHospitalContext.State, npi, SelectedHospitalContext.CMSNum)
+            Profile.ShowProfile(SelectedHospital)
             Hide()
             Profile.Show()
         End If

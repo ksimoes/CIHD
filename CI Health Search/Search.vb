@@ -5,6 +5,7 @@ Imports Newtonsoft.Json.Linq
 
 Public Class Search
     Private connectionString As String = "Data Source=cihg-sql1.database.windows.net;Initial Catalog=CIHData;User ID=cihgadmin;Password=P!bxbFrHw4-jCvU*;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+    Public Shared SearchHospital As New HospitalContext()
 
     Public Function useSQL(ByRef selectedState As String) As Boolean
         ' Determine if SQL should be used based on the selected state
@@ -18,7 +19,38 @@ Public Class Search
         End Using
     End Function
 
+    Private Sub SetupHospProfile()
+        SearchHospital.CMSNum = VerifiySearch(txtCmsCertNumDemoAll)
+        SearchHospital.State = If(lbStateAll.SelectedItem IsNot Nothing, lbStateAll.SelectedItem.ToString().Trim(), "")
+        SearchHospital.Name = VerifiySearch(txtHospitalNameAll)
+        SearchHospital.City = VerifiySearch(txtCityAll)
+        SearchHospital.Zip = VerifiySearch(txtZipCodeDemoAll)
+        SearchHospital.Phone = VerifiySearch(txtAreaCodeAll)
+        SearchHospital.NPI = VerifiySearch(txtNpiAll)
+    End Sub
 
+    Public Function VerifiySearch(txtSearched As TextBox) As String
+        If (txtSearched.Text IsNot Nothing) Or txtSearched.Text.Length > 0 Then
+            Return txtSearched.Text.Trim()
+        Else
+            Return Nothing
+        End If
+    End Function
+
+    Public Function CleanMeUp(strMydata As String, Optional ByRef isNumber As Boolean = False) As String
+        If strMydata Is Nothing Or String.IsNullOrEmpty(strMydata) Or strMydata.Length = 0 Or strMydata = "Result" Then
+            If isNumber = True Then
+                Return 0
+            Else
+                Return "N/A"
+            End If
+        ElseIf isNumber = True Then
+            Return CDec(strMydata).ToString("N")
+        Else
+            Return strMydata.ToString
+        End If
+        'Return String.IsNullOrEmpty(strMydata) Or strMydata.Length = 0 OrElse strMydata.Trim() = ""
+    End Function
 
     Private Async Sub btnSearchAll_Click(sender As Object, e As EventArgs) Handles btnSearchAll.Click
         ' Declare filters and parameters at the top so they are always in scope
@@ -111,7 +143,7 @@ Public Class Search
 
         apiUrl &= String.Join("&", filters)
 
-        MessageBox.Show(apiUrl) ' For debugging
+        'MessageBox.Show(apiUrl) ' For debugging
 
         Using client As New HttpClient()
             Dim response As HttpResponseMessage = Await client.GetAsync(apiUrl)
@@ -176,6 +208,17 @@ Public Class Search
 
 
     End Sub
+
+    Public Function GetAPIArray(strAPIurl As String) As JArray
+        Dim client As New HttpClient()
+        Dim response As HttpResponseMessage = client.GetAsync(strAPIurl).Result
+        If response.IsSuccessStatusCode Then
+            Dim jsonString As String = response.Content.ReadAsStringAsync().Result
+            Return JArray.Parse(jsonString)
+        Else
+            Throw New Exception("API call failed with status: " & response.StatusCode.ToString())
+        End If
+    End Function
 
     Private Sub Search_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
