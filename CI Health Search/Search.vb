@@ -38,7 +38,16 @@ Public Class Search
     End Function
 
     Public Function CleanMeUp(strMydata As String, Optional ByRef isNumber As Boolean = False) As String
-        If strMydata Is Nothing Or String.IsNullOrEmpty(strMydata) Or strMydata.Length = 0 Or strMydata = "Result" Then
+        If strMydata Is Nothing Then
+            Select Case isNumber
+                Case True
+                    Return 0
+                Case False
+                    Return "N/A"
+            End Select
+            Return ""
+        End If
+        If (strMydata Is Nothing) Or String.IsNullOrEmpty(strMydata) Or strMydata.Length = 0 Or strMydata = "Result" Then
             If isNumber = True Then
                 Return 0
             Else

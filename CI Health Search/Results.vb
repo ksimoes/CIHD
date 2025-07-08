@@ -72,7 +72,7 @@
             SelectedHospital.TotalPatientRev = Search.CleanMeUp(selectedRow(105), True)
             SelectedHospital.NetPatientRev = Search.CleanMeUp(selectedRow(107), True)
             SelectedHospital.RuralOUrban = Search.CleanMeUp(selectedRow(9))
-            SelectedHospital.charityCost = Search.CleanMeUp(selectedRow(38),True)
+            SelectedHospital.charityCost = Search.CleanMeUp(selectedRow(38), True)
             SelectedHospital.uncompensatedCost = Search.CleanMeUp(selectedRow(40), True)
         End If
 
