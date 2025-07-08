@@ -69,6 +69,20 @@ Public Class FinInd
 
         lblOtherExpenseResultFindInd.Text = Financial.cleanMeUp(provider("Total Other Expenses"))
 
+        lblTotLiabilitiesResult.Text = Financial.cleanMeUp(provider("Total Liabilities"))
+        lblTotLiabilitiesResult2.Text = lblTotLiabilitiesResult.Text
+        lblTotLiabilitiesResult3.Text = lblTotLiabilitiesResult.Text
+
+        lblTotCurrentLiabilitiesResult.Text = Financial.cleanMeUp(provider("Total Current Liabilities"))
+        lblTotCurrentLiabilitesResult2.Text = lblTotCurrentLiabilitiesResult.Text
+        lblTotCurrentLiabilitesResult3.Text = lblTotCurrentLiabilitiesResult.Text
+
+        lblMarketSecuritiesResult.Text = Financial.cleanMeUp(provider("Temporary Investments"))
+        lblMarketSecuritiesResult2.Text = lblMarketSecuritiesResult.Text
+
+
+
+
         lblNetIncomeResult.Text = Financial.cleanMeUp(provider("Net Income"))
 
         lblNetIncomeFinIndResult.Text = lblNetIncomeResult.Text
@@ -77,6 +91,14 @@ Public Class FinInd
         lblDepAmortExpenseResult.Text = "Result"
         lblLeaseCostResult.Text = Financial.cleanMeUp(provider("Leasehold Improvements"))
         lblEbitResult.Text = (CDec(Financial.cleanMeUp(lblNetIncomeFinIndResult.Text, True)) + CDec(Financial.cleanMeUp(lblInterestExpenseFinIndResult.Text, True)) + CDec(Financial.cleanMeUp(lblDepAmortExpenseResult.Text, True)) + CDec(Financial.cleanMeUp(lblLeaseCostResult.Text, True))).ToString
+        lblOperatingMarginFinIndResult.Text = (CDec(Financial.cleanMeUp(lblTotOperatingRevFinIndResult.Text, True)) - CDec(Financial.cleanMeUp(lblTotOperatingExpenseFinIndResult.Text, True)) / CDec(Financial.cleanMeUp(lblTotOperatingRevFinIndResult.Text, True))) * 100
+        '(need non operating rev) lblExcessMarginResult.Text = (CDec(Financial.cleanMeUp(lblTotOperatingRevFinIndResult.Text, True)) - CDec(Financial.cleanMeUp(lblTotOperatingExpenseFinIndResult.Text, True)) - CDec(Financial.cleanMeUp(lblOtherExpenseResultFindInd.Text, True))) / CDec(Financial.cleanMeUp(lblTotOperatingRevFinIndResult.Text, True)) * 100)))
+        lblROEResult.Text = ((CDec(Financial.cleanMeUp(lblNetIncomeFinIndResult.Text, True)) / ((CDec(Financial.cleanMeUp(lblTotAssetsResult.Text, True)) - (CDec(Financial.cleanMeUp(lblTotLiabilitiesResult.Text, True)))))) * 100).ToString("N2") & "%"
+        lblRoaResult.Text = ((CDec(Financial.cleanMeUp(lblNetIncomeFinIndResult.Text, True)) / CDec(Financial.cleanMeUp(lblTotAssetsResult.Text, True))) * 100).ToString("N2") & "%"
+        lblCurrentRatioResult.Text = ((CDec(Financial.cleanMeUp(lblTotCurrentAssetsResult.Text, True)) / CDec(Financial.cleanMeUp(lblTotCurrentLiabilitiesResult.Text, True))))
+        lblQuickRatioResult.Text = ((CDec(Financial.cleanMeUp(lblTotCurrentAssetsResult.Text, True)) - CDec(Financial.cleanMeUp(lblInventoryResult.Text, True))) / CDec(Financial.cleanMeUp(lblTotCurrentLiabilitiesResult.Text, True))).ToString("N2")
+        lblLtdtnaResult.Text = ((CDec(Financial.cleanMeUp(lblTotLongTermLiabilitiesResult.Text, True)) / (CDec(Financial.cleanMeUp(lblTotAssetsResult.Text, True) - CDec(Financial.cleanMeUp(lblTotLiabilitiesResult.Text)))).ToString("N2")))
+        lblTdtna.Text = ((CDec(Financial.cleanMeUp(lblTotLiabilitiesResult.Text, True)) / (CDec(Financial.cleanMeUp(lblTotAssetsResult.Text, True) - CDec(Financial.cleanMeUp(lblTotLiabilitiesResult.Text))).ToString("N2"))))
 
         lblNetIncomeResult2.Text = lblNetIncomeResult.Text
         lblDepreciationExpenseResultFinInd.Text = Financial.cleanMeUp(provider("Depreciation Cost"))
@@ -88,9 +110,9 @@ Public Class FinInd
 
         lblContractLaborResult.Text = If(provider("Contract Labor:Direct Patient Care") IsNot Nothing, CDec(provider("Contract Labor:Direct Patient Care")).ToString("N"), "N/A")
 
-        lblTotLiabilitiesResult.Text = Financial.cleanMeUp(provider("Total Liabilities"))
-        lblTotLiabilitiesResult2.Text = lblTotLiabilitiesResult.Text
-        lblTotLiabilitiesResult3.Text = lblTotLiabilitiesResult.Text
+        'lblTotLiabilitiesResult.Text = Financial.cleanMeUp(provider("Total Liabilities"))
+        'lblTotLiabilitiesResult2.Text = lblTotLiabilitiesResult.Text
+        'lblTotLiabilitiesResult3.Text = lblTotLiabilitiesResult.Text
 
         lblCashonHandResult.Text = Financial.cleanMeUp(provider("Cash on Hand and in Banks"))
         lblCashonHandResult2.Text = lblCashonHandResult.Text
@@ -184,5 +206,9 @@ Public Class FinInd
     Private Sub Button1_Click_1(sender As Object, e As EventArgs) Handles Button1.Click
         Me.Hide()
         Search.Show()
+    End Sub
+
+    Private Sub lblTotLiabilitiesResult_Click(sender As Object, e As EventArgs) Handles lblTotLiabilitiesResult.Click
+
     End Sub
 End Class

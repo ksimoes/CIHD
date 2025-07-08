@@ -123,7 +123,7 @@ Partial Class FinInd
         lblPeapctorResult = New Label()
         lblNoRFinIndResult = New Label()
         lblTotOperatingExpenseFinInd2 = New Label()
-        Label95 = New Label()
+        lblROEResult = New Label()
         lblTotOperatingRevResult3 = New Label()
         lblFringeBenefitsResult = New Label()
         lblContractLaborResult = New Label()
@@ -172,11 +172,11 @@ Partial Class FinInd
         Label141 = New Label()
         lblTotOperatingRevResult5 = New Label()
         lblTotLongTermLiabilitiesResult = New Label()
-        Label144 = New Label()
+        lblLtdtnaResult = New Label()
         lblTotAssetsResult3 = New Label()
         Label146 = New Label()
         lblTotAssetsResult5 = New Label()
-        Label148 = New Label()
+        lblTdtna = New Label()
         lblTotLiabilitiesResult2 = New Label()
         lblTotAssetsResult4 = New Label()
         lblDepreciationExpenseResultFinInd4 = New Label()
@@ -1108,14 +1108,14 @@ Partial Class FinInd
         lblTotOperatingExpenseFinInd2.TabIndex = 114
         lblTotOperatingExpenseFinInd2.Text = "Result"
         ' 
-        ' Label95
+        ' lblROEResult
         ' 
-        Label95.AutoSize = True
-        Label95.Location = New Point(118, 589)
-        Label95.Name = "Label95"
-        Label95.Size = New Size(39, 15)
-        Label95.TabIndex = 121
-        Label95.Text = "Result"
+        lblROEResult.AutoSize = True
+        lblROEResult.Location = New Point(118, 589)
+        lblROEResult.Name = "lblROEResult"
+        lblROEResult.Size = New Size(39, 15)
+        lblROEResult.TabIndex = 121
+        lblROEResult.Text = "Result"
         ' 
         ' lblTotOperatingRevResult3
         ' 
@@ -1549,14 +1549,14 @@ Partial Class FinInd
         lblTotLongTermLiabilitiesResult.TabIndex = 169
         lblTotLongTermLiabilitiesResult.Text = "Result"
         ' 
-        ' Label144
+        ' lblLtdtnaResult
         ' 
-        Label144.AutoSize = True
-        Label144.Location = New Point(1308, 118)
-        Label144.Name = "Label144"
-        Label144.Size = New Size(39, 15)
-        Label144.TabIndex = 168
-        Label144.Text = "Result"
+        lblLtdtnaResult.AutoSize = True
+        lblLtdtnaResult.Location = New Point(1308, 118)
+        lblLtdtnaResult.Name = "lblLtdtnaResult"
+        lblLtdtnaResult.Size = New Size(39, 15)
+        lblLtdtnaResult.TabIndex = 168
+        lblLtdtnaResult.Text = "Result"
         ' 
         ' lblTotAssetsResult3
         ' 
@@ -1585,14 +1585,14 @@ Partial Class FinInd
         lblTotAssetsResult5.TabIndex = 173
         lblTotAssetsResult5.Text = "Result"
         ' 
-        ' Label148
+        ' lblTdtna
         ' 
-        Label148.AutoSize = True
-        Label148.Location = New Point(1308, 232)
-        Label148.Name = "Label148"
-        Label148.Size = New Size(39, 15)
-        Label148.TabIndex = 172
-        Label148.Text = "Result"
+        lblTdtna.AutoSize = True
+        lblTdtna.Location = New Point(1308, 232)
+        lblTdtna.Name = "lblTdtna"
+        lblTdtna.Size = New Size(39, 15)
+        lblTdtna.TabIndex = 172
+        lblTdtna.Text = "Result"
         ' 
         ' lblTotLiabilitiesResult2
         ' 
@@ -1678,11 +1678,11 @@ Partial Class FinInd
         Controls.Add(Label153)
         Controls.Add(lblTotLiabilitiesResult3)
         Controls.Add(lblTotAssetsResult5)
-        Controls.Add(Label148)
+        Controls.Add(lblTdtna)
         Controls.Add(lblTotLiabilitiesResult2)
         Controls.Add(lblTotAssetsResult4)
         Controls.Add(lblTotLongTermLiabilitiesResult)
-        Controls.Add(Label144)
+        Controls.Add(lblLtdtnaResult)
         Controls.Add(lblTotAssetsResult3)
         Controls.Add(Label146)
         Controls.Add(Label139)
@@ -1729,7 +1729,7 @@ Partial Class FinInd
         Controls.Add(lblTotLiabilitiesResult)
         Controls.Add(lblTotAssetsResult)
         Controls.Add(lblNetIncomeResult)
-        Controls.Add(Label95)
+        Controls.Add(lblROEResult)
         Controls.Add(lblTotOperatingRevResult3)
         Controls.Add(lblFringeBenefitsResult)
         Controls.Add(lblContractLaborResult)
@@ -1940,7 +1940,7 @@ Partial Class FinInd
     Friend WithEvents lblPeapctorResult As Label
     Friend WithEvents lblNoRFinIndResult As Label
     Friend WithEvents lblTotOperatingExpenseFinInd2 As Label
-    Friend WithEvents Label95 As Label
+    Friend WithEvents lblROEResult As Label
     Friend WithEvents lblTotOperatingRevResult3 As Label
     Friend WithEvents lblFringeBenefitsResult As Label
     Friend WithEvents lblContractLaborResult As Label
@@ -1989,11 +1989,11 @@ Partial Class FinInd
     Friend WithEvents Label141 As Label
     Friend WithEvents lblTotOperatingRevResult5 As Label
     Friend WithEvents lblTotLongTermLiabilitiesResult As Label
-    Friend WithEvents Label144 As Label
+    Friend WithEvents lblLtdtnaResult As Label
     Friend WithEvents lblTotAssetsResult3 As Label
     Friend WithEvents Label146 As Label
     Friend WithEvents lblTotAssetsResult5 As Label
-    Friend WithEvents Label148 As Label
+    Friend WithEvents lblTdtna As Label
     Friend WithEvents lblTotLiabilitiesResult2 As Label
     Friend WithEvents lblTotAssetsResult4 As Label
     Friend WithEvents lblDepreciationExpenseResultFinInd4 As Label
