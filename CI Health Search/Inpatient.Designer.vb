@@ -35,6 +35,14 @@ Partial Class Inpatient
         Label2 = New Label()
         Label1 = New Label()
         gbPatientOrigin = New GroupBox()
+        dgvPatientOrigin = New DataGridView()
+        Zip = New DataGridViewTextBoxColumn()
+        Discharges = New DataGridViewTextBoxColumn()
+        Days = New DataGridViewTextBoxColumn()
+        Charges = New DataGridViewTextBoxColumn()
+        DischargesInc = New DataGridViewTextBoxColumn()
+        Market = New DataGridViewTextBoxColumn()
+        MktPrev = New DataGridViewTextBoxColumn()
         Label12 = New Label()
         Label11 = New Label()
         Label10 = New Label()
@@ -58,19 +66,11 @@ Partial Class Inpatient
         Label18 = New Label()
         Label17 = New Label()
         Button1 = New Button()
-        DataGridView1 = New DataGridView()
-        Zip = New DataGridViewTextBoxColumn()
-        Discharges = New DataGridViewTextBoxColumn()
-        Days = New DataGridViewTextBoxColumn()
-        Charges = New DataGridViewTextBoxColumn()
-        DischargesInc = New DataGridViewTextBoxColumn()
-        Market = New DataGridViewTextBoxColumn()
-        MktPrev = New DataGridViewTextBoxColumn()
         gbKeyAttending.SuspendLayout()
         gbPatientOrigin.SuspendLayout()
+        CType(dgvPatientOrigin, ComponentModel.ISupportInitialize).BeginInit()
         gbTrendReport.SuspendLayout()
         gbStatsforTop20BaseMsdrg.SuspendLayout()
-        CType(DataGridView1, ComponentModel.ISupportInitialize).BeginInit()
         SuspendLayout()
         ' 
         ' btnOutpatientInpatient
@@ -193,7 +193,7 @@ Partial Class Inpatient
         ' 
         ' gbPatientOrigin
         ' 
-        gbPatientOrigin.Controls.Add(DataGridView1)
+        gbPatientOrigin.Controls.Add(dgvPatientOrigin)
         gbPatientOrigin.Controls.Add(Label12)
         gbPatientOrigin.Controls.Add(Label11)
         gbPatientOrigin.Controls.Add(Label10)
@@ -207,6 +207,50 @@ Partial Class Inpatient
         gbPatientOrigin.TabIndex = 22
         gbPatientOrigin.TabStop = False
         gbPatientOrigin.Text = "Patient Origin"
+        ' 
+        ' dgvPatientOrigin
+        ' 
+        dgvPatientOrigin.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        dgvPatientOrigin.Columns.AddRange(New DataGridViewColumn() {Zip, Discharges, Days, Charges, DischargesInc, Market, MktPrev})
+        dgvPatientOrigin.Location = New Point(0, 46)
+        dgvPatientOrigin.Name = "dgvPatientOrigin"
+        dgvPatientOrigin.Size = New Size(862, 179)
+        dgvPatientOrigin.TabIndex = 31
+        ' 
+        ' Zip
+        ' 
+        Zip.HeaderText = "Residence Zip Code"
+        Zip.Name = "Zip"
+        ' 
+        ' Discharges
+        ' 
+        Discharges.HeaderText = "Discharges"
+        Discharges.Name = "Discharges"
+        ' 
+        ' Days
+        ' 
+        Days.HeaderText = "Days of Care"
+        Days.Name = "Days"
+        ' 
+        ' Charges
+        ' 
+        Charges.HeaderText = "Charges"
+        Charges.Name = "Charges"
+        ' 
+        ' DischargesInc
+        ' 
+        DischargesInc.HeaderText = "Discharges Inc/Dec"
+        DischargesInc.Name = "DischargesInc"
+        ' 
+        ' Market
+        ' 
+        Market.HeaderText = "Market Share"
+        Market.Name = "Market"
+        ' 
+        ' MktPrev
+        ' 
+        MktPrev.HeaderText = "Market Share 5 years Ago"
+        MktPrev.Name = "MktPrev"
         ' 
         ' Label12
         ' 
@@ -448,50 +492,6 @@ Partial Class Inpatient
         Button1.Text = "Return to Search"
         Button1.UseVisualStyleBackColor = True
         ' 
-        ' DataGridView1
-        ' 
-        DataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        DataGridView1.Columns.AddRange(New DataGridViewColumn() {Zip, Discharges, Days, Charges, DischargesInc, Market, MktPrev})
-        DataGridView1.Location = New Point(18, 63)
-        DataGridView1.Name = "DataGridView1"
-        DataGridView1.Size = New Size(862, 179)
-        DataGridView1.TabIndex = 31
-        ' 
-        ' Zip
-        ' 
-        Zip.HeaderText = "Residence Zip Code"
-        Zip.Name = "Zip"
-        ' 
-        ' Discharges
-        ' 
-        Discharges.HeaderText = "Discharges"
-        Discharges.Name = "Discharges"
-        ' 
-        ' Days
-        ' 
-        Days.HeaderText = "Days of Care"
-        Days.Name = "Days"
-        ' 
-        ' Charges
-        ' 
-        Charges.HeaderText = "Charges"
-        Charges.Name = "Charges"
-        ' 
-        ' DischargesInc
-        ' 
-        DischargesInc.HeaderText = "Discharges Inc/Dec"
-        DischargesInc.Name = "DischargesInc"
-        ' 
-        ' Market
-        ' 
-        Market.HeaderText = "Market Share"
-        Market.Name = "Market"
-        ' 
-        ' MktPrev
-        ' 
-        MktPrev.HeaderText = "Market Share 5 years Ago"
-        MktPrev.Name = "MktPrev"
-        ' 
         ' Inpatient
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
@@ -515,11 +515,11 @@ Partial Class Inpatient
         gbKeyAttending.PerformLayout()
         gbPatientOrigin.ResumeLayout(False)
         gbPatientOrigin.PerformLayout()
+        CType(dgvPatientOrigin, ComponentModel.ISupportInitialize).EndInit()
         gbTrendReport.ResumeLayout(False)
         gbTrendReport.PerformLayout()
         gbStatsforTop20BaseMsdrg.ResumeLayout(False)
         gbStatsforTop20BaseMsdrg.PerformLayout()
-        CType(DataGridView1, ComponentModel.ISupportInitialize).EndInit()
         ResumeLayout(False)
     End Sub
 
@@ -559,7 +559,7 @@ Partial Class Inpatient
     Friend WithEvents Label22 As Label
     Friend WithEvents Label21 As Label
     Friend WithEvents Label20 As Label
-    Friend WithEvents DataGridView1 As DataGridView
+    Friend WithEvents dgvPatientOrigin As DataGridView
     Friend WithEvents Zip As DataGridViewTextBoxColumn
     Friend WithEvents Discharges As DataGridViewTextBoxColumn
     Friend WithEvents Days As DataGridViewTextBoxColumn

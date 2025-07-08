@@ -105,7 +105,7 @@ Public Class FinInd
         'EBITDAR (earnings before interest, taxes, depreciation, amortization, and rent)
         lblEbitResult.Text = (CDec(Search.CleanMeUp(lblNetIncomeFinIndResult.Text, True)) + CDec(Search.CleanMeUp(lblInterestExpenseFinIndResult.Text, True)) + CDec(Search.CleanMeUp(lblDepAmortExpenseResult.Text, True)) + CDec(Search.CleanMeUp(lblLeaseCostResult.Text, True))).ToString
         'Operating Margin
-        lblOperatingMarginFinIndResult.Text = (CDec(Search.CleanMeUp(lblTotOperatingRevFinIndResult.Text, True)) - CDec(Search.CleanMeUp(lblTotOperatingExpenseFinIndResult.Text, True)) / CDec(Search.CleanMeUp(lblTotOperatingRevFinIndResult.Text, True))) * 100
+        lblOperatingMarginFinIndResult.Text = ((CDec(Search.CleanMeUp(lblTotOperatingRevFinIndResult.Text, True)) - CDec(Search.CleanMeUp(lblTotOperatingExpenseFinIndResult.Text, True))) / ((CDec(Search.CleanMeUp(lblTotOperatingRevFinIndResult.Text, True))) * 100) * 100).ToString("N2") & "%"
         '''Excess Margin (need non operating revenue)
         '(need non operating rev) lblExcessMarginResult.Text = (CDec(Search.cleanMeUp(lblTotOperatingRevFinIndResult.Text, True)) - CDec(Search.cleanMeUp(lblTotOperatingExpenseFinIndResult.Text, True)) - CDec(Search.cleanMeUp(lblOtherExpenseResultFindInd.Text, True))) / CDec(Search.cleanMeUp(lblTotOperatingRevFinIndResult.Text, True)) * 100)))
 
@@ -114,13 +114,13 @@ Public Class FinInd
         'ROA (Return on Assets)
         lblRoaResult.Text = ((CDec(Search.CleanMeUp(lblNetIncomeFinIndResult.Text, True)) / CDec(Search.CleanMeUp(lblTotAssetsResult.Text, True))) * 100).ToString("N2") & "%"
         'Current Ratio
-        lblCurrentRatioResult.Text = ((CDec(Search.CleanMeUp(lblTotCurrentAssetsResult.Text, True)) / CDec(Search.CleanMeUp(lblTotCurrentLiabilitiesResult.Text, True))))
+        lblCurrentRatioResult.Text = ((CDec(Search.CleanMeUp(lblTotCurrentAssetsResult.Text, True)) / CDec(Search.CleanMeUp(lblTotCurrentLiabilitiesResult.Text, True)))).ToString("N2")
         ''Quick Ratio
         lblQuickRatioResult.Text = ((CDec(Search.CleanMeUp(lblTotCurrentAssetsResult.Text, True)) - CDec(Search.CleanMeUp(lblInventoryResult.Text, True))) / CDec(Search.CleanMeUp(lblTotCurrentLiabilitiesResult.Text, True))).ToString("N2")
         'Long Term Debt to Net Assets Ratio
-        lblLtdtnaResult.Text = ((CDec(Search.CleanMeUp(lblTotLongTermLiabilitiesResult.Text, True)) / (CDec(Search.CleanMeUp(lblTotAssetsResult.Text, True) - CDec(Search.CleanMeUp(lblTotLiabilitiesResult.Text)))).ToString("N2")))
+        lblLtdtnaResult.Text = (((CDec(Search.CleanMeUp(lblTotLongTermLiabilitiesResult.Text, True)) / (CDec(Search.CleanMeUp(lblTotAssetsResult.Text, True) - CDec(Search.CleanMeUp(lblTotLiabilitiesResult.Text)))).ToString("N2")))).ToString("N2")
         'Total Debt to Net Assets Ratio
-        lblTdtna.Text = ((CDec(Search.CleanMeUp(lblTotLiabilitiesResult.Text, True)) / (CDec(Search.CleanMeUp(lblTotAssetsResult.Text, True) - CDec(Search.CleanMeUp(lblTotLiabilitiesResult.Text))).ToString("N2"))))
+        lblTdtna.Text = (((CDec(Search.CleanMeUp(lblTotLiabilitiesResult.Text, True)) / (CDec(Search.CleanMeUp(lblTotAssetsResult.Text, True) - CDec(Search.CleanMeUp(lblTotLiabilitiesResult.Text))).ToString("N2"))))).ToString("N")
 
         'Depreciation Expense
         lblDepreciationExpenseResultFinInd.Text = Search.CleanMeUp(provider("Depreciation Cost"))
@@ -135,6 +135,27 @@ Public Class FinInd
         'Allowances for Uncollectible Notes and Accounts Receivable
         lblAllowforUncollectRes.Text = Search.CleanMeUp(provider("Less: Allowances for Uncollectible Notes and Accounts Receivable"))
         lblAllowforUncollectRes2.Text = lblAllowforUncollectRes.Text
+
+        'Market Securities
+        lblMarketSecuritiesResult.Text = Search.CleanMeUp(provider("Temporary Investments"))
+        lblMarketSecuritiesResult2.Text = lblMarketSecuritiesResult.Text
+
+        'investments
+        lblInvestmentsResultFinInd.Text = Search.CleanMeUp(provider("Investments"))
+
+        'Depreciation and Amortization Expense
+        lblDepAmortExpenseResult.Text = Search.CleanMeUp(provider("Depreciation Cost"))
+        'Depreciciation Expense
+        lblDepreciationExpenseResultFinInd.Text = Search.CleanMeUp(provider("Depreciation Cost"))
+        lblDepreciationExpenseResultFinInd2.Text = lblDepreciationExpenseResultFinInd.Text
+        lblDepreciationExpenseResultFinInd3.Text = lblDepreciationExpenseResultFinInd.Text
+        lblDepreciationExpenseResultFinInd4.Text = lblDepreciationExpenseResultFinInd.Text
+
+        'Days Cash on Hand
+        lblDaysCOH.Text = ((CDec(lblCashonHandResult.Text) + CDec(Search.CleanMeUp(lblMarketSecuritiesResult.Text, True))) / ((CDec(Search.CleanMeUp(lblTotOperatingExpenseFinIndResult.Text, True) - CDec(Search.CleanMeUp(lblDepreciationExpenseResultFinInd.Text) / 365)))).ToString("N2")).ToString("N2")
+
+
+
 
 
 

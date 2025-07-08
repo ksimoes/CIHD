@@ -187,6 +187,7 @@ Partial Class FinInd
         Button1 = New Button()
         ToolTip1 = New ToolTip(components)
         ToolTip2 = New ToolTip(components)
+        lblDaysCOH = New Label()
         SuspendLayout()
         ' 
         ' btnOutpatientFinInd
@@ -1666,11 +1667,21 @@ Partial Class FinInd
         Button1.Text = "Return to Search"
         Button1.UseVisualStyleBackColor = True
         ' 
+        ' lblDaysCOH
+        ' 
+        lblDaysCOH.AutoSize = True
+        lblDaysCOH.Location = New Point(837, 93)
+        lblDaysCOH.Name = "lblDaysCOH"
+        lblDaysCOH.Size = New Size(39, 15)
+        lblDaysCOH.TabIndex = 180
+        lblDaysCOH.Text = "Result"
+        ' 
         ' FinInd
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(1553, 1061)
+        Controls.Add(lblDaysCOH)
         Controls.Add(Button1)
         Controls.Add(Label78)
         Controls.Add(lblDepreciationExpenseResultFinInd4)
@@ -2005,4 +2016,5 @@ Partial Class FinInd
     Friend WithEvents lblEbitResult As Label
     Friend WithEvents ToolTip1 As ToolTip
     Friend WithEvents ToolTip2 As ToolTip
+    Friend WithEvents lblDaysCOH As Label
 End Class

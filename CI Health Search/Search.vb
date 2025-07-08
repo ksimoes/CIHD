@@ -47,7 +47,7 @@ Public Class Search
             End Select
             Return ""
         End If
-        If (strMydata Is Nothing) Or String.IsNullOrEmpty(strMydata) Or strMydata.Length = 0 Or strMydata = "Result" Then
+        If (strMydata Is Nothing) Or String.IsNullOrEmpty(strMydata) Or strMydata.Length = 0 Or strMydata = "Result" Or strMydata = "N/A" Then
             If isNumber = True Then
                 Return 0
             Else
