@@ -8,6 +8,7 @@ Public Class Profile
     Public strCMSnum As String
     Public Async Sub ShowProfile(foundHospital As HospitalContext)
         Dim useSql As Boolean = (foundHospital.State = "TN" Or foundHospital.State = "TX")
+        Results.SelectedHospital = foundHospital
         strCMSnum = foundHospital.CMSNum
         If useSql Then
             Dim queryProfile As String = If(foundHospital.State = "TN",
@@ -176,6 +177,7 @@ Public Class Profile
     Private Sub Button6_Click(sender As Object, e As EventArgs) Handles btnInpatientProfile.Click
         Me.Hide()
         Inpatient.Show()
+        Inpatient.LoadPatientOriginDataAsync(Results.SelectedHospital)
     End Sub
 
     Private Sub Button7_Click(sender As Object, e As EventArgs) Handles btnOutpatientProfile.Click
