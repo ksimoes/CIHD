@@ -178,7 +178,9 @@ Public Class Profile
         Me.Hide()
         Inpatient.Show()
         Inpatient.LoadPatientOriginDataAsync(Results.SelectedHospital)
+        Inpatient.LoadCeoDataAsync(Results.SelectedHospital)
     End Sub
+
 
     Private Sub Button7_Click(sender As Object, e As EventArgs) Handles btnOutpatientProfile.Click
         Me.Hide()

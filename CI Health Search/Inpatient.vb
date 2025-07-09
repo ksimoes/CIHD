@@ -1,72 +1,118 @@
 ﻿Imports System.Net.Http
 Imports Newtonsoft.Json.Linq
+Imports System.Data
 
 Public Class Inpatient
     ' NOTE MEDICARE_PROV_NUM = CCN Number
     Dim strURLPatientOrigin As String = "https://data.cms.gov/data-api/v1/dataset/8708ca8b-8636-44ed-8303-724cbfaf78ad/data"
     Dim strURLPatientOrigin2019 As String = "https://data.cms.gov/data-api/v1/dataset/2713ba99-c59e-4b25-9a3d-3661d35988da/data"
     Dim strURLPatientOrigin2023 As String = "https://data.cms.gov/data-api/v1/dataset/7f749f00-bfa9-4377-9a98-90c15cacc2f3/data"
-
+    Dim strUrlCeoApi As String = "https://data.cms.gov/data-api/v1/dataset/029c119f-f79c-49be-9100-344d31d10344/data"
 
     ' Call this method to load data into the DataGridView
     Public Async Function LoadPatientOriginDataAsync(myHospital As HospitalContext) As Task
-        Dim dtCurrPatientZipsByHosp, dtPrevPatientYear, dtFiveYrPatient, dtCurrRegional, dtMasterCurrent, dtProfileZips, dtPrevRegional, dtFIVERegional As New DataTable()
-        Dim curHospDischarge, curRegionDischarge As Integer
-        Dim disChargeChange As Decimal
-
-        Dim curDatarow As DataRow
+        Dim dtCurrPatientZipsByHosp As DataTable = Await GetTablefromAPI(strURLPatientOrigin + "?filter[MEDICARE_PROV_NUM]=" + myHospital.CMSNum)
+        Dim dtPrevYearPatientZipsByHosp As DataTable = Await GetTablefromAPI(strURLPatientOrigin2023 + "?filter[MEDICARE_PROV_NUM]=" + myHospital.CMSNum)
+        Dim dtMasterCurrent As New DataTable()
+        dtMasterCurrent.Columns.Add("CMS Number")
         dtMasterCurrent.Columns.Add("ZIP")
         dtMasterCurrent.Columns.Add("Discharges")
         dtMasterCurrent.Columns.Add("Days of Care")
         dtMasterCurrent.Columns.Add("Charges")
-        dtMasterCurrent.Columns.Add("Discharge Change") 'This year over last year - 1*100
+        dtMasterCurrent.Columns.Add("Discharge Change")
         dtMasterCurrent.Columns.Add("Market Share")
         dtMasterCurrent.Columns.Add("Market Share 5 Years Prior")
-        'Pulls back zip codes of all patients that were discharged from the hospital in the current year
-        dtCurrPatientZipsByHosp = Await GetTablefromAPI(strURLPatientOrigin + "?filter[MEDICARE_PROV_NUM]=" + myHospital.CMSNum)
-        dtPrevPatientYear = Await GetTablefromAPI(strURLPatientOrigin2023 + "?filter[MEDICARE_PROV_NUM]=" + myHospital.CMSNum)
-        dtFiveYrPatient = Await GetTablefromAPI(strURLPatientOrigin2019 + "?filter[MEDICARE_PROV_NUM]=" + myHospital.CMSNum)
 
-        For Each datarow In dtCurrPatientZipsByHosp.Rows 'Loop through each row in the current year patient zip data
-            dtCurrRegional = Await GetTablefromAPI(strURLPatientOrigin + "?filter[ZIP_CD_OF_RESIDENCE]=" + datarow("ZIP_CD_OF_RESIDENCE").ToString())
-            For Each zipDataRow In dtCurrRegional.Rows
-                If IsNumeric(zipDataRow("ZIP_CD_OF_RESIDENCE")) Then
-                    curRegionDischarge += Convert.ToInt32(zipDataRow("TOTAL_CASES"))
-                End If
+        ' Sort by TOTAL_CASES descending and take top 10
+        Dim topRows = dtCurrPatientZipsByHosp.AsEnumerable() _
+        .OrderByDescending(Function(r) If(IsNumeric(r("TOTAL_CASES")), Convert.ToInt32(r("TOTAL_CASES")), 0)) _
+        .Take(10).ToList()
 
-                'DISCHARGE CHANGE CALCULATION
-                disChargeChange = dtCurrPatientZipsByHosp.Rows(0)("TOTAL_CASES") / dtPrevPatientYear.Rows(0)("TOTAL_CASES")  'Calculate the percentage change in discharges
-                If disChargeChange = 0 Then
-                    disChargeChange = 0
-                Else
-                    disChargeChange = (disChargeChange - 1) * 100 'Calculate the percentage change
-                End If
+        ' Prepare all the tasks for parallel execution
+        Dim zipCodes = topRows.Select(Function(r) r("ZIP_CD_OF_RESIDENCE").ToString()).ToList()
+        Dim zipTasks = zipCodes.Select(Function(zip) GetTablefromAPI(strURLPatientOrigin + "?filter[ZIP_CD_OF_RESIDENCE]=" + zip)).ToArray()
+        Dim zipTasks5Yr = zipCodes.Select(Function(zip) GetTablefromAPI(strURLPatientOrigin2019 + "?filter[ZIP_CD_OF_RESIDENCE]=" + zip)).ToArray()
+        Dim allZipResults = Await Task.WhenAll(zipTasks)
+        Dim allZipResults5Yr = Await Task.WhenAll(zipTasks5Yr)
 
-                'GET DAYS OF CARE AND CHARGES
+        For i As Integer = 0 To topRows.Count - 1
+            Dim datarow = topRows(i)
+            Dim zipCode = datarow("ZIP_CD_OF_RESIDENCE").ToString()
+            Dim hospitalDischarges As Integer = If(IsNumeric(datarow("TOTAL_CASES")), Convert.ToInt32(datarow("TOTAL_CASES")), 0)
+            Dim dtAllHospitalsForZip = allZipResults(i)
+            Dim totalDischargesFromZip As Integer = dtAllHospitalsForZip.AsEnumerable().Sum(Function(r) If(IsNumeric(r("TOTAL_CASES")), Convert.ToInt32(r("TOTAL_CASES")), 0))
 
-                'Get Market Share
+            ' Market Share (current)
+            Dim marketShare As String = "0.00"
+            If totalDischargesFromZip > 0 Then
+                marketShare = ((hospitalDischarges / totalDischargesFromZip) * 100).ToString("N2")
+            End If
 
-                'get market share for 5 years prior
+            ' Discharge Change (compare to prior year)
+            Dim prevYearRow = dtPrevYearPatientZipsByHosp.AsEnumerable().FirstOrDefault(Function(r) r("ZIP_CD_OF_RESIDENCE").ToString() = zipCode)
+            Dim prevYearDischarges As Integer = If(prevYearRow IsNot Nothing AndAlso IsNumeric(prevYearRow("TOTAL_CASES")), Convert.ToInt32(prevYearRow("TOTAL_CASES")), 0)
+            Dim dischargeChange As String = "N/A"
+            If prevYearDischarges > 0 Then
+                dischargeChange = (((hospitalDischarges - prevYearDischarges) / prevYearDischarges) * 100).ToString("N2")
+            End If
 
-            Next
-            dtMasterCurrent.Rows.Add("", "", "", "", disChargeChange, "", "") 'Add a new row to the master table with the current data)
+            ' Market Share 5 Years Prior
+            Dim dtAllHospitalsForZip5Yr = allZipResults5Yr(i)
+            Dim totalDischargesFromZip5Yr As Integer = dtAllHospitalsForZip5Yr.AsEnumerable().Sum(Function(r) If(IsNumeric(r("TOTAL_CASES")), Convert.ToInt32(r("TOTAL_CASES")), 0))
+            ' Find this hospital's discharges for this ZIP 5 years ago
+            Dim hosp5YrRow = dtAllHospitalsForZip5Yr.AsEnumerable().FirstOrDefault(Function(r) r("MEDICARE_PROV_NUM").ToString() = myHospital.CMSNum)
+            Dim hospitalDischarges5Yr As Integer = If(hosp5YrRow IsNot Nothing AndAlso IsNumeric(hosp5YrRow("TOTAL_CASES")), Convert.ToInt32(hosp5YrRow("TOTAL_CASES")), 0)
+            Dim marketShare5Yr As String = "0.00"
+            If totalDischargesFromZip5Yr > 0 Then
+                marketShare5Yr = ((hospitalDischarges5Yr / totalDischargesFromZip5Yr) * 100).ToString("N2")
+            End If
+
+            dtMasterCurrent.Rows.Add(
+            myHospital.CMSNum,
+            zipCode,
+            datarow("TOTAL_CASES").ToString(),
+            datarow("TOTAL_DAYS_OF_CARE").ToString(),
+            datarow("TOTAL_CHARGES").ToString(),
+            dischargeChange,
+            marketShare,
+            marketShare5Yr
+        )
+        Next
+
+        dgvPatientOrigin.DataSource = dtMasterCurrent
+    End Function
+
+    Public Async Function LoadCeoDataAsync(myHospital As HospitalContext) As Task
+        Dim dtCeo As DataTable = Await GetTablefromAPI(strUrlCeoApi + "?filter[Organization Name]=" + myHospital.Name)
+        Dim dtMasterCeo As New DataTable()
+        dtMasterCeo.Columns.Add("Organization Name")
+        dtMasterCeo.Columns.Add("First Name - Owner")
+        dtMasterCeo.Columns.Add("Payment")
+        dtMasterCeo.Columns.Add("Cost")
+        dtMasterCeo.Columns.Add("CMI")
+
+        For Each row As DataRow In dtCeo.Rows
+            dtMasterCeo.Rows.Add(
+                        myHospital.CMSNum,
+               row("Organization Name").ToString(),
+               row("First Name - Owner").ToString())
+
+
         Next
 
 
-        dgvPatientOrigin.DataSource = dtMasterCurrent
-        'The percentage increase Or decrease in Medicare discharges Is calculated by comparison with the hospital's discharges during the prior year.
-        'The Market share Is calculated by comparison with all other hospitals having Medicare discharges from the ZIP code (i.e. the hospital's discharges from a ZIP code as a percentage of total discharges to all hospitals from the ZIP code).
-        'The Market share 5-years prior Is calculated In the same fashion As market share, but Using Service Area File data from five years prior. For example, 2014 data would be used for this field when 2019 data Is the most current period reported.
 
 
-        ' Bind to DataGridView
-        dgvPatientOrigin.DataSource = dtCurrPatientZipsByHosp
+
+
+
+        dgvCeo.DataSource = dtMasterCeo
     End Function
+
 
     Public Async Function GetTablefromAPI(strAPI As String) As Task(Of DataTable)
         Dim dt As New DataTable()
         Using client As New HttpClient()
-            'Pulls bacc data based on CCN/CMS 
             Dim response As HttpResponseMessage = Await client.GetAsync(strAPI)
             If response.IsSuccessStatusCode Then
                 Dim json As String = Await response.Content.ReadAsStringAsync()
@@ -92,9 +138,6 @@ Public Class Inpatient
         End Using
     End Function
 
-
-
-
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles btnProfileInpatient.Click
         Me.Hide()
         Profile.Show()
@@ -108,13 +151,11 @@ Public Class Inpatient
     Private Sub Button3_Click(sender As Object, e As EventArgs) Handles btnFinancialInpatient.Click
         Me.Hide()
         Financial.Show()
-
     End Sub
 
     Private Sub Button4_Click(sender As Object, e As EventArgs) Handles btnFinIndInpatient.Click
         Me.Hide()
         FinInd.Show()
-
     End Sub
 
     Private Sub Button5_Click(sender As Object, e As EventArgs) Handles btnQualityInpatient.Click
@@ -133,15 +174,14 @@ Public Class Inpatient
     End Sub
 
     Private Sub Label14_Click(sender As Object, e As EventArgs) Handles Label14.Click
-
     End Sub
 
     Private Sub dgvPatientOrigin_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvPatientOrigin.CellContentClick
-
-
     End Sub
+
     Private Async Sub Inpatient_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Await LoadPatientOriginDataAsync(Results.SelectedHospital)
+        Await LoadCeoDataAsync(Results.SelectedHospital)
     End Sub
 
 End Class

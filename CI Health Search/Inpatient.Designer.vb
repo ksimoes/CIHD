@@ -29,27 +29,8 @@ Partial Class Inpatient
         btnDepartmentsInpatient = New Button()
         btnProfileInpatient = New Button()
         gbKeyAttending = New GroupBox()
-        Label5 = New Label()
-        Label4 = New Label()
-        Label3 = New Label()
-        Label2 = New Label()
-        Label1 = New Label()
         gbPatientOrigin = New GroupBox()
         dgvPatientOrigin = New DataGridView()
-        Zip = New DataGridViewTextBoxColumn()
-        Discharges = New DataGridViewTextBoxColumn()
-        Days = New DataGridViewTextBoxColumn()
-        Charges = New DataGridViewTextBoxColumn()
-        DischargesInc = New DataGridViewTextBoxColumn()
-        Market = New DataGridViewTextBoxColumn()
-        MktPrev = New DataGridViewTextBoxColumn()
-        Label12 = New Label()
-        Label11 = New Label()
-        Label10 = New Label()
-        Label9 = New Label()
-        Label8 = New Label()
-        Label7 = New Label()
-        Label6 = New Label()
         gbTrendReport = New GroupBox()
         Label16 = New Label()
         Label15 = New Label()
@@ -66,11 +47,13 @@ Partial Class Inpatient
         Label18 = New Label()
         Label17 = New Label()
         Button1 = New Button()
+        dgvCeo = New DataGridView()
         gbKeyAttending.SuspendLayout()
         gbPatientOrigin.SuspendLayout()
         CType(dgvPatientOrigin, ComponentModel.ISupportInitialize).BeginInit()
         gbTrendReport.SuspendLayout()
         gbStatsforTop20BaseMsdrg.SuspendLayout()
+        CType(dgvCeo, ComponentModel.ISupportInitialize).BeginInit()
         SuspendLayout()
         ' 
         ' btnOutpatientInpatient
@@ -129,11 +112,7 @@ Partial Class Inpatient
         ' 
         ' gbKeyAttending
         ' 
-        gbKeyAttending.Controls.Add(Label5)
-        gbKeyAttending.Controls.Add(Label4)
-        gbKeyAttending.Controls.Add(Label3)
-        gbKeyAttending.Controls.Add(Label2)
-        gbKeyAttending.Controls.Add(Label1)
+        gbKeyAttending.Controls.Add(dgvCeo)
         gbKeyAttending.Location = New Point(12, 12)
         gbKeyAttending.Name = "gbKeyAttending"
         gbKeyAttending.Size = New Size(580, 146)
@@ -141,66 +120,9 @@ Partial Class Inpatient
         gbKeyAttending.TabStop = False
         gbKeyAttending.Text = "Key Attending Providers"
         ' 
-        ' Label5
-        ' 
-        Label5.AutoSize = True
-        Label5.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
-        Label5.Location = New Point(455, 30)
-        Label5.Name = "Label5"
-        Label5.Size = New Size(29, 15)
-        Label5.TabIndex = 27
-        Label5.Text = "CMI"
-        ' 
-        ' Label4
-        ' 
-        Label4.AutoSize = True
-        Label4.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
-        Label4.Location = New Point(332, 30)
-        Label4.Name = "Label4"
-        Label4.Size = New Size(31, 15)
-        Label4.TabIndex = 27
-        Label4.Text = "Cost"
-        ' 
-        ' Label3
-        ' 
-        Label3.AutoSize = True
-        Label3.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
-        Label3.Location = New Point(219, 30)
-        Label3.Name = "Label3"
-        Label3.Size = New Size(56, 15)
-        Label3.TabIndex = 25
-        Label3.Text = "Payment"
-        ' 
-        ' Label2
-        ' 
-        Label2.AutoSize = True
-        Label2.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
-        Label2.Location = New Point(111, 30)
-        Label2.Name = "Label2"
-        Label2.Size = New Size(37, 15)
-        Label2.TabIndex = 26
-        Label2.Text = "Cases"
-        ' 
-        ' Label1
-        ' 
-        Label1.AutoSize = True
-        Label1.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
-        Label1.Location = New Point(6, 30)
-        Label1.Name = "Label1"
-        Label1.Size = New Size(40, 15)
-        Label1.TabIndex = 25
-        Label1.Text = "Name"
-        ' 
         ' gbPatientOrigin
         ' 
         gbPatientOrigin.Controls.Add(dgvPatientOrigin)
-        gbPatientOrigin.Controls.Add(Label12)
-        gbPatientOrigin.Controls.Add(Label11)
-        gbPatientOrigin.Controls.Add(Label10)
-        gbPatientOrigin.Controls.Add(Label9)
-        gbPatientOrigin.Controls.Add(Label8)
-        gbPatientOrigin.Controls.Add(Label7)
-        gbPatientOrigin.Controls.Add(Label6)
         gbPatientOrigin.Location = New Point(12, 164)
         gbPatientOrigin.Name = "gbPatientOrigin"
         gbPatientOrigin.Size = New Size(1150, 274)
@@ -211,116 +133,10 @@ Partial Class Inpatient
         ' dgvPatientOrigin
         ' 
         dgvPatientOrigin.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        dgvPatientOrigin.Columns.AddRange(New DataGridViewColumn() {Zip, Discharges, Days, Charges, DischargesInc, Market, MktPrev})
-        dgvPatientOrigin.Location = New Point(0, 46)
+        dgvPatientOrigin.Location = New Point(0, 22)
         dgvPatientOrigin.Name = "dgvPatientOrigin"
-        dgvPatientOrigin.Size = New Size(862, 179)
+        dgvPatientOrigin.Size = New Size(984, 204)
         dgvPatientOrigin.TabIndex = 31
-        ' 
-        ' Zip
-        ' 
-        Zip.HeaderText = "Residence Zip Code"
-        Zip.Name = "Zip"
-        ' 
-        ' Discharges
-        ' 
-        Discharges.HeaderText = "Discharges"
-        Discharges.Name = "Discharges"
-        ' 
-        ' Days
-        ' 
-        Days.HeaderText = "Days of Care"
-        Days.Name = "Days"
-        ' 
-        ' Charges
-        ' 
-        Charges.HeaderText = "Charges"
-        Charges.Name = "Charges"
-        ' 
-        ' DischargesInc
-        ' 
-        DischargesInc.HeaderText = "Discharges Inc/Dec"
-        DischargesInc.Name = "DischargesInc"
-        ' 
-        ' Market
-        ' 
-        Market.HeaderText = "Market Share"
-        Market.Name = "Market"
-        ' 
-        ' MktPrev
-        ' 
-        MktPrev.HeaderText = "Market Share 5 years Ago"
-        MktPrev.Name = "MktPrev"
-        ' 
-        ' Label12
-        ' 
-        Label12.AutoSize = True
-        Label12.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
-        Label12.Location = New Point(860, 28)
-        Label12.Name = "Label12"
-        Label12.Size = New Size(155, 15)
-        Label12.TabIndex = 28
-        Label12.Text = "Market Share 5 Years Prior"
-        ' 
-        ' Label11
-        ' 
-        Label11.AutoSize = True
-        Label11.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
-        Label11.Location = New Point(716, 28)
-        Label11.Name = "Label11"
-        Label11.Size = New Size(83, 15)
-        Label11.TabIndex = 28
-        Label11.Text = "Market Share"
-        ' 
-        ' Label10
-        ' 
-        Label10.AutoSize = True
-        Label10.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
-        Label10.Location = New Point(532, 28)
-        Label10.Name = "Label10"
-        Label10.Size = New Size(122, 15)
-        Label10.TabIndex = 28
-        Label10.Text = "Discharges Inc/(Dec)"
-        ' 
-        ' Label9
-        ' 
-        Label9.AutoSize = True
-        Label9.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
-        Label9.Location = New Point(421, 28)
-        Label9.Name = "Label9"
-        Label9.Size = New Size(51, 15)
-        Label9.TabIndex = 30
-        Label9.Text = "Charges"
-        ' 
-        ' Label8
-        ' 
-        Label8.AutoSize = True
-        Label8.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
-        Label8.Location = New Point(292, 28)
-        Label8.Name = "Label8"
-        Label8.Size = New Size(76, 15)
-        Label8.TabIndex = 29
-        Label8.Text = "Days of Care"
-        ' 
-        ' Label7
-        ' 
-        Label7.AutoSize = True
-        Label7.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
-        Label7.Location = New Point(182, 28)
-        Label7.Name = "Label7"
-        Label7.Size = New Size(67, 15)
-        Label7.TabIndex = 28
-        Label7.Text = "Discharges"
-        ' 
-        ' Label6
-        ' 
-        Label6.AutoSize = True
-        Label6.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
-        Label6.Location = New Point(6, 28)
-        Label6.Name = "Label6"
-        Label6.Size = New Size(131, 15)
-        Label6.TabIndex = 0
-        Label6.Text = "ZIP Code of Residence"
         ' 
         ' gbTrendReport
         ' 
@@ -492,6 +308,14 @@ Partial Class Inpatient
         Button1.Text = "Return to Search"
         Button1.UseVisualStyleBackColor = True
         ' 
+        ' dgvCeo
+        ' 
+        dgvCeo.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        dgvCeo.Location = New Point(0, 22)
+        dgvCeo.Name = "dgvCeo"
+        dgvCeo.Size = New Size(568, 118)
+        dgvCeo.TabIndex = 32
+        ' 
         ' Inpatient
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
@@ -512,14 +336,13 @@ Partial Class Inpatient
         StartPosition = FormStartPosition.CenterScreen
         Text = "Inpatient"
         gbKeyAttending.ResumeLayout(False)
-        gbKeyAttending.PerformLayout()
         gbPatientOrigin.ResumeLayout(False)
-        gbPatientOrigin.PerformLayout()
         CType(dgvPatientOrigin, ComponentModel.ISupportInitialize).EndInit()
         gbTrendReport.ResumeLayout(False)
         gbTrendReport.PerformLayout()
         gbStatsforTop20BaseMsdrg.ResumeLayout(False)
         gbStatsforTop20BaseMsdrg.PerformLayout()
+        CType(dgvCeo, ComponentModel.ISupportInitialize).EndInit()
         ResumeLayout(False)
     End Sub
 
@@ -534,18 +357,6 @@ Partial Class Inpatient
     Friend WithEvents gbTrendReport As GroupBox
     Friend WithEvents gbStatsforTop20BaseMsdrg As GroupBox
     Friend WithEvents Button1 As Button
-    Friend WithEvents Label2 As Label
-    Friend WithEvents Label1 As Label
-    Friend WithEvents Label5 As Label
-    Friend WithEvents Label4 As Label
-    Friend WithEvents Label3 As Label
-    Friend WithEvents Label6 As Label
-    Friend WithEvents Label12 As Label
-    Friend WithEvents Label11 As Label
-    Friend WithEvents Label10 As Label
-    Friend WithEvents Label9 As Label
-    Friend WithEvents Label8 As Label
-    Friend WithEvents Label7 As Label
     Friend WithEvents Label14 As Label
     Friend WithEvents Label13 As Label
     Friend WithEvents Label16 As Label
@@ -560,11 +371,5 @@ Partial Class Inpatient
     Friend WithEvents Label21 As Label
     Friend WithEvents Label20 As Label
     Friend WithEvents dgvPatientOrigin As DataGridView
-    Friend WithEvents Zip As DataGridViewTextBoxColumn
-    Friend WithEvents Discharges As DataGridViewTextBoxColumn
-    Friend WithEvents Days As DataGridViewTextBoxColumn
-    Friend WithEvents Charges As DataGridViewTextBoxColumn
-    Friend WithEvents DischargesInc As DataGridViewTextBoxColumn
-    Friend WithEvents Market As DataGridViewTextBoxColumn
-    Friend WithEvents MktPrev As DataGridViewTextBoxColumn
+    Friend WithEvents dgvCeo As DataGridView
 End Class
