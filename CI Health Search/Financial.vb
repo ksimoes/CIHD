@@ -105,7 +105,7 @@ Public Class Financial
                     lblDepreciationExpenseResult.Text = Search.CleanMeUp(provider("Depreciation Cost"))
                     lblCcResult.Text = Search.CleanMeUp(provider("Cost of Charity Care"))
                     lblUncompResult.Text = Search.CleanMeUp(provider("Total Bad Debt Expense"))
-                    lblTotUcResult.Text = If(provider("Cost of Uncompensated Care") IsNot Nothing, CDec(provider("Cost of Uncompensated Care")).ToString("N"), "N/A")
+                    lblTotUcResult.Text = Search.CleanMeUp(provider("Cost of Uncompensated Care"))
 
 
 
@@ -217,5 +217,9 @@ Public Class Financial
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         Me.Hide()
         Search.Show()
+    End Sub
+
+    Private Sub btnOutpatientFinancial_Click(sender As Object, e As EventArgs) Handles btnOutpatientFinancial.Click
+
     End Sub
 End Class
