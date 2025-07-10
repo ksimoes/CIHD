@@ -194,41 +194,80 @@ Public Class FinInd
 
     End Sub
 
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles btnProfileFinInd.Click
-        Me.Hide()
+    Private Sub Button1_Click(sender As Object, e As EventArgs)
+        Hide()
         Profile.Show()
     End Sub
 
-    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles btnDepartmentsFinInd.Click
-        Me.Hide()
+    Private Sub Button2_Click(sender As Object, e As EventArgs)
+        Hide()
         Departments.Show()
     End Sub
 
-    Private Sub Button3_Click(sender As Object, e As EventArgs) Handles btnFinancialFinInd.Click
-        Me.Hide()
+    Private Sub Button3_Click(sender As Object, e As EventArgs)
+        Hide()
         Financial.Show()
     End Sub
 
-    Private Sub Button5_Click(sender As Object, e As EventArgs) Handles btnQualityFinInd.Click
-        Me.Hide()
+    Private Sub Button5_Click(sender As Object, e As EventArgs)
+        Hide()
         Quality.Show()
     End Sub
 
-    Private Sub Button6_Click(sender As Object, e As EventArgs) Handles btnInpatientFinInd.Click
-        Me.Hide()
+    Private Sub Button6_Click(sender As Object, e As EventArgs)
+        Hide()
         Inpatient.Show()
     End Sub
 
-    Private Sub Button7_Click(sender As Object, e As EventArgs) Handles btnOutpatientFinInd.Click
-        Me.Hide()
+    Private Sub Button7_Click(sender As Object, e As EventArgs)
+        Hide()
         Outpatient.Show()
     End Sub
 
-    Private Sub Label113_Click(sender As Object, e As EventArgs) Handles lblCashonHandResult2.Click
+    Private Sub Label113_Click(sender As Object, e As EventArgs)
 
     End Sub
 
-    Private Sub Button1_Click_1(sender As Object, e As EventArgs) Handles Button1.Click
+    Private Sub Button1_Click_1(sender As Object, e As EventArgs)
+        Hide()
+        Search.Show()
+    End Sub
+
+    Private Sub GroupBox2_Enter(sender As Object, e As EventArgs) Handles GroupBox2.Enter
+
+    End Sub
+
+    Private Sub btnProfileFinInd_Click(sender As Object, e As EventArgs) Handles btnProfileFinInd.Click
+        Hide()
+        Profile.Show()
+    End Sub
+
+    Private Sub btnDepartmentsFinInd_Click(sender As Object, e As EventArgs) Handles btnDepartmentsFinInd.Click
+        Hide()
+        Departments.Show()
+    End Sub
+
+    Private Sub btnFinancialFinInd_Click(sender As Object, e As EventArgs) Handles btnFinancialFinInd.Click
+        Hide()
+        Financial.Show()
+    End Sub
+
+    Private Sub btnQualityFinInd_Click(sender As Object, e As EventArgs) Handles btnQualityFinInd.Click
+        Hide()
+        Quality.Show()
+    End Sub
+
+    Private Sub btnInpatientFinInd_Click(sender As Object, e As EventArgs) Handles btnInpatientFinInd.Click
+        Hide()
+        Inpatient.Show()
+    End Sub
+
+    Private Sub btnOutpatientFinInd_Click(sender As Object, e As EventArgs) Handles btnOutpatientFinInd.Click
+        Hide()
+        Outpatient.Show()
+    End Sub
+
+    Private Sub Button1_Click_2(sender As Object, e As EventArgs) Handles Button1.Click
         Me.Hide()
         Search.Show()
     End Sub

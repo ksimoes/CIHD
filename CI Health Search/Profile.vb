@@ -194,4 +194,16 @@ Public Class Profile
     Private Sub lblPhoneNum_Click(sender As Object, e As EventArgs) Handles lblPhoneNum.Click
 
     End Sub
+
+    Private Sub lblLatLongResult_Click(sender As Object, e As EventArgs) Handles lblLatLongResult.Click
+
+    End Sub
+
+    Private Sub gbUniversityAff_Enter(sender As Object, e As EventArgs) Handles gbUniversityAff.Enter
+
+    End Sub
+
+    Private Sub DataGridView1_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles DataGridView1.CellContentClick
+
+    End Sub
 End Class
