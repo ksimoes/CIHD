@@ -188,25 +188,47 @@ Partial Class FinInd
         ToolTip1 = New ToolTip(components)
         ToolTip2 = New ToolTip(components)
         lblDaysCOH = New Label()
+        GroupBox1 = New GroupBox()
+        GroupBox2 = New GroupBox()
+        GroupBox3 = New GroupBox()
+        GroupBox4 = New GroupBox()
+        GroupBox5 = New GroupBox()
+        GroupBox6 = New GroupBox()
+        GroupBox7 = New GroupBox()
+        GroupBox8 = New GroupBox()
+        GroupBox9 = New GroupBox()
+        GroupBox10 = New GroupBox()
+        GroupBox1.SuspendLayout()
+        GroupBox2.SuspendLayout()
+        GroupBox3.SuspendLayout()
+        GroupBox4.SuspendLayout()
+        GroupBox5.SuspendLayout()
+        GroupBox6.SuspendLayout()
+        GroupBox7.SuspendLayout()
+        GroupBox8.SuspendLayout()
+        GroupBox9.SuspendLayout()
+        GroupBox10.SuspendLayout()
         SuspendLayout()
         ' 
         ' btnOutpatientFinInd
         ' 
+        btnOutpatientFinInd.BackColor = SystemColors.ButtonHighlight
         btnOutpatientFinInd.Location = New Point(1454, 1)
         btnOutpatientFinInd.Name = "btnOutpatientFinInd"
         btnOutpatientFinInd.Size = New Size(95, 29)
         btnOutpatientFinInd.TabIndex = 20
         btnOutpatientFinInd.Text = "Outp"
-        btnOutpatientFinInd.UseVisualStyleBackColor = True
+        btnOutpatientFinInd.UseVisualStyleBackColor = False
         ' 
         ' btnInpatientFinInd
         ' 
+        btnInpatientFinInd.BackColor = SystemColors.ButtonHighlight
         btnInpatientFinInd.Location = New Point(1353, 1)
         btnInpatientFinInd.Name = "btnInpatientFinInd"
         btnInpatientFinInd.Size = New Size(95, 29)
         btnInpatientFinInd.TabIndex = 19
         btnInpatientFinInd.Text = "Inp"
-        btnInpatientFinInd.UseVisualStyleBackColor = True
+        btnInpatientFinInd.UseVisualStyleBackColor = False
         ' 
         ' btnQualityFinInd
         ' 
@@ -219,35 +241,38 @@ Partial Class FinInd
         ' 
         ' btnFinancialFinInd
         ' 
+        btnFinancialFinInd.BackColor = SystemColors.ButtonHighlight
         btnFinancialFinInd.Location = New Point(1151, 1)
         btnFinancialFinInd.Name = "btnFinancialFinInd"
         btnFinancialFinInd.Size = New Size(95, 29)
         btnFinancialFinInd.TabIndex = 16
         btnFinancialFinInd.Text = "Financial"
-        btnFinancialFinInd.UseVisualStyleBackColor = True
+        btnFinancialFinInd.UseVisualStyleBackColor = False
         ' 
         ' btnDepartmentsFinInd
         ' 
+        btnDepartmentsFinInd.BackColor = SystemColors.ButtonHighlight
         btnDepartmentsFinInd.Location = New Point(1050, 1)
         btnDepartmentsFinInd.Name = "btnDepartmentsFinInd"
         btnDepartmentsFinInd.Size = New Size(95, 29)
         btnDepartmentsFinInd.TabIndex = 15
         btnDepartmentsFinInd.Text = "Departments"
-        btnDepartmentsFinInd.UseVisualStyleBackColor = True
+        btnDepartmentsFinInd.UseVisualStyleBackColor = False
         ' 
         ' btnProfileFinInd
         ' 
-        btnProfileFinInd.Location = New Point(949, 1)
+        btnProfileFinInd.BackColor = SystemColors.ButtonHighlight
+        btnProfileFinInd.Location = New Point(1005, 1)
         btnProfileFinInd.Name = "btnProfileFinInd"
-        btnProfileFinInd.Size = New Size(95, 29)
+        btnProfileFinInd.Size = New Size(39, 29)
         btnProfileFinInd.TabIndex = 14
         btnProfileFinInd.Text = "Profile"
-        btnProfileFinInd.UseVisualStyleBackColor = True
+        btnProfileFinInd.UseVisualStyleBackColor = False
         ' 
         ' Label1
         ' 
         Label1.AutoSize = True
-        Label1.Location = New Point(12, 36)
+        Label1.Location = New Point(6, 18)
         Label1.Name = "Label1"
         Label1.Size = New Size(108, 15)
         Label1.TabIndex = 21
@@ -256,7 +281,7 @@ Partial Class FinInd
         ' Label2
         ' 
         Label2.AutoSize = True
-        Label2.Location = New Point(12, 63)
+        Label2.Location = New Point(6, 45)
         Label2.Name = "Label2"
         Label2.Size = New Size(159, 15)
         Label2.TabIndex = 22
@@ -265,7 +290,7 @@ Partial Class FinInd
         ' Label3
         ' 
         Label3.AutoSize = True
-        Label3.Location = New Point(12, 93)
+        Label3.Location = New Point(6, 75)
         Label3.Name = "Label3"
         Label3.Size = New Size(104, 15)
         Label3.TabIndex = 23
@@ -275,7 +300,7 @@ Partial Class FinInd
         ' 
         Label4.AutoSize = True
         Label4.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
-        Label4.Location = New Point(12, 118)
+        Label4.Location = New Point(0, 15)
         Label4.Name = "Label4"
         Label4.Size = New Size(461, 15)
         Label4.TabIndex = 24
@@ -285,7 +310,7 @@ Partial Class FinInd
         ' Label5
         ' 
         Label5.AutoSize = True
-        Label5.Location = New Point(12, 147)
+        Label5.Location = New Point(0, 42)
         Label5.Name = "Label5"
         Label5.Size = New Size(145, 15)
         Label5.TabIndex = 25
@@ -294,7 +319,7 @@ Partial Class FinInd
         ' Label6
         ' 
         Label6.AutoSize = True
-        Label6.Location = New Point(12, 173)
+        Label6.Location = New Point(-1, 72)
         Label6.Name = "Label6"
         Label6.Size = New Size(91, 15)
         Label6.TabIndex = 26
@@ -303,7 +328,7 @@ Partial Class FinInd
         ' Label7
         ' 
         Label7.AutoSize = True
-        Label7.Location = New Point(12, 199)
+        Label7.Location = New Point(-2, 99)
         Label7.Name = "Label7"
         Label7.Size = New Size(214, 15)
         Label7.TabIndex = 27
@@ -312,7 +337,7 @@ Partial Class FinInd
         ' Label8
         ' 
         Label8.AutoSize = True
-        Label8.Location = New Point(12, 228)
+        Label8.Location = New Point(5, 125)
         Label8.Name = "Label8"
         Label8.Size = New Size(63, 15)
         Label8.TabIndex = 28
@@ -321,7 +346,7 @@ Partial Class FinInd
         ' Label9
         ' 
         Label9.AutoSize = True
-        Label9.Location = New Point(11, 281)
+        Label9.Location = New Point(9, 54)
         Label9.Name = "Label9"
         Label9.Size = New Size(137, 15)
         Label9.TabIndex = 29
@@ -331,7 +356,7 @@ Partial Class FinInd
         ' 
         Label10.AutoSize = True
         Label10.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
-        Label10.Location = New Point(11, 256)
+        Label10.Location = New Point(9, 29)
         Label10.Name = "Label10"
         Label10.Size = New Size(105, 15)
         Label10.TabIndex = 30
@@ -340,7 +365,7 @@ Partial Class FinInd
         ' Label11
         ' 
         Label11.AutoSize = True
-        Label11.Location = New Point(12, 309)
+        Label11.Location = New Point(10, 82)
         Label11.Name = "Label11"
         Label11.Size = New Size(134, 15)
         Label11.TabIndex = 31
@@ -350,7 +375,7 @@ Partial Class FinInd
         ' 
         Label12.AutoSize = True
         Label12.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
-        Label12.Location = New Point(11, 338)
+        Label12.Location = New Point(9, 20)
         Label12.Name = "Label12"
         Label12.Size = New Size(85, 15)
         Label12.TabIndex = 32
@@ -359,7 +384,7 @@ Partial Class FinInd
         ' Label13
         ' 
         Label13.AutoSize = True
-        Label13.Location = New Point(11, 367)
+        Label13.Location = New Point(7, 51)
         Label13.Name = "Label13"
         Label13.Size = New Size(137, 15)
         Label13.TabIndex = 33
@@ -368,7 +393,7 @@ Partial Class FinInd
         ' Label14
         ' 
         Label14.AutoSize = True
-        Label14.Location = New Point(11, 395)
+        Label14.Location = New Point(7, 79)
         Label14.Name = "Label14"
         Label14.Size = New Size(134, 15)
         Label14.TabIndex = 34
@@ -377,7 +402,7 @@ Partial Class FinInd
         ' Label15
         ' 
         Label15.AutoSize = True
-        Label15.Location = New Point(11, 424)
+        Label15.Location = New Point(7, 108)
         Label15.Name = "Label15"
         Label15.Size = New Size(255, 15)
         Label15.TabIndex = 35
@@ -387,7 +412,7 @@ Partial Class FinInd
         ' 
         Label16.AutoSize = True
         Label16.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
-        Label16.Location = New Point(11, 450)
+        Label16.Location = New Point(6, 25)
         Label16.Name = "Label16"
         Label16.Size = New Size(303, 15)
         Label16.TabIndex = 36
@@ -396,7 +421,7 @@ Partial Class FinInd
         ' Label17
         ' 
         Label17.AutoSize = True
-        Label17.Location = New Point(11, 477)
+        Label17.Location = New Point(6, 52)
         Label17.Name = "Label17"
         Label17.Size = New Size(83, 15)
         Label17.TabIndex = 37
@@ -405,7 +430,7 @@ Partial Class FinInd
         ' Label18
         ' 
         Label18.AutoSize = True
-        Label18.Location = New Point(11, 504)
+        Label18.Location = New Point(6, 79)
         Label18.Name = "Label18"
         Label18.Size = New Size(86, 15)
         Label18.TabIndex = 38
@@ -414,7 +439,7 @@ Partial Class FinInd
         ' Label19
         ' 
         Label19.AutoSize = True
-        Label19.Location = New Point(11, 559)
+        Label19.Location = New Point(6, 134)
         Label19.Name = "Label19"
         Label19.Size = New Size(249, 15)
         Label19.TabIndex = 40
@@ -423,7 +448,7 @@ Partial Class FinInd
         ' Label20
         ' 
         Label20.AutoSize = True
-        Label20.Location = New Point(11, 532)
+        Label20.Location = New Point(6, 107)
         Label20.Name = "Label20"
         Label20.Size = New Size(85, 15)
         Label20.TabIndex = 39
@@ -433,7 +458,7 @@ Partial Class FinInd
         ' 
         Label21.AutoSize = True
         Label21.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
-        Label21.Location = New Point(11, 589)
+        Label21.Location = New Point(5, 20)
         Label21.Name = "Label21"
         Label21.Size = New Size(100, 15)
         Label21.TabIndex = 41
@@ -442,7 +467,7 @@ Partial Class FinInd
         ' Label22
         ' 
         Label22.AutoSize = True
-        Label22.Location = New Point(13, 614)
+        Label22.Location = New Point(7, 45)
         Label22.Name = "Label22"
         Label22.Size = New Size(129, 15)
         Label22.TabIndex = 42
@@ -451,7 +476,7 @@ Partial Class FinInd
         ' Label23
         ' 
         Label23.AutoSize = True
-        Label23.Location = New Point(13, 667)
+        Label23.Location = New Point(7, 98)
         Label23.Name = "Label23"
         Label23.Size = New Size(85, 15)
         Label23.TabIndex = 43
@@ -460,7 +485,7 @@ Partial Class FinInd
         ' Label24
         ' 
         Label24.AutoSize = True
-        Label24.Location = New Point(13, 640)
+        Label24.Location = New Point(7, 71)
         Label24.Name = "Label24"
         Label24.Size = New Size(69, 15)
         Label24.TabIndex = 44
@@ -470,7 +495,7 @@ Partial Class FinInd
         ' 
         Label25.AutoSize = True
         Label25.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
-        Label25.Location = New Point(11, 692)
+        Label25.Location = New Point(8, 18)
         Label25.Name = "Label25"
         Label25.Size = New Size(101, 15)
         Label25.TabIndex = 45
@@ -479,7 +504,7 @@ Partial Class FinInd
         ' Label26
         ' 
         Label26.AutoSize = True
-        Label26.Location = New Point(11, 743)
+        Label26.Location = New Point(8, 69)
         Label26.Name = "Label26"
         Label26.Size = New Size(69, 15)
         Label26.TabIndex = 48
@@ -488,7 +513,7 @@ Partial Class FinInd
         ' Label28
         ' 
         Label28.AutoSize = True
-        Label28.Location = New Point(11, 717)
+        Label28.Location = New Point(8, 43)
         Label28.Name = "Label28"
         Label28.Size = New Size(129, 15)
         Label28.TabIndex = 46
@@ -498,7 +523,7 @@ Partial Class FinInd
         ' 
         Label27.AutoSize = True
         Label27.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
-        Label27.Location = New Point(10, 769)
+        Label27.Location = New Point(9, 19)
         Label27.Name = "Label27"
         Label27.Size = New Size(82, 15)
         Label27.TabIndex = 49
@@ -507,7 +532,7 @@ Partial Class FinInd
         ' Label29
         ' 
         Label29.AutoSize = True
-        Label29.Location = New Point(10, 823)
+        Label29.Location = New Point(9, 60)
         Label29.Name = "Label29"
         Label29.Size = New Size(128, 15)
         Label29.TabIndex = 51
@@ -516,7 +541,7 @@ Partial Class FinInd
         ' Label30
         ' 
         Label30.AutoSize = True
-        Label30.Location = New Point(10, 797)
+        Label30.Location = New Point(9, 34)
         Label30.Name = "Label30"
         Label30.Size = New Size(112, 15)
         Label30.TabIndex = 50
@@ -526,7 +551,7 @@ Partial Class FinInd
         ' 
         Label31.AutoSize = True
         Label31.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
-        Label31.Location = New Point(10, 849)
+        Label31.Location = New Point(4, 25)
         Label31.Name = "Label31"
         Label31.Size = New Size(71, 15)
         Label31.TabIndex = 52
@@ -535,7 +560,7 @@ Partial Class FinInd
         ' Label32
         ' 
         Label32.AutoSize = True
-        Label32.Location = New Point(10, 924)
+        Label32.Location = New Point(4, 100)
         Label32.Name = "Label32"
         Label32.Size = New Size(128, 15)
         Label32.TabIndex = 54
@@ -544,7 +569,7 @@ Partial Class FinInd
         ' Label33
         ' 
         Label33.AutoSize = True
-        Label33.Location = New Point(10, 876)
+        Label33.Location = New Point(4, 52)
         Label33.Name = "Label33"
         Label33.Size = New Size(112, 15)
         Label33.TabIndex = 53
@@ -553,7 +578,7 @@ Partial Class FinInd
         ' Label34
         ' 
         Label34.AutoSize = True
-        Label34.Location = New Point(11, 900)
+        Label34.Location = New Point(5, 76)
         Label34.Name = "Label34"
         Label34.Size = New Size(57, 15)
         Label34.TabIndex = 55
@@ -563,7 +588,7 @@ Partial Class FinInd
         ' 
         Label35.AutoSize = True
         Label35.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
-        Label35.Location = New Point(712, 93)
+        Label35.Location = New Point(12, 37)
         Label35.Name = "Label35"
         Label35.Size = New Size(110, 15)
         Label35.TabIndex = 56
@@ -573,7 +598,7 @@ Partial Class FinInd
         ' 
         Label42.AutoSize = True
         Label42.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
-        Label42.Location = New Point(712, 232)
+        Label42.Location = New Point(721, 342)
         Label42.Name = "Label42"
         Label42.Size = New Size(184, 15)
         Label42.TabIndex = 63
@@ -582,7 +607,7 @@ Partial Class FinInd
         ' Label37
         ' 
         Label37.AutoSize = True
-        Label37.Location = New Point(712, 118)
+        Label37.Location = New Point(12, 62)
         Label37.Name = "Label37"
         Label37.Size = New Size(82, 15)
         Label37.TabIndex = 58
@@ -591,7 +616,7 @@ Partial Class FinInd
         ' Label36
         ' 
         Label36.AutoSize = True
-        Label36.Location = New Point(712, 146)
+        Label36.Location = New Point(12, 90)
         Label36.Name = "Label36"
         Label36.Size = New Size(97, 15)
         Label36.TabIndex = 59
@@ -600,7 +625,7 @@ Partial Class FinInd
         ' Label41
         ' 
         Label41.AutoSize = True
-        Label41.Location = New Point(712, 173)
+        Label41.Location = New Point(12, 117)
         Label41.Name = "Label41"
         Label41.Size = New Size(134, 15)
         Label41.TabIndex = 60
@@ -609,7 +634,7 @@ Partial Class FinInd
         ' Label43
         ' 
         Label43.AutoSize = True
-        Label43.Location = New Point(712, 369)
+        Label43.Location = New Point(721, 479)
         Label43.Name = "Label43"
         Label43.Size = New Size(119, 15)
         Label43.TabIndex = 66
@@ -618,7 +643,7 @@ Partial Class FinInd
         ' Label44
         ' 
         Label44.AutoSize = True
-        Label44.Location = New Point(712, 341)
+        Label44.Location = New Point(721, 451)
         Label44.Name = "Label44"
         Label44.Size = New Size(134, 15)
         Label44.TabIndex = 65
@@ -628,7 +653,7 @@ Partial Class FinInd
         ' 
         Label39.AutoSize = True
         Label39.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
-        Label39.Location = New Point(712, 396)
+        Label39.Location = New Point(721, 503)
         Label39.Name = "Label39"
         Label39.Size = New Size(231, 15)
         Label39.TabIndex = 67
@@ -637,7 +662,7 @@ Partial Class FinInd
         ' Label38
         ' 
         Label38.AutoSize = True
-        Label38.Location = New Point(712, 261)
+        Label38.Location = New Point(721, 371)
         Label38.Name = "Label38"
         Label38.Size = New Size(82, 15)
         Label38.TabIndex = 57
@@ -646,7 +671,7 @@ Partial Class FinInd
         ' Label40
         ' 
         Label40.AutoSize = True
-        Label40.Location = New Point(712, 314)
+        Label40.Location = New Point(721, 424)
         Label40.Name = "Label40"
         Label40.Size = New Size(71, 15)
         Label40.TabIndex = 61
@@ -655,7 +680,7 @@ Partial Class FinInd
         ' Label45
         ' 
         Label45.AutoSize = True
-        Label45.Location = New Point(712, 287)
+        Label45.Location = New Point(721, 397)
         Label45.Name = "Label45"
         Label45.Size = New Size(97, 15)
         Label45.TabIndex = 64
@@ -664,7 +689,7 @@ Partial Class FinInd
         ' Label46
         ' 
         Label46.AutoSize = True
-        Label46.Location = New Point(712, 452)
+        Label46.Location = New Point(721, 559)
         Label46.Name = "Label46"
         Label46.Size = New Size(157, 15)
         Label46.TabIndex = 70
@@ -673,7 +698,7 @@ Partial Class FinInd
         ' Label48
         ' 
         Label48.AutoSize = True
-        Label48.Location = New Point(715, 426)
+        Label48.Location = New Point(724, 533)
         Label48.Name = "Label48"
         Label48.Size = New Size(116, 15)
         Label48.TabIndex = 68
@@ -682,7 +707,7 @@ Partial Class FinInd
         ' Label47
         ' 
         Label47.AutoSize = True
-        Label47.Location = New Point(712, 477)
+        Label47.Location = New Point(721, 584)
         Label47.Name = "Label47"
         Label47.Size = New Size(249, 15)
         Label47.TabIndex = 71
@@ -692,7 +717,7 @@ Partial Class FinInd
         ' 
         Label49.AutoSize = True
         Label49.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
-        Label49.Location = New Point(712, 504)
+        Label49.Location = New Point(721, 611)
         Label49.Name = "Label49"
         Label49.Size = New Size(164, 15)
         Label49.TabIndex = 72
@@ -701,7 +726,7 @@ Partial Class FinInd
         ' Label50
         ' 
         Label50.AutoSize = True
-        Label50.Location = New Point(712, 631)
+        Label50.Location = New Point(721, 738)
         Label50.Name = "Label50"
         Label50.Size = New Size(253, 15)
         Label50.TabIndex = 75
@@ -710,7 +735,7 @@ Partial Class FinInd
         ' Label51
         ' 
         Label51.AutoSize = True
-        Label51.Location = New Point(712, 605)
+        Label51.Location = New Point(721, 712)
         Label51.Name = "Label51"
         Label51.Size = New Size(157, 15)
         Label51.TabIndex = 74
@@ -719,7 +744,7 @@ Partial Class FinInd
         ' Label52
         ' 
         Label52.AutoSize = True
-        Label52.Location = New Point(712, 529)
+        Label52.Location = New Point(721, 636)
         Label52.Name = "Label52"
         Label52.Size = New Size(116, 15)
         Label52.TabIndex = 73
@@ -728,7 +753,7 @@ Partial Class FinInd
         ' Label53
         ' 
         Label53.AutoSize = True
-        Label53.Location = New Point(712, 554)
+        Label53.Location = New Point(721, 661)
         Label53.Name = "Label53"
         Label53.Size = New Size(97, 15)
         Label53.TabIndex = 76
@@ -737,7 +762,7 @@ Partial Class FinInd
         ' Label54
         ' 
         Label54.AutoSize = True
-        Label54.Location = New Point(712, 580)
+        Label54.Location = New Point(721, 687)
         Label54.Name = "Label54"
         Label54.Size = New Size(101, 15)
         Label54.TabIndex = 77
@@ -747,7 +772,7 @@ Partial Class FinInd
         ' 
         Label55.AutoSize = True
         Label55.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
-        Label55.Location = New Point(712, 659)
+        Label55.Location = New Point(721, 766)
         Label55.Name = "Label55"
         Label55.Size = New Size(180, 15)
         Label55.TabIndex = 78
@@ -756,7 +781,7 @@ Partial Class FinInd
         ' Label56
         ' 
         Label56.AutoSize = True
-        Label56.Location = New Point(713, 683)
+        Label56.Location = New Point(722, 790)
         Label56.Name = "Label56"
         Label56.Size = New Size(128, 15)
         Label56.TabIndex = 79
@@ -765,7 +790,7 @@ Partial Class FinInd
         ' Label57
         ' 
         Label57.AutoSize = True
-        Label57.Location = New Point(715, 708)
+        Label57.Location = New Point(724, 815)
         Label57.Name = "Label57"
         Label57.Size = New Size(134, 15)
         Label57.TabIndex = 80
@@ -774,7 +799,7 @@ Partial Class FinInd
         ' Label58
         ' 
         Label58.AutoSize = True
-        Label58.Location = New Point(715, 732)
+        Label58.Location = New Point(724, 839)
         Label58.Name = "Label58"
         Label58.Size = New Size(111, 15)
         Label58.TabIndex = 81
@@ -783,7 +808,7 @@ Partial Class FinInd
         ' Label59
         ' 
         Label59.AutoSize = True
-        Label59.Location = New Point(715, 756)
+        Label59.Location = New Point(724, 863)
         Label59.Name = "Label59"
         Label59.Size = New Size(119, 15)
         Label59.TabIndex = 82
@@ -793,7 +818,7 @@ Partial Class FinInd
         ' 
         Label60.AutoSize = True
         Label60.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
-        Label60.Location = New Point(715, 781)
+        Label60.Location = New Point(724, 888)
         Label60.Name = "Label60"
         Label60.Size = New Size(116, 15)
         Label60.TabIndex = 83
@@ -802,7 +827,7 @@ Partial Class FinInd
         ' Label61
         ' 
         Label61.AutoSize = True
-        Label61.Location = New Point(715, 806)
+        Label61.Location = New Point(724, 913)
         Label61.Name = "Label61"
         Label61.Size = New Size(249, 15)
         Label61.TabIndex = 84
@@ -811,7 +836,7 @@ Partial Class FinInd
         ' Label62
         ' 
         Label62.AutoSize = True
-        Label62.Location = New Point(713, 830)
+        Label62.Location = New Point(722, 937)
         Label62.Name = "Label62"
         Label62.Size = New Size(255, 15)
         Label62.TabIndex = 85
@@ -820,7 +845,7 @@ Partial Class FinInd
         ' Label63
         ' 
         Label63.AutoSize = True
-        Label63.Location = New Point(713, 855)
+        Label63.Location = New Point(722, 962)
         Label63.Name = "Label63"
         Label63.Size = New Size(57, 15)
         Label63.TabIndex = 86
@@ -830,7 +855,7 @@ Partial Class FinInd
         ' 
         Label64.AutoSize = True
         Label64.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
-        Label64.Location = New Point(715, 881)
+        Label64.Location = New Point(1089, 283)
         Label64.Name = "Label64"
         Label64.Size = New Size(121, 15)
         Label64.TabIndex = 87
@@ -839,7 +864,7 @@ Partial Class FinInd
         ' Label65
         ' 
         Label65.AutoSize = True
-        Label65.Location = New Point(716, 956)
+        Label65.Location = New Point(1090, 358)
         Label65.Name = "Label65"
         Label65.Size = New Size(69, 15)
         Label65.TabIndex = 90
@@ -848,7 +873,7 @@ Partial Class FinInd
         ' Label66
         ' 
         Label66.AutoSize = True
-        Label66.Location = New Point(716, 931)
+        Label66.Location = New Point(1090, 333)
         Label66.Name = "Label66"
         Label66.Size = New Size(255, 15)
         Label66.TabIndex = 89
@@ -857,7 +882,7 @@ Partial Class FinInd
         ' Label67
         ' 
         Label67.AutoSize = True
-        Label67.Location = New Point(718, 907)
+        Label67.Location = New Point(1092, 309)
         Label67.Name = "Label67"
         Label67.Size = New Size(249, 15)
         Label67.TabIndex = 88
@@ -867,7 +892,7 @@ Partial Class FinInd
         ' 
         Label68.AutoSize = True
         Label68.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
-        Label68.Location = New Point(1099, 118)
+        Label68.Location = New Point(1091, 390)
         Label68.Name = "Label68"
         Label68.Size = New Size(174, 15)
         Label68.TabIndex = 91
@@ -876,7 +901,7 @@ Partial Class FinInd
         ' Label69
         ' 
         Label69.AutoSize = True
-        Label69.Location = New Point(1099, 173)
+        Label69.Location = New Point(1091, 445)
         Label69.Name = "Label69"
         Label69.Size = New Size(69, 15)
         Label69.TabIndex = 92
@@ -885,7 +910,7 @@ Partial Class FinInd
         ' Label70
         ' 
         Label70.AutoSize = True
-        Label70.Location = New Point(1099, 199)
+        Label70.Location = New Point(1091, 471)
         Label70.Name = "Label70"
         Label70.Size = New Size(85, 15)
         Label70.TabIndex = 93
@@ -894,7 +919,7 @@ Partial Class FinInd
         ' Label71
         ' 
         Label71.AutoSize = True
-        Label71.Location = New Point(1099, 147)
+        Label71.Location = New Point(1091, 419)
         Label71.Name = "Label71"
         Label71.Size = New Size(145, 15)
         Label71.TabIndex = 94
@@ -904,7 +929,7 @@ Partial Class FinInd
         ' 
         Label72.AutoSize = True
         Label72.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
-        Label72.Location = New Point(1099, 228)
+        Label72.Location = New Point(1091, 500)
         Label72.Name = "Label72"
         Label72.Size = New Size(142, 15)
         Label72.TabIndex = 95
@@ -913,7 +938,7 @@ Partial Class FinInd
         ' Label73
         ' 
         Label73.AutoSize = True
-        Label73.Location = New Point(1099, 282)
+        Label73.Location = New Point(1091, 554)
         Label73.Name = "Label73"
         Label73.Size = New Size(85, 15)
         Label73.TabIndex = 97
@@ -922,7 +947,7 @@ Partial Class FinInd
         ' Label74
         ' 
         Label74.AutoSize = True
-        Label74.Location = New Point(1099, 256)
+        Label74.Location = New Point(1091, 528)
         Label74.Name = "Label74"
         Label74.Size = New Size(69, 15)
         Label74.TabIndex = 96
@@ -932,7 +957,7 @@ Partial Class FinInd
         ' 
         Label75.AutoSize = True
         Label75.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
-        Label75.Location = New Point(1099, 309)
+        Label75.Location = New Point(1091, 581)
         Label75.Name = "Label75"
         Label75.Size = New Size(125, 15)
         Label75.TabIndex = 98
@@ -941,7 +966,7 @@ Partial Class FinInd
         ' Label76
         ' 
         Label76.AutoSize = True
-        Label76.Location = New Point(1098, 338)
+        Label76.Location = New Point(1090, 610)
         Label76.Name = "Label76"
         Label76.Size = New Size(148, 15)
         Label76.TabIndex = 99
@@ -950,7 +975,7 @@ Partial Class FinInd
         ' Label77
         ' 
         Label77.AutoSize = True
-        Label77.Location = New Point(1099, 369)
+        Label77.Location = New Point(1091, 641)
         Label77.Name = "Label77"
         Label77.Size = New Size(119, 15)
         Label77.TabIndex = 100
@@ -959,7 +984,7 @@ Partial Class FinInd
         ' lblPedFinIndResult
         ' 
         lblPedFinIndResult.AutoSize = True
-        lblPedFinIndResult.Location = New Point(187, 36)
+        lblPedFinIndResult.Location = New Point(181, 18)
         lblPedFinIndResult.Name = "lblPedFinIndResult"
         lblPedFinIndResult.Size = New Size(39, 15)
         lblPedFinIndResult.TabIndex = 101
@@ -968,7 +993,7 @@ Partial Class FinInd
         ' lblNumMonthsFinIndResult
         ' 
         lblNumMonthsFinIndResult.AutoSize = True
-        lblNumMonthsFinIndResult.Location = New Point(187, 63)
+        lblNumMonthsFinIndResult.Location = New Point(182, 45)
         lblNumMonthsFinIndResult.Name = "lblNumMonthsFinIndResult"
         lblNumMonthsFinIndResult.Size = New Size(39, 15)
         lblNumMonthsFinIndResult.TabIndex = 102
@@ -977,7 +1002,7 @@ Partial Class FinInd
         ' Label80
         ' 
         Label80.AutoSize = True
-        Label80.Location = New Point(187, 93)
+        Label80.Location = New Point(181, 75)
         Label80.Name = "Label80"
         Label80.Size = New Size(39, 15)
         Label80.TabIndex = 103
@@ -986,7 +1011,7 @@ Partial Class FinInd
         ' lblEbitResult
         ' 
         lblEbitResult.AutoSize = True
-        lblEbitResult.Location = New Point(490, 118)
+        lblEbitResult.Location = New Point(476, 15)
         lblEbitResult.Name = "lblEbitResult"
         lblEbitResult.Size = New Size(39, 15)
         lblEbitResult.TabIndex = 104
@@ -995,7 +1020,7 @@ Partial Class FinInd
         ' lblNetIncomeFinIndResult
         ' 
         lblNetIncomeFinIndResult.AutoSize = True
-        lblNetIncomeFinIndResult.Location = New Point(187, 146)
+        lblNetIncomeFinIndResult.Location = New Point(181, 47)
         lblNetIncomeFinIndResult.Name = "lblNetIncomeFinIndResult"
         lblNetIncomeFinIndResult.Size = New Size(39, 15)
         lblNetIncomeFinIndResult.TabIndex = 105
@@ -1004,7 +1029,7 @@ Partial Class FinInd
         ' lblInterestExpenseFinIndResult
         ' 
         lblInterestExpenseFinIndResult.AutoSize = True
-        lblInterestExpenseFinIndResult.Location = New Point(187, 173)
+        lblInterestExpenseFinIndResult.Location = New Point(181, 74)
         lblInterestExpenseFinIndResult.Name = "lblInterestExpenseFinIndResult"
         lblInterestExpenseFinIndResult.Size = New Size(39, 15)
         lblInterestExpenseFinIndResult.TabIndex = 106
@@ -1013,7 +1038,7 @@ Partial Class FinInd
         ' lblDepAmortExpenseResult
         ' 
         lblDepAmortExpenseResult.AutoSize = True
-        lblDepAmortExpenseResult.Location = New Point(243, 199)
+        lblDepAmortExpenseResult.Location = New Point(237, 100)
         lblDepAmortExpenseResult.Name = "lblDepAmortExpenseResult"
         lblDepAmortExpenseResult.Size = New Size(39, 15)
         lblDepAmortExpenseResult.TabIndex = 107
@@ -1022,7 +1047,7 @@ Partial Class FinInd
         ' lblLeaseCostResult
         ' 
         lblLeaseCostResult.AutoSize = True
-        lblLeaseCostResult.Location = New Point(187, 228)
+        lblLeaseCostResult.Location = New Point(181, 129)
         lblLeaseCostResult.Name = "lblLeaseCostResult"
         lblLeaseCostResult.Size = New Size(39, 15)
         lblLeaseCostResult.TabIndex = 108
@@ -1031,7 +1056,7 @@ Partial Class FinInd
         ' lblOperatingMarginFinIndResult
         ' 
         lblOperatingMarginFinIndResult.AutoSize = True
-        lblOperatingMarginFinIndResult.Location = New Point(187, 261)
+        lblOperatingMarginFinIndResult.Location = New Point(185, 34)
         lblOperatingMarginFinIndResult.Name = "lblOperatingMarginFinIndResult"
         lblOperatingMarginFinIndResult.Size = New Size(39, 15)
         lblOperatingMarginFinIndResult.TabIndex = 109
@@ -1040,7 +1065,7 @@ Partial Class FinInd
         ' lblTotOperatingRevenueFinInd2
         ' 
         lblTotOperatingRevenueFinInd2.AutoSize = True
-        lblTotOperatingRevenueFinInd2.Location = New Point(187, 369)
+        lblTotOperatingRevenueFinInd2.Location = New Point(183, 53)
         lblTotOperatingRevenueFinInd2.Name = "lblTotOperatingRevenueFinInd2"
         lblTotOperatingRevenueFinInd2.Size = New Size(39, 15)
         lblTotOperatingRevenueFinInd2.TabIndex = 113
@@ -1049,7 +1074,7 @@ Partial Class FinInd
         ' lblExcessMarginResult
         ' 
         lblExcessMarginResult.AutoSize = True
-        lblExcessMarginResult.Location = New Point(187, 341)
+        lblExcessMarginResult.Location = New Point(183, 25)
         lblExcessMarginResult.Name = "lblExcessMarginResult"
         lblExcessMarginResult.Size = New Size(39, 15)
         lblExcessMarginResult.TabIndex = 112
@@ -1058,7 +1083,7 @@ Partial Class FinInd
         ' lblTotOperatingExpenseFinIndResult
         ' 
         lblTotOperatingExpenseFinIndResult.AutoSize = True
-        lblTotOperatingExpenseFinIndResult.Location = New Point(187, 314)
+        lblTotOperatingExpenseFinIndResult.Location = New Point(185, 87)
         lblTotOperatingExpenseFinIndResult.Name = "lblTotOperatingExpenseFinIndResult"
         lblTotOperatingExpenseFinIndResult.Size = New Size(39, 15)
         lblTotOperatingExpenseFinIndResult.TabIndex = 111
@@ -1067,7 +1092,7 @@ Partial Class FinInd
         ' lblTotOperatingRevFinIndResult
         ' 
         lblTotOperatingRevFinIndResult.AutoSize = True
-        lblTotOperatingRevFinIndResult.Location = New Point(187, 287)
+        lblTotOperatingRevFinIndResult.Location = New Point(185, 60)
         lblTotOperatingRevFinIndResult.Name = "lblTotOperatingRevFinIndResult"
         lblTotOperatingRevFinIndResult.Size = New Size(39, 15)
         lblTotOperatingRevFinIndResult.TabIndex = 110
@@ -1076,7 +1101,7 @@ Partial Class FinInd
         ' lblSalaryExpenseResult
         ' 
         lblSalaryExpenseResult.AutoSize = True
-        lblSalaryExpenseResult.Location = New Point(109, 477)
+        lblSalaryExpenseResult.Location = New Point(104, 52)
         lblSalaryExpenseResult.Name = "lblSalaryExpenseResult"
         lblSalaryExpenseResult.Size = New Size(39, 15)
         lblSalaryExpenseResult.TabIndex = 117
@@ -1085,7 +1110,7 @@ Partial Class FinInd
         ' lblPeapctorResult
         ' 
         lblPeapctorResult.AutoSize = True
-        lblPeapctorResult.Location = New Point(331, 452)
+        lblPeapctorResult.Location = New Point(326, 27)
         lblPeapctorResult.Name = "lblPeapctorResult"
         lblPeapctorResult.Size = New Size(39, 15)
         lblPeapctorResult.TabIndex = 116
@@ -1094,7 +1119,7 @@ Partial Class FinInd
         ' lblNoRFinIndResult
         ' 
         lblNoRFinIndResult.AutoSize = True
-        lblNoRFinIndResult.Location = New Point(284, 426)
+        lblNoRFinIndResult.Location = New Point(280, 110)
         lblNoRFinIndResult.Name = "lblNoRFinIndResult"
         lblNoRFinIndResult.Size = New Size(39, 15)
         lblNoRFinIndResult.TabIndex = 115
@@ -1103,7 +1128,7 @@ Partial Class FinInd
         ' lblTotOperatingExpenseFinInd2
         ' 
         lblTotOperatingExpenseFinInd2.AutoSize = True
-        lblTotOperatingExpenseFinInd2.Location = New Point(198, 396)
+        lblTotOperatingExpenseFinInd2.Location = New Point(194, 80)
         lblTotOperatingExpenseFinInd2.Name = "lblTotOperatingExpenseFinInd2"
         lblTotOperatingExpenseFinInd2.Size = New Size(39, 15)
         lblTotOperatingExpenseFinInd2.TabIndex = 114
@@ -1112,7 +1137,7 @@ Partial Class FinInd
         ' lblROEResult
         ' 
         lblROEResult.AutoSize = True
-        lblROEResult.Location = New Point(118, 589)
+        lblROEResult.Location = New Point(112, 20)
         lblROEResult.Name = "lblROEResult"
         lblROEResult.Size = New Size(39, 15)
         lblROEResult.TabIndex = 121
@@ -1121,7 +1146,7 @@ Partial Class FinInd
         ' lblTotOperatingRevResult3
         ' 
         lblTotOperatingRevResult3.AutoSize = True
-        lblTotOperatingRevResult3.Location = New Point(275, 559)
+        lblTotOperatingRevResult3.Location = New Point(270, 134)
         lblTotOperatingRevResult3.Name = "lblTotOperatingRevResult3"
         lblTotOperatingRevResult3.Size = New Size(39, 15)
         lblTotOperatingRevResult3.TabIndex = 120
@@ -1130,7 +1155,7 @@ Partial Class FinInd
         ' lblFringeBenefitsResult
         ' 
         lblFringeBenefitsResult.AutoSize = True
-        lblFringeBenefitsResult.Location = New Point(109, 529)
+        lblFringeBenefitsResult.Location = New Point(104, 104)
         lblFringeBenefitsResult.Name = "lblFringeBenefitsResult"
         lblFringeBenefitsResult.Size = New Size(39, 15)
         lblFringeBenefitsResult.TabIndex = 119
@@ -1139,7 +1164,7 @@ Partial Class FinInd
         ' lblContractLaborResult
         ' 
         lblContractLaborResult.AutoSize = True
-        lblContractLaborResult.Location = New Point(109, 504)
+        lblContractLaborResult.Location = New Point(104, 79)
         lblContractLaborResult.Name = "lblContractLaborResult"
         lblContractLaborResult.Size = New Size(39, 15)
         lblContractLaborResult.TabIndex = 118
@@ -1148,7 +1173,7 @@ Partial Class FinInd
         ' lblRoaResult
         ' 
         lblRoaResult.AutoSize = True
-        lblRoaResult.Location = New Point(167, 692)
+        lblRoaResult.Location = New Point(164, 18)
         lblRoaResult.Name = "lblRoaResult"
         lblRoaResult.Size = New Size(39, 15)
         lblRoaResult.TabIndex = 125
@@ -1157,7 +1182,7 @@ Partial Class FinInd
         ' lblTotLiabilitiesResult
         ' 
         lblTotLiabilitiesResult.AutoSize = True
-        lblTotLiabilitiesResult.Location = New Point(167, 667)
+        lblTotLiabilitiesResult.Location = New Point(161, 98)
         lblTotLiabilitiesResult.Name = "lblTotLiabilitiesResult"
         lblTotLiabilitiesResult.Size = New Size(39, 15)
         lblTotLiabilitiesResult.TabIndex = 124
@@ -1166,7 +1191,7 @@ Partial Class FinInd
         ' lblTotAssetsResult
         ' 
         lblTotAssetsResult.AutoSize = True
-        lblTotAssetsResult.Location = New Point(167, 640)
+        lblTotAssetsResult.Location = New Point(161, 71)
         lblTotAssetsResult.Name = "lblTotAssetsResult"
         lblTotAssetsResult.Size = New Size(39, 15)
         lblTotAssetsResult.TabIndex = 123
@@ -1175,7 +1200,7 @@ Partial Class FinInd
         ' lblNetIncomeResult
         ' 
         lblNetIncomeResult.AutoSize = True
-        lblNetIncomeResult.Location = New Point(167, 614)
+        lblNetIncomeResult.Location = New Point(161, 45)
         lblNetIncomeResult.Name = "lblNetIncomeResult"
         lblNetIncomeResult.Size = New Size(39, 15)
         lblNetIncomeResult.TabIndex = 122
@@ -1184,7 +1209,7 @@ Partial Class FinInd
         ' lblTotCurrentAssetsResult
         ' 
         lblTotCurrentAssetsResult.AutoSize = True
-        lblTotCurrentAssetsResult.Location = New Point(167, 797)
+        lblTotCurrentAssetsResult.Location = New Point(166, 34)
         lblTotCurrentAssetsResult.Name = "lblTotCurrentAssetsResult"
         lblTotCurrentAssetsResult.Size = New Size(39, 15)
         lblTotCurrentAssetsResult.TabIndex = 129
@@ -1193,7 +1218,7 @@ Partial Class FinInd
         ' lblCurrentRatioResult
         ' 
         lblCurrentRatioResult.AutoSize = True
-        lblCurrentRatioResult.Location = New Point(167, 769)
+        lblCurrentRatioResult.Location = New Point(166, 19)
         lblCurrentRatioResult.Name = "lblCurrentRatioResult"
         lblCurrentRatioResult.Size = New Size(39, 15)
         lblCurrentRatioResult.TabIndex = 128
@@ -1202,7 +1227,7 @@ Partial Class FinInd
         ' lblTotAssetsResult2
         ' 
         lblTotAssetsResult2.AutoSize = True
-        lblTotAssetsResult2.Location = New Point(167, 743)
+        lblTotAssetsResult2.Location = New Point(164, 69)
         lblTotAssetsResult2.Name = "lblTotAssetsResult2"
         lblTotAssetsResult2.Size = New Size(39, 15)
         lblTotAssetsResult2.TabIndex = 127
@@ -1211,7 +1236,7 @@ Partial Class FinInd
         ' lblNetIncomeResult2
         ' 
         lblNetIncomeResult2.AutoSize = True
-        lblNetIncomeResult2.Location = New Point(167, 717)
+        lblNetIncomeResult2.Location = New Point(164, 43)
         lblNetIncomeResult2.Name = "lblNetIncomeResult2"
         lblNetIncomeResult2.Size = New Size(39, 15)
         lblNetIncomeResult2.TabIndex = 126
@@ -1220,7 +1245,7 @@ Partial Class FinInd
         ' lblInventoryResult
         ' 
         lblInventoryResult.AutoSize = True
-        lblInventoryResult.Location = New Point(167, 900)
+        lblInventoryResult.Location = New Point(161, 76)
         lblInventoryResult.Name = "lblInventoryResult"
         lblInventoryResult.Size = New Size(39, 15)
         lblInventoryResult.TabIndex = 133
@@ -1229,7 +1254,7 @@ Partial Class FinInd
         ' lblTotCurrentAssetsResult2
         ' 
         lblTotCurrentAssetsResult2.AutoSize = True
-        lblTotCurrentAssetsResult2.Location = New Point(167, 876)
+        lblTotCurrentAssetsResult2.Location = New Point(161, 52)
         lblTotCurrentAssetsResult2.Name = "lblTotCurrentAssetsResult2"
         lblTotCurrentAssetsResult2.Size = New Size(39, 15)
         lblTotCurrentAssetsResult2.TabIndex = 132
@@ -1238,7 +1263,7 @@ Partial Class FinInd
         ' lblQuickRatioResult
         ' 
         lblQuickRatioResult.AutoSize = True
-        lblQuickRatioResult.Location = New Point(167, 849)
+        lblQuickRatioResult.Location = New Point(161, 25)
         lblQuickRatioResult.Name = "lblQuickRatioResult"
         lblQuickRatioResult.Size = New Size(39, 15)
         lblQuickRatioResult.TabIndex = 131
@@ -1247,7 +1272,7 @@ Partial Class FinInd
         ' lblTotCurrentLiabilitiesResult
         ' 
         lblTotCurrentLiabilitiesResult.AutoSize = True
-        lblTotCurrentLiabilitiesResult.Location = New Point(167, 823)
+        lblTotCurrentLiabilitiesResult.Location = New Point(166, 60)
         lblTotCurrentLiabilitiesResult.Name = "lblTotCurrentLiabilitiesResult"
         lblTotCurrentLiabilitiesResult.Size = New Size(39, 15)
         lblTotCurrentLiabilitiesResult.TabIndex = 130
@@ -1256,7 +1281,7 @@ Partial Class FinInd
         ' lblTotOperatingExpenseFinInd3
         ' 
         lblTotOperatingExpenseFinInd3.AutoSize = True
-        lblTotOperatingExpenseFinInd3.Location = New Point(852, 173)
+        lblTotOperatingExpenseFinInd3.Location = New Point(152, 117)
         lblTotOperatingExpenseFinInd3.Name = "lblTotOperatingExpenseFinInd3"
         lblTotOperatingExpenseFinInd3.Size = New Size(39, 15)
         lblTotOperatingExpenseFinInd3.TabIndex = 137
@@ -1265,7 +1290,7 @@ Partial Class FinInd
         ' lblMarketSecuritiesResult
         ' 
         lblMarketSecuritiesResult.AutoSize = True
-        lblMarketSecuritiesResult.Location = New Point(852, 147)
+        lblMarketSecuritiesResult.Location = New Point(152, 91)
         lblMarketSecuritiesResult.Name = "lblMarketSecuritiesResult"
         lblMarketSecuritiesResult.Size = New Size(39, 15)
         lblMarketSecuritiesResult.TabIndex = 136
@@ -1274,7 +1299,8 @@ Partial Class FinInd
         ' lblCashonHandResult2
         ' 
         lblCashonHandResult2.AutoSize = True
-        lblCashonHandResult2.Location = New Point(837, 118)
+        lblCashonHandResult2.BackColor = SystemColors.Control
+        lblCashonHandResult2.Location = New Point(135, 60)
         lblCashonHandResult2.Name = "lblCashonHandResult2"
         lblCashonHandResult2.Size = New Size(39, 15)
         lblCashonHandResult2.TabIndex = 135
@@ -1283,7 +1309,7 @@ Partial Class FinInd
         ' lblTotCurrentLiabilitesResult2
         ' 
         lblTotCurrentLiabilitesResult2.AutoSize = True
-        lblTotCurrentLiabilitesResult2.Location = New Point(167, 924)
+        lblTotCurrentLiabilitesResult2.Location = New Point(161, 100)
         lblTotCurrentLiabilitesResult2.Name = "lblTotCurrentLiabilitesResult2"
         lblTotCurrentLiabilitesResult2.Size = New Size(39, 15)
         lblTotCurrentLiabilitesResult2.TabIndex = 134
@@ -1292,7 +1318,7 @@ Partial Class FinInd
         ' lblDepreciationExpenseResultFinInd
         ' 
         lblDepreciationExpenseResultFinInd.AutoSize = True
-        lblDepreciationExpenseResultFinInd.Location = New Point(853, 199)
+        lblDepreciationExpenseResultFinInd.Location = New Point(153, 143)
         lblDepreciationExpenseResultFinInd.Name = "lblDepreciationExpenseResultFinInd"
         lblDepreciationExpenseResultFinInd.Size = New Size(39, 15)
         lblDepreciationExpenseResultFinInd.TabIndex = 141
@@ -1301,7 +1327,7 @@ Partial Class FinInd
         ' lblMarketSecuritiesResult2
         ' 
         lblMarketSecuritiesResult2.AutoSize = True
-        lblMarketSecuritiesResult2.Location = New Point(866, 287)
+        lblMarketSecuritiesResult2.Location = New Point(875, 397)
         lblMarketSecuritiesResult2.Name = "lblMarketSecuritiesResult2"
         lblMarketSecuritiesResult2.Size = New Size(39, 15)
         lblMarketSecuritiesResult2.TabIndex = 140
@@ -1310,7 +1336,7 @@ Partial Class FinInd
         ' lblCashonHandResult
         ' 
         lblCashonHandResult.AutoSize = True
-        lblCashonHandResult.Location = New Point(866, 261)
+        lblCashonHandResult.Location = New Point(875, 371)
         lblCashonHandResult.Name = "lblCashonHandResult"
         lblCashonHandResult.Size = New Size(39, 15)
         lblCashonHandResult.TabIndex = 139
@@ -1319,7 +1345,7 @@ Partial Class FinInd
         ' Label118
         ' 
         Label118.AutoSize = True
-        Label118.Location = New Point(904, 232)
+        Label118.Location = New Point(913, 342)
         Label118.Name = "Label118"
         Label118.Size = New Size(39, 15)
         Label118.TabIndex = 138
@@ -1328,7 +1354,7 @@ Partial Class FinInd
         ' lblInvestmentsResultFinInd
         ' 
         lblInvestmentsResultFinInd.AutoSize = True
-        lblInvestmentsResultFinInd.Location = New Point(866, 314)
+        lblInvestmentsResultFinInd.Location = New Point(875, 424)
         lblInvestmentsResultFinInd.Name = "lblInvestmentsResultFinInd"
         lblInvestmentsResultFinInd.Size = New Size(39, 15)
         lblInvestmentsResultFinInd.TabIndex = 145
@@ -1337,7 +1363,7 @@ Partial Class FinInd
         ' lblTotOperatingExpenseFinInd4
         ' 
         lblTotOperatingExpenseFinInd4.AutoSize = True
-        lblTotOperatingExpenseFinInd4.Location = New Point(866, 338)
+        lblTotOperatingExpenseFinInd4.Location = New Point(875, 448)
         lblTotOperatingExpenseFinInd4.Name = "lblTotOperatingExpenseFinInd4"
         lblTotOperatingExpenseFinInd4.Size = New Size(39, 15)
         lblTotOperatingExpenseFinInd4.TabIndex = 144
@@ -1346,7 +1372,7 @@ Partial Class FinInd
         ' lblDepreciationExpenseResultFinInd2
         ' 
         lblDepreciationExpenseResultFinInd2.AutoSize = True
-        lblDepreciationExpenseResultFinInd2.Location = New Point(866, 367)
+        lblDepreciationExpenseResultFinInd2.Location = New Point(875, 477)
         lblDepreciationExpenseResultFinInd2.Name = "lblDepreciationExpenseResultFinInd2"
         lblDepreciationExpenseResultFinInd2.Size = New Size(39, 15)
         lblDepreciationExpenseResultFinInd2.TabIndex = 143
@@ -1355,7 +1381,7 @@ Partial Class FinInd
         ' Label122
         ' 
         Label122.AutoSize = True
-        Label122.Location = New Point(960, 396)
+        Label122.Location = New Point(969, 503)
         Label122.Name = "Label122"
         Label122.Size = New Size(39, 15)
         Label122.TabIndex = 142
@@ -1364,7 +1390,7 @@ Partial Class FinInd
         ' Label123
         ' 
         Label123.AutoSize = True
-        Label123.Location = New Point(904, 504)
+        Label123.Location = New Point(913, 611)
         Label123.Name = "Label123"
         Label123.Size = New Size(39, 15)
         Label123.TabIndex = 149
@@ -1373,7 +1399,7 @@ Partial Class FinInd
         ' lblTotOperatingRevResult6
         ' 
         lblTotOperatingRevResult6.AutoSize = True
-        lblTotOperatingRevResult6.Location = New Point(967, 477)
+        lblTotOperatingRevResult6.Location = New Point(976, 584)
         lblTotOperatingRevResult6.Name = "lblTotOperatingRevResult6"
         lblTotOperatingRevResult6.Size = New Size(39, 15)
         lblTotOperatingRevResult6.TabIndex = 148
@@ -1382,7 +1408,7 @@ Partial Class FinInd
         ' lblAllowforUncollectRes2
         ' 
         lblAllowforUncollectRes2.AutoSize = True
-        lblAllowforUncollectRes2.Location = New Point(960, 450)
+        lblAllowforUncollectRes2.Location = New Point(969, 557)
         lblAllowforUncollectRes2.Name = "lblAllowforUncollectRes2"
         lblAllowforUncollectRes2.Size = New Size(39, 15)
         lblAllowforUncollectRes2.TabIndex = 147
@@ -1391,7 +1417,7 @@ Partial Class FinInd
         ' lblAccountsRecievableResult
         ' 
         lblAccountsRecievableResult.AutoSize = True
-        lblAccountsRecievableResult.Location = New Point(960, 426)
+        lblAccountsRecievableResult.Location = New Point(969, 533)
         lblAccountsRecievableResult.Name = "lblAccountsRecievableResult"
         lblAccountsRecievableResult.Size = New Size(39, 15)
         lblAccountsRecievableResult.TabIndex = 146
@@ -1400,7 +1426,7 @@ Partial Class FinInd
         ' lblAccountsRecievableResult2
         ' 
         lblAccountsRecievableResult2.AutoSize = True
-        lblAccountsRecievableResult2.Location = New Point(904, 532)
+        lblAccountsRecievableResult2.Location = New Point(913, 639)
         lblAccountsRecievableResult2.Name = "lblAccountsRecievableResult2"
         lblAccountsRecievableResult2.Size = New Size(39, 15)
         lblAccountsRecievableResult2.TabIndex = 153
@@ -1409,7 +1435,7 @@ Partial Class FinInd
         ' lblNotesReceivableRes
         ' 
         lblNotesReceivableRes.AutoSize = True
-        lblNotesReceivableRes.Location = New Point(904, 554)
+        lblNotesReceivableRes.Location = New Point(913, 661)
         lblNotesReceivableRes.Name = "lblNotesReceivableRes"
         lblNotesReceivableRes.Size = New Size(39, 15)
         lblNotesReceivableRes.TabIndex = 152
@@ -1418,7 +1444,7 @@ Partial Class FinInd
         ' Label129
         ' 
         Label129.AutoSize = True
-        Label129.Location = New Point(904, 580)
+        Label129.Location = New Point(913, 687)
         Label129.Name = "Label129"
         Label129.Size = New Size(39, 15)
         Label129.TabIndex = 151
@@ -1427,7 +1453,7 @@ Partial Class FinInd
         ' lblAllowforUncollectRes
         ' 
         lblAllowforUncollectRes.AutoSize = True
-        lblAllowforUncollectRes.Location = New Point(904, 605)
+        lblAllowforUncollectRes.Location = New Point(913, 712)
         lblAllowforUncollectRes.Name = "lblAllowforUncollectRes"
         lblAllowforUncollectRes.Size = New Size(39, 15)
         lblAllowforUncollectRes.TabIndex = 150
@@ -1436,7 +1462,7 @@ Partial Class FinInd
         ' lblTotOperatingExpenseFinInd5
         ' 
         lblTotOperatingExpenseFinInd5.AutoSize = True
-        lblTotOperatingExpenseFinInd5.Location = New Point(904, 708)
+        lblTotOperatingExpenseFinInd5.Location = New Point(913, 815)
         lblTotOperatingExpenseFinInd5.Name = "lblTotOperatingExpenseFinInd5"
         lblTotOperatingExpenseFinInd5.Size = New Size(39, 15)
         lblTotOperatingExpenseFinInd5.TabIndex = 157
@@ -1445,7 +1471,7 @@ Partial Class FinInd
         ' lblTotCurrentLiabilitesResult3
         ' 
         lblTotCurrentLiabilitesResult3.AutoSize = True
-        lblTotCurrentLiabilitesResult3.Location = New Point(904, 683)
+        lblTotCurrentLiabilitesResult3.Location = New Point(913, 790)
         lblTotCurrentLiabilitesResult3.Name = "lblTotCurrentLiabilitesResult3"
         lblTotCurrentLiabilitesResult3.Size = New Size(39, 15)
         lblTotCurrentLiabilitesResult3.TabIndex = 156
@@ -1454,7 +1480,7 @@ Partial Class FinInd
         ' Label133
         ' 
         Label133.AutoSize = True
-        Label133.Location = New Point(904, 659)
+        Label133.Location = New Point(913, 766)
         Label133.Name = "Label133"
         Label133.Size = New Size(39, 15)
         Label133.TabIndex = 155
@@ -1463,7 +1489,7 @@ Partial Class FinInd
         ' Label134
         ' 
         Label134.AutoSize = True
-        Label134.Location = New Point(983, 631)
+        Label134.Location = New Point(992, 738)
         Label134.Name = "Label134"
         Label134.Size = New Size(39, 15)
         Label134.TabIndex = 154
@@ -1472,7 +1498,7 @@ Partial Class FinInd
         ' lblOtherExpenseResultFindInd
         ' 
         lblOtherExpenseResultFindInd.AutoSize = True
-        lblOtherExpenseResultFindInd.Location = New Point(904, 732)
+        lblOtherExpenseResultFindInd.Location = New Point(913, 839)
         lblOtherExpenseResultFindInd.Name = "lblOtherExpenseResultFindInd"
         lblOtherExpenseResultFindInd.Size = New Size(39, 15)
         lblOtherExpenseResultFindInd.TabIndex = 161
@@ -1481,7 +1507,7 @@ Partial Class FinInd
         ' lblDepreciationExpenseResultFinInd3
         ' 
         lblDepreciationExpenseResultFinInd3.AutoSize = True
-        lblDepreciationExpenseResultFinInd3.Location = New Point(904, 756)
+        lblDepreciationExpenseResultFinInd3.Location = New Point(913, 863)
         lblDepreciationExpenseResultFinInd3.Name = "lblDepreciationExpenseResultFinInd3"
         lblDepreciationExpenseResultFinInd3.Size = New Size(39, 15)
         lblDepreciationExpenseResultFinInd3.TabIndex = 160
@@ -1490,7 +1516,7 @@ Partial Class FinInd
         ' Label137
         ' 
         Label137.AutoSize = True
-        Label137.Location = New Point(904, 781)
+        Label137.Location = New Point(913, 888)
         Label137.Name = "Label137"
         Label137.Size = New Size(39, 15)
         Label137.TabIndex = 159
@@ -1499,7 +1525,7 @@ Partial Class FinInd
         ' lblTotOperatingRevResult4
         ' 
         lblTotOperatingRevResult4.AutoSize = True
-        lblTotOperatingRevResult4.Location = New Point(983, 806)
+        lblTotOperatingRevResult4.Location = New Point(992, 913)
         lblTotOperatingRevResult4.Name = "lblTotOperatingRevResult4"
         lblTotOperatingRevResult4.Size = New Size(39, 15)
         lblTotOperatingRevResult4.TabIndex = 158
@@ -1508,7 +1534,7 @@ Partial Class FinInd
         ' Label139
         ' 
         Label139.AutoSize = True
-        Label139.Location = New Point(983, 830)
+        Label139.Location = New Point(992, 937)
         Label139.Name = "Label139"
         Label139.Size = New Size(39, 15)
         Label139.TabIndex = 165
@@ -1517,7 +1543,7 @@ Partial Class FinInd
         ' lblInventoryResult2
         ' 
         lblInventoryResult2.AutoSize = True
-        lblInventoryResult2.Location = New Point(904, 855)
+        lblInventoryResult2.Location = New Point(913, 962)
         lblInventoryResult2.Name = "lblInventoryResult2"
         lblInventoryResult2.Size = New Size(39, 15)
         lblInventoryResult2.TabIndex = 164
@@ -1526,7 +1552,7 @@ Partial Class FinInd
         ' Label141
         ' 
         Label141.AutoSize = True
-        Label141.Location = New Point(904, 881)
+        Label141.Location = New Point(1278, 283)
         Label141.Name = "Label141"
         Label141.Size = New Size(39, 15)
         Label141.TabIndex = 163
@@ -1535,7 +1561,7 @@ Partial Class FinInd
         ' lblTotOperatingRevResult5
         ' 
         lblTotOperatingRevResult5.AutoSize = True
-        lblTotOperatingRevResult5.Location = New Point(983, 907)
+        lblTotOperatingRevResult5.Location = New Point(1357, 309)
         lblTotOperatingRevResult5.Name = "lblTotOperatingRevResult5"
         lblTotOperatingRevResult5.Size = New Size(39, 15)
         lblTotOperatingRevResult5.TabIndex = 162
@@ -1544,7 +1570,7 @@ Partial Class FinInd
         ' lblTotLongTermLiabilitiesResult
         ' 
         lblTotLongTermLiabilitiesResult.AutoSize = True
-        lblTotLongTermLiabilitiesResult.Location = New Point(1308, 147)
+        lblTotLongTermLiabilitiesResult.Location = New Point(1300, 419)
         lblTotLongTermLiabilitiesResult.Name = "lblTotLongTermLiabilitiesResult"
         lblTotLongTermLiabilitiesResult.Size = New Size(39, 15)
         lblTotLongTermLiabilitiesResult.TabIndex = 169
@@ -1553,7 +1579,7 @@ Partial Class FinInd
         ' lblLtdtnaResult
         ' 
         lblLtdtnaResult.AutoSize = True
-        lblLtdtnaResult.Location = New Point(1308, 118)
+        lblLtdtnaResult.Location = New Point(1300, 390)
         lblLtdtnaResult.Name = "lblLtdtnaResult"
         lblLtdtnaResult.Size = New Size(39, 15)
         lblLtdtnaResult.TabIndex = 168
@@ -1562,7 +1588,7 @@ Partial Class FinInd
         ' lblTotAssetsResult3
         ' 
         lblTotAssetsResult3.AutoSize = True
-        lblTotAssetsResult3.Location = New Point(904, 956)
+        lblTotAssetsResult3.Location = New Point(1278, 358)
         lblTotAssetsResult3.Name = "lblTotAssetsResult3"
         lblTotAssetsResult3.Size = New Size(39, 15)
         lblTotAssetsResult3.TabIndex = 167
@@ -1571,7 +1597,7 @@ Partial Class FinInd
         ' Label146
         ' 
         Label146.AutoSize = True
-        Label146.Location = New Point(983, 931)
+        Label146.Location = New Point(1357, 333)
         Label146.Name = "Label146"
         Label146.Size = New Size(39, 15)
         Label146.TabIndex = 166
@@ -1580,7 +1606,7 @@ Partial Class FinInd
         ' lblTotAssetsResult5
         ' 
         lblTotAssetsResult5.AutoSize = True
-        lblTotAssetsResult5.Location = New Point(1308, 256)
+        lblTotAssetsResult5.Location = New Point(1300, 528)
         lblTotAssetsResult5.Name = "lblTotAssetsResult5"
         lblTotAssetsResult5.Size = New Size(39, 15)
         lblTotAssetsResult5.TabIndex = 173
@@ -1589,7 +1615,7 @@ Partial Class FinInd
         ' lblTdtna
         ' 
         lblTdtna.AutoSize = True
-        lblTdtna.Location = New Point(1308, 232)
+        lblTdtna.Location = New Point(1300, 504)
         lblTdtna.Name = "lblTdtna"
         lblTdtna.Size = New Size(39, 15)
         lblTdtna.TabIndex = 172
@@ -1598,7 +1624,7 @@ Partial Class FinInd
         ' lblTotLiabilitiesResult2
         ' 
         lblTotLiabilitiesResult2.AutoSize = True
-        lblTotLiabilitiesResult2.Location = New Point(1308, 199)
+        lblTotLiabilitiesResult2.Location = New Point(1300, 471)
         lblTotLiabilitiesResult2.Name = "lblTotLiabilitiesResult2"
         lblTotLiabilitiesResult2.Size = New Size(39, 15)
         lblTotLiabilitiesResult2.TabIndex = 171
@@ -1607,7 +1633,7 @@ Partial Class FinInd
         ' lblTotAssetsResult4
         ' 
         lblTotAssetsResult4.AutoSize = True
-        lblTotAssetsResult4.Location = New Point(1308, 173)
+        lblTotAssetsResult4.Location = New Point(1300, 445)
         lblTotAssetsResult4.Name = "lblTotAssetsResult4"
         lblTotAssetsResult4.Size = New Size(39, 15)
         lblTotAssetsResult4.TabIndex = 170
@@ -1616,7 +1642,7 @@ Partial Class FinInd
         ' lblDepreciationExpenseResultFinInd4
         ' 
         lblDepreciationExpenseResultFinInd4.AutoSize = True
-        lblDepreciationExpenseResultFinInd4.Location = New Point(1308, 367)
+        lblDepreciationExpenseResultFinInd4.Location = New Point(1300, 639)
         lblDepreciationExpenseResultFinInd4.Name = "lblDepreciationExpenseResultFinInd4"
         lblDepreciationExpenseResultFinInd4.Size = New Size(39, 15)
         lblDepreciationExpenseResultFinInd4.TabIndex = 177
@@ -1625,7 +1651,7 @@ Partial Class FinInd
         ' Label152
         ' 
         Label152.AutoSize = True
-        Label152.Location = New Point(1308, 341)
+        Label152.Location = New Point(1300, 613)
         Label152.Name = "Label152"
         Label152.Size = New Size(39, 15)
         Label152.TabIndex = 176
@@ -1634,7 +1660,7 @@ Partial Class FinInd
         ' Label153
         ' 
         Label153.AutoSize = True
-        Label153.Location = New Point(1308, 309)
+        Label153.Location = New Point(1300, 581)
         Label153.Name = "Label153"
         Label153.Size = New Size(39, 15)
         Label153.TabIndex = 175
@@ -1643,7 +1669,7 @@ Partial Class FinInd
         ' lblTotLiabilitiesResult3
         ' 
         lblTotLiabilitiesResult3.AutoSize = True
-        lblTotLiabilitiesResult3.Location = New Point(1308, 282)
+        lblTotLiabilitiesResult3.Location = New Point(1300, 554)
         lblTotLiabilitiesResult3.Name = "lblTotLiabilitiesResult3"
         lblTotLiabilitiesResult3.Size = New Size(39, 15)
         lblTotLiabilitiesResult3.TabIndex = 174
@@ -1652,7 +1678,7 @@ Partial Class FinInd
         ' Label78
         ' 
         Label78.AutoSize = True
-        Label78.Location = New Point(715, 199)
+        Label78.Location = New Point(15, 143)
         Label78.Name = "Label78"
         Label78.Size = New Size(119, 15)
         Label78.TabIndex = 178
@@ -1670,20 +1696,203 @@ Partial Class FinInd
         ' lblDaysCOH
         ' 
         lblDaysCOH.AutoSize = True
-        lblDaysCOH.Location = New Point(837, 93)
+        lblDaysCOH.Location = New Point(137, 37)
         lblDaysCOH.Name = "lblDaysCOH"
         lblDaysCOH.Size = New Size(39, 15)
         lblDaysCOH.TabIndex = 180
         lblDaysCOH.Text = "Result"
         ' 
+        ' GroupBox1
+        ' 
+        GroupBox1.Controls.Add(Label35)
+        GroupBox1.Controls.Add(lblDaysCOH)
+        GroupBox1.Controls.Add(Label37)
+        GroupBox1.Controls.Add(Label36)
+        GroupBox1.Controls.Add(Label78)
+        GroupBox1.Controls.Add(Label41)
+        GroupBox1.Controls.Add(lblCashonHandResult2)
+        GroupBox1.Controls.Add(lblMarketSecuritiesResult)
+        GroupBox1.Controls.Add(lblTotOperatingExpenseFinInd3)
+        GroupBox1.Controls.Add(lblDepreciationExpenseResultFinInd)
+        GroupBox1.Location = New Point(686, 104)
+        GroupBox1.Name = "GroupBox1"
+        GroupBox1.Size = New Size(381, 165)
+        GroupBox1.TabIndex = 181
+        GroupBox1.TabStop = False
+        GroupBox1.Text = "."
+        ' 
+        ' GroupBox2
+        ' 
+        GroupBox2.Controls.Add(Label2)
+        GroupBox2.Controls.Add(Label1)
+        GroupBox2.Controls.Add(Label3)
+        GroupBox2.Controls.Add(lblPedFinIndResult)
+        GroupBox2.Controls.Add(lblNumMonthsFinIndResult)
+        GroupBox2.Controls.Add(Label80)
+        GroupBox2.Location = New Point(11, 4)
+        GroupBox2.Name = "GroupBox2"
+        GroupBox2.Size = New Size(672, 94)
+        GroupBox2.TabIndex = 182
+        GroupBox2.TabStop = False
+        GroupBox2.Text = "."
+        ' 
+        ' GroupBox3
+        ' 
+        GroupBox3.BackColor = SystemColors.ActiveBorder
+        GroupBox3.Controls.Add(Label4)
+        GroupBox3.Controls.Add(Label5)
+        GroupBox3.Controls.Add(Label6)
+        GroupBox3.Controls.Add(Label7)
+        GroupBox3.Controls.Add(Label8)
+        GroupBox3.Controls.Add(lblEbitResult)
+        GroupBox3.Controls.Add(lblNetIncomeFinIndResult)
+        GroupBox3.Controls.Add(lblInterestExpenseFinIndResult)
+        GroupBox3.Controls.Add(lblDepAmortExpenseResult)
+        GroupBox3.Controls.Add(lblLeaseCostResult)
+        GroupBox3.Location = New Point(10, 97)
+        GroupBox3.Name = "GroupBox3"
+        GroupBox3.Size = New Size(673, 153)
+        GroupBox3.TabIndex = 183
+        GroupBox3.TabStop = False
+        GroupBox3.Text = "."
+        ' 
+        ' GroupBox4
+        ' 
+        GroupBox4.Controls.Add(Label9)
+        GroupBox4.Controls.Add(Label10)
+        GroupBox4.Controls.Add(Label11)
+        GroupBox4.Controls.Add(lblOperatingMarginFinIndResult)
+        GroupBox4.Controls.Add(lblTotOperatingRevFinIndResult)
+        GroupBox4.Controls.Add(lblTotOperatingExpenseFinIndResult)
+        GroupBox4.Location = New Point(8, 252)
+        GroupBox4.Name = "GroupBox4"
+        GroupBox4.Size = New Size(673, 105)
+        GroupBox4.TabIndex = 184
+        GroupBox4.TabStop = False
+        GroupBox4.Text = "."
+        ' 
+        ' GroupBox5
+        ' 
+        GroupBox5.BackColor = SystemColors.AppWorkspace
+        GroupBox5.Controls.Add(Label15)
+        GroupBox5.Controls.Add(Label12)
+        GroupBox5.Controls.Add(Label13)
+        GroupBox5.Controls.Add(Label14)
+        GroupBox5.Controls.Add(lblExcessMarginResult)
+        GroupBox5.Controls.Add(lblTotOperatingRevenueFinInd2)
+        GroupBox5.Controls.Add(lblTotOperatingExpenseFinInd2)
+        GroupBox5.Controls.Add(lblNoRFinIndResult)
+        GroupBox5.Location = New Point(10, 362)
+        GroupBox5.Name = "GroupBox5"
+        GroupBox5.Size = New Size(673, 134)
+        GroupBox5.TabIndex = 185
+        GroupBox5.TabStop = False
+        GroupBox5.Text = "."
+        ' 
+        ' GroupBox6
+        ' 
+        GroupBox6.Controls.Add(Label19)
+        GroupBox6.Controls.Add(Label16)
+        GroupBox6.Controls.Add(Label17)
+        GroupBox6.Controls.Add(Label18)
+        GroupBox6.Controls.Add(Label20)
+        GroupBox6.Controls.Add(lblPeapctorResult)
+        GroupBox6.Controls.Add(lblSalaryExpenseResult)
+        GroupBox6.Controls.Add(lblContractLaborResult)
+        GroupBox6.Controls.Add(lblFringeBenefitsResult)
+        GroupBox6.Controls.Add(lblTotOperatingRevResult3)
+        GroupBox6.Location = New Point(11, 502)
+        GroupBox6.Name = "GroupBox6"
+        GroupBox6.Size = New Size(672, 160)
+        GroupBox6.TabIndex = 186
+        GroupBox6.TabStop = False
+        GroupBox6.Text = "."
+        ' 
+        ' GroupBox7
+        ' 
+        GroupBox7.BackColor = SystemColors.AppWorkspace
+        GroupBox7.Controls.Add(Label23)
+        GroupBox7.Controls.Add(Label21)
+        GroupBox7.Controls.Add(Label22)
+        GroupBox7.Controls.Add(Label24)
+        GroupBox7.Controls.Add(lblROEResult)
+        GroupBox7.Controls.Add(lblNetIncomeResult)
+        GroupBox7.Controls.Add(lblTotAssetsResult)
+        GroupBox7.Controls.Add(lblTotLiabilitiesResult)
+        GroupBox7.Location = New Point(10, 668)
+        GroupBox7.Name = "GroupBox7"
+        GroupBox7.Size = New Size(673, 118)
+        GroupBox7.TabIndex = 187
+        GroupBox7.TabStop = False
+        GroupBox7.Text = "."
+        ' 
+        ' GroupBox8
+        ' 
+        GroupBox8.Controls.Add(lblNetIncomeResult2)
+        GroupBox8.Controls.Add(Label25)
+        GroupBox8.Controls.Add(Label28)
+        GroupBox8.Controls.Add(Label26)
+        GroupBox8.Controls.Add(lblRoaResult)
+        GroupBox8.Controls.Add(lblTotAssetsResult2)
+        GroupBox8.Location = New Point(7, 781)
+        GroupBox8.Name = "GroupBox8"
+        GroupBox8.Size = New Size(676, 84)
+        GroupBox8.TabIndex = 188
+        GroupBox8.TabStop = False
+        GroupBox8.Text = "."
+        ' 
+        ' GroupBox9
+        ' 
+        GroupBox9.BackColor = SystemColors.AppWorkspace
+        GroupBox9.Controls.Add(lblTotCurrentLiabilitiesResult)
+        GroupBox9.Controls.Add(Label27)
+        GroupBox9.Controls.Add(Label30)
+        GroupBox9.Controls.Add(Label29)
+        GroupBox9.Controls.Add(lblCurrentRatioResult)
+        GroupBox9.Controls.Add(lblTotCurrentAssetsResult)
+        GroupBox9.Location = New Point(8, 850)
+        GroupBox9.Name = "GroupBox9"
+        GroupBox9.Size = New Size(675, 85)
+        GroupBox9.TabIndex = 189
+        GroupBox9.TabStop = False
+        GroupBox9.Text = "."
+        ' 
+        ' GroupBox10
+        ' 
+        GroupBox10.BackColor = SystemColors.AppWorkspace
+        GroupBox10.Controls.Add(lblTotCurrentLiabilitesResult2)
+        GroupBox10.Controls.Add(Label31)
+        GroupBox10.Controls.Add(Label33)
+        GroupBox10.Controls.Add(Label32)
+        GroupBox10.Controls.Add(Label34)
+        GroupBox10.Controls.Add(lblQuickRatioResult)
+        GroupBox10.Controls.Add(lblTotCurrentAssetsResult2)
+        GroupBox10.Controls.Add(lblInventoryResult)
+        GroupBox10.Location = New Point(686, 4)
+        GroupBox10.Name = "GroupBox10"
+        GroupBox10.Size = New Size(313, 94)
+        GroupBox10.TabIndex = 189
+        GroupBox10.TabStop = False
+        GroupBox10.Text = "."
+        ' 
         ' FinInd
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
-        ClientSize = New Size(1553, 1061)
-        Controls.Add(lblDaysCOH)
+        AutoScroll = True
+        BackColor = SystemColors.Control
+        ClientSize = New Size(1551, 1061)
+        Controls.Add(GroupBox10)
+        Controls.Add(GroupBox9)
+        Controls.Add(GroupBox8)
+        Controls.Add(GroupBox7)
+        Controls.Add(GroupBox6)
+        Controls.Add(GroupBox5)
+        Controls.Add(GroupBox4)
+        Controls.Add(GroupBox3)
+        Controls.Add(GroupBox2)
+        Controls.Add(GroupBox1)
         Controls.Add(Button1)
-        Controls.Add(Label78)
         Controls.Add(lblDepreciationExpenseResultFinInd4)
         Controls.Add(Label152)
         Controls.Add(Label153)
@@ -1720,47 +1929,9 @@ Partial Class FinInd
         Controls.Add(lblTotOperatingExpenseFinInd4)
         Controls.Add(lblDepreciationExpenseResultFinInd2)
         Controls.Add(Label122)
-        Controls.Add(lblDepreciationExpenseResultFinInd)
         Controls.Add(lblMarketSecuritiesResult2)
         Controls.Add(lblCashonHandResult)
         Controls.Add(Label118)
-        Controls.Add(lblTotOperatingExpenseFinInd3)
-        Controls.Add(lblMarketSecuritiesResult)
-        Controls.Add(lblCashonHandResult2)
-        Controls.Add(lblTotCurrentLiabilitesResult2)
-        Controls.Add(lblInventoryResult)
-        Controls.Add(lblTotCurrentAssetsResult2)
-        Controls.Add(lblQuickRatioResult)
-        Controls.Add(lblTotCurrentLiabilitiesResult)
-        Controls.Add(lblTotCurrentAssetsResult)
-        Controls.Add(lblCurrentRatioResult)
-        Controls.Add(lblTotAssetsResult2)
-        Controls.Add(lblNetIncomeResult2)
-        Controls.Add(lblRoaResult)
-        Controls.Add(lblTotLiabilitiesResult)
-        Controls.Add(lblTotAssetsResult)
-        Controls.Add(lblNetIncomeResult)
-        Controls.Add(lblROEResult)
-        Controls.Add(lblTotOperatingRevResult3)
-        Controls.Add(lblFringeBenefitsResult)
-        Controls.Add(lblContractLaborResult)
-        Controls.Add(lblSalaryExpenseResult)
-        Controls.Add(lblPeapctorResult)
-        Controls.Add(lblNoRFinIndResult)
-        Controls.Add(lblTotOperatingExpenseFinInd2)
-        Controls.Add(lblTotOperatingRevenueFinInd2)
-        Controls.Add(lblExcessMarginResult)
-        Controls.Add(lblTotOperatingExpenseFinIndResult)
-        Controls.Add(lblTotOperatingRevFinIndResult)
-        Controls.Add(lblOperatingMarginFinIndResult)
-        Controls.Add(lblLeaseCostResult)
-        Controls.Add(lblDepAmortExpenseResult)
-        Controls.Add(lblInterestExpenseFinIndResult)
-        Controls.Add(lblNetIncomeFinIndResult)
-        Controls.Add(lblEbitResult)
-        Controls.Add(Label80)
-        Controls.Add(lblNumMonthsFinIndResult)
-        Controls.Add(lblPedFinIndResult)
         Controls.Add(Label77)
         Controls.Add(Label76)
         Controls.Add(Label75)
@@ -1799,54 +1970,37 @@ Partial Class FinInd
         Controls.Add(Label45)
         Controls.Add(Label42)
         Controls.Add(Label40)
-        Controls.Add(Label41)
-        Controls.Add(Label36)
-        Controls.Add(Label37)
         Controls.Add(Label38)
-        Controls.Add(Label35)
-        Controls.Add(Label34)
-        Controls.Add(Label32)
-        Controls.Add(Label33)
-        Controls.Add(Label31)
-        Controls.Add(Label29)
-        Controls.Add(Label30)
-        Controls.Add(Label27)
-        Controls.Add(Label26)
-        Controls.Add(Label28)
-        Controls.Add(Label25)
-        Controls.Add(Label24)
-        Controls.Add(Label23)
-        Controls.Add(Label22)
-        Controls.Add(Label21)
-        Controls.Add(Label19)
-        Controls.Add(Label20)
-        Controls.Add(Label18)
-        Controls.Add(Label17)
-        Controls.Add(Label16)
-        Controls.Add(Label15)
-        Controls.Add(Label14)
-        Controls.Add(Label13)
-        Controls.Add(Label12)
-        Controls.Add(Label11)
-        Controls.Add(Label10)
-        Controls.Add(Label9)
-        Controls.Add(Label8)
-        Controls.Add(Label7)
-        Controls.Add(Label6)
-        Controls.Add(Label5)
-        Controls.Add(Label4)
-        Controls.Add(Label3)
-        Controls.Add(Label2)
-        Controls.Add(Label1)
         Controls.Add(btnOutpatientFinInd)
         Controls.Add(btnInpatientFinInd)
         Controls.Add(btnQualityFinInd)
         Controls.Add(btnFinancialFinInd)
         Controls.Add(btnDepartmentsFinInd)
         Controls.Add(btnProfileFinInd)
+        MinimumSize = New Size(1500, 1030)
         Name = "FinInd"
         StartPosition = FormStartPosition.CenterScreen
         Text = "FinInd"
+        GroupBox1.ResumeLayout(False)
+        GroupBox1.PerformLayout()
+        GroupBox2.ResumeLayout(False)
+        GroupBox2.PerformLayout()
+        GroupBox3.ResumeLayout(False)
+        GroupBox3.PerformLayout()
+        GroupBox4.ResumeLayout(False)
+        GroupBox4.PerformLayout()
+        GroupBox5.ResumeLayout(False)
+        GroupBox5.PerformLayout()
+        GroupBox6.ResumeLayout(False)
+        GroupBox6.PerformLayout()
+        GroupBox7.ResumeLayout(False)
+        GroupBox7.PerformLayout()
+        GroupBox8.ResumeLayout(False)
+        GroupBox8.PerformLayout()
+        GroupBox9.ResumeLayout(False)
+        GroupBox9.PerformLayout()
+        GroupBox10.ResumeLayout(False)
+        GroupBox10.PerformLayout()
         ResumeLayout(False)
         PerformLayout()
     End Sub
@@ -2017,4 +2171,14 @@ Partial Class FinInd
     Friend WithEvents ToolTip1 As ToolTip
     Friend WithEvents ToolTip2 As ToolTip
     Friend WithEvents lblDaysCOH As Label
+    Friend WithEvents GroupBox1 As GroupBox
+    Friend WithEvents GroupBox2 As GroupBox
+    Friend WithEvents GroupBox3 As GroupBox
+    Friend WithEvents GroupBox4 As GroupBox
+    Friend WithEvents GroupBox5 As GroupBox
+    Friend WithEvents GroupBox6 As GroupBox
+    Friend WithEvents GroupBox7 As GroupBox
+    Friend WithEvents GroupBox8 As GroupBox
+    Friend WithEvents GroupBox9 As GroupBox
+    Friend WithEvents GroupBox10 As GroupBox
 End Class

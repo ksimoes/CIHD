@@ -89,34 +89,34 @@ Public Class Financial
                     If provider Is Nothing Then provider = data(0)
 
                     lblPedResult.Text = If(provider("Fiscal Year End Date") IsNot Nothing, CDate(provider("Fiscal Year End Date")).ToString("MM/dd/yyyy"), "N/A")
-                    lblCurAssetResult.Text = Search.CleanMeUp(provider("Total Current Assets"))
-                    lblFixAssetsResult.Text = Search.CleanMeUp(provider("Total Fixed Assets"))
-                    lblOtherAssetsResult.Text = Search.CleanMeUp(provider("Total Other Assets"))
-                    lblTotAssetsResult.Text = Search.CleanMeUp(provider("Total Assets"))
-                    lblNetPatRevResult.Text = Search.CleanMeUp(provider("Net Patient Revenue"))
-                    lblTotPatRevResult.Text = Search.CleanMeUp(provider("Total Patient Revenue"))
-                    lblOutPatResult.Text = Search.CleanMeUp(provider("Outpatient Revenue"))
-                    lblInpRevResult.Text = Search.CleanMeUp(provider("Inpatient Revenue"))
-                    lblTotOperatingExpenseResult.Text = If(provider("Less Total Operating Expense") IsNot Nothing, CDec(provider("Less Total Operating Expense")).ToString("N"), "N/A")
-                    lblContractAllowanceResult.Text = If(provider("Less Contractual Allowance and Discounts on Patients' Account") IsNot Nothing, CDec(provider("Less Contractual Allowance and Discounts on Patients' Account")).ToString("N"), "N/A")
-                    lblTotOtherIncomeResult.Text = Search.CleanMeUp(provider("Total Other Income"))
-                    lblTotOtherExpensesResult.Text = If(provider("Total Other Expenses") IsNot Nothing, provider("Total Other Expenses").ToString(), "N/A")
-                    lblNetIncomeResult.Text = If(provider("Net Income") IsNot Nothing, CDec(provider("Net Income")).ToString("N"), "N/A")
-                    lblDepreciationExpenseResult.Text = Search.CleanMeUp(provider("Depreciation Cost"))
-                    lblCcResult.Text = Search.CleanMeUp(provider("Cost of Charity Care"))
-                    lblUncompResult.Text = Search.CleanMeUp(provider("Total Bad Debt Expense"))
-                    lblTotUcResult.Text = Search.CleanMeUp(provider("Cost of Uncompensated Care"))
+                    lblCurAssetResult.Text = FinInd.FormatCurrency(Search.CleanMeUp(provider("Total Current Assets")))
+                    lblFixAssetsResult.Text = FinInd.FormatCurrency(Search.CleanMeUp(provider("Total Fixed Assets")))
+                    lblOtherAssetsResult.Text = FinInd.FormatCurrency(Search.CleanMeUp(provider("Total Other Assets")))
+                    lblTotAssetsResult.Text = FinInd.FormatCurrency(Search.CleanMeUp(provider("Total Assets")))
+                    lblNetPatRevResult.Text = FinInd.FormatCurrency(Search.CleanMeUp(provider("Net Patient Revenue")))
+                    lblTotPatRevResult.Text = FinInd.FormatCurrency(Search.CleanMeUp(provider("Total Patient Revenue")))
+                    lblOutPatResult.Text = FinInd.FormatCurrency(Search.CleanMeUp(provider("Outpatient Revenue")))
+                    lblInpRevResult.Text = FinInd.FormatCurrency(Search.CleanMeUp(provider("Inpatient Revenue")))
+                    lblTotOperatingExpenseResult.Text = FinInd.FormatCurrency(If(provider("Less Total Operating Expense") IsNot Nothing, CDec(provider("Less Total Operating Expense")).ToString("N"), "N/A"))
+                    lblContractAllowanceResult.Text = FinInd.FormatCurrency(If(provider("Less Contractual Allowance and Discounts on Patients' Account") IsNot Nothing, CDec(provider("Less Contractual Allowance and Discounts on Patients' Account")).ToString("N"), "N/A"))
+                    lblTotOtherIncomeResult.Text = FinInd.FormatCurrency(Search.CleanMeUp(provider("Total Other Income")))
+                    lblTotOtherExpensesResult.Text = FinInd.FormatCurrency(If(provider("Total Other Expenses") IsNot Nothing, provider("Total Other Expenses").ToString(), "N/A"))
+                    lblNetIncomeResult.Text = FinInd.FormatCurrency(If(provider("Net Income") IsNot Nothing, CDec(provider("Net Income")).ToString("N"), "N/A"))
+                    lblDepreciationExpenseResult.Text = FinInd.FormatCurrency(Search.CleanMeUp(provider("Depreciation Cost")))
+                    lblCcResult.Text = FinInd.FormatCurrency(Search.CleanMeUp(provider("Cost of Charity Care")))
+                    lblUncompResult.Text = FinInd.FormatCurrency(Search.CleanMeUp(provider("Total Bad Debt Expense")))
+                    lblTotUcResult.Text = FinInd.FormatCurrency(Search.CleanMeUp(provider("Cost of Uncompensated Care")))
 
 
 
 
-                    lblCurLiabilitiesRes.Text = If(provider("Total Current Liabilities") IsNot Nothing, provider("Total Current Liabilities").ToString(), "N/A")
-                    lblLtResult.Text = If(provider("Total Long Term Liabilities") IsNot Nothing, CDec(provider("Total Long Term Liabilities")).ToString("N"), "N/A")
-                    lblTlResult.Text = If(provider("Total Liabilities") IsNot Nothing, CDec(provider("Total Liabilities")).ToString("N"), "N/A")
-                    lblTotFbResult.Text = If(provider("Total Fund Balances") IsNot Nothing, CDec(provider("Total Fund Balances")).ToString("N"), "N/A")
-                    lblTotLandFbResult.Text = If(provider("Total Liabilities and Fund Balances") IsNot Nothing, CDec(provider("Total Liabilities and Fund Balances")).ToString(), "N/A")
+                    lblCurLiabilitiesRes.Text = FinInd.FormatCurrency(If(provider("Total Current Liabilities") IsNot Nothing, provider("Total Current Liabilities").ToString(), "N/A"))
+                    lblLtResult.Text = FinInd.FormatCurrency(If(provider("Total Long Term Liabilities") IsNot Nothing, CDec(provider("Total Long Term Liabilities")).ToString("N"), "N/A"))
+                    lblTlResult.Text = FinInd.FormatCurrency(If(provider("Total Liabilities") IsNot Nothing, CDec(provider("Total Liabilities")).ToString("N"), "N/A"))
+                    lblTotFbResult.Text = FinInd.FormatCurrency(If(provider("Total Fund Balances") IsNot Nothing, CDec(provider("Total Fund Balances")).ToString("N"), "N/A"))
+                    lblTotLandFbResult.Text = FinInd.FormatCurrency(If(provider("Total Liabilities and Fund Balances") IsNot Nothing, CDec(provider("Total Liabilities and Fund Balances")).ToString(), "N/A"))
 
-                    lblInpRevResult.Text = If(provider("Inpatient Revenue") IsNot Nothing, CDec(provider("Inpatient Revenue")).ToString("N"), "N/A")
+                    lblInpRevResult.Text = FinInd.FormatCurrency(If(provider("Inpatient Revenue") IsNot Nothing, CDec(provider("Inpatient Revenue")).ToString("N"), "N/A"))
                     'lblOutPatResult.Text = If(provider("Outpatient Revenue") IsNot Nothing, CDec(provider("Outpatient Revenue")).ToString("N"), "N/A")
                     'lblTotPatRevResult.Text = If(provider("Total Patient Revenue") IsNot Nothing, CDec(provider("Total Patient Revenue")).ToString("N"), "N/A")
                     '''lblCcResult.Text = If(provider("Cost of Charity Care") IsNot Nothing, CDec(provider("Cost of Charity Care")).ToString("N"), "N/A")
@@ -179,6 +179,8 @@ Public Class Financial
             End If
         End If
     End Sub
+
+
 
     Private Sub Label11_Click(sender As Object, e As EventArgs) Handles lblTotLandFbResult.Click
 
