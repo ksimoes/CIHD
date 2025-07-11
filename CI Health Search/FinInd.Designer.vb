@@ -24,6 +24,13 @@ Partial Class FinInd
     Private Sub InitializeComponent()
         components = New ComponentModel.Container()
         Panel1 = New Panel()
+        dgvEbitdar = New DataGridView()
+        dgvfinancialsummary = New DataGridView()
+        GroupBox20 = New GroupBox()
+        lblTotCurrentLiabilities10 = New Label()
+        lblTotCurrentAssets10 = New Label()
+        Label82 = New Label()
+        Label79 = New Label()
         GroupBox19 = New GroupBox()
         lblDepreciationExpenseResultFinInd4 = New Label()
         Label75 = New Label()
@@ -210,12 +217,10 @@ Partial Class FinInd
         ToolTip1 = New ToolTip(components)
         ToolTip3 = New ToolTip(components)
         GroupBox18 = New GroupBox()
-        GroupBox20 = New GroupBox()
-        Label79 = New Label()
-        Label82 = New Label()
-        lblTotCurrentAssets10 = New Label()
-        lblTotCurrentLiabilities10 = New Label()
         Panel1.SuspendLayout()
+        CType(dgvEbitdar, ComponentModel.ISupportInitialize).BeginInit()
+        CType(dgvfinancialsummary, ComponentModel.ISupportInitialize).BeginInit()
+        GroupBox20.SuspendLayout()
         GroupBox19.SuspendLayout()
         GroupBox17.SuspendLayout()
         GroupBox16.SuspendLayout()
@@ -235,12 +240,13 @@ Partial Class FinInd
         GroupBox2.SuspendLayout()
         GroupBox9.SuspendLayout()
         GroupBox18.SuspendLayout()
-        GroupBox20.SuspendLayout()
         SuspendLayout()
         ' 
         ' Panel1
         ' 
         Panel1.AutoScroll = True
+        Panel1.Controls.Add(dgvEbitdar)
+        Panel1.Controls.Add(dgvfinancialsummary)
         Panel1.Controls.Add(GroupBox20)
         Panel1.Controls.Add(GroupBox19)
         Panel1.Controls.Add(GroupBox17)
@@ -270,6 +276,71 @@ Partial Class FinInd
         Panel1.Name = "Panel1"
         Panel1.Size = New Size(1774, 2500)
         Panel1.TabIndex = 0
+        ' 
+        ' dgvEbitdar
+        ' 
+        dgvEbitdar.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        dgvEbitdar.Location = New Point(1173, 65)
+        dgvEbitdar.Name = "dgvEbitdar"
+        dgvEbitdar.Size = New Size(38, 73)
+        dgvEbitdar.TabIndex = 295
+        ' 
+        ' dgvfinancialsummary
+        ' 
+        dgvfinancialsummary.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        dgvfinancialsummary.Location = New Point(1173, 149)
+        dgvfinancialsummary.Name = "dgvfinancialsummary"
+        dgvfinancialsummary.Size = New Size(174, 468)
+        dgvfinancialsummary.TabIndex = 294
+        ' 
+        ' GroupBox20
+        ' 
+        GroupBox20.Controls.Add(lblTotCurrentLiabilities10)
+        GroupBox20.Controls.Add(lblTotCurrentAssets10)
+        GroupBox20.Controls.Add(Label82)
+        GroupBox20.Controls.Add(Label79)
+        GroupBox20.Location = New Point(0, 909)
+        GroupBox20.Name = "GroupBox20"
+        GroupBox20.Size = New Size(630, 110)
+        GroupBox20.TabIndex = 293
+        GroupBox20.TabStop = False
+        GroupBox20.Text = "."
+        ' 
+        ' lblTotCurrentLiabilities10
+        ' 
+        lblTotCurrentLiabilities10.AutoSize = True
+        lblTotCurrentLiabilities10.Location = New Point(480, 51)
+        lblTotCurrentLiabilities10.Name = "lblTotCurrentLiabilities10"
+        lblTotCurrentLiabilities10.Size = New Size(39, 15)
+        lblTotCurrentLiabilities10.TabIndex = 297
+        lblTotCurrentLiabilities10.Text = "Result"
+        ' 
+        ' lblTotCurrentAssets10
+        ' 
+        lblTotCurrentAssets10.AutoSize = True
+        lblTotCurrentAssets10.Location = New Point(480, 19)
+        lblTotCurrentAssets10.Name = "lblTotCurrentAssets10"
+        lblTotCurrentAssets10.Size = New Size(39, 15)
+        lblTotCurrentAssets10.TabIndex = 296
+        lblTotCurrentAssets10.Text = "Result"
+        ' 
+        ' Label82
+        ' 
+        Label82.AutoSize = True
+        Label82.Location = New Point(4, 51)
+        Label82.Name = "Label82"
+        Label82.Size = New Size(128, 15)
+        Label82.TabIndex = 295
+        Label82.Text = "Total Current Liabilities"
+        ' 
+        ' Label79
+        ' 
+        Label79.AutoSize = True
+        Label79.Location = New Point(5, 19)
+        Label79.Name = "Label79"
+        Label79.Size = New Size(112, 15)
+        Label79.TabIndex = 294
+        Label79.Text = "Total Current Assets"
         ' 
         ' GroupBox19
         ' 
@@ -1086,7 +1157,7 @@ Partial Class FinInd
         ' 
         ' Button1
         ' 
-        Button1.Location = New Point(768, 702)
+        Button1.Location = New Point(652, 960)
         Button1.Name = "Button1"
         Button1.Size = New Size(124, 73)
         Button1.TabIndex = 274
@@ -2117,62 +2188,13 @@ Partial Class FinInd
         GroupBox18.TabStop = False
         GroupBox18.Text = "."
         ' 
-        ' GroupBox20
-        ' 
-        GroupBox20.Controls.Add(lblTotCurrentLiabilities10)
-        GroupBox20.Controls.Add(lblTotCurrentAssets10)
-        GroupBox20.Controls.Add(Label82)
-        GroupBox20.Controls.Add(Label79)
-        GroupBox20.Location = New Point(0, 909)
-        GroupBox20.Name = "GroupBox20"
-        GroupBox20.Size = New Size(630, 110)
-        GroupBox20.TabIndex = 293
-        GroupBox20.TabStop = False
-        GroupBox20.Text = "."
-        ' 
-        ' Label79
-        ' 
-        Label79.AutoSize = True
-        Label79.Location = New Point(5, 19)
-        Label79.Name = "Label79"
-        Label79.Size = New Size(112, 15)
-        Label79.TabIndex = 294
-        Label79.Text = "Total Current Assets"
-        ' 
-        ' Label82
-        ' 
-        Label82.AutoSize = True
-        Label82.Location = New Point(4, 51)
-        Label82.Name = "Label82"
-        Label82.Size = New Size(128, 15)
-        Label82.TabIndex = 295
-        Label82.Text = "Total Current Liabilities"
-        ' 
-        ' lblTotCurrentAssets10
-        ' 
-        lblTotCurrentAssets10.AutoSize = True
-        lblTotCurrentAssets10.Location = New Point(480, 19)
-        lblTotCurrentAssets10.Name = "lblTotCurrentAssets10"
-        lblTotCurrentAssets10.Size = New Size(39, 15)
-        lblTotCurrentAssets10.TabIndex = 296
-        lblTotCurrentAssets10.Text = "Result"
-        ' 
-        ' lblTotCurrentLiabilities10
-        ' 
-        lblTotCurrentLiabilities10.AutoSize = True
-        lblTotCurrentLiabilities10.Location = New Point(480, 51)
-        lblTotCurrentLiabilities10.Name = "lblTotCurrentLiabilities10"
-        lblTotCurrentLiabilities10.Size = New Size(39, 15)
-        lblTotCurrentLiabilities10.TabIndex = 297
-        lblTotCurrentLiabilities10.Text = "Result"
-        ' 
         ' FinInd
         ' 
         AutoScaleDimensions = New SizeF(7.0F, 15.0F)
         AutoScaleMode = AutoScaleMode.Font
         AutoScroll = True
         BackColor = SystemColors.Control
-        ClientSize = New Size(1207, 1061)
+        ClientSize = New Size(1615, 1061)
         Controls.Add(GroupBox18)
         Controls.Add(Panel1)
         MinimumSize = New Size(1000, 1030)
@@ -2180,6 +2202,10 @@ Partial Class FinInd
         StartPosition = FormStartPosition.CenterScreen
         Text = "FinInd"
         Panel1.ResumeLayout(False)
+        CType(dgvEbitdar, ComponentModel.ISupportInitialize).EndInit()
+        CType(dgvfinancialsummary, ComponentModel.ISupportInitialize).EndInit()
+        GroupBox20.ResumeLayout(False)
+        GroupBox20.PerformLayout()
         GroupBox19.ResumeLayout(False)
         GroupBox19.PerformLayout()
         GroupBox17.ResumeLayout(False)
@@ -2218,8 +2244,6 @@ Partial Class FinInd
         GroupBox9.PerformLayout()
         GroupBox18.ResumeLayout(False)
         GroupBox18.PerformLayout()
-        GroupBox20.ResumeLayout(False)
-        GroupBox20.PerformLayout()
         ResumeLayout(False)
     End Sub
     Friend WithEvents Label81 As Label
@@ -2415,4 +2439,7 @@ Partial Class FinInd
     Friend WithEvents lblTotCurrentAssets10 As Label
     Friend WithEvents Label82 As Label
     Friend WithEvents Label79 As Label
+    Friend WithEvents dgvfinancialsummary As DataGridView
+    Friend WithEvents dgvEbitdar As DataGridView
+
 End Class

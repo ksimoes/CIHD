@@ -143,7 +143,7 @@ Partial Class Profile
         ' 
         lblZipCodeResult.AutoSize = True
         lblZipCodeResult.Font = New Font("Segoe UI", 9.75F)
-        lblZipCodeResult.Location = New Point(282, 152)
+        lblZipCodeResult.Location = New Point(370, 152)
         lblZipCodeResult.Name = "lblZipCodeResult"
         lblZipCodeResult.Size = New Size(43, 17)
         lblZipCodeResult.TabIndex = 80
@@ -164,7 +164,7 @@ Partial Class Profile
         ' 
         lbladdy.AutoSize = True
         lbladdy.Font = New Font("Segoe UI", 9.75F)
-        lbladdy.Location = New Point(282, 84)
+        lbladdy.Location = New Point(370, 84)
         lbladdy.Name = "lbladdy"
         lbladdy.Size = New Size(43, 17)
         lbladdy.TabIndex = 78
@@ -318,7 +318,7 @@ Partial Class Profile
         ' 
         lblMedicareDependentResult.AutoSize = True
         lblMedicareDependentResult.Font = New Font("Segoe UI", 9.75F)
-        lblMedicareDependentResult.Location = New Point(282, 418)
+        lblMedicareDependentResult.Location = New Point(370, 418)
         lblMedicareDependentResult.Name = "lblMedicareDependentResult"
         lblMedicareDependentResult.Size = New Size(18, 17)
         lblMedicareDependentResult.TabIndex = 64
@@ -329,7 +329,7 @@ Partial Class Profile
         ' 
         lblLowVolumeResult.AutoSize = True
         lblLowVolumeResult.Font = New Font("Segoe UI", 9.75F)
-        lblLowVolumeResult.Location = New Point(282, 383)
+        lblLowVolumeResult.Location = New Point(370, 383)
         lblLowVolumeResult.Name = "lblLowVolumeResult"
         lblLowVolumeResult.Size = New Size(18, 17)
         lblLowVolumeResult.TabIndex = 63
@@ -350,7 +350,7 @@ Partial Class Profile
         ' 
         lblRuralReferralResult.AutoSize = True
         lblRuralReferralResult.Font = New Font("Segoe UI", 9.75F)
-        lblRuralReferralResult.Location = New Point(282, 349)
+        lblRuralReferralResult.Location = New Point(370, 349)
         lblRuralReferralResult.Name = "lblRuralReferralResult"
         lblRuralReferralResult.Size = New Size(18, 17)
         lblRuralReferralResult.TabIndex = 62
@@ -372,7 +372,7 @@ Partial Class Profile
         ' 
         lblSoleCommunityHospitalResult.AutoSize = True
         lblSoleCommunityHospitalResult.Font = New Font("Segoe UI", 9.75F)
-        lblSoleCommunityHospitalResult.Location = New Point(282, 317)
+        lblSoleCommunityHospitalResult.Location = New Point(370, 317)
         lblSoleCommunityHospitalResult.Name = "lblSoleCommunityHospitalResult"
         lblSoleCommunityHospitalResult.Size = New Size(18, 17)
         lblSoleCommunityHospitalResult.TabIndex = 61
@@ -383,7 +383,7 @@ Partial Class Profile
         ' 
         lblFacilityResult.AutoSize = True
         lblFacilityResult.Font = New Font("Segoe UI", 9.75F)
-        lblFacilityResult.Location = New Point(283, 277)
+        lblFacilityResult.Location = New Point(371, 277)
         lblFacilityResult.Name = "lblFacilityResult"
         lblFacilityResult.Size = New Size(43, 17)
         lblFacilityResult.TabIndex = 60
@@ -394,7 +394,7 @@ Partial Class Profile
         ' 
         lblOperatingStatusResult.AutoSize = True
         lblOperatingStatusResult.Font = New Font("Segoe UI", 9.75F)
-        lblOperatingStatusResult.Location = New Point(282, 251)
+        lblOperatingStatusResult.Location = New Point(370, 251)
         lblOperatingStatusResult.Name = "lblOperatingStatusResult"
         lblOperatingStatusResult.Size = New Size(43, 17)
         lblOperatingStatusResult.TabIndex = 59
@@ -405,7 +405,7 @@ Partial Class Profile
         ' 
         lblCmsCertNumProfileResult.AutoSize = True
         lblCmsCertNumProfileResult.Font = New Font("Segoe UI", 9.75F)
-        lblCmsCertNumProfileResult.Location = New Point(282, 218)
+        lblCmsCertNumProfileResult.Location = New Point(370, 218)
         lblCmsCertNumProfileResult.Name = "lblCmsCertNumProfileResult"
         lblCmsCertNumProfileResult.Size = New Size(43, 17)
         lblCmsCertNumProfileResult.TabIndex = 58
@@ -416,7 +416,7 @@ Partial Class Profile
         ' 
         lblPhoneNumResult.AutoSize = True
         lblPhoneNumResult.Font = New Font("Segoe UI", 9.75F)
-        lblPhoneNumResult.Location = New Point(282, 120)
+        lblPhoneNumResult.Location = New Point(370, 120)
         lblPhoneNumResult.Name = "lblPhoneNumResult"
         lblPhoneNumResult.Size = New Size(43, 17)
         lblPhoneNumResult.TabIndex = 57
@@ -427,7 +427,7 @@ Partial Class Profile
         ' 
         lblNameAddressResult.AutoSize = True
         lblNameAddressResult.Font = New Font("Segoe UI", 9.75F)
-        lblNameAddressResult.Location = New Point(282, 53)
+        lblNameAddressResult.Location = New Point(370, 53)
         lblNameAddressResult.Name = "lblNameAddressResult"
         lblNameAddressResult.Size = New Size(43, 17)
         lblNameAddressResult.TabIndex = 56
@@ -680,7 +680,7 @@ Partial Class Profile
         ' 
         llHospitalWeb.AutoSize = True
         llHospitalWeb.Font = New Font("Segoe UI", 9.75F)
-        llHospitalWeb.Location = New Point(282, 184)
+        llHospitalWeb.Location = New Point(370, 184)
         llHospitalWeb.Name = "llHospitalWeb"
         llHospitalWeb.Size = New Size(54, 17)
         llHospitalWeb.TabIndex = 31
@@ -1206,8 +1206,10 @@ Partial Class Profile
         ' 
         ' DataGridView1
         ' 
+        DataGridView1.BackgroundColor = SystemColors.AppWorkspace
         DataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
         DataGridView1.Columns.AddRange(New DataGridViewColumn() {Column1, Column2, Column3})
+        DataGridView1.GridColor = Color.DimGray
         DataGridView1.Location = New Point(12, 1256)
         DataGridView1.Name = "DataGridView1"
         DataGridView1.Size = New Size(413, 151)

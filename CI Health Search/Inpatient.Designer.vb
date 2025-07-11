@@ -29,6 +29,7 @@ Partial Class Inpatient
         btnDepartmentsInpatient = New Button()
         btnProfileInpatient = New Button()
         gbKeyAttending = New GroupBox()
+        dgvCeo = New DataGridView()
         gbPatientOrigin = New GroupBox()
         dgvPatientOrigin = New DataGridView()
         gbTrendReport = New GroupBox()
@@ -47,13 +48,12 @@ Partial Class Inpatient
         Label18 = New Label()
         Label17 = New Label()
         Button1 = New Button()
-        dgvCeo = New DataGridView()
         gbKeyAttending.SuspendLayout()
+        CType(dgvCeo, ComponentModel.ISupportInitialize).BeginInit()
         gbPatientOrigin.SuspendLayout()
         CType(dgvPatientOrigin, ComponentModel.ISupportInitialize).BeginInit()
         gbTrendReport.SuspendLayout()
         gbStatsforTop20BaseMsdrg.SuspendLayout()
-        CType(dgvCeo, ComponentModel.ISupportInitialize).BeginInit()
         SuspendLayout()
         ' 
         ' btnOutpatientInpatient
@@ -119,6 +119,14 @@ Partial Class Inpatient
         gbKeyAttending.TabIndex = 21
         gbKeyAttending.TabStop = False
         gbKeyAttending.Text = "Key Attending Providers"
+        ' 
+        ' dgvCeo
+        ' 
+        dgvCeo.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        dgvCeo.Location = New Point(0, 22)
+        dgvCeo.Name = "dgvCeo"
+        dgvCeo.Size = New Size(568, 118)
+        dgvCeo.TabIndex = 32
         ' 
         ' gbPatientOrigin
         ' 
@@ -308,14 +316,6 @@ Partial Class Inpatient
         Button1.Text = "Return to Search"
         Button1.UseVisualStyleBackColor = True
         ' 
-        ' dgvCeo
-        ' 
-        dgvCeo.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        dgvCeo.Location = New Point(0, 22)
-        dgvCeo.Name = "dgvCeo"
-        dgvCeo.Size = New Size(568, 118)
-        dgvCeo.TabIndex = 32
-        ' 
         ' Inpatient
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
@@ -336,13 +336,13 @@ Partial Class Inpatient
         StartPosition = FormStartPosition.CenterScreen
         Text = "Inpatient"
         gbKeyAttending.ResumeLayout(False)
+        CType(dgvCeo, ComponentModel.ISupportInitialize).EndInit()
         gbPatientOrigin.ResumeLayout(False)
         CType(dgvPatientOrigin, ComponentModel.ISupportInitialize).EndInit()
         gbTrendReport.ResumeLayout(False)
         gbTrendReport.PerformLayout()
         gbStatsforTop20BaseMsdrg.ResumeLayout(False)
         gbStatsforTop20BaseMsdrg.PerformLayout()
-        CType(dgvCeo, ComponentModel.ISupportInitialize).EndInit()
         ResumeLayout(False)
     End Sub
 
