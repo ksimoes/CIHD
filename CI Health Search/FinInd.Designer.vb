@@ -24,15 +24,86 @@ Partial Class FinInd
     Private Sub InitializeComponent()
         components = New ComponentModel.Container()
         Panel1 = New Panel()
-        lblTotLongTermLiabilitiesResult = New Label()
+        GroupBox19 = New GroupBox()
         lblDepreciationExpenseResultFinInd4 = New Label()
-        Label152 = New Label()
+        Label75 = New Label()
+        Label76 = New Label()
+        Label77 = New Label()
         Label153 = New Label()
-        lblTotLiabilitiesResult3 = New Label()
-        lblTotAssetsResult5 = New Label()
-        lblTdtna = New Label()
+        Label152 = New Label()
+        GroupBox17 = New GroupBox()
         lblTotLiabilitiesResult2 = New Label()
+        Label68 = New Label()
+        Label69 = New Label()
+        Label70 = New Label()
+        Label71 = New Label()
+        lblLtdtnaResult = New Label()
         lblTotAssetsResult4 = New Label()
+        lblTotLongTermLiabilitiesResult = New Label()
+        GroupBox16 = New GroupBox()
+        Label146 = New Label()
+        Label66 = New Label()
+        Label64 = New Label()
+        Label65 = New Label()
+        Label67 = New Label()
+        lblTotOperatingRevResult5 = New Label()
+        Label141 = New Label()
+        lblTotAssetsResult3 = New Label()
+        GroupBox15 = New GroupBox()
+        Label139 = New Label()
+        Label60 = New Label()
+        Label61 = New Label()
+        Label62 = New Label()
+        Label63 = New Label()
+        lblTotOperatingRevResult4 = New Label()
+        Label137 = New Label()
+        lblInventoryResult2 = New Label()
+        GroupBox14 = New GroupBox()
+        Label55 = New Label()
+        Label56 = New Label()
+        Label57 = New Label()
+        Label58 = New Label()
+        Label59 = New Label()
+        Label133 = New Label()
+        lblTotCurrentLiabilitesResult3 = New Label()
+        lblTotOperatingExpenseFinInd5 = New Label()
+        lblDepreciationExpenseResultFinInd3 = New Label()
+        lblOtherExpenseResultFindInd = New Label()
+        GroupBox13 = New GroupBox()
+        Label49 = New Label()
+        Label52 = New Label()
+        Label51 = New Label()
+        Label53 = New Label()
+        Label54 = New Label()
+        Label123 = New Label()
+        lblAllowforUncollectRes = New Label()
+        lblAccountsRecievableResult2 = New Label()
+        Label129 = New Label()
+        lblNotesReceivableRes = New Label()
+        Label134 = New Label()
+        Label50 = New Label()
+        GroupBox12 = New GroupBox()
+        Label47 = New Label()
+        Label39 = New Label()
+        Label48 = New Label()
+        Label46 = New Label()
+        Label122 = New Label()
+        lblAccountsRecievableResult = New Label()
+        lblAllowforUncollectRes2 = New Label()
+        lblTotOperatingRevResult6 = New Label()
+        GroupBox11 = New GroupBox()
+        Label38 = New Label()
+        Label40 = New Label()
+        Label42 = New Label()
+        Label45 = New Label()
+        Label44 = New Label()
+        Label43 = New Label()
+        Label118 = New Label()
+        lblCashonHandResult = New Label()
+        lblMarketSecuritiesResult2 = New Label()
+        lblDepreciationExpenseResultFinInd2 = New Label()
+        lblTotOperatingExpenseFinInd4 = New Label()
+        lblInvestmentsResultFinInd = New Label()
         Button1 = New Button()
         GroupBox1 = New GroupBox()
         Label35 = New Label()
@@ -108,36 +179,6 @@ Partial Class FinInd
         lblInterestExpenseFinIndResult = New Label()
         lblDepAmortExpenseResult = New Label()
         lblLeaseCostResult = New Label()
-        lblLtdtnaResult = New Label()
-        Label139 = New Label()
-        lblInventoryResult2 = New Label()
-        lblTotAssetsResult3 = New Label()
-        Label146 = New Label()
-        Label141 = New Label()
-        lblNotesReceivableRes = New Label()
-        Label129 = New Label()
-        lblTotOperatingRevResult5 = New Label()
-        lblOtherExpenseResultFindInd = New Label()
-        lblDepreciationExpenseResultFinInd3 = New Label()
-        Label137 = New Label()
-        lblTotOperatingRevResult4 = New Label()
-        lblTotOperatingExpenseFinInd5 = New Label()
-        lblTotCurrentLiabilitesResult3 = New Label()
-        Label133 = New Label()
-        Label134 = New Label()
-        lblAccountsRecievableResult2 = New Label()
-        lblAllowforUncollectRes = New Label()
-        Label123 = New Label()
-        lblTotOperatingRevResult6 = New Label()
-        lblAllowforUncollectRes2 = New Label()
-        lblAccountsRecievableResult = New Label()
-        lblInvestmentsResultFinInd = New Label()
-        lblTotOperatingExpenseFinInd4 = New Label()
-        lblDepreciationExpenseResultFinInd2 = New Label()
-        Label122 = New Label()
-        lblMarketSecuritiesResult2 = New Label()
-        lblCashonHandResult = New Label()
-        Label118 = New Label()
         btnOutpatientFinInd = New Button()
         GroupBox2 = New GroupBox()
         Label2 = New Label()
@@ -146,50 +187,17 @@ Partial Class FinInd
         lblPedFinIndResult = New Label()
         lblNumMonthsFinIndResult = New Label()
         Label80 = New Label()
-        Label77 = New Label()
-        Label76 = New Label()
-        Label75 = New Label()
-        Label74 = New Label()
-        Label72 = New Label()
-        Label71 = New Label()
-        Label70 = New Label()
-        Label69 = New Label()
-        Label67 = New Label()
-        Label73 = New Label()
-        Label68 = New Label()
-        Label65 = New Label()
-        Label64 = New Label()
-        Label63 = New Label()
-        Label62 = New Label()
-        Label61 = New Label()
-        Label60 = New Label()
-        Label59 = New Label()
-        Label58 = New Label()
-        Label57 = New Label()
-        Label66 = New Label()
-        Label56 = New Label()
-        Label55 = New Label()
-        Label54 = New Label()
-        Label53 = New Label()
-        Label50 = New Label()
-        Label51 = New Label()
-        Label52 = New Label()
-        Label49 = New Label()
-        Label47 = New Label()
-        Label46 = New Label()
-        Label48 = New Label()
-        Label39 = New Label()
-        Label43 = New Label()
-        Label44 = New Label()
-        Label45 = New Label()
-        Label42 = New Label()
-        Label40 = New Label()
-        Label38 = New Label()
         btnInpatientFinInd = New Button()
         btnQualityFinInd = New Button()
         btnFinancialFinInd = New Button()
         btnDepartmentsFinInd = New Button()
         btnProfileFinInd = New Button()
+        lblTotLiabilitiesResult3 = New Label()
+        lblTotAssetsResult5 = New Label()
+        lblTdtna = New Label()
+        Label74 = New Label()
+        Label72 = New Label()
+        Label73 = New Label()
         GroupBox9 = New GroupBox()
         lblTotCurrentLiabilitiesResult = New Label()
         Label27 = New Label()
@@ -201,7 +209,21 @@ Partial Class FinInd
         ToolTip2 = New ToolTip(components)
         ToolTip1 = New ToolTip(components)
         ToolTip3 = New ToolTip(components)
+        GroupBox18 = New GroupBox()
+        GroupBox20 = New GroupBox()
+        Label79 = New Label()
+        Label82 = New Label()
+        lblTotCurrentAssets10 = New Label()
+        lblTotCurrentLiabilities10 = New Label()
         Panel1.SuspendLayout()
+        GroupBox19.SuspendLayout()
+        GroupBox17.SuspendLayout()
+        GroupBox16.SuspendLayout()
+        GroupBox15.SuspendLayout()
+        GroupBox14.SuspendLayout()
+        GroupBox13.SuspendLayout()
+        GroupBox12.SuspendLayout()
+        GroupBox11.SuspendLayout()
         GroupBox1.SuspendLayout()
         GroupBox10.SuspendLayout()
         GroupBox8.SuspendLayout()
@@ -212,20 +234,22 @@ Partial Class FinInd
         GroupBox3.SuspendLayout()
         GroupBox2.SuspendLayout()
         GroupBox9.SuspendLayout()
+        GroupBox18.SuspendLayout()
+        GroupBox20.SuspendLayout()
         SuspendLayout()
         ' 
         ' Panel1
         ' 
         Panel1.AutoScroll = True
-        Panel1.Controls.Add(lblTotLongTermLiabilitiesResult)
-        Panel1.Controls.Add(lblDepreciationExpenseResultFinInd4)
-        Panel1.Controls.Add(Label152)
-        Panel1.Controls.Add(Label153)
-        Panel1.Controls.Add(lblTotLiabilitiesResult3)
-        Panel1.Controls.Add(lblTotAssetsResult5)
-        Panel1.Controls.Add(lblTdtna)
-        Panel1.Controls.Add(lblTotLiabilitiesResult2)
-        Panel1.Controls.Add(lblTotAssetsResult4)
+        Panel1.Controls.Add(GroupBox20)
+        Panel1.Controls.Add(GroupBox19)
+        Panel1.Controls.Add(GroupBox17)
+        Panel1.Controls.Add(GroupBox16)
+        Panel1.Controls.Add(GroupBox15)
+        Panel1.Controls.Add(GroupBox14)
+        Panel1.Controls.Add(GroupBox13)
+        Panel1.Controls.Add(GroupBox12)
+        Panel1.Controls.Add(GroupBox11)
         Panel1.Controls.Add(Button1)
         Panel1.Controls.Add(GroupBox1)
         Panel1.Controls.Add(GroupBox10)
@@ -235,77 +259,8 @@ Partial Class FinInd
         Panel1.Controls.Add(GroupBox5)
         Panel1.Controls.Add(GroupBox4)
         Panel1.Controls.Add(GroupBox3)
-        Panel1.Controls.Add(lblLtdtnaResult)
-        Panel1.Controls.Add(Label139)
-        Panel1.Controls.Add(lblInventoryResult2)
-        Panel1.Controls.Add(lblTotAssetsResult3)
-        Panel1.Controls.Add(Label146)
-        Panel1.Controls.Add(Label141)
-        Panel1.Controls.Add(lblNotesReceivableRes)
-        Panel1.Controls.Add(Label129)
-        Panel1.Controls.Add(lblTotOperatingRevResult5)
-        Panel1.Controls.Add(lblOtherExpenseResultFindInd)
-        Panel1.Controls.Add(lblDepreciationExpenseResultFinInd3)
-        Panel1.Controls.Add(Label137)
-        Panel1.Controls.Add(lblTotOperatingRevResult4)
-        Panel1.Controls.Add(lblTotOperatingExpenseFinInd5)
-        Panel1.Controls.Add(lblTotCurrentLiabilitesResult3)
-        Panel1.Controls.Add(Label133)
-        Panel1.Controls.Add(Label134)
-        Panel1.Controls.Add(lblAccountsRecievableResult2)
-        Panel1.Controls.Add(lblAllowforUncollectRes)
-        Panel1.Controls.Add(Label123)
-        Panel1.Controls.Add(lblTotOperatingRevResult6)
-        Panel1.Controls.Add(lblAllowforUncollectRes2)
-        Panel1.Controls.Add(lblAccountsRecievableResult)
-        Panel1.Controls.Add(lblInvestmentsResultFinInd)
-        Panel1.Controls.Add(lblTotOperatingExpenseFinInd4)
-        Panel1.Controls.Add(lblDepreciationExpenseResultFinInd2)
-        Panel1.Controls.Add(Label122)
-        Panel1.Controls.Add(lblMarketSecuritiesResult2)
-        Panel1.Controls.Add(lblCashonHandResult)
-        Panel1.Controls.Add(Label118)
         Panel1.Controls.Add(btnOutpatientFinInd)
         Panel1.Controls.Add(GroupBox2)
-        Panel1.Controls.Add(Label77)
-        Panel1.Controls.Add(Label76)
-        Panel1.Controls.Add(Label75)
-        Panel1.Controls.Add(Label74)
-        Panel1.Controls.Add(Label72)
-        Panel1.Controls.Add(Label71)
-        Panel1.Controls.Add(Label70)
-        Panel1.Controls.Add(Label69)
-        Panel1.Controls.Add(Label67)
-        Panel1.Controls.Add(Label73)
-        Panel1.Controls.Add(Label68)
-        Panel1.Controls.Add(Label65)
-        Panel1.Controls.Add(Label64)
-        Panel1.Controls.Add(Label63)
-        Panel1.Controls.Add(Label62)
-        Panel1.Controls.Add(Label61)
-        Panel1.Controls.Add(Label60)
-        Panel1.Controls.Add(Label59)
-        Panel1.Controls.Add(Label58)
-        Panel1.Controls.Add(Label57)
-        Panel1.Controls.Add(Label66)
-        Panel1.Controls.Add(Label56)
-        Panel1.Controls.Add(Label55)
-        Panel1.Controls.Add(Label54)
-        Panel1.Controls.Add(Label53)
-        Panel1.Controls.Add(Label50)
-        Panel1.Controls.Add(Label51)
-        Panel1.Controls.Add(Label52)
-        Panel1.Controls.Add(Label49)
-        Panel1.Controls.Add(Label47)
-        Panel1.Controls.Add(Label46)
-        Panel1.Controls.Add(Label48)
-        Panel1.Controls.Add(Label39)
-        Panel1.Controls.Add(Label43)
-        Panel1.Controls.Add(Label44)
-        Panel1.Controls.Add(Label45)
-        Panel1.Controls.Add(Label42)
-        Panel1.Controls.Add(Label40)
-        Panel1.Controls.Add(Label38)
         Panel1.Controls.Add(btnInpatientFinInd)
         Panel1.Controls.Add(btnQualityFinInd)
         Panel1.Controls.Add(btnFinancialFinInd)
@@ -316,86 +271,818 @@ Partial Class FinInd
         Panel1.Size = New Size(1774, 2500)
         Panel1.TabIndex = 0
         ' 
-        ' lblTotLongTermLiabilitiesResult
+        ' GroupBox19
         ' 
-        lblTotLongTermLiabilitiesResult.AutoSize = True
-        lblTotLongTermLiabilitiesResult.Location = New Point(213, 2086)
-        lblTotLongTermLiabilitiesResult.Name = "lblTotLongTermLiabilitiesResult"
-        lblTotLongTermLiabilitiesResult.Size = New Size(39, 15)
-        lblTotLongTermLiabilitiesResult.TabIndex = 265
-        lblTotLongTermLiabilitiesResult.Text = "Result"
+        GroupBox19.BackColor = Color.LightGray
+        GroupBox19.Controls.Add(lblDepreciationExpenseResultFinInd4)
+        GroupBox19.Controls.Add(Label75)
+        GroupBox19.Controls.Add(Label76)
+        GroupBox19.Controls.Add(Label77)
+        GroupBox19.Controls.Add(Label153)
+        GroupBox19.Controls.Add(Label152)
+        GroupBox19.Location = New Point(0, 2299)
+        GroupBox19.Name = "GroupBox19"
+        GroupBox19.Size = New Size(630, 99)
+        GroupBox19.TabIndex = 292
+        GroupBox19.TabStop = False
+        GroupBox19.Text = "."
         ' 
         ' lblDepreciationExpenseResultFinInd4
         ' 
         lblDepreciationExpenseResultFinInd4.AutoSize = True
-        lblDepreciationExpenseResultFinInd4.Location = New Point(213, 2306)
+        lblDepreciationExpenseResultFinInd4.Location = New Point(480, 76)
         lblDepreciationExpenseResultFinInd4.Name = "lblDepreciationExpenseResultFinInd4"
         lblDepreciationExpenseResultFinInd4.Size = New Size(39, 15)
         lblDepreciationExpenseResultFinInd4.TabIndex = 273
         lblDepreciationExpenseResultFinInd4.Text = "Result"
         ' 
+        ' Label75
+        ' 
+        Label75.AutoSize = True
+        Label75.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        Label75.Location = New Point(0, 16)
+        Label75.Name = "Label75"
+        Label75.Size = New Size(125, 15)
+        Label75.TabIndex = 232
+        Label75.Text = "Average Age of Plant"
+        ' 
+        ' Label76
+        ' 
+        Label76.AutoSize = True
+        Label76.Location = New Point(-1, 45)
+        Label76.Name = "Label76"
+        Label76.Size = New Size(148, 15)
+        Label76.TabIndex = 233
+        Label76.Text = "Accumulated Depreciation"
+        ' 
+        ' Label77
+        ' 
+        Label77.AutoSize = True
+        Label77.Location = New Point(0, 76)
+        Label77.Name = "Label77"
+        Label77.Size = New Size(119, 15)
+        Label77.TabIndex = 234
+        Label77.Text = "Depreciation Expense"
+        ' 
+        ' Label153
+        ' 
+        Label153.AutoSize = True
+        Label153.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        Label153.Location = New Point(480, 16)
+        Label153.Name = "Label153"
+        Label153.Size = New Size(42, 15)
+        Label153.TabIndex = 271
+        Label153.Text = "Result"
+        ' 
         ' Label152
         ' 
         Label152.AutoSize = True
-        Label152.Location = New Point(213, 2280)
+        Label152.Location = New Point(480, 45)
         Label152.Name = "Label152"
         Label152.Size = New Size(39, 15)
         Label152.TabIndex = 272
         Label152.Text = "Result"
         ' 
-        ' Label153
+        ' GroupBox17
         ' 
-        Label153.AutoSize = True
-        Label153.Location = New Point(213, 2248)
-        Label153.Name = "Label153"
-        Label153.Size = New Size(39, 15)
-        Label153.TabIndex = 271
-        Label153.Text = "Result"
-        ' 
-        ' lblTotLiabilitiesResult3
-        ' 
-        lblTotLiabilitiesResult3.AutoSize = True
-        lblTotLiabilitiesResult3.Location = New Point(213, 2221)
-        lblTotLiabilitiesResult3.Name = "lblTotLiabilitiesResult3"
-        lblTotLiabilitiesResult3.Size = New Size(39, 15)
-        lblTotLiabilitiesResult3.TabIndex = 270
-        lblTotLiabilitiesResult3.Text = "Result"
-        ' 
-        ' lblTotAssetsResult5
-        ' 
-        lblTotAssetsResult5.AutoSize = True
-        lblTotAssetsResult5.Location = New Point(213, 2195)
-        lblTotAssetsResult5.Name = "lblTotAssetsResult5"
-        lblTotAssetsResult5.Size = New Size(39, 15)
-        lblTotAssetsResult5.TabIndex = 269
-        lblTotAssetsResult5.Text = "Result"
-        ' 
-        ' lblTdtna
-        ' 
-        lblTdtna.AutoSize = True
-        lblTdtna.Location = New Point(213, 2171)
-        lblTdtna.Name = "lblTdtna"
-        lblTdtna.Size = New Size(39, 15)
-        lblTdtna.TabIndex = 268
-        lblTdtna.Text = "Result"
+        GroupBox17.BackColor = Color.LightGray
+        GroupBox17.Controls.Add(lblTotLiabilitiesResult2)
+        GroupBox17.Controls.Add(Label68)
+        GroupBox17.Controls.Add(Label69)
+        GroupBox17.Controls.Add(Label70)
+        GroupBox17.Controls.Add(Label71)
+        GroupBox17.Controls.Add(lblLtdtnaResult)
+        GroupBox17.Controls.Add(lblTotAssetsResult4)
+        GroupBox17.Controls.Add(lblTotLongTermLiabilitiesResult)
+        GroupBox17.Location = New Point(0, 2094)
+        GroupBox17.Name = "GroupBox17"
+        GroupBox17.Size = New Size(630, 118)
+        GroupBox17.TabIndex = 291
+        GroupBox17.TabStop = False
+        GroupBox17.Text = "."
         ' 
         ' lblTotLiabilitiesResult2
         ' 
         lblTotLiabilitiesResult2.AutoSize = True
-        lblTotLiabilitiesResult2.Location = New Point(213, 2138)
+        lblTotLiabilitiesResult2.Location = New Point(480, 96)
         lblTotLiabilitiesResult2.Name = "lblTotLiabilitiesResult2"
         lblTotLiabilitiesResult2.Size = New Size(39, 15)
         lblTotLiabilitiesResult2.TabIndex = 267
         lblTotLiabilitiesResult2.Text = "Result"
         ' 
+        ' Label68
+        ' 
+        Label68.AutoSize = True
+        Label68.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        Label68.Location = New Point(-1, 15)
+        Label68.Name = "Label68"
+        Label68.Size = New Size(174, 15)
+        Label68.TabIndex = 225
+        Label68.Text = "Long Term Debt to Net Assets"
+        ' 
+        ' Label69
+        ' 
+        Label69.AutoSize = True
+        Label69.Location = New Point(-1, 70)
+        Label69.Name = "Label69"
+        Label69.Size = New Size(69, 15)
+        Label69.TabIndex = 226
+        Label69.Text = "Total Assets"
+        ' 
+        ' Label70
+        ' 
+        Label70.AutoSize = True
+        Label70.Location = New Point(-1, 96)
+        Label70.Name = "Label70"
+        Label70.Size = New Size(85, 15)
+        Label70.TabIndex = 227
+        Label70.Text = "Total Liabilities"
+        ' 
+        ' Label71
+        ' 
+        Label71.AutoSize = True
+        Label71.Location = New Point(-1, 44)
+        Label71.Name = "Label71"
+        Label71.Size = New Size(145, 15)
+        Label71.TabIndex = 228
+        Label71.Text = "Total Long Term Liabilities"
+        ' 
+        ' lblLtdtnaResult
+        ' 
+        lblLtdtnaResult.AutoSize = True
+        lblLtdtnaResult.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        lblLtdtnaResult.Location = New Point(480, 15)
+        lblLtdtnaResult.Name = "lblLtdtnaResult"
+        lblLtdtnaResult.Size = New Size(42, 15)
+        lblLtdtnaResult.TabIndex = 264
+        lblLtdtnaResult.Text = "Result"
+        ' 
         ' lblTotAssetsResult4
         ' 
         lblTotAssetsResult4.AutoSize = True
-        lblTotAssetsResult4.Location = New Point(213, 2112)
+        lblTotAssetsResult4.Location = New Point(480, 70)
         lblTotAssetsResult4.Name = "lblTotAssetsResult4"
         lblTotAssetsResult4.Size = New Size(39, 15)
         lblTotAssetsResult4.TabIndex = 266
         lblTotAssetsResult4.Text = "Result"
+        ' 
+        ' lblTotLongTermLiabilitiesResult
+        ' 
+        lblTotLongTermLiabilitiesResult.AutoSize = True
+        lblTotLongTermLiabilitiesResult.Location = New Point(480, 44)
+        lblTotLongTermLiabilitiesResult.Name = "lblTotLongTermLiabilitiesResult"
+        lblTotLongTermLiabilitiesResult.Size = New Size(39, 15)
+        lblTotLongTermLiabilitiesResult.TabIndex = 265
+        lblTotLongTermLiabilitiesResult.Text = "Result"
+        ' 
+        ' GroupBox16
+        ' 
+        GroupBox16.Controls.Add(Label146)
+        GroupBox16.Controls.Add(Label66)
+        GroupBox16.Controls.Add(Label64)
+        GroupBox16.Controls.Add(Label65)
+        GroupBox16.Controls.Add(Label67)
+        GroupBox16.Controls.Add(lblTotOperatingRevResult5)
+        GroupBox16.Controls.Add(Label141)
+        GroupBox16.Controls.Add(lblTotAssetsResult3)
+        GroupBox16.Location = New Point(2, 1979)
+        GroupBox16.Name = "GroupBox16"
+        GroupBox16.Size = New Size(628, 121)
+        GroupBox16.TabIndex = 290
+        GroupBox16.TabStop = False
+        GroupBox16.Text = "."
+        ' 
+        ' Label146
+        ' 
+        Label146.AutoSize = True
+        Label146.Location = New Point(478, 71)
+        Label146.Name = "Label146"
+        Label146.Size = New Size(39, 15)
+        Label146.TabIndex = 262
+        Label146.Text = "Result"
+        ' 
+        ' Label66
+        ' 
+        Label66.AutoSize = True
+        Label66.Location = New Point(6, 71)
+        Label66.Name = "Label66"
+        Label66.Size = New Size(255, 15)
+        Label66.TabIndex = 223
+        Label66.Text = "Non-Operating Revenue (non-patient revenue)"
+        ' 
+        ' Label64
+        ' 
+        Label64.AutoSize = True
+        Label64.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        Label64.Location = New Point(5, 21)
+        Label64.Name = "Label64"
+        Label64.Size = New Size(121, 15)
+        Label64.TabIndex = 221
+        Label64.Text = "Total Asset Turnover"
+        ' 
+        ' Label65
+        ' 
+        Label65.AutoSize = True
+        Label65.Location = New Point(6, 96)
+        Label65.Name = "Label65"
+        Label65.Size = New Size(69, 15)
+        Label65.TabIndex = 224
+        Label65.Text = "Total Assets"
+        ' 
+        ' Label67
+        ' 
+        Label67.AutoSize = True
+        Label67.Location = New Point(8, 47)
+        Label67.Name = "Label67"
+        Label67.Size = New Size(249, 15)
+        Label67.TabIndex = 222
+        Label67.Text = "Total Operating Revenue(net-patient revenue)"
+        ' 
+        ' lblTotOperatingRevResult5
+        ' 
+        lblTotOperatingRevResult5.AutoSize = True
+        lblTotOperatingRevResult5.Location = New Point(478, 47)
+        lblTotOperatingRevResult5.Name = "lblTotOperatingRevResult5"
+        lblTotOperatingRevResult5.Size = New Size(39, 15)
+        lblTotOperatingRevResult5.TabIndex = 258
+        lblTotOperatingRevResult5.Text = "Result"
+        ' 
+        ' Label141
+        ' 
+        Label141.AutoSize = True
+        Label141.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        Label141.Location = New Point(478, 21)
+        Label141.Name = "Label141"
+        Label141.Size = New Size(42, 15)
+        Label141.TabIndex = 259
+        Label141.Text = "Result"
+        ' 
+        ' lblTotAssetsResult3
+        ' 
+        lblTotAssetsResult3.AutoSize = True
+        lblTotAssetsResult3.Location = New Point(479, 97)
+        lblTotAssetsResult3.Name = "lblTotAssetsResult3"
+        lblTotAssetsResult3.Size = New Size(39, 15)
+        lblTotAssetsResult3.TabIndex = 263
+        lblTotAssetsResult3.Text = "Result"
+        ' 
+        ' GroupBox15
+        ' 
+        GroupBox15.BackColor = Color.LightGray
+        GroupBox15.Controls.Add(Label139)
+        GroupBox15.Controls.Add(Label60)
+        GroupBox15.Controls.Add(Label61)
+        GroupBox15.Controls.Add(Label62)
+        GroupBox15.Controls.Add(Label63)
+        GroupBox15.Controls.Add(lblTotOperatingRevResult4)
+        GroupBox15.Controls.Add(Label137)
+        GroupBox15.Controls.Add(lblInventoryResult2)
+        GroupBox15.Location = New Point(6, 1870)
+        GroupBox15.Name = "GroupBox15"
+        GroupBox15.Size = New Size(624, 113)
+        GroupBox15.TabIndex = 289
+        GroupBox15.TabStop = False
+        GroupBox15.Text = "."
+        ' 
+        ' Label139
+        ' 
+        Label139.AutoSize = True
+        Label139.Location = New Point(474, 68)
+        Label139.Name = "Label139"
+        Label139.Size = New Size(39, 15)
+        Label139.TabIndex = 261
+        Label139.Text = "Result"
+        ' 
+        ' Label60
+        ' 
+        Label60.AutoSize = True
+        Label60.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        Label60.Location = New Point(4, 19)
+        Label60.Name = "Label60"
+        Label60.Size = New Size(116, 15)
+        Label60.TabIndex = 217
+        Label60.Text = "Inventory Turnover"
+        ' 
+        ' Label61
+        ' 
+        Label61.AutoSize = True
+        Label61.Location = New Point(4, 44)
+        Label61.Name = "Label61"
+        Label61.Size = New Size(249, 15)
+        Label61.TabIndex = 218
+        Label61.Text = "Total Operating Revenue(net-patient revenue)"
+        ' 
+        ' Label62
+        ' 
+        Label62.AutoSize = True
+        Label62.Location = New Point(6, 68)
+        Label62.Name = "Label62"
+        Label62.Size = New Size(255, 15)
+        Label62.TabIndex = 219
+        Label62.Text = "Non-Operating Revenue (non-patient revenue)"
+        ' 
+        ' Label63
+        ' 
+        Label63.AutoSize = True
+        Label63.Location = New Point(6, 89)
+        Label63.Name = "Label63"
+        Label63.Size = New Size(57, 15)
+        Label63.TabIndex = 220
+        Label63.Text = "Inventory"
+        ' 
+        ' lblTotOperatingRevResult4
+        ' 
+        lblTotOperatingRevResult4.AutoSize = True
+        lblTotOperatingRevResult4.Location = New Point(474, 44)
+        lblTotOperatingRevResult4.Name = "lblTotOperatingRevResult4"
+        lblTotOperatingRevResult4.Size = New Size(39, 15)
+        lblTotOperatingRevResult4.TabIndex = 254
+        lblTotOperatingRevResult4.Text = "Result"
+        ' 
+        ' Label137
+        ' 
+        Label137.AutoSize = True
+        Label137.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        Label137.Location = New Point(475, 18)
+        Label137.Name = "Label137"
+        Label137.Size = New Size(42, 15)
+        Label137.TabIndex = 255
+        Label137.Text = "Result"
+        ' 
+        ' lblInventoryResult2
+        ' 
+        lblInventoryResult2.AutoSize = True
+        lblInventoryResult2.Location = New Point(476, 91)
+        lblInventoryResult2.Name = "lblInventoryResult2"
+        lblInventoryResult2.Size = New Size(39, 15)
+        lblInventoryResult2.TabIndex = 260
+        lblInventoryResult2.Text = "Result"
+        ' 
+        ' GroupBox14
+        ' 
+        GroupBox14.Controls.Add(Label55)
+        GroupBox14.Controls.Add(Label56)
+        GroupBox14.Controls.Add(Label57)
+        GroupBox14.Controls.Add(Label58)
+        GroupBox14.Controls.Add(Label59)
+        GroupBox14.Controls.Add(Label133)
+        GroupBox14.Controls.Add(lblTotCurrentLiabilitesResult3)
+        GroupBox14.Controls.Add(lblTotOperatingExpenseFinInd5)
+        GroupBox14.Controls.Add(lblDepreciationExpenseResultFinInd3)
+        GroupBox14.Controls.Add(lblOtherExpenseResultFindInd)
+        GroupBox14.Location = New Point(4, 1735)
+        GroupBox14.Name = "GroupBox14"
+        GroupBox14.Size = New Size(626, 137)
+        GroupBox14.TabIndex = 288
+        GroupBox14.TabStop = False
+        GroupBox14.Text = "."
+        ' 
+        ' Label55
+        ' 
+        Label55.AutoSize = True
+        Label55.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        Label55.Location = New Point(10, 24)
+        Label55.Name = "Label55"
+        Label55.Size = New Size(180, 15)
+        Label55.TabIndex = 212
+        Label55.Text = "Average Payment Period (days)"
+        ' 
+        ' Label56
+        ' 
+        Label56.AutoSize = True
+        Label56.Location = New Point(11, 48)
+        Label56.Name = "Label56"
+        Label56.Size = New Size(128, 15)
+        Label56.TabIndex = 213
+        Label56.Text = "Total Current Liabilities"
+        ' 
+        ' Label57
+        ' 
+        Label57.AutoSize = True
+        Label57.Location = New Point(13, 73)
+        Label57.Name = "Label57"
+        Label57.Size = New Size(134, 15)
+        Label57.TabIndex = 214
+        Label57.Text = "Total Operating Expense"
+        ' 
+        ' Label58
+        ' 
+        Label58.AutoSize = True
+        Label58.Location = New Point(13, 97)
+        Label58.Name = "Label58"
+        Label58.Size = New Size(111, 15)
+        Label58.TabIndex = 215
+        Label58.Text = "Total Other Expense"
+        ' 
+        ' Label59
+        ' 
+        Label59.AutoSize = True
+        Label59.Location = New Point(14, 117)
+        Label59.Name = "Label59"
+        Label59.Size = New Size(119, 15)
+        Label59.TabIndex = 216
+        Label59.Text = "Depreciation Expense"
+        ' 
+        ' Label133
+        ' 
+        Label133.AutoSize = True
+        Label133.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        Label133.Location = New Point(476, 24)
+        Label133.Name = "Label133"
+        Label133.Size = New Size(42, 15)
+        Label133.TabIndex = 251
+        Label133.Text = "Result"
+        ' 
+        ' lblTotCurrentLiabilitesResult3
+        ' 
+        lblTotCurrentLiabilitesResult3.AutoSize = True
+        lblTotCurrentLiabilitesResult3.Location = New Point(476, 48)
+        lblTotCurrentLiabilitesResult3.Name = "lblTotCurrentLiabilitesResult3"
+        lblTotCurrentLiabilitesResult3.Size = New Size(39, 15)
+        lblTotCurrentLiabilitesResult3.TabIndex = 252
+        lblTotCurrentLiabilitesResult3.Text = "Result"
+        ' 
+        ' lblTotOperatingExpenseFinInd5
+        ' 
+        lblTotOperatingExpenseFinInd5.AutoSize = True
+        lblTotOperatingExpenseFinInd5.Location = New Point(476, 73)
+        lblTotOperatingExpenseFinInd5.Name = "lblTotOperatingExpenseFinInd5"
+        lblTotOperatingExpenseFinInd5.Size = New Size(39, 15)
+        lblTotOperatingExpenseFinInd5.TabIndex = 253
+        lblTotOperatingExpenseFinInd5.Text = "Result"
+        ' 
+        ' lblDepreciationExpenseResultFinInd3
+        ' 
+        lblDepreciationExpenseResultFinInd3.AutoSize = True
+        lblDepreciationExpenseResultFinInd3.Location = New Point(477, 117)
+        lblDepreciationExpenseResultFinInd3.Name = "lblDepreciationExpenseResultFinInd3"
+        lblDepreciationExpenseResultFinInd3.Size = New Size(39, 15)
+        lblDepreciationExpenseResultFinInd3.TabIndex = 256
+        lblDepreciationExpenseResultFinInd3.Text = "Result"
+        ' 
+        ' lblOtherExpenseResultFindInd
+        ' 
+        lblOtherExpenseResultFindInd.AutoSize = True
+        lblOtherExpenseResultFindInd.Location = New Point(476, 97)
+        lblOtherExpenseResultFindInd.Name = "lblOtherExpenseResultFindInd"
+        lblOtherExpenseResultFindInd.Size = New Size(39, 15)
+        lblOtherExpenseResultFindInd.TabIndex = 257
+        lblOtherExpenseResultFindInd.Text = "Result"
+        ' 
+        ' GroupBox13
+        ' 
+        GroupBox13.BackColor = Color.LightGray
+        GroupBox13.Controls.Add(Label49)
+        GroupBox13.Controls.Add(Label52)
+        GroupBox13.Controls.Add(Label51)
+        GroupBox13.Controls.Add(Label53)
+        GroupBox13.Controls.Add(Label54)
+        GroupBox13.Controls.Add(Label123)
+        GroupBox13.Controls.Add(lblAllowforUncollectRes)
+        GroupBox13.Controls.Add(lblAccountsRecievableResult2)
+        GroupBox13.Controls.Add(Label129)
+        GroupBox13.Controls.Add(lblNotesReceivableRes)
+        GroupBox13.Controls.Add(Label134)
+        GroupBox13.Controls.Add(Label50)
+        GroupBox13.Location = New Point(3, 1566)
+        GroupBox13.Name = "GroupBox13"
+        GroupBox13.Size = New Size(627, 172)
+        GroupBox13.TabIndex = 287
+        GroupBox13.TabStop = False
+        GroupBox13.Text = "."
+        ' 
+        ' Label49
+        ' 
+        Label49.AutoSize = True
+        Label49.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        Label49.Location = New Point(8, 21)
+        Label49.Name = "Label49"
+        Label49.Size = New Size(164, 15)
+        Label49.TabIndex = 206
+        Label49.Text = "Days in Net Total Recievable"
+        ' 
+        ' Label52
+        ' 
+        Label52.AutoSize = True
+        Label52.Location = New Point(7, 47)
+        Label52.Name = "Label52"
+        Label52.Size = New Size(116, 15)
+        Label52.TabIndex = 207
+        Label52.Text = "Accounts Recievable"
+        ' 
+        ' Label51
+        ' 
+        Label51.AutoSize = True
+        Label51.Location = New Point(7, 123)
+        Label51.Name = "Label51"
+        Label51.Size = New Size(157, 15)
+        Label51.TabIndex = 208
+        Label51.Text = "Allowances for Uncollectible"
+        ' 
+        ' Label53
+        ' 
+        Label53.AutoSize = True
+        Label53.Location = New Point(7, 72)
+        Label53.Name = "Label53"
+        Label53.Size = New Size(97, 15)
+        Label53.TabIndex = 210
+        Label53.Text = "Notes Recievable"
+        ' 
+        ' Label54
+        ' 
+        Label54.AutoSize = True
+        Label54.Location = New Point(7, 98)
+        Label54.Name = "Label54"
+        Label54.Size = New Size(101, 15)
+        Label54.TabIndex = 211
+        Label54.Text = "Other Recievables"
+        ' 
+        ' Label123
+        ' 
+        Label123.AutoSize = True
+        Label123.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        Label123.Location = New Point(477, 21)
+        Label123.Name = "Label123"
+        Label123.Size = New Size(42, 15)
+        Label123.TabIndex = 245
+        Label123.Text = "Result"
+        ' 
+        ' lblAllowforUncollectRes
+        ' 
+        lblAllowforUncollectRes.AutoSize = True
+        lblAllowforUncollectRes.Location = New Point(477, 123)
+        lblAllowforUncollectRes.Name = "lblAllowforUncollectRes"
+        lblAllowforUncollectRes.Size = New Size(39, 15)
+        lblAllowforUncollectRes.TabIndex = 246
+        lblAllowforUncollectRes.Text = "Result"
+        ' 
+        ' lblAccountsRecievableResult2
+        ' 
+        lblAccountsRecievableResult2.AutoSize = True
+        lblAccountsRecievableResult2.Location = New Point(477, 47)
+        lblAccountsRecievableResult2.Name = "lblAccountsRecievableResult2"
+        lblAccountsRecievableResult2.Size = New Size(39, 15)
+        lblAccountsRecievableResult2.TabIndex = 249
+        lblAccountsRecievableResult2.Text = "Result"
+        ' 
+        ' Label129
+        ' 
+        Label129.AutoSize = True
+        Label129.Location = New Point(477, 98)
+        Label129.Name = "Label129"
+        Label129.Size = New Size(39, 15)
+        Label129.TabIndex = 247
+        Label129.Text = "Result"
+        ' 
+        ' lblNotesReceivableRes
+        ' 
+        lblNotesReceivableRes.AutoSize = True
+        lblNotesReceivableRes.Location = New Point(477, 72)
+        lblNotesReceivableRes.Name = "lblNotesReceivableRes"
+        lblNotesReceivableRes.Size = New Size(39, 15)
+        lblNotesReceivableRes.TabIndex = 248
+        lblNotesReceivableRes.Text = "Result"
+        ' 
+        ' Label134
+        ' 
+        Label134.AutoSize = True
+        Label134.Location = New Point(477, 151)
+        Label134.Name = "Label134"
+        Label134.Size = New Size(39, 15)
+        Label134.TabIndex = 250
+        Label134.Text = "Result"
+        ' 
+        ' Label50
+        ' 
+        Label50.AutoSize = True
+        Label50.Location = New Point(7, 151)
+        Label50.Name = "Label50"
+        Label50.Size = New Size(253, 15)
+        Label50.TabIndex = 209
+        Label50.Text = "Total Operating Revenue(non-patient revenue)"
+        ' 
+        ' GroupBox12
+        ' 
+        GroupBox12.Controls.Add(Label47)
+        GroupBox12.Controls.Add(Label39)
+        GroupBox12.Controls.Add(Label48)
+        GroupBox12.Controls.Add(Label46)
+        GroupBox12.Controls.Add(Label122)
+        GroupBox12.Controls.Add(lblAccountsRecievableResult)
+        GroupBox12.Controls.Add(lblAllowforUncollectRes2)
+        GroupBox12.Controls.Add(lblTotOperatingRevResult6)
+        GroupBox12.Location = New Point(6, 1450)
+        GroupBox12.Name = "GroupBox12"
+        GroupBox12.Size = New Size(624, 122)
+        GroupBox12.TabIndex = 286
+        GroupBox12.TabStop = False
+        GroupBox12.Text = "."
+        ' 
+        ' Label47
+        ' 
+        Label47.AutoSize = True
+        Label47.Location = New Point(3, 98)
+        Label47.Name = "Label47"
+        Label47.Size = New Size(249, 15)
+        Label47.TabIndex = 205
+        Label47.Text = "Total Operating Revenue(net-patient revenue)"
+        ' 
+        ' Label39
+        ' 
+        Label39.AutoSize = True
+        Label39.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        Label39.Location = New Point(3, 17)
+        Label39.Name = "Label39"
+        Label39.Size = New Size(231, 15)
+        Label39.TabIndex = 202
+        Label39.Text = "Days in Net Patient Accounts Recievable"
+        ' 
+        ' Label48
+        ' 
+        Label48.AutoSize = True
+        Label48.Location = New Point(6, 47)
+        Label48.Name = "Label48"
+        Label48.Size = New Size(116, 15)
+        Label48.TabIndex = 203
+        Label48.Text = "Accounts Recievable"
+        ' 
+        ' Label46
+        ' 
+        Label46.AutoSize = True
+        Label46.Location = New Point(3, 73)
+        Label46.Name = "Label46"
+        Label46.Size = New Size(157, 15)
+        Label46.TabIndex = 204
+        Label46.Text = "Allowances for Uncollectible"
+        ' 
+        ' Label122
+        ' 
+        Label122.AutoSize = True
+        Label122.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        Label122.Location = New Point(474, 17)
+        Label122.Name = "Label122"
+        Label122.Size = New Size(42, 15)
+        Label122.TabIndex = 238
+        Label122.Text = "Result"
+        ' 
+        ' lblAccountsRecievableResult
+        ' 
+        lblAccountsRecievableResult.AutoSize = True
+        lblAccountsRecievableResult.Location = New Point(475, 47)
+        lblAccountsRecievableResult.Name = "lblAccountsRecievableResult"
+        lblAccountsRecievableResult.Size = New Size(39, 15)
+        lblAccountsRecievableResult.TabIndex = 242
+        lblAccountsRecievableResult.Text = "Result"
+        ' 
+        ' lblAllowforUncollectRes2
+        ' 
+        lblAllowforUncollectRes2.AutoSize = True
+        lblAllowforUncollectRes2.Location = New Point(475, 73)
+        lblAllowforUncollectRes2.Name = "lblAllowforUncollectRes2"
+        lblAllowforUncollectRes2.Size = New Size(39, 15)
+        lblAllowforUncollectRes2.TabIndex = 243
+        lblAllowforUncollectRes2.Text = "Result"
+        ' 
+        ' lblTotOperatingRevResult6
+        ' 
+        lblTotOperatingRevResult6.AutoSize = True
+        lblTotOperatingRevResult6.Location = New Point(474, 98)
+        lblTotOperatingRevResult6.Name = "lblTotOperatingRevResult6"
+        lblTotOperatingRevResult6.Size = New Size(39, 15)
+        lblTotOperatingRevResult6.TabIndex = 244
+        lblTotOperatingRevResult6.Text = "Result"
+        ' 
+        ' GroupBox11
+        ' 
+        GroupBox11.BackColor = Color.LightGray
+        GroupBox11.Controls.Add(Label38)
+        GroupBox11.Controls.Add(Label40)
+        GroupBox11.Controls.Add(Label42)
+        GroupBox11.Controls.Add(Label45)
+        GroupBox11.Controls.Add(Label44)
+        GroupBox11.Controls.Add(Label43)
+        GroupBox11.Controls.Add(Label118)
+        GroupBox11.Controls.Add(lblCashonHandResult)
+        GroupBox11.Controls.Add(lblMarketSecuritiesResult2)
+        GroupBox11.Controls.Add(lblDepreciationExpenseResultFinInd2)
+        GroupBox11.Controls.Add(lblTotOperatingExpenseFinInd4)
+        GroupBox11.Controls.Add(lblInvestmentsResultFinInd)
+        GroupBox11.Location = New Point(6, 1280)
+        GroupBox11.Name = "GroupBox11"
+        GroupBox11.Size = New Size(624, 170)
+        GroupBox11.TabIndex = 285
+        GroupBox11.TabStop = False
+        GroupBox11.Text = "."
+        ' 
+        ' Label38
+        ' 
+        Label38.AutoSize = True
+        Label38.Location = New Point(13, 44)
+        Label38.Name = "Label38"
+        Label38.Size = New Size(82, 15)
+        Label38.TabIndex = 196
+        Label38.Text = "Cash on Hand"
+        ' 
+        ' Label40
+        ' 
+        Label40.AutoSize = True
+        Label40.Location = New Point(13, 97)
+        Label40.Name = "Label40"
+        Label40.Size = New Size(71, 15)
+        Label40.TabIndex = 197
+        Label40.Text = "Investments"
+        ' 
+        ' Label42
+        ' 
+        Label42.AutoSize = True
+        Label42.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        Label42.Location = New Point(13, 15)
+        Label42.Name = "Label42"
+        Label42.Size = New Size(184, 15)
+        Label42.TabIndex = 198
+        Label42.Text = "Days Cash On Hand - All Sources"
+        ' 
+        ' Label45
+        ' 
+        Label45.AutoSize = True
+        Label45.Location = New Point(13, 70)
+        Label45.Name = "Label45"
+        Label45.Size = New Size(97, 15)
+        Label45.TabIndex = 199
+        Label45.Text = "Market Securities"
+        ' 
+        ' Label44
+        ' 
+        Label44.AutoSize = True
+        Label44.Location = New Point(13, 124)
+        Label44.Name = "Label44"
+        Label44.Size = New Size(134, 15)
+        Label44.TabIndex = 200
+        Label44.Text = "Total Operating Expense"
+        ' 
+        ' Label43
+        ' 
+        Label43.AutoSize = True
+        Label43.Location = New Point(13, 152)
+        Label43.Name = "Label43"
+        Label43.Size = New Size(119, 15)
+        Label43.TabIndex = 201
+        Label43.Text = "Depreciation Expense"
+        ' 
+        ' Label118
+        ' 
+        Label118.AutoSize = True
+        Label118.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        Label118.Location = New Point(475, 15)
+        Label118.Name = "Label118"
+        Label118.Size = New Size(42, 15)
+        Label118.TabIndex = 235
+        Label118.Text = "Result"
+        ' 
+        ' lblCashonHandResult
+        ' 
+        lblCashonHandResult.AutoSize = True
+        lblCashonHandResult.Location = New Point(474, 44)
+        lblCashonHandResult.Name = "lblCashonHandResult"
+        lblCashonHandResult.Size = New Size(39, 15)
+        lblCashonHandResult.TabIndex = 236
+        lblCashonHandResult.Text = "Result"
+        ' 
+        ' lblMarketSecuritiesResult2
+        ' 
+        lblMarketSecuritiesResult2.AutoSize = True
+        lblMarketSecuritiesResult2.Location = New Point(474, 70)
+        lblMarketSecuritiesResult2.Name = "lblMarketSecuritiesResult2"
+        lblMarketSecuritiesResult2.Size = New Size(39, 15)
+        lblMarketSecuritiesResult2.TabIndex = 237
+        lblMarketSecuritiesResult2.Text = "Result"
+        ' 
+        ' lblDepreciationExpenseResultFinInd2
+        ' 
+        lblDepreciationExpenseResultFinInd2.AutoSize = True
+        lblDepreciationExpenseResultFinInd2.Location = New Point(474, 150)
+        lblDepreciationExpenseResultFinInd2.Name = "lblDepreciationExpenseResultFinInd2"
+        lblDepreciationExpenseResultFinInd2.Size = New Size(39, 15)
+        lblDepreciationExpenseResultFinInd2.TabIndex = 239
+        lblDepreciationExpenseResultFinInd2.Text = "Result"
+        ' 
+        ' lblTotOperatingExpenseFinInd4
+        ' 
+        lblTotOperatingExpenseFinInd4.AutoSize = True
+        lblTotOperatingExpenseFinInd4.Location = New Point(474, 121)
+        lblTotOperatingExpenseFinInd4.Name = "lblTotOperatingExpenseFinInd4"
+        lblTotOperatingExpenseFinInd4.Size = New Size(39, 15)
+        lblTotOperatingExpenseFinInd4.TabIndex = 240
+        lblTotOperatingExpenseFinInd4.Text = "Result"
+        ' 
+        ' lblInvestmentsResultFinInd
+        ' 
+        lblInvestmentsResultFinInd.AutoSize = True
+        lblInvestmentsResultFinInd.Location = New Point(474, 97)
+        lblInvestmentsResultFinInd.Name = "lblInvestmentsResultFinInd"
+        lblInvestmentsResultFinInd.Size = New Size(39, 15)
+        lblInvestmentsResultFinInd.TabIndex = 241
+        lblInvestmentsResultFinInd.Text = "Result"
         ' 
         ' Button1
         ' 
@@ -420,7 +1107,7 @@ Partial Class FinInd
         GroupBox1.Controls.Add(lblDepreciationExpenseResultFinInd)
         GroupBox1.Location = New Point(6, 1119)
         GroupBox1.Name = "GroupBox1"
-        GroupBox1.Size = New Size(381, 165)
+        GroupBox1.Size = New Size(624, 165)
         GroupBox1.TabIndex = 275
         GroupBox1.TabStop = False
         GroupBox1.Text = "."
@@ -438,9 +1125,10 @@ Partial Class FinInd
         ' lblDaysCOH
         ' 
         lblDaysCOH.AutoSize = True
-        lblDaysCOH.Location = New Point(137, 37)
+        lblDaysCOH.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        lblDaysCOH.Location = New Point(474, 37)
         lblDaysCOH.Name = "lblDaysCOH"
-        lblDaysCOH.Size = New Size(39, 15)
+        lblDaysCOH.Size = New Size(42, 15)
         lblDaysCOH.TabIndex = 180
         lblDaysCOH.Text = "Result"
         ' 
@@ -474,7 +1162,7 @@ Partial Class FinInd
         ' Label41
         ' 
         Label41.AutoSize = True
-        Label41.Location = New Point(12, 117)
+        Label41.Location = New Point(9, 116)
         Label41.Name = "Label41"
         Label41.Size = New Size(134, 15)
         Label41.TabIndex = 60
@@ -484,7 +1172,7 @@ Partial Class FinInd
         ' 
         lblCashonHandResult2.AutoSize = True
         lblCashonHandResult2.BackColor = SystemColors.Control
-        lblCashonHandResult2.Location = New Point(135, 60)
+        lblCashonHandResult2.Location = New Point(474, 62)
         lblCashonHandResult2.Name = "lblCashonHandResult2"
         lblCashonHandResult2.Size = New Size(39, 15)
         lblCashonHandResult2.TabIndex = 135
@@ -493,7 +1181,7 @@ Partial Class FinInd
         ' lblMarketSecuritiesResult
         ' 
         lblMarketSecuritiesResult.AutoSize = True
-        lblMarketSecuritiesResult.Location = New Point(152, 91)
+        lblMarketSecuritiesResult.Location = New Point(474, 90)
         lblMarketSecuritiesResult.Name = "lblMarketSecuritiesResult"
         lblMarketSecuritiesResult.Size = New Size(39, 15)
         lblMarketSecuritiesResult.TabIndex = 136
@@ -502,7 +1190,7 @@ Partial Class FinInd
         ' lblTotOperatingExpenseFinInd3
         ' 
         lblTotOperatingExpenseFinInd3.AutoSize = True
-        lblTotOperatingExpenseFinInd3.Location = New Point(152, 117)
+        lblTotOperatingExpenseFinInd3.Location = New Point(474, 116)
         lblTotOperatingExpenseFinInd3.Name = "lblTotOperatingExpenseFinInd3"
         lblTotOperatingExpenseFinInd3.Size = New Size(39, 15)
         lblTotOperatingExpenseFinInd3.TabIndex = 137
@@ -511,7 +1199,7 @@ Partial Class FinInd
         ' lblDepreciationExpenseResultFinInd
         ' 
         lblDepreciationExpenseResultFinInd.AutoSize = True
-        lblDepreciationExpenseResultFinInd.Location = New Point(153, 143)
+        lblDepreciationExpenseResultFinInd.Location = New Point(475, 142)
         lblDepreciationExpenseResultFinInd.Name = "lblDepreciationExpenseResultFinInd"
         lblDepreciationExpenseResultFinInd.Size = New Size(39, 15)
         lblDepreciationExpenseResultFinInd.TabIndex = 141
@@ -519,7 +1207,7 @@ Partial Class FinInd
         ' 
         ' GroupBox10
         ' 
-        GroupBox10.BackColor = SystemColors.AppWorkspace
+        GroupBox10.BackColor = Color.LightGray
         GroupBox10.Controls.Add(lblTotCurrentLiabilitesResult2)
         GroupBox10.Controls.Add(Label31)
         GroupBox10.Controls.Add(Label33)
@@ -528,9 +1216,9 @@ Partial Class FinInd
         GroupBox10.Controls.Add(lblQuickRatioResult)
         GroupBox10.Controls.Add(lblTotCurrentAssetsResult2)
         GroupBox10.Controls.Add(lblInventoryResult)
-        GroupBox10.Location = New Point(6, 1019)
+        GroupBox10.Location = New Point(6, 1025)
         GroupBox10.Name = "GroupBox10"
-        GroupBox10.Size = New Size(313, 94)
+        GroupBox10.Size = New Size(624, 94)
         GroupBox10.TabIndex = 284
         GroupBox10.TabStop = False
         GroupBox10.Text = "."
@@ -548,7 +1236,7 @@ Partial Class FinInd
         ' 
         Label31.AutoSize = True
         Label31.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
-        Label31.Location = New Point(4, 25)
+        Label31.Location = New Point(3, 19)
         Label31.Name = "Label31"
         Label31.Size = New Size(71, 15)
         Label31.TabIndex = 52
@@ -584,16 +1272,17 @@ Partial Class FinInd
         ' lblQuickRatioResult
         ' 
         lblQuickRatioResult.AutoSize = True
-        lblQuickRatioResult.Location = New Point(161, 25)
+        lblQuickRatioResult.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        lblQuickRatioResult.Location = New Point(474, 19)
         lblQuickRatioResult.Name = "lblQuickRatioResult"
-        lblQuickRatioResult.Size = New Size(39, 15)
+        lblQuickRatioResult.Size = New Size(42, 15)
         lblQuickRatioResult.TabIndex = 131
         lblQuickRatioResult.Text = "Result"
         ' 
         ' lblTotCurrentAssetsResult2
         ' 
         lblTotCurrentAssetsResult2.AutoSize = True
-        lblTotCurrentAssetsResult2.Location = New Point(161, 52)
+        lblTotCurrentAssetsResult2.Location = New Point(474, 52)
         lblTotCurrentAssetsResult2.Name = "lblTotCurrentAssetsResult2"
         lblTotCurrentAssetsResult2.Size = New Size(39, 15)
         lblTotCurrentAssetsResult2.TabIndex = 132
@@ -602,7 +1291,7 @@ Partial Class FinInd
         ' lblInventoryResult
         ' 
         lblInventoryResult.AutoSize = True
-        lblInventoryResult.Location = New Point(161, 76)
+        lblInventoryResult.Location = New Point(474, 79)
         lblInventoryResult.Name = "lblInventoryResult"
         lblInventoryResult.Size = New Size(39, 15)
         lblInventoryResult.TabIndex = 133
@@ -618,7 +1307,7 @@ Partial Class FinInd
         GroupBox8.Controls.Add(lblTotAssetsResult2)
         GroupBox8.Location = New Point(2, 822)
         GroupBox8.Name = "GroupBox8"
-        GroupBox8.Size = New Size(676, 84)
+        GroupBox8.Size = New Size(628, 84)
         GroupBox8.TabIndex = 282
         GroupBox8.TabStop = False
         GroupBox8.Text = "."
@@ -626,7 +1315,7 @@ Partial Class FinInd
         ' lblNetIncomeResult2
         ' 
         lblNetIncomeResult2.AutoSize = True
-        lblNetIncomeResult2.Location = New Point(164, 43)
+        lblNetIncomeResult2.Location = New Point(478, 43)
         lblNetIncomeResult2.Name = "lblNetIncomeResult2"
         lblNetIncomeResult2.Size = New Size(39, 15)
         lblNetIncomeResult2.TabIndex = 126
@@ -663,16 +1352,17 @@ Partial Class FinInd
         ' lblRoaResult
         ' 
         lblRoaResult.AutoSize = True
-        lblRoaResult.Location = New Point(164, 18)
+        lblRoaResult.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        lblRoaResult.Location = New Point(478, 18)
         lblRoaResult.Name = "lblRoaResult"
-        lblRoaResult.Size = New Size(39, 15)
+        lblRoaResult.Size = New Size(42, 15)
         lblRoaResult.TabIndex = 125
         lblRoaResult.Text = "Result"
         ' 
         ' lblTotAssetsResult2
         ' 
         lblTotAssetsResult2.AutoSize = True
-        lblTotAssetsResult2.Location = New Point(164, 69)
+        lblTotAssetsResult2.Location = New Point(478, 69)
         lblTotAssetsResult2.Name = "lblTotAssetsResult2"
         lblTotAssetsResult2.Size = New Size(39, 15)
         lblTotAssetsResult2.TabIndex = 127
@@ -680,7 +1370,7 @@ Partial Class FinInd
         ' 
         ' GroupBox7
         ' 
-        GroupBox7.BackColor = SystemColors.AppWorkspace
+        GroupBox7.BackColor = Color.LightGray
         GroupBox7.Controls.Add(Label23)
         GroupBox7.Controls.Add(Label21)
         GroupBox7.Controls.Add(Label22)
@@ -691,7 +1381,7 @@ Partial Class FinInd
         GroupBox7.Controls.Add(lblTotLiabilitiesResult)
         GroupBox7.Location = New Point(4, 698)
         GroupBox7.Name = "GroupBox7"
-        GroupBox7.Size = New Size(673, 118)
+        GroupBox7.Size = New Size(626, 118)
         GroupBox7.TabIndex = 281
         GroupBox7.TabStop = False
         GroupBox7.Text = "."
@@ -736,16 +1426,17 @@ Partial Class FinInd
         ' lblROEResult
         ' 
         lblROEResult.AutoSize = True
-        lblROEResult.Location = New Point(112, 20)
+        lblROEResult.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        lblROEResult.Location = New Point(476, 20)
         lblROEResult.Name = "lblROEResult"
-        lblROEResult.Size = New Size(39, 15)
+        lblROEResult.Size = New Size(42, 15)
         lblROEResult.TabIndex = 121
         lblROEResult.Text = "Result"
         ' 
         ' lblNetIncomeResult
         ' 
         lblNetIncomeResult.AutoSize = True
-        lblNetIncomeResult.Location = New Point(161, 45)
+        lblNetIncomeResult.Location = New Point(476, 45)
         lblNetIncomeResult.Name = "lblNetIncomeResult"
         lblNetIncomeResult.Size = New Size(39, 15)
         lblNetIncomeResult.TabIndex = 122
@@ -754,7 +1445,7 @@ Partial Class FinInd
         ' lblTotAssetsResult
         ' 
         lblTotAssetsResult.AutoSize = True
-        lblTotAssetsResult.Location = New Point(161, 71)
+        lblTotAssetsResult.Location = New Point(476, 71)
         lblTotAssetsResult.Name = "lblTotAssetsResult"
         lblTotAssetsResult.Size = New Size(39, 15)
         lblTotAssetsResult.TabIndex = 123
@@ -763,7 +1454,7 @@ Partial Class FinInd
         ' lblTotLiabilitiesResult
         ' 
         lblTotLiabilitiesResult.AutoSize = True
-        lblTotLiabilitiesResult.Location = New Point(161, 98)
+        lblTotLiabilitiesResult.Location = New Point(476, 98)
         lblTotLiabilitiesResult.Name = "lblTotLiabilitiesResult"
         lblTotLiabilitiesResult.Size = New Size(39, 15)
         lblTotLiabilitiesResult.TabIndex = 124
@@ -783,7 +1474,7 @@ Partial Class FinInd
         GroupBox6.Controls.Add(lblTotOperatingRevResult3)
         GroupBox6.Location = New Point(4, 523)
         GroupBox6.Name = "GroupBox6"
-        GroupBox6.Size = New Size(672, 160)
+        GroupBox6.Size = New Size(626, 160)
         GroupBox6.TabIndex = 280
         GroupBox6.TabStop = False
         GroupBox6.Text = "."
@@ -837,16 +1528,17 @@ Partial Class FinInd
         ' lblPeapctorResult
         ' 
         lblPeapctorResult.AutoSize = True
-        lblPeapctorResult.Location = New Point(326, 27)
+        lblPeapctorResult.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        lblPeapctorResult.Location = New Point(476, 25)
         lblPeapctorResult.Name = "lblPeapctorResult"
-        lblPeapctorResult.Size = New Size(39, 15)
+        lblPeapctorResult.Size = New Size(42, 15)
         lblPeapctorResult.TabIndex = 116
         lblPeapctorResult.Text = "Result"
         ' 
         ' lblSalaryExpenseResult
         ' 
         lblSalaryExpenseResult.AutoSize = True
-        lblSalaryExpenseResult.Location = New Point(104, 52)
+        lblSalaryExpenseResult.Location = New Point(476, 52)
         lblSalaryExpenseResult.Name = "lblSalaryExpenseResult"
         lblSalaryExpenseResult.Size = New Size(39, 15)
         lblSalaryExpenseResult.TabIndex = 117
@@ -855,7 +1547,7 @@ Partial Class FinInd
         ' lblContractLaborResult
         ' 
         lblContractLaborResult.AutoSize = True
-        lblContractLaborResult.Location = New Point(104, 79)
+        lblContractLaborResult.Location = New Point(476, 79)
         lblContractLaborResult.Name = "lblContractLaborResult"
         lblContractLaborResult.Size = New Size(39, 15)
         lblContractLaborResult.TabIndex = 118
@@ -864,7 +1556,7 @@ Partial Class FinInd
         ' lblFringeBenefitsResult
         ' 
         lblFringeBenefitsResult.AutoSize = True
-        lblFringeBenefitsResult.Location = New Point(104, 104)
+        lblFringeBenefitsResult.Location = New Point(476, 107)
         lblFringeBenefitsResult.Name = "lblFringeBenefitsResult"
         lblFringeBenefitsResult.Size = New Size(39, 15)
         lblFringeBenefitsResult.TabIndex = 119
@@ -873,7 +1565,7 @@ Partial Class FinInd
         ' lblTotOperatingRevResult3
         ' 
         lblTotOperatingRevResult3.AutoSize = True
-        lblTotOperatingRevResult3.Location = New Point(270, 134)
+        lblTotOperatingRevResult3.Location = New Point(476, 134)
         lblTotOperatingRevResult3.Name = "lblTotOperatingRevResult3"
         lblTotOperatingRevResult3.Size = New Size(39, 15)
         lblTotOperatingRevResult3.TabIndex = 120
@@ -892,7 +1584,7 @@ Partial Class FinInd
         GroupBox5.Controls.Add(lblNoRFinIndResult)
         GroupBox5.Location = New Point(3, 383)
         GroupBox5.Name = "GroupBox5"
-        GroupBox5.Size = New Size(673, 134)
+        GroupBox5.Size = New Size(627, 134)
         GroupBox5.TabIndex = 279
         GroupBox5.TabStop = False
         GroupBox5.Text = "."
@@ -937,16 +1629,17 @@ Partial Class FinInd
         ' lblExcessMarginResult
         ' 
         lblExcessMarginResult.AutoSize = True
-        lblExcessMarginResult.Location = New Point(183, 25)
+        lblExcessMarginResult.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        lblExcessMarginResult.Location = New Point(477, 20)
         lblExcessMarginResult.Name = "lblExcessMarginResult"
-        lblExcessMarginResult.Size = New Size(39, 15)
+        lblExcessMarginResult.Size = New Size(42, 15)
         lblExcessMarginResult.TabIndex = 112
         lblExcessMarginResult.Text = "Result"
         ' 
         ' lblTotOperatingRevenueFinInd2
         ' 
         lblTotOperatingRevenueFinInd2.AutoSize = True
-        lblTotOperatingRevenueFinInd2.Location = New Point(183, 53)
+        lblTotOperatingRevenueFinInd2.Location = New Point(477, 51)
         lblTotOperatingRevenueFinInd2.Name = "lblTotOperatingRevenueFinInd2"
         lblTotOperatingRevenueFinInd2.Size = New Size(39, 15)
         lblTotOperatingRevenueFinInd2.TabIndex = 113
@@ -955,7 +1648,7 @@ Partial Class FinInd
         ' lblTotOperatingExpenseFinInd2
         ' 
         lblTotOperatingExpenseFinInd2.AutoSize = True
-        lblTotOperatingExpenseFinInd2.Location = New Point(194, 80)
+        lblTotOperatingExpenseFinInd2.Location = New Point(477, 79)
         lblTotOperatingExpenseFinInd2.Name = "lblTotOperatingExpenseFinInd2"
         lblTotOperatingExpenseFinInd2.Size = New Size(39, 15)
         lblTotOperatingExpenseFinInd2.TabIndex = 114
@@ -964,7 +1657,7 @@ Partial Class FinInd
         ' lblNoRFinIndResult
         ' 
         lblNoRFinIndResult.AutoSize = True
-        lblNoRFinIndResult.Location = New Point(280, 110)
+        lblNoRFinIndResult.Location = New Point(477, 116)
         lblNoRFinIndResult.Name = "lblNoRFinIndResult"
         lblNoRFinIndResult.Size = New Size(39, 15)
         lblNoRFinIndResult.TabIndex = 115
@@ -980,7 +1673,7 @@ Partial Class FinInd
         GroupBox4.Controls.Add(lblTotOperatingExpenseFinIndResult)
         GroupBox4.Location = New Point(3, 267)
         GroupBox4.Name = "GroupBox4"
-        GroupBox4.Size = New Size(673, 105)
+        GroupBox4.Size = New Size(627, 105)
         GroupBox4.TabIndex = 278
         GroupBox4.TabStop = False
         GroupBox4.Text = "."
@@ -1016,16 +1709,17 @@ Partial Class FinInd
         ' lblOperatingMarginFinIndResult
         ' 
         lblOperatingMarginFinIndResult.AutoSize = True
-        lblOperatingMarginFinIndResult.Location = New Point(185, 34)
+        lblOperatingMarginFinIndResult.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        lblOperatingMarginFinIndResult.Location = New Point(477, 28)
         lblOperatingMarginFinIndResult.Name = "lblOperatingMarginFinIndResult"
-        lblOperatingMarginFinIndResult.Size = New Size(39, 15)
+        lblOperatingMarginFinIndResult.Size = New Size(42, 15)
         lblOperatingMarginFinIndResult.TabIndex = 109
         lblOperatingMarginFinIndResult.Text = "Result"
         ' 
         ' lblTotOperatingRevFinIndResult
         ' 
         lblTotOperatingRevFinIndResult.AutoSize = True
-        lblTotOperatingRevFinIndResult.Location = New Point(185, 60)
+        lblTotOperatingRevFinIndResult.Location = New Point(477, 54)
         lblTotOperatingRevFinIndResult.Name = "lblTotOperatingRevFinIndResult"
         lblTotOperatingRevFinIndResult.Size = New Size(39, 15)
         lblTotOperatingRevFinIndResult.TabIndex = 110
@@ -1034,7 +1728,7 @@ Partial Class FinInd
         ' lblTotOperatingExpenseFinIndResult
         ' 
         lblTotOperatingExpenseFinIndResult.AutoSize = True
-        lblTotOperatingExpenseFinIndResult.Location = New Point(185, 87)
+        lblTotOperatingExpenseFinIndResult.Location = New Point(477, 81)
         lblTotOperatingExpenseFinIndResult.Name = "lblTotOperatingExpenseFinIndResult"
         lblTotOperatingExpenseFinIndResult.Size = New Size(39, 15)
         lblTotOperatingExpenseFinIndResult.TabIndex = 111
@@ -1042,7 +1736,7 @@ Partial Class FinInd
         ' 
         ' GroupBox3
         ' 
-        GroupBox3.BackColor = SystemColors.ActiveBorder
+        GroupBox3.BackColor = Color.LightGray
         GroupBox3.Controls.Add(Label4)
         GroupBox3.Controls.Add(Label5)
         GroupBox3.Controls.Add(Label6)
@@ -1055,7 +1749,7 @@ Partial Class FinInd
         GroupBox3.Controls.Add(lblLeaseCostResult)
         GroupBox3.Location = New Point(4, 108)
         GroupBox3.Name = "GroupBox3"
-        GroupBox3.Size = New Size(673, 153)
+        GroupBox3.Size = New Size(626, 153)
         GroupBox3.TabIndex = 277
         GroupBox3.TabStop = False
         GroupBox3.Text = "."
@@ -1110,16 +1804,17 @@ Partial Class FinInd
         ' lblEbitResult
         ' 
         lblEbitResult.AutoSize = True
+        lblEbitResult.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
         lblEbitResult.Location = New Point(476, 15)
         lblEbitResult.Name = "lblEbitResult"
-        lblEbitResult.Size = New Size(39, 15)
+        lblEbitResult.Size = New Size(42, 15)
         lblEbitResult.TabIndex = 104
         lblEbitResult.Text = "Result"
         ' 
         ' lblNetIncomeFinIndResult
         ' 
         lblNetIncomeFinIndResult.AutoSize = True
-        lblNetIncomeFinIndResult.Location = New Point(181, 47)
+        lblNetIncomeFinIndResult.Location = New Point(476, 42)
         lblNetIncomeFinIndResult.Name = "lblNetIncomeFinIndResult"
         lblNetIncomeFinIndResult.Size = New Size(39, 15)
         lblNetIncomeFinIndResult.TabIndex = 105
@@ -1128,7 +1823,7 @@ Partial Class FinInd
         ' lblInterestExpenseFinIndResult
         ' 
         lblInterestExpenseFinIndResult.AutoSize = True
-        lblInterestExpenseFinIndResult.Location = New Point(181, 74)
+        lblInterestExpenseFinIndResult.Location = New Point(476, 72)
         lblInterestExpenseFinIndResult.Name = "lblInterestExpenseFinIndResult"
         lblInterestExpenseFinIndResult.Size = New Size(39, 15)
         lblInterestExpenseFinIndResult.TabIndex = 106
@@ -1137,7 +1832,7 @@ Partial Class FinInd
         ' lblDepAmortExpenseResult
         ' 
         lblDepAmortExpenseResult.AutoSize = True
-        lblDepAmortExpenseResult.Location = New Point(237, 100)
+        lblDepAmortExpenseResult.Location = New Point(476, 99)
         lblDepAmortExpenseResult.Name = "lblDepAmortExpenseResult"
         lblDepAmortExpenseResult.Size = New Size(39, 15)
         lblDepAmortExpenseResult.TabIndex = 107
@@ -1146,281 +1841,11 @@ Partial Class FinInd
         ' lblLeaseCostResult
         ' 
         lblLeaseCostResult.AutoSize = True
-        lblLeaseCostResult.Location = New Point(181, 129)
+        lblLeaseCostResult.Location = New Point(476, 135)
         lblLeaseCostResult.Name = "lblLeaseCostResult"
         lblLeaseCostResult.Size = New Size(39, 15)
         lblLeaseCostResult.TabIndex = 108
         lblLeaseCostResult.Text = "Result"
-        ' 
-        ' lblLtdtnaResult
-        ' 
-        lblLtdtnaResult.AutoSize = True
-        lblLtdtnaResult.Location = New Point(213, 2057)
-        lblLtdtnaResult.Name = "lblLtdtnaResult"
-        lblLtdtnaResult.Size = New Size(39, 15)
-        lblLtdtnaResult.TabIndex = 264
-        lblLtdtnaResult.Text = "Result"
-        ' 
-        ' Label139
-        ' 
-        Label139.AutoSize = True
-        Label139.Location = New Point(281, 1884)
-        Label139.Name = "Label139"
-        Label139.Size = New Size(39, 15)
-        Label139.TabIndex = 261
-        Label139.Text = "Result"
-        ' 
-        ' lblInventoryResult2
-        ' 
-        lblInventoryResult2.AutoSize = True
-        lblInventoryResult2.Location = New Point(197, 1906)
-        lblInventoryResult2.Name = "lblInventoryResult2"
-        lblInventoryResult2.Size = New Size(39, 15)
-        lblInventoryResult2.TabIndex = 260
-        lblInventoryResult2.Text = "Result"
-        ' 
-        ' lblTotAssetsResult3
-        ' 
-        lblTotAssetsResult3.AutoSize = True
-        lblTotAssetsResult3.Location = New Point(191, 2025)
-        lblTotAssetsResult3.Name = "lblTotAssetsResult3"
-        lblTotAssetsResult3.Size = New Size(39, 15)
-        lblTotAssetsResult3.TabIndex = 263
-        lblTotAssetsResult3.Text = "Result"
-        ' 
-        ' Label146
-        ' 
-        Label146.AutoSize = True
-        Label146.Location = New Point(270, 2000)
-        Label146.Name = "Label146"
-        Label146.Size = New Size(39, 15)
-        Label146.TabIndex = 262
-        Label146.Text = "Result"
-        ' 
-        ' Label141
-        ' 
-        Label141.AutoSize = True
-        Label141.Location = New Point(191, 1950)
-        Label141.Name = "Label141"
-        Label141.Size = New Size(39, 15)
-        Label141.TabIndex = 259
-        Label141.Text = "Result"
-        ' 
-        ' lblNotesReceivableRes
-        ' 
-        lblNotesReceivableRes.AutoSize = True
-        lblNotesReceivableRes.Location = New Point(201, 1612)
-        lblNotesReceivableRes.Name = "lblNotesReceivableRes"
-        lblNotesReceivableRes.Size = New Size(39, 15)
-        lblNotesReceivableRes.TabIndex = 248
-        lblNotesReceivableRes.Text = "Result"
-        ' 
-        ' Label129
-        ' 
-        Label129.AutoSize = True
-        Label129.Location = New Point(201, 1638)
-        Label129.Name = "Label129"
-        Label129.Size = New Size(39, 15)
-        Label129.TabIndex = 247
-        Label129.Text = "Result"
-        ' 
-        ' lblTotOperatingRevResult5
-        ' 
-        lblTotOperatingRevResult5.AutoSize = True
-        lblTotOperatingRevResult5.Location = New Point(270, 1976)
-        lblTotOperatingRevResult5.Name = "lblTotOperatingRevResult5"
-        lblTotOperatingRevResult5.Size = New Size(39, 15)
-        lblTotOperatingRevResult5.TabIndex = 258
-        lblTotOperatingRevResult5.Text = "Result"
-        ' 
-        ' lblOtherExpenseResultFindInd
-        ' 
-        lblOtherExpenseResultFindInd.AutoSize = True
-        lblOtherExpenseResultFindInd.Location = New Point(201, 1790)
-        lblOtherExpenseResultFindInd.Name = "lblOtherExpenseResultFindInd"
-        lblOtherExpenseResultFindInd.Size = New Size(39, 15)
-        lblOtherExpenseResultFindInd.TabIndex = 257
-        lblOtherExpenseResultFindInd.Text = "Result"
-        ' 
-        ' lblDepreciationExpenseResultFinInd3
-        ' 
-        lblDepreciationExpenseResultFinInd3.AutoSize = True
-        lblDepreciationExpenseResultFinInd3.Location = New Point(202, 1810)
-        lblDepreciationExpenseResultFinInd3.Name = "lblDepreciationExpenseResultFinInd3"
-        lblDepreciationExpenseResultFinInd3.Size = New Size(39, 15)
-        lblDepreciationExpenseResultFinInd3.TabIndex = 256
-        lblDepreciationExpenseResultFinInd3.Text = "Result"
-        ' 
-        ' Label137
-        ' 
-        Label137.AutoSize = True
-        Label137.Location = New Point(202, 1835)
-        Label137.Name = "Label137"
-        Label137.Size = New Size(39, 15)
-        Label137.TabIndex = 255
-        Label137.Text = "Result"
-        ' 
-        ' lblTotOperatingRevResult4
-        ' 
-        lblTotOperatingRevResult4.AutoSize = True
-        lblTotOperatingRevResult4.Location = New Point(281, 1860)
-        lblTotOperatingRevResult4.Name = "lblTotOperatingRevResult4"
-        lblTotOperatingRevResult4.Size = New Size(39, 15)
-        lblTotOperatingRevResult4.TabIndex = 254
-        lblTotOperatingRevResult4.Text = "Result"
-        ' 
-        ' lblTotOperatingExpenseFinInd5
-        ' 
-        lblTotOperatingExpenseFinInd5.AutoSize = True
-        lblTotOperatingExpenseFinInd5.Location = New Point(201, 1766)
-        lblTotOperatingExpenseFinInd5.Name = "lblTotOperatingExpenseFinInd5"
-        lblTotOperatingExpenseFinInd5.Size = New Size(39, 15)
-        lblTotOperatingExpenseFinInd5.TabIndex = 253
-        lblTotOperatingExpenseFinInd5.Text = "Result"
-        ' 
-        ' lblTotCurrentLiabilitesResult3
-        ' 
-        lblTotCurrentLiabilitesResult3.AutoSize = True
-        lblTotCurrentLiabilitesResult3.Location = New Point(201, 1741)
-        lblTotCurrentLiabilitesResult3.Name = "lblTotCurrentLiabilitesResult3"
-        lblTotCurrentLiabilitesResult3.Size = New Size(39, 15)
-        lblTotCurrentLiabilitesResult3.TabIndex = 252
-        lblTotCurrentLiabilitesResult3.Text = "Result"
-        ' 
-        ' Label133
-        ' 
-        Label133.AutoSize = True
-        Label133.Location = New Point(201, 1717)
-        Label133.Name = "Label133"
-        Label133.Size = New Size(39, 15)
-        Label133.TabIndex = 251
-        Label133.Text = "Result"
-        ' 
-        ' Label134
-        ' 
-        Label134.AutoSize = True
-        Label134.Location = New Point(280, 1689)
-        Label134.Name = "Label134"
-        Label134.Size = New Size(39, 15)
-        Label134.TabIndex = 250
-        Label134.Text = "Result"
-        ' 
-        ' lblAccountsRecievableResult2
-        ' 
-        lblAccountsRecievableResult2.AutoSize = True
-        lblAccountsRecievableResult2.Location = New Point(201, 1590)
-        lblAccountsRecievableResult2.Name = "lblAccountsRecievableResult2"
-        lblAccountsRecievableResult2.Size = New Size(39, 15)
-        lblAccountsRecievableResult2.TabIndex = 249
-        lblAccountsRecievableResult2.Text = "Result"
-        ' 
-        ' lblAllowforUncollectRes
-        ' 
-        lblAllowforUncollectRes.AutoSize = True
-        lblAllowforUncollectRes.Location = New Point(201, 1663)
-        lblAllowforUncollectRes.Name = "lblAllowforUncollectRes"
-        lblAllowforUncollectRes.Size = New Size(39, 15)
-        lblAllowforUncollectRes.TabIndex = 246
-        lblAllowforUncollectRes.Text = "Result"
-        ' 
-        ' Label123
-        ' 
-        Label123.AutoSize = True
-        Label123.Location = New Point(201, 1562)
-        Label123.Name = "Label123"
-        Label123.Size = New Size(39, 15)
-        Label123.TabIndex = 245
-        Label123.Text = "Result"
-        ' 
-        ' lblTotOperatingRevResult6
-        ' 
-        lblTotOperatingRevResult6.AutoSize = True
-        lblTotOperatingRevResult6.Location = New Point(264, 1535)
-        lblTotOperatingRevResult6.Name = "lblTotOperatingRevResult6"
-        lblTotOperatingRevResult6.Size = New Size(39, 15)
-        lblTotOperatingRevResult6.TabIndex = 244
-        lblTotOperatingRevResult6.Text = "Result"
-        ' 
-        ' lblAllowforUncollectRes2
-        ' 
-        lblAllowforUncollectRes2.AutoSize = True
-        lblAllowforUncollectRes2.Location = New Point(257, 1508)
-        lblAllowforUncollectRes2.Name = "lblAllowforUncollectRes2"
-        lblAllowforUncollectRes2.Size = New Size(39, 15)
-        lblAllowforUncollectRes2.TabIndex = 243
-        lblAllowforUncollectRes2.Text = "Result"
-        ' 
-        ' lblAccountsRecievableResult
-        ' 
-        lblAccountsRecievableResult.AutoSize = True
-        lblAccountsRecievableResult.Location = New Point(257, 1484)
-        lblAccountsRecievableResult.Name = "lblAccountsRecievableResult"
-        lblAccountsRecievableResult.Size = New Size(39, 15)
-        lblAccountsRecievableResult.TabIndex = 242
-        lblAccountsRecievableResult.Text = "Result"
-        ' 
-        ' lblInvestmentsResultFinInd
-        ' 
-        lblInvestmentsResultFinInd.AutoSize = True
-        lblInvestmentsResultFinInd.Location = New Point(163, 1375)
-        lblInvestmentsResultFinInd.Name = "lblInvestmentsResultFinInd"
-        lblInvestmentsResultFinInd.Size = New Size(39, 15)
-        lblInvestmentsResultFinInd.TabIndex = 241
-        lblInvestmentsResultFinInd.Text = "Result"
-        ' 
-        ' lblTotOperatingExpenseFinInd4
-        ' 
-        lblTotOperatingExpenseFinInd4.AutoSize = True
-        lblTotOperatingExpenseFinInd4.Location = New Point(163, 1399)
-        lblTotOperatingExpenseFinInd4.Name = "lblTotOperatingExpenseFinInd4"
-        lblTotOperatingExpenseFinInd4.Size = New Size(39, 15)
-        lblTotOperatingExpenseFinInd4.TabIndex = 240
-        lblTotOperatingExpenseFinInd4.Text = "Result"
-        ' 
-        ' lblDepreciationExpenseResultFinInd2
-        ' 
-        lblDepreciationExpenseResultFinInd2.AutoSize = True
-        lblDepreciationExpenseResultFinInd2.Location = New Point(163, 1428)
-        lblDepreciationExpenseResultFinInd2.Name = "lblDepreciationExpenseResultFinInd2"
-        lblDepreciationExpenseResultFinInd2.Size = New Size(39, 15)
-        lblDepreciationExpenseResultFinInd2.TabIndex = 239
-        lblDepreciationExpenseResultFinInd2.Text = "Result"
-        ' 
-        ' Label122
-        ' 
-        Label122.AutoSize = True
-        Label122.Location = New Point(257, 1454)
-        Label122.Name = "Label122"
-        Label122.Size = New Size(39, 15)
-        Label122.TabIndex = 238
-        Label122.Text = "Result"
-        ' 
-        ' lblMarketSecuritiesResult2
-        ' 
-        lblMarketSecuritiesResult2.AutoSize = True
-        lblMarketSecuritiesResult2.Location = New Point(163, 1348)
-        lblMarketSecuritiesResult2.Name = "lblMarketSecuritiesResult2"
-        lblMarketSecuritiesResult2.Size = New Size(39, 15)
-        lblMarketSecuritiesResult2.TabIndex = 237
-        lblMarketSecuritiesResult2.Text = "Result"
-        ' 
-        ' lblCashonHandResult
-        ' 
-        lblCashonHandResult.AutoSize = True
-        lblCashonHandResult.Location = New Point(163, 1322)
-        lblCashonHandResult.Name = "lblCashonHandResult"
-        lblCashonHandResult.Size = New Size(39, 15)
-        lblCashonHandResult.TabIndex = 236
-        lblCashonHandResult.Text = "Result"
-        ' 
-        ' Label118
-        ' 
-        Label118.AutoSize = True
-        Label118.Location = New Point(201, 1293)
-        Label118.Name = "Label118"
-        Label118.Size = New Size(39, 15)
-        Label118.TabIndex = 235
-        Label118.Text = "Result"
         ' 
         ' btnOutpatientFinInd
         ' 
@@ -1442,7 +1867,7 @@ Partial Class FinInd
         GroupBox2.Controls.Add(Label80)
         GroupBox2.Location = New Point(4, 0)
         GroupBox2.Name = "GroupBox2"
-        GroupBox2.Size = New Size(627, 99)
+        GroupBox2.Size = New Size(626, 99)
         GroupBox2.TabIndex = 276
         GroupBox2.TabStop = False
         GroupBox2.Text = "."
@@ -1477,7 +1902,7 @@ Partial Class FinInd
         ' lblPedFinIndResult
         ' 
         lblPedFinIndResult.AutoSize = True
-        lblPedFinIndResult.Location = New Point(181, 18)
+        lblPedFinIndResult.Location = New Point(477, 11)
         lblPedFinIndResult.Name = "lblPedFinIndResult"
         lblPedFinIndResult.Size = New Size(39, 15)
         lblPedFinIndResult.TabIndex = 101
@@ -1486,7 +1911,7 @@ Partial Class FinInd
         ' lblNumMonthsFinIndResult
         ' 
         lblNumMonthsFinIndResult.AutoSize = True
-        lblNumMonthsFinIndResult.Location = New Point(182, 45)
+        lblNumMonthsFinIndResult.Location = New Point(477, 45)
         lblNumMonthsFinIndResult.Name = "lblNumMonthsFinIndResult"
         lblNumMonthsFinIndResult.Size = New Size(39, 15)
         lblNumMonthsFinIndResult.TabIndex = 102
@@ -1495,371 +1920,11 @@ Partial Class FinInd
         ' Label80
         ' 
         Label80.AutoSize = True
-        Label80.Location = New Point(181, 75)
+        Label80.Location = New Point(477, 81)
         Label80.Name = "Label80"
         Label80.Size = New Size(39, 15)
         Label80.TabIndex = 103
         Label80.Text = "Result"
-        ' 
-        ' Label77
-        ' 
-        Label77.AutoSize = True
-        Label77.Location = New Point(4, 2308)
-        Label77.Name = "Label77"
-        Label77.Size = New Size(119, 15)
-        Label77.TabIndex = 234
-        Label77.Text = "Depreciation Expense"
-        ' 
-        ' Label76
-        ' 
-        Label76.AutoSize = True
-        Label76.Location = New Point(3, 2277)
-        Label76.Name = "Label76"
-        Label76.Size = New Size(148, 15)
-        Label76.TabIndex = 233
-        Label76.Text = "Accumulated Depreciation"
-        ' 
-        ' Label75
-        ' 
-        Label75.AutoSize = True
-        Label75.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
-        Label75.Location = New Point(4, 2248)
-        Label75.Name = "Label75"
-        Label75.Size = New Size(125, 15)
-        Label75.TabIndex = 232
-        Label75.Text = "Average Age of Plant"
-        ' 
-        ' Label74
-        ' 
-        Label74.AutoSize = True
-        Label74.Location = New Point(4, 2195)
-        Label74.Name = "Label74"
-        Label74.Size = New Size(69, 15)
-        Label74.TabIndex = 230
-        Label74.Text = "Total Assets"
-        ' 
-        ' Label72
-        ' 
-        Label72.AutoSize = True
-        Label72.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
-        Label72.Location = New Point(4, 2167)
-        Label72.Name = "Label72"
-        Label72.Size = New Size(142, 15)
-        Label72.TabIndex = 229
-        Label72.Text = "Total Debt to Net Assets"
-        ' 
-        ' Label71
-        ' 
-        Label71.AutoSize = True
-        Label71.Location = New Point(4, 2086)
-        Label71.Name = "Label71"
-        Label71.Size = New Size(145, 15)
-        Label71.TabIndex = 228
-        Label71.Text = "Total Long Term Liabilities"
-        ' 
-        ' Label70
-        ' 
-        Label70.AutoSize = True
-        Label70.Location = New Point(4, 2138)
-        Label70.Name = "Label70"
-        Label70.Size = New Size(85, 15)
-        Label70.TabIndex = 227
-        Label70.Text = "Total Liabilities"
-        ' 
-        ' Label69
-        ' 
-        Label69.AutoSize = True
-        Label69.Location = New Point(4, 2112)
-        Label69.Name = "Label69"
-        Label69.Size = New Size(69, 15)
-        Label69.TabIndex = 226
-        Label69.Text = "Total Assets"
-        ' 
-        ' Label67
-        ' 
-        Label67.AutoSize = True
-        Label67.Location = New Point(5, 1976)
-        Label67.Name = "Label67"
-        Label67.Size = New Size(249, 15)
-        Label67.TabIndex = 222
-        Label67.Text = "Total Operating Revenue(net-patient revenue)"
-        ' 
-        ' Label73
-        ' 
-        Label73.AutoSize = True
-        Label73.Location = New Point(4, 2221)
-        Label73.Name = "Label73"
-        Label73.Size = New Size(85, 15)
-        Label73.TabIndex = 231
-        Label73.Text = "Total Liabilities"
-        ' 
-        ' Label68
-        ' 
-        Label68.AutoSize = True
-        Label68.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
-        Label68.Location = New Point(4, 2057)
-        Label68.Name = "Label68"
-        Label68.Size = New Size(174, 15)
-        Label68.TabIndex = 225
-        Label68.Text = "Long Term Debt to Net Assets"
-        ' 
-        ' Label65
-        ' 
-        Label65.AutoSize = True
-        Label65.Location = New Point(3, 2025)
-        Label65.Name = "Label65"
-        Label65.Size = New Size(69, 15)
-        Label65.TabIndex = 224
-        Label65.Text = "Total Assets"
-        ' 
-        ' Label64
-        ' 
-        Label64.AutoSize = True
-        Label64.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
-        Label64.Location = New Point(2, 1950)
-        Label64.Name = "Label64"
-        Label64.Size = New Size(121, 15)
-        Label64.TabIndex = 221
-        Label64.Text = "Total Asset Turnover"
-        ' 
-        ' Label63
-        ' 
-        Label63.AutoSize = True
-        Label63.Location = New Point(6, 1906)
-        Label63.Name = "Label63"
-        Label63.Size = New Size(57, 15)
-        Label63.TabIndex = 220
-        Label63.Text = "Inventory"
-        ' 
-        ' Label62
-        ' 
-        Label62.AutoSize = True
-        Label62.Location = New Point(11, 1884)
-        Label62.Name = "Label62"
-        Label62.Size = New Size(255, 15)
-        Label62.TabIndex = 219
-        Label62.Text = "Non-Operating Revenue (non-patient revenue)"
-        ' 
-        ' Label61
-        ' 
-        Label61.AutoSize = True
-        Label61.Location = New Point(13, 1860)
-        Label61.Name = "Label61"
-        Label61.Size = New Size(249, 15)
-        Label61.TabIndex = 218
-        Label61.Text = "Total Operating Revenue(net-patient revenue)"
-        ' 
-        ' Label60
-        ' 
-        Label60.AutoSize = True
-        Label60.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
-        Label60.Location = New Point(13, 1835)
-        Label60.Name = "Label60"
-        Label60.Size = New Size(116, 15)
-        Label60.TabIndex = 217
-        Label60.Text = "Inventory Turnover"
-        ' 
-        ' Label59
-        ' 
-        Label59.AutoSize = True
-        Label59.Location = New Point(13, 1810)
-        Label59.Name = "Label59"
-        Label59.Size = New Size(119, 15)
-        Label59.TabIndex = 216
-        Label59.Text = "Depreciation Expense"
-        ' 
-        ' Label58
-        ' 
-        Label58.AutoSize = True
-        Label58.Location = New Point(12, 1790)
-        Label58.Name = "Label58"
-        Label58.Size = New Size(111, 15)
-        Label58.TabIndex = 215
-        Label58.Text = "Total Other Expense"
-        ' 
-        ' Label57
-        ' 
-        Label57.AutoSize = True
-        Label57.Location = New Point(12, 1766)
-        Label57.Name = "Label57"
-        Label57.Size = New Size(134, 15)
-        Label57.TabIndex = 214
-        Label57.Text = "Total Operating Expense"
-        ' 
-        ' Label66
-        ' 
-        Label66.AutoSize = True
-        Label66.Location = New Point(3, 2000)
-        Label66.Name = "Label66"
-        Label66.Size = New Size(255, 15)
-        Label66.TabIndex = 223
-        Label66.Text = "Non-Operating Revenue (non-patient revenue)"
-        ' 
-        ' Label56
-        ' 
-        Label56.AutoSize = True
-        Label56.Location = New Point(10, 1741)
-        Label56.Name = "Label56"
-        Label56.Size = New Size(128, 15)
-        Label56.TabIndex = 213
-        Label56.Text = "Total Current Liabilities"
-        ' 
-        ' Label55
-        ' 
-        Label55.AutoSize = True
-        Label55.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
-        Label55.Location = New Point(9, 1717)
-        Label55.Name = "Label55"
-        Label55.Size = New Size(180, 15)
-        Label55.TabIndex = 212
-        Label55.Text = "Average Payment Period (days)"
-        ' 
-        ' Label54
-        ' 
-        Label54.AutoSize = True
-        Label54.Location = New Point(9, 1638)
-        Label54.Name = "Label54"
-        Label54.Size = New Size(101, 15)
-        Label54.TabIndex = 211
-        Label54.Text = "Other Recievables"
-        ' 
-        ' Label53
-        ' 
-        Label53.AutoSize = True
-        Label53.Location = New Point(9, 1612)
-        Label53.Name = "Label53"
-        Label53.Size = New Size(97, 15)
-        Label53.TabIndex = 210
-        Label53.Text = "Notes Recievable"
-        ' 
-        ' Label50
-        ' 
-        Label50.AutoSize = True
-        Label50.Location = New Point(9, 1689)
-        Label50.Name = "Label50"
-        Label50.Size = New Size(253, 15)
-        Label50.TabIndex = 209
-        Label50.Text = "Total Operating Revenue(non-patient revenue)"
-        ' 
-        ' Label51
-        ' 
-        Label51.AutoSize = True
-        Label51.Location = New Point(9, 1663)
-        Label51.Name = "Label51"
-        Label51.Size = New Size(157, 15)
-        Label51.TabIndex = 208
-        Label51.Text = "Allowances for Uncollectible"
-        ' 
-        ' Label52
-        ' 
-        Label52.AutoSize = True
-        Label52.Location = New Point(9, 1587)
-        Label52.Name = "Label52"
-        Label52.Size = New Size(116, 15)
-        Label52.TabIndex = 207
-        Label52.Text = "Accounts Recievable"
-        ' 
-        ' Label49
-        ' 
-        Label49.AutoSize = True
-        Label49.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
-        Label49.Location = New Point(9, 1562)
-        Label49.Name = "Label49"
-        Label49.Size = New Size(164, 15)
-        Label49.TabIndex = 206
-        Label49.Text = "Days in Net Total Recievable"
-        ' 
-        ' Label47
-        ' 
-        Label47.AutoSize = True
-        Label47.Location = New Point(9, 1535)
-        Label47.Name = "Label47"
-        Label47.Size = New Size(249, 15)
-        Label47.TabIndex = 205
-        Label47.Text = "Total Operating Revenue(net-patient revenue)"
-        ' 
-        ' Label46
-        ' 
-        Label46.AutoSize = True
-        Label46.Location = New Point(9, 1510)
-        Label46.Name = "Label46"
-        Label46.Size = New Size(157, 15)
-        Label46.TabIndex = 204
-        Label46.Text = "Allowances for Uncollectible"
-        ' 
-        ' Label48
-        ' 
-        Label48.AutoSize = True
-        Label48.Location = New Point(12, 1484)
-        Label48.Name = "Label48"
-        Label48.Size = New Size(116, 15)
-        Label48.TabIndex = 203
-        Label48.Text = "Accounts Recievable"
-        ' 
-        ' Label39
-        ' 
-        Label39.AutoSize = True
-        Label39.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
-        Label39.Location = New Point(9, 1454)
-        Label39.Name = "Label39"
-        Label39.Size = New Size(231, 15)
-        Label39.TabIndex = 202
-        Label39.Text = "Days in Net Patient Accounts Recievable"
-        ' 
-        ' Label43
-        ' 
-        Label43.AutoSize = True
-        Label43.Location = New Point(9, 1430)
-        Label43.Name = "Label43"
-        Label43.Size = New Size(119, 15)
-        Label43.TabIndex = 201
-        Label43.Text = "Depreciation Expense"
-        ' 
-        ' Label44
-        ' 
-        Label44.AutoSize = True
-        Label44.Location = New Point(9, 1402)
-        Label44.Name = "Label44"
-        Label44.Size = New Size(134, 15)
-        Label44.TabIndex = 200
-        Label44.Text = "Total Operating Expense"
-        ' 
-        ' Label45
-        ' 
-        Label45.AutoSize = True
-        Label45.Location = New Point(9, 1348)
-        Label45.Name = "Label45"
-        Label45.Size = New Size(97, 15)
-        Label45.TabIndex = 199
-        Label45.Text = "Market Securities"
-        ' 
-        ' Label42
-        ' 
-        Label42.AutoSize = True
-        Label42.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
-        Label42.Location = New Point(9, 1293)
-        Label42.Name = "Label42"
-        Label42.Size = New Size(184, 15)
-        Label42.TabIndex = 198
-        Label42.Text = "Days Cash On Hand - All Sources"
-        ' 
-        ' Label40
-        ' 
-        Label40.AutoSize = True
-        Label40.Location = New Point(9, 1375)
-        Label40.Name = "Label40"
-        Label40.Size = New Size(71, 15)
-        Label40.TabIndex = 197
-        Label40.Text = "Investments"
-        ' 
-        ' Label38
-        ' 
-        Label38.AutoSize = True
-        Label38.Location = New Point(9, 1322)
-        Label38.Name = "Label38"
-        Label38.Size = New Size(82, 15)
-        Label38.TabIndex = 196
-        Label38.Text = "Cash on Hand"
         ' 
         ' btnInpatientFinInd
         ' 
@@ -1909,6 +1974,62 @@ Partial Class FinInd
         btnProfileFinInd.TabIndex = 190
         btnProfileFinInd.Text = "Profile"
         btnProfileFinInd.UseVisualStyleBackColor = False
+        ' 
+        ' lblTotLiabilitiesResult3
+        ' 
+        lblTotLiabilitiesResult3.AutoSize = True
+        lblTotLiabilitiesResult3.Location = New Point(481, 75)
+        lblTotLiabilitiesResult3.Name = "lblTotLiabilitiesResult3"
+        lblTotLiabilitiesResult3.Size = New Size(39, 15)
+        lblTotLiabilitiesResult3.TabIndex = 270
+        lblTotLiabilitiesResult3.Text = "Result"
+        ' 
+        ' lblTotAssetsResult5
+        ' 
+        lblTotAssetsResult5.AutoSize = True
+        lblTotAssetsResult5.Location = New Point(481, 47)
+        lblTotAssetsResult5.Name = "lblTotAssetsResult5"
+        lblTotAssetsResult5.Size = New Size(39, 15)
+        lblTotAssetsResult5.TabIndex = 269
+        lblTotAssetsResult5.Text = "Result"
+        ' 
+        ' lblTdtna
+        ' 
+        lblTdtna.AutoSize = True
+        lblTdtna.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        lblTdtna.Location = New Point(482, 19)
+        lblTdtna.Name = "lblTdtna"
+        lblTdtna.Size = New Size(42, 15)
+        lblTdtna.TabIndex = 268
+        lblTdtna.Text = "Result"
+        ' 
+        ' Label74
+        ' 
+        Label74.AutoSize = True
+        Label74.Location = New Point(5, 47)
+        Label74.Name = "Label74"
+        Label74.Size = New Size(69, 15)
+        Label74.TabIndex = 230
+        Label74.Text = "Total Assets"
+        ' 
+        ' Label72
+        ' 
+        Label72.AutoSize = True
+        Label72.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        Label72.Location = New Point(5, 19)
+        Label72.Name = "Label72"
+        Label72.Size = New Size(142, 15)
+        Label72.TabIndex = 229
+        Label72.Text = "Total Debt to Net Assets"
+        ' 
+        ' Label73
+        ' 
+        Label73.AutoSize = True
+        Label73.Location = New Point(5, 73)
+        Label73.Name = "Label73"
+        Label73.Size = New Size(85, 15)
+        Label73.TabIndex = 231
+        Label73.Text = "Total Liabilities"
         ' 
         ' GroupBox9
         ' 
@@ -1981,6 +2102,70 @@ Partial Class FinInd
         lblTotCurrentAssetsResult.TabIndex = 129
         lblTotCurrentAssetsResult.Text = "Result"
         ' 
+        ' GroupBox18
+        ' 
+        GroupBox18.Controls.Add(lblTotLiabilitiesResult3)
+        GroupBox18.Controls.Add(Label73)
+        GroupBox18.Controls.Add(Label72)
+        GroupBox18.Controls.Add(Label74)
+        GroupBox18.Controls.Add(lblTdtna)
+        GroupBox18.Controls.Add(lblTotAssetsResult5)
+        GroupBox18.Location = New Point(5, 2210)
+        GroupBox18.Name = "GroupBox18"
+        GroupBox18.Size = New Size(631, 93)
+        GroupBox18.TabIndex = 292
+        GroupBox18.TabStop = False
+        GroupBox18.Text = "."
+        ' 
+        ' GroupBox20
+        ' 
+        GroupBox20.Controls.Add(lblTotCurrentLiabilities10)
+        GroupBox20.Controls.Add(lblTotCurrentAssets10)
+        GroupBox20.Controls.Add(Label82)
+        GroupBox20.Controls.Add(Label79)
+        GroupBox20.Location = New Point(0, 909)
+        GroupBox20.Name = "GroupBox20"
+        GroupBox20.Size = New Size(630, 110)
+        GroupBox20.TabIndex = 293
+        GroupBox20.TabStop = False
+        GroupBox20.Text = "."
+        ' 
+        ' Label79
+        ' 
+        Label79.AutoSize = True
+        Label79.Location = New Point(5, 19)
+        Label79.Name = "Label79"
+        Label79.Size = New Size(112, 15)
+        Label79.TabIndex = 294
+        Label79.Text = "Total Current Assets"
+        ' 
+        ' Label82
+        ' 
+        Label82.AutoSize = True
+        Label82.Location = New Point(4, 51)
+        Label82.Name = "Label82"
+        Label82.Size = New Size(128, 15)
+        Label82.TabIndex = 295
+        Label82.Text = "Total Current Liabilities"
+        ' 
+        ' lblTotCurrentAssets10
+        ' 
+        lblTotCurrentAssets10.AutoSize = True
+        lblTotCurrentAssets10.Location = New Point(480, 19)
+        lblTotCurrentAssets10.Name = "lblTotCurrentAssets10"
+        lblTotCurrentAssets10.Size = New Size(39, 15)
+        lblTotCurrentAssets10.TabIndex = 296
+        lblTotCurrentAssets10.Text = "Result"
+        ' 
+        ' lblTotCurrentLiabilities10
+        ' 
+        lblTotCurrentLiabilities10.AutoSize = True
+        lblTotCurrentLiabilities10.Location = New Point(480, 51)
+        lblTotCurrentLiabilities10.Name = "lblTotCurrentLiabilities10"
+        lblTotCurrentLiabilities10.Size = New Size(39, 15)
+        lblTotCurrentLiabilities10.TabIndex = 297
+        lblTotCurrentLiabilities10.Text = "Result"
+        ' 
         ' FinInd
         ' 
         AutoScaleDimensions = New SizeF(7.0F, 15.0F)
@@ -1988,13 +2173,29 @@ Partial Class FinInd
         AutoScroll = True
         BackColor = SystemColors.Control
         ClientSize = New Size(1207, 1061)
+        Controls.Add(GroupBox18)
         Controls.Add(Panel1)
         MinimumSize = New Size(1000, 1030)
         Name = "FinInd"
         StartPosition = FormStartPosition.CenterScreen
         Text = "FinInd"
         Panel1.ResumeLayout(False)
-        Panel1.PerformLayout()
+        GroupBox19.ResumeLayout(False)
+        GroupBox19.PerformLayout()
+        GroupBox17.ResumeLayout(False)
+        GroupBox17.PerformLayout()
+        GroupBox16.ResumeLayout(False)
+        GroupBox16.PerformLayout()
+        GroupBox15.ResumeLayout(False)
+        GroupBox15.PerformLayout()
+        GroupBox14.ResumeLayout(False)
+        GroupBox14.PerformLayout()
+        GroupBox13.ResumeLayout(False)
+        GroupBox13.PerformLayout()
+        GroupBox12.ResumeLayout(False)
+        GroupBox12.PerformLayout()
+        GroupBox11.ResumeLayout(False)
+        GroupBox11.PerformLayout()
         GroupBox1.ResumeLayout(False)
         GroupBox1.PerformLayout()
         GroupBox10.ResumeLayout(False)
@@ -2015,6 +2216,10 @@ Partial Class FinInd
         GroupBox2.PerformLayout()
         GroupBox9.ResumeLayout(False)
         GroupBox9.PerformLayout()
+        GroupBox18.ResumeLayout(False)
+        GroupBox18.PerformLayout()
+        GroupBox20.ResumeLayout(False)
+        GroupBox20.PerformLayout()
         ResumeLayout(False)
     End Sub
     Friend WithEvents Label81 As Label
@@ -2196,4 +2401,18 @@ Partial Class FinInd
     Friend WithEvents ToolTip4 As ToolTip
     Friend WithEvents ToolTip2 As ToolTip
     Friend WithEvents ToolTip3 As ToolTip
+    Friend WithEvents GroupBox13 As GroupBox
+    Friend WithEvents GroupBox12 As GroupBox
+    Friend WithEvents GroupBox11 As GroupBox
+    Friend WithEvents GroupBox17 As GroupBox
+    Friend WithEvents GroupBox16 As GroupBox
+    Friend WithEvents GroupBox15 As GroupBox
+    Friend WithEvents GroupBox14 As GroupBox
+    Friend WithEvents GroupBox18 As GroupBox
+    Friend WithEvents GroupBox19 As GroupBox
+    Friend WithEvents GroupBox20 As GroupBox
+    Friend WithEvents lblTotCurrentLiabilities10 As Label
+    Friend WithEvents lblTotCurrentAssets10 As Label
+    Friend WithEvents Label82 As Label
+    Friend WithEvents Label79 As Label
 End Class

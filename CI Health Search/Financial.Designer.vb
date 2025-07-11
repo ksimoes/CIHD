@@ -94,9 +94,11 @@ Partial Class Financial
         btnDepartmentsFinancial = New Button()
         btnProfileFinancial = New Button()
         Button1 = New Button()
+        Panel1 = New Panel()
         GroupBox1.SuspendLayout()
         gbIncomeStatement.SuspendLayout()
         gbUncompensatedCare.SuspendLayout()
+        Panel1.SuspendLayout()
         SuspendLayout()
         ' 
         ' GroupBox1
@@ -121,50 +123,49 @@ Partial Class Financial
         GroupBox1.Controls.Add(Label7)
         GroupBox1.Controls.Add(Label6)
         GroupBox1.Controls.Add(Label5)
-        GroupBox1.Controls.Add(lblPedResult)
-        GroupBox1.Controls.Add(lblNumMonthsPeriodResult)
-        GroupBox1.Controls.Add(lblNumMonthsFin)
-        GroupBox1.Controls.Add(lbligr)
-        GroupBox1.Location = New Point(12, 12)
+        GroupBox1.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
+        GroupBox1.Location = New Point(11, 63)
         GroupBox1.Name = "GroupBox1"
-        GroupBox1.Size = New Size(646, 360)
+        GroupBox1.Size = New Size(570, 321)
         GroupBox1.TabIndex = 0
         GroupBox1.TabStop = False
-        GroupBox1.Text = "GroupBox1"
+        GroupBox1.Text = "Balance Sheet"
         ' 
         ' Label19
         ' 
         Label19.AutoSize = True
-        Label19.Font = New Font("Segoe UI", 10F, FontStyle.Bold)
-        Label19.Location = New Point(0, 191)
+        Label19.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
+        Label19.Location = New Point(13, 151)
         Label19.Name = "Label19"
-        Label19.Size = New Size(199, 19)
+        Label19.Size = New Size(162, 15)
         Label19.TabIndex = 21
         Label19.Text = "Liabilities and Fund Balances"
         ' 
         ' Label18
         ' 
         Label18.AutoSize = True
-        Label18.Font = New Font("Segoe UI", 12F, FontStyle.Bold)
-        Label18.Location = New Point(6, 62)
+        Label18.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
+        Label18.Location = New Point(12, 22)
         Label18.Name = "Label18"
-        Label18.Size = New Size(57, 21)
+        Label18.Size = New Size(42, 15)
         Label18.TabIndex = 20
         Label18.Text = "Assets"
         ' 
         ' lblTlResult
         ' 
         lblTlResult.AutoSize = True
-        lblTlResult.Location = New Point(219, 275)
+        lblTlResult.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
+        lblTlResult.Location = New Point(314, 235)
         lblTlResult.Name = "lblTlResult"
-        lblTlResult.Size = New Size(39, 15)
+        lblTlResult.Size = New Size(42, 15)
         lblTlResult.TabIndex = 19
         lblTlResult.Text = "Result"
         ' 
         ' lblCurLiabilitiesRes
         ' 
         lblCurLiabilitiesRes.AutoSize = True
-        lblCurLiabilitiesRes.Location = New Point(219, 221)
+        lblCurLiabilitiesRes.Font = New Font("Segoe UI", 9F)
+        lblCurLiabilitiesRes.Location = New Point(314, 181)
         lblCurLiabilitiesRes.Name = "lblCurLiabilitiesRes"
         lblCurLiabilitiesRes.Size = New Size(39, 15)
         lblCurLiabilitiesRes.TabIndex = 18
@@ -173,7 +174,8 @@ Partial Class Financial
         ' lblTotFbResult
         ' 
         lblTotFbResult.AutoSize = True
-        lblTotFbResult.Location = New Point(219, 304)
+        lblTotFbResult.Font = New Font("Segoe UI", 9F)
+        lblTotFbResult.Location = New Point(314, 264)
         lblTotFbResult.Name = "lblTotFbResult"
         lblTotFbResult.Size = New Size(39, 15)
         lblTotFbResult.TabIndex = 17
@@ -182,7 +184,8 @@ Partial Class Financial
         ' lblLtResult
         ' 
         lblLtResult.AutoSize = True
-        lblLtResult.Location = New Point(219, 248)
+        lblLtResult.Font = New Font("Segoe UI", 9F)
+        lblLtResult.Location = New Point(314, 208)
         lblLtResult.Name = "lblLtResult"
         lblLtResult.Size = New Size(39, 15)
         lblLtResult.TabIndex = 17
@@ -192,7 +195,7 @@ Partial Class Financial
         ' 
         Label9.AutoSize = True
         Label9.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
-        Label9.Location = New Point(6, 331)
+        Label9.Location = New Point(12, 291)
         Label9.Name = "Label9"
         Label9.Size = New Size(192, 15)
         Label9.TabIndex = 16
@@ -201,7 +204,8 @@ Partial Class Financial
         ' Label13
         ' 
         Label13.AutoSize = True
-        Label13.Location = New Point(6, 248)
+        Label13.Font = New Font("Segoe UI", 9F)
+        Label13.Location = New Point(12, 208)
         Label13.Name = "Label13"
         Label13.Size = New Size(64, 15)
         Label13.TabIndex = 15
@@ -211,7 +215,7 @@ Partial Class Financial
         ' 
         Label12.AutoSize = True
         Label12.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
-        Label12.Location = New Point(6, 275)
+        Label12.Location = New Point(12, 235)
         Label12.Name = "Label12"
         Label12.Size = New Size(88, 15)
         Label12.TabIndex = 14
@@ -220,7 +224,8 @@ Partial Class Financial
         ' Label10
         ' 
         Label10.AutoSize = True
-        Label10.Location = New Point(7, 304)
+        Label10.Font = New Font("Segoe UI", 9F)
+        Label10.Location = New Point(13, 264)
         Label10.Name = "Label10"
         Label10.Size = New Size(112, 15)
         Label10.TabIndex = 13
@@ -229,7 +234,8 @@ Partial Class Financial
         ' lblCurrentLiab
         ' 
         lblCurrentLiab.AutoSize = True
-        lblCurrentLiab.Location = New Point(6, 221)
+        lblCurrentLiab.Font = New Font("Segoe UI", 9F)
+        lblCurrentLiab.Location = New Point(12, 181)
         lblCurrentLiab.Name = "lblCurrentLiab"
         lblCurrentLiab.Size = New Size(99, 15)
         lblCurrentLiab.TabIndex = 12
@@ -238,16 +244,18 @@ Partial Class Financial
         ' lblTotAssetsResult
         ' 
         lblTotAssetsResult.AutoSize = True
-        lblTotAssetsResult.Location = New Point(123, 164)
+        lblTotAssetsResult.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
+        lblTotAssetsResult.Location = New Point(314, 124)
         lblTotAssetsResult.Name = "lblTotAssetsResult"
-        lblTotAssetsResult.Size = New Size(39, 15)
+        lblTotAssetsResult.Size = New Size(42, 15)
         lblTotAssetsResult.TabIndex = 11
         lblTotAssetsResult.Text = "Result"
         ' 
         ' lblOtherAssetsResult
         ' 
         lblOtherAssetsResult.AutoSize = True
-        lblOtherAssetsResult.Location = New Point(123, 138)
+        lblOtherAssetsResult.Font = New Font("Segoe UI", 9F)
+        lblOtherAssetsResult.Location = New Point(314, 98)
         lblOtherAssetsResult.Name = "lblOtherAssetsResult"
         lblOtherAssetsResult.Size = New Size(39, 15)
         lblOtherAssetsResult.TabIndex = 10
@@ -256,16 +264,18 @@ Partial Class Financial
         ' lblTotLandFbResult
         ' 
         lblTotLandFbResult.AutoSize = True
-        lblTotLandFbResult.Location = New Point(219, 331)
+        lblTotLandFbResult.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
+        lblTotLandFbResult.Location = New Point(314, 291)
         lblTotLandFbResult.Name = "lblTotLandFbResult"
-        lblTotLandFbResult.Size = New Size(39, 15)
+        lblTotLandFbResult.Size = New Size(42, 15)
         lblTotLandFbResult.TabIndex = 10
         lblTotLandFbResult.Text = "Result"
         ' 
         ' lblFixAssetsResult
         ' 
         lblFixAssetsResult.AutoSize = True
-        lblFixAssetsResult.Location = New Point(123, 111)
+        lblFixAssetsResult.Font = New Font("Segoe UI", 9F)
+        lblFixAssetsResult.Location = New Point(314, 71)
         lblFixAssetsResult.Name = "lblFixAssetsResult"
         lblFixAssetsResult.Size = New Size(39, 15)
         lblFixAssetsResult.TabIndex = 9
@@ -274,7 +284,8 @@ Partial Class Financial
         ' lblCurAssetResult
         ' 
         lblCurAssetResult.AutoSize = True
-        lblCurAssetResult.Location = New Point(123, 87)
+        lblCurAssetResult.Font = New Font("Segoe UI", 9F)
+        lblCurAssetResult.Location = New Point(314, 47)
         lblCurAssetResult.Name = "lblCurAssetResult"
         lblCurAssetResult.Size = New Size(39, 15)
         lblCurAssetResult.TabIndex = 8
@@ -284,7 +295,7 @@ Partial Class Financial
         ' 
         Label8.AutoSize = True
         Label8.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
-        Label8.Location = New Point(6, 164)
+        Label8.Location = New Point(12, 124)
         Label8.Name = "Label8"
         Label8.Size = New Size(72, 15)
         Label8.TabIndex = 7
@@ -293,7 +304,8 @@ Partial Class Financial
         ' Label7
         ' 
         Label7.AutoSize = True
-        Label7.Location = New Point(7, 138)
+        Label7.Font = New Font("Segoe UI", 9F)
+        Label7.Location = New Point(13, 98)
         Label7.Name = "Label7"
         Label7.Size = New Size(73, 15)
         Label7.TabIndex = 6
@@ -302,7 +314,8 @@ Partial Class Financial
         ' Label6
         ' 
         Label6.AutoSize = True
-        Label6.Location = New Point(6, 111)
+        Label6.Font = New Font("Segoe UI", 9F)
+        Label6.Location = New Point(12, 71)
         Label6.Name = "Label6"
         Label6.Size = New Size(70, 15)
         Label6.TabIndex = 5
@@ -311,7 +324,8 @@ Partial Class Financial
         ' Label5
         ' 
         Label5.AutoSize = True
-        Label5.Location = New Point(6, 87)
+        Label5.Font = New Font("Segoe UI", 9F)
+        Label5.Location = New Point(12, 47)
         Label5.Name = "Label5"
         Label5.Size = New Size(83, 15)
         Label5.TabIndex = 4
@@ -320,7 +334,7 @@ Partial Class Financial
         ' lblPedResult
         ' 
         lblPedResult.AutoSize = True
-        lblPedResult.Location = New Point(123, 19)
+        lblPedResult.Location = New Point(180, 10)
         lblPedResult.Name = "lblPedResult"
         lblPedResult.Size = New Size(39, 15)
         lblPedResult.TabIndex = 3
@@ -329,7 +343,7 @@ Partial Class Financial
         ' lblNumMonthsPeriodResult
         ' 
         lblNumMonthsPeriodResult.AutoSize = True
-        lblNumMonthsPeriodResult.Location = New Point(173, 36)
+        lblNumMonthsPeriodResult.Location = New Point(180, 37)
         lblNumMonthsPeriodResult.Name = "lblNumMonthsPeriodResult"
         lblNumMonthsPeriodResult.Size = New Size(39, 15)
         lblNumMonthsPeriodResult.TabIndex = 2
@@ -338,7 +352,7 @@ Partial Class Financial
         ' lblNumMonthsFin
         ' 
         lblNumMonthsFin.AutoSize = True
-        lblNumMonthsFin.Location = New Point(6, 36)
+        lblNumMonthsFin.Location = New Point(11, 37)
         lblNumMonthsFin.Name = "lblNumMonthsFin"
         lblNumMonthsFin.Size = New Size(145, 15)
         lblNumMonthsFin.TabIndex = 1
@@ -347,7 +361,7 @@ Partial Class Financial
         ' lbligr
         ' 
         lbligr.AutoSize = True
-        lbligr.Location = New Point(6, 19)
+        lbligr.Location = New Point(11, 10)
         lbligr.Name = "lbligr"
         lbligr.Size = New Size(91, 15)
         lbligr.TabIndex = 0
@@ -385,9 +399,10 @@ Partial Class Financial
         gbIncomeStatement.Controls.Add(Label14)
         gbIncomeStatement.Controls.Add(Label11)
         gbIncomeStatement.Controls.Add(Label2)
-        gbIncomeStatement.Location = New Point(664, 36)
+        gbIncomeStatement.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
+        gbIncomeStatement.Location = New Point(11, 390)
         gbIncomeStatement.Name = "gbIncomeStatement"
-        gbIncomeStatement.Size = New Size(604, 579)
+        gbIncomeStatement.Size = New Size(570, 504)
         gbIncomeStatement.TabIndex = 1
         gbIncomeStatement.TabStop = False
         gbIncomeStatement.Text = "Income Statement"
@@ -395,7 +410,8 @@ Partial Class Financial
         ' lblDepreciationExpenseResult
         ' 
         lblDepreciationExpenseResult.AutoSize = True
-        lblDepreciationExpenseResult.Location = New Point(221, 474)
+        lblDepreciationExpenseResult.Font = New Font("Segoe UI", 9F)
+        lblDepreciationExpenseResult.Location = New Point(314, 474)
         lblDepreciationExpenseResult.Name = "lblDepreciationExpenseResult"
         lblDepreciationExpenseResult.Size = New Size(39, 15)
         lblDepreciationExpenseResult.TabIndex = 42
@@ -404,16 +420,18 @@ Partial Class Financial
         ' lblNetIncomeResult
         ' 
         lblNetIncomeResult.AutoSize = True
-        lblNetIncomeResult.Location = New Point(221, 414)
+        lblNetIncomeResult.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
+        lblNetIncomeResult.Location = New Point(314, 414)
         lblNetIncomeResult.Name = "lblNetIncomeResult"
-        lblNetIncomeResult.Size = New Size(39, 15)
+        lblNetIncomeResult.Size = New Size(42, 15)
         lblNetIncomeResult.TabIndex = 41
         lblNetIncomeResult.Text = "Result"
         ' 
         ' lblTotOtherExpensesResult
         ' 
         lblTotOtherExpensesResult.AutoSize = True
-        lblTotOtherExpensesResult.Location = New Point(221, 384)
+        lblTotOtherExpensesResult.Font = New Font("Segoe UI", 9F)
+        lblTotOtherExpensesResult.Location = New Point(314, 384)
         lblTotOtherExpensesResult.Name = "lblTotOtherExpensesResult"
         lblTotOtherExpensesResult.Size = New Size(39, 15)
         lblTotOtherExpensesResult.TabIndex = 40
@@ -422,7 +440,8 @@ Partial Class Financial
         ' lblTotNonpatientResult
         ' 
         lblTotNonpatientResult.AutoSize = True
-        lblTotNonpatientResult.Location = New Point(221, 351)
+        lblTotNonpatientResult.Font = New Font("Segoe UI", 9F)
+        lblTotNonpatientResult.Location = New Point(314, 351)
         lblTotNonpatientResult.Name = "lblTotNonpatientResult"
         lblTotNonpatientResult.Size = New Size(39, 15)
         lblTotNonpatientResult.TabIndex = 39
@@ -431,7 +450,8 @@ Partial Class Financial
         ' lblMiscNpRevResult
         ' 
         lblMiscNpRevResult.AutoSize = True
-        lblMiscNpRevResult.Location = New Point(221, 321)
+        lblMiscNpRevResult.Font = New Font("Segoe UI", 9F)
+        lblMiscNpRevResult.Location = New Point(314, 321)
         lblMiscNpRevResult.Name = "lblMiscNpRevResult"
         lblMiscNpRevResult.Size = New Size(39, 15)
         lblMiscNpRevResult.TabIndex = 38
@@ -440,7 +460,8 @@ Partial Class Financial
         ' lblGovAppResult
         ' 
         lblGovAppResult.AutoSize = True
-        lblGovAppResult.Location = New Point(176, 289)
+        lblGovAppResult.Font = New Font("Segoe UI", 9F)
+        lblGovAppResult.Location = New Point(314, 289)
         lblGovAppResult.Name = "lblGovAppResult"
         lblGovAppResult.Size = New Size(39, 15)
         lblGovAppResult.TabIndex = 37
@@ -449,7 +470,8 @@ Partial Class Financial
         ' lblIncomeFromInvestResult
         ' 
         lblIncomeFromInvestResult.AutoSize = True
-        lblIncomeFromInvestResult.Location = New Point(165, 264)
+        lblIncomeFromInvestResult.Font = New Font("Segoe UI", 9F)
+        lblIncomeFromInvestResult.Location = New Point(314, 264)
         lblIncomeFromInvestResult.Name = "lblIncomeFromInvestResult"
         lblIncomeFromInvestResult.Size = New Size(39, 15)
         lblIncomeFromInvestResult.TabIndex = 36
@@ -458,7 +480,8 @@ Partial Class Financial
         ' lblTotOtherIncomeResult
         ' 
         lblTotOtherIncomeResult.AutoSize = True
-        lblTotOtherIncomeResult.Location = New Point(150, 238)
+        lblTotOtherIncomeResult.Font = New Font("Segoe UI", 9F)
+        lblTotOtherIncomeResult.Location = New Point(314, 238)
         lblTotOtherIncomeResult.Name = "lblTotOtherIncomeResult"
         lblTotOtherIncomeResult.Size = New Size(39, 15)
         lblTotOtherIncomeResult.TabIndex = 35
@@ -467,6 +490,7 @@ Partial Class Financial
         ' Label28
         ' 
         Label28.AutoSize = True
+        Label28.Font = New Font("Segoe UI", 9F)
         Label28.Location = New Point(6, 474)
         Label28.Name = "Label28"
         Label28.Size = New Size(119, 15)
@@ -486,6 +510,7 @@ Partial Class Financial
         ' Label26
         ' 
         Label26.AutoSize = True
+        Label26.Font = New Font("Segoe UI", 9F)
         Label26.Location = New Point(6, 384)
         Label26.Name = "Label26"
         Label26.Size = New Size(116, 15)
@@ -495,6 +520,7 @@ Partial Class Financial
         ' Label25
         ' 
         Label25.AutoSize = True
+        Label25.Font = New Font("Segoe UI", 9F)
         Label25.Location = New Point(6, 351)
         Label25.Name = "Label25"
         Label25.Size = New Size(149, 15)
@@ -504,6 +530,7 @@ Partial Class Financial
         ' Label24
         ' 
         Label24.AutoSize = True
+        Label24.Font = New Font("Segoe UI", 9F)
         Label24.Location = New Point(6, 321)
         Label24.Name = "Label24"
         Label24.Size = New Size(198, 15)
@@ -513,6 +540,7 @@ Partial Class Financial
         ' Label23
         ' 
         Label23.AutoSize = True
+        Label23.Font = New Font("Segoe UI", 9F)
         Label23.Location = New Point(6, 289)
         Label23.Name = "Label23"
         Label23.Size = New Size(164, 15)
@@ -522,6 +550,7 @@ Partial Class Financial
         ' Label22
         ' 
         Label22.AutoSize = True
+        Label22.Font = New Font("Segoe UI", 9F)
         Label22.Location = New Point(6, 264)
         Label22.Name = "Label22"
         Label22.Size = New Size(145, 15)
@@ -531,6 +560,7 @@ Partial Class Financial
         ' Label21
         ' 
         Label21.AutoSize = True
+        Label21.Font = New Font("Segoe UI", 9F)
         Label21.Location = New Point(6, 238)
         Label21.Name = "Label21"
         Label21.Size = New Size(80, 15)
@@ -540,9 +570,10 @@ Partial Class Financial
         ' lblOperatingIncome
         ' 
         lblOperatingIncome.AutoSize = True
-        lblOperatingIncome.Location = New Point(150, 210)
+        lblOperatingIncome.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
+        lblOperatingIncome.Location = New Point(314, 203)
         lblOperatingIncome.Name = "lblOperatingIncome"
-        lblOperatingIncome.Size = New Size(39, 15)
+        lblOperatingIncome.Size = New Size(42, 15)
         lblOperatingIncome.TabIndex = 26
         lblOperatingIncome.Text = "Result"
         ' 
@@ -559,7 +590,8 @@ Partial Class Financial
         ' lblContractAllowanceResult
         ' 
         lblContractAllowanceResult.AutoSize = True
-        lblContractAllowanceResult.Location = New Point(150, 114)
+        lblContractAllowanceResult.Font = New Font("Segoe UI", 9F)
+        lblContractAllowanceResult.Location = New Point(314, 114)
         lblContractAllowanceResult.Name = "lblContractAllowanceResult"
         lblContractAllowanceResult.Size = New Size(39, 15)
         lblContractAllowanceResult.TabIndex = 24
@@ -568,6 +600,7 @@ Partial Class Financial
         ' Label20
         ' 
         Label20.AutoSize = True
+        Label20.Font = New Font("Segoe UI", 9F)
         Label20.Location = New Point(6, 114)
         Label20.Name = "Label20"
         Label20.Size = New Size(132, 15)
@@ -577,7 +610,8 @@ Partial Class Financial
         ' lblNetPatRevResult
         ' 
         lblNetPatRevResult.AutoSize = True
-        lblNetPatRevResult.Location = New Point(150, 149)
+        lblNetPatRevResult.Font = New Font("Segoe UI", 9F)
+        lblNetPatRevResult.Location = New Point(314, 145)
         lblNetPatRevResult.Name = "lblNetPatRevResult"
         lblNetPatRevResult.Size = New Size(39, 15)
         lblNetPatRevResult.TabIndex = 22
@@ -586,7 +620,8 @@ Partial Class Financial
         ' lblTotPatRevResult
         ' 
         lblTotPatRevResult.AutoSize = True
-        lblTotPatRevResult.Location = New Point(150, 87)
+        lblTotPatRevResult.Font = New Font("Segoe UI", 9F)
+        lblTotPatRevResult.Location = New Point(314, 87)
         lblTotPatRevResult.Name = "lblTotPatRevResult"
         lblTotPatRevResult.Size = New Size(39, 15)
         lblTotPatRevResult.TabIndex = 21
@@ -595,7 +630,8 @@ Partial Class Financial
         ' lblOutPatResult
         ' 
         lblOutPatResult.AutoSize = True
-        lblOutPatResult.Location = New Point(150, 63)
+        lblOutPatResult.Font = New Font("Segoe UI", 9F)
+        lblOutPatResult.Location = New Point(314, 63)
         lblOutPatResult.Name = "lblOutPatResult"
         lblOutPatResult.Size = New Size(39, 15)
         lblOutPatResult.TabIndex = 20
@@ -604,7 +640,8 @@ Partial Class Financial
         ' lblInpRevResult
         ' 
         lblInpRevResult.AutoSize = True
-        lblInpRevResult.Location = New Point(150, 38)
+        lblInpRevResult.Font = New Font("Segoe UI", 9F)
+        lblInpRevResult.Location = New Point(314, 38)
         lblInpRevResult.Name = "lblInpRevResult"
         lblInpRevResult.Size = New Size(39, 15)
         lblInpRevResult.TabIndex = 19
@@ -613,7 +650,8 @@ Partial Class Financial
         ' lblTotOperatingExpenseResult
         ' 
         lblTotOperatingExpenseResult.AutoSize = True
-        lblTotOperatingExpenseResult.Location = New Point(150, 180)
+        lblTotOperatingExpenseResult.Font = New Font("Segoe UI", 9F)
+        lblTotOperatingExpenseResult.Location = New Point(314, 172)
         lblTotOperatingExpenseResult.Name = "lblTotOperatingExpenseResult"
         lblTotOperatingExpenseResult.Size = New Size(39, 15)
         lblTotOperatingExpenseResult.TabIndex = 11
@@ -622,6 +660,7 @@ Partial Class Financial
         ' Label16
         ' 
         Label16.AutoSize = True
+        Label16.Font = New Font("Segoe UI", 9F)
         Label16.Location = New Point(6, 151)
         Label16.Name = "Label16"
         Label16.Size = New Size(114, 15)
@@ -631,6 +670,7 @@ Partial Class Financial
         ' Label15
         ' 
         Label15.AutoSize = True
+        Label15.Font = New Font("Segoe UI", 9F)
         Label15.Location = New Point(6, 180)
         Label15.Name = "Label15"
         Label15.Size = New Size(134, 15)
@@ -640,6 +680,7 @@ Partial Class Financial
         ' Label14
         ' 
         Label14.AutoSize = True
+        Label14.Font = New Font("Segoe UI", 9F)
         Label14.Location = New Point(6, 63)
         Label14.Name = "Label14"
         Label14.Size = New Size(112, 15)
@@ -649,6 +690,7 @@ Partial Class Financial
         ' Label11
         ' 
         Label11.AutoSize = True
+        Label11.Font = New Font("Segoe UI", 9F)
         Label11.Location = New Point(6, 87)
         Label11.Name = "Label11"
         Label11.Size = New Size(121, 15)
@@ -658,6 +700,7 @@ Partial Class Financial
         ' Label2
         ' 
         Label2.AutoSize = True
+        Label2.Font = New Font("Segoe UI", 9F)
         Label2.Location = New Point(6, 38)
         Label2.Name = "Label2"
         Label2.Size = New Size(102, 15)
@@ -674,9 +717,9 @@ Partial Class Financial
         gbUncompensatedCare.Controls.Add(Label3)
         gbUncompensatedCare.Controls.Add(lblUncompResult)
         gbUncompensatedCare.Controls.Add(Label1)
-        gbUncompensatedCare.Location = New Point(12, 378)
+        gbUncompensatedCare.Location = New Point(11, 1055)
         gbUncompensatedCare.Name = "gbUncompensatedCare"
-        gbUncompensatedCare.Size = New Size(633, 246)
+        gbUncompensatedCare.Size = New Size(570, 197)
         gbUncompensatedCare.TabIndex = 2
         gbUncompensatedCare.TabStop = False
         gbUncompensatedCare.Text = "Uncompensated Care"
@@ -755,7 +798,7 @@ Partial Class Financial
         ' 
         ' btnOutpatientFinancial
         ' 
-        btnOutpatientFinancial.Location = New Point(1474, 1)
+        btnOutpatientFinancial.Location = New Point(982, 0)
         btnOutpatientFinancial.Name = "btnOutpatientFinancial"
         btnOutpatientFinancial.Size = New Size(88, 29)
         btnOutpatientFinancial.TabIndex = 20
@@ -764,7 +807,7 @@ Partial Class Financial
         ' 
         ' btnInpatientFinancial
         ' 
-        btnInpatientFinancial.Location = New Point(1380, 1)
+        btnInpatientFinancial.Location = New Point(888, 0)
         btnInpatientFinancial.Name = "btnInpatientFinancial"
         btnInpatientFinancial.Size = New Size(88, 29)
         btnInpatientFinancial.TabIndex = 19
@@ -773,7 +816,7 @@ Partial Class Financial
         ' 
         ' btnQualityFinancial
         ' 
-        btnQualityFinancial.Location = New Point(1286, 1)
+        btnQualityFinancial.Location = New Point(794, 0)
         btnQualityFinancial.Name = "btnQualityFinancial"
         btnQualityFinancial.Size = New Size(88, 29)
         btnQualityFinancial.TabIndex = 18
@@ -782,7 +825,7 @@ Partial Class Financial
         ' 
         ' btnFInIndFinancial
         ' 
-        btnFInIndFinancial.Location = New Point(1192, 1)
+        btnFInIndFinancial.Location = New Point(700, 0)
         btnFInIndFinancial.Name = "btnFInIndFinancial"
         btnFInIndFinancial.Size = New Size(88, 29)
         btnFInIndFinancial.TabIndex = 17
@@ -791,7 +834,7 @@ Partial Class Financial
         ' 
         ' btnDepartmentsFinancial
         ' 
-        btnDepartmentsFinancial.Location = New Point(1098, 1)
+        btnDepartmentsFinancial.Location = New Point(606, 0)
         btnDepartmentsFinancial.Name = "btnDepartmentsFinancial"
         btnDepartmentsFinancial.Size = New Size(88, 29)
         btnDepartmentsFinancial.TabIndex = 15
@@ -800,7 +843,7 @@ Partial Class Financial
         ' 
         ' btnProfileFinancial
         ' 
-        btnProfileFinancial.Location = New Point(1004, 1)
+        btnProfileFinancial.Location = New Point(512, 0)
         btnProfileFinancial.Name = "btnProfileFinancial"
         btnProfileFinancial.Size = New Size(88, 29)
         btnProfileFinancial.TabIndex = 14
@@ -809,28 +852,42 @@ Partial Class Financial
         ' 
         ' Button1
         ' 
-        Button1.Location = New Point(1341, 559)
+        Button1.Location = New Point(606, 37)
         Button1.Name = "Button1"
         Button1.Size = New Size(108, 56)
         Button1.TabIndex = 21
         Button1.Text = "Return to Search"
         Button1.UseVisualStyleBackColor = True
         ' 
+        ' Panel1
+        ' 
+        Panel1.AutoScroll = True
+        Panel1.Controls.Add(gbUncompensatedCare)
+        Panel1.Controls.Add(Button1)
+        Panel1.Controls.Add(GroupBox1)
+        Panel1.Controls.Add(btnOutpatientFinancial)
+        Panel1.Controls.Add(btnInpatientFinancial)
+        Panel1.Controls.Add(gbIncomeStatement)
+        Panel1.Controls.Add(btnQualityFinancial)
+        Panel1.Controls.Add(btnProfileFinancial)
+        Panel1.Controls.Add(btnFInIndFinancial)
+        Panel1.Controls.Add(btnDepartmentsFinancial)
+        Panel1.Controls.Add(lblNumMonthsFin)
+        Panel1.Controls.Add(lbligr)
+        Panel1.Controls.Add(lblNumMonthsPeriodResult)
+        Panel1.Controls.Add(lblPedResult)
+        Panel1.Location = New Point(1, 1)
+        Panel1.MinimumSize = New Size(1200, 1000)
+        Panel1.Name = "Panel1"
+        Panel1.Size = New Size(1572, 2500)
+        Panel1.TabIndex = 22
+        ' 
         ' Financial
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
-        ClientSize = New Size(1563, 662)
-        Controls.Add(Button1)
-        Controls.Add(btnOutpatientFinancial)
-        Controls.Add(btnInpatientFinancial)
-        Controls.Add(btnQualityFinancial)
-        Controls.Add(btnFInIndFinancial)
-        Controls.Add(btnDepartmentsFinancial)
-        Controls.Add(btnProfileFinancial)
-        Controls.Add(gbUncompensatedCare)
-        Controls.Add(gbIncomeStatement)
-        Controls.Add(GroupBox1)
+        ClientSize = New Size(1563, 1061)
+        Controls.Add(Panel1)
         Name = "Financial"
         StartPosition = FormStartPosition.CenterScreen
         Text = "Financial"
@@ -840,6 +897,8 @@ Partial Class Financial
         gbIncomeStatement.PerformLayout()
         gbUncompensatedCare.ResumeLayout(False)
         gbUncompensatedCare.PerformLayout()
+        Panel1.ResumeLayout(False)
+        Panel1.PerformLayout()
         ResumeLayout(False)
     End Sub
 
@@ -915,4 +974,5 @@ Partial Class Financial
     Friend WithEvents lblDepreciationExpenseResult As Label
     Friend WithEvents lblNetIncomeResult As Label
     Friend WithEvents Button1 As Button
+    Friend WithEvents Panel1 As Panel
 End Class

@@ -6,7 +6,7 @@ Public Class FinInd
     Public Function FormatCurrency(val As Object) As String
         Dim dec As Decimal
         If Decimal.TryParse(val.ToString().Replace("$", "").Replace(",", ""), dec) Then
-            Return dec.ToString("C2") ' $1,234.56
+            Return dec.ToString("N0") ' 1,234 (no decimals)
         End If
         Return "N/A"
     End Function
@@ -46,6 +46,7 @@ Public Class FinInd
         'Total Current Assets
         lblTotCurrentAssetsResult.Text = FormatCurrency((provider("Total Current Assets")))
         lblTotCurrentAssetsResult2.Text = lblTotCurrentAssetsResult.Text
+        lblTotCurrentAssets10.Text = lblTotCurrentAssetsResult.Text
 
         'Total Assets
         lblTotAssetsResult.Text = FormatCurrency(Search.CleanMeUp(provider("Total Assets")))
@@ -95,6 +96,7 @@ Public Class FinInd
         lblTotCurrentLiabilitiesResult.Text = FormatCurrency(Search.CleanMeUp(provider("Total Current Liabilities")))
         lblTotCurrentLiabilitesResult2.Text = lblTotCurrentLiabilitiesResult.Text
         lblTotCurrentLiabilitesResult3.Text = lblTotCurrentLiabilitiesResult.Text
+        lblTotCurrentLiabilities10.Text = lblTotCurrentLiabilitiesResult.Text
 
 
         'Total Operating Expense
@@ -270,5 +272,9 @@ Public Class FinInd
     Private Sub Button1_Click_2(sender As Object, e As EventArgs) Handles Button1.Click
         Me.Hide()
         Search.Show()
+    End Sub
+
+    Private Sub GroupBox5_Enter(sender As Object, e As EventArgs) Handles GroupBox5.Enter
+
     End Sub
 End Class

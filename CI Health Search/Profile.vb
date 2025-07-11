@@ -199,7 +199,7 @@ Public Class Profile
 
     End Sub
 
-    Private Sub gbUniversityAff_Enter(sender As Object, e As EventArgs) Handles gbUniversityAff.Enter
+    Private Sub gbUniversityAff_Enter(sender As Object, e As EventArgs)
 
     End Sub
 
