@@ -118,9 +118,20 @@
 
     End Sub
 
-    Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click
-        Me.Hide()
+    'Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click
+    '    Me.Hide()
+    '    Inpatient.Show()
+    'End Sub
+    Private Async Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click
+        If CheckedListBox1.SelectedIndex = -1 Then
+            MessageBox.Show("Select a hospital first.")
+            Return
+        End If
+        retrieveProfile()
+        Hide()
         Inpatient.Show()
+        Await Inpatient.LoadPatientOriginDataAsync(Results.SelectedHospital)
+        Await Inpatient.LoadCeoDataAsync(Results.SelectedHospital)
     End Sub
 
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
@@ -128,9 +139,19 @@
         Departments.Show()
     End Sub
 
-    Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
-        Me.Hide()
+    'Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
+    '    Me.Hide()
+    '    Financial.Show()
+    'End Sub
+    Private Async Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
+        If CheckedListBox1.SelectedIndex = -1 Then
+            MessageBox.Show("Select a hospital first.")
+            Return
+        End If
+        retrieveProfile()
+        Hide()
         Financial.Show()
+        Await Financial.ShowFinancialData(Results.SelectedHospital.HospitalId, Results.SelectedHospital.State)
     End Sub
 
     Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click

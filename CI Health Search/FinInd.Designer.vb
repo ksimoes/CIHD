@@ -26,19 +26,19 @@ Partial Class FinInd
         Panel1 = New Panel()
         dgvEbitdar = New DataGridView()
         dgvfinancialsummary = New DataGridView()
-        GroupBox20 = New GroupBox()
+        GroupBox20 = New BoldGroupBox()
         lblTotCurrentLiabilities10 = New Label()
         lblTotCurrentAssets10 = New Label()
         Label82 = New Label()
         Label79 = New Label()
-        GroupBox19 = New GroupBox()
+        GroupBox19 = New BoldGroupBox()
         lblDepreciationExpenseResultFinInd4 = New Label()
         Label75 = New Label()
         Label76 = New Label()
         Label77 = New Label()
         Label153 = New Label()
         Label152 = New Label()
-        GroupBox17 = New GroupBox()
+        GroupBox17 = New BoldGroupBox()
         lblTotLiabilitiesResult2 = New Label()
         Label68 = New Label()
         Label69 = New Label()
@@ -47,7 +47,7 @@ Partial Class FinInd
         lblLtdtnaResult = New Label()
         lblTotAssetsResult4 = New Label()
         lblTotLongTermLiabilitiesResult = New Label()
-        GroupBox16 = New GroupBox()
+        GroupBox16 = New BoldGroupBox()
         Label146 = New Label()
         Label66 = New Label()
         Label64 = New Label()
@@ -56,7 +56,7 @@ Partial Class FinInd
         lblTotOperatingRevResult5 = New Label()
         Label141 = New Label()
         lblTotAssetsResult3 = New Label()
-        GroupBox15 = New GroupBox()
+        GroupBox15 = New BoldGroupBox()
         Label139 = New Label()
         Label60 = New Label()
         Label61 = New Label()
@@ -65,7 +65,7 @@ Partial Class FinInd
         lblTotOperatingRevResult4 = New Label()
         Label137 = New Label()
         lblInventoryResult2 = New Label()
-        GroupBox14 = New GroupBox()
+        GroupBox14 = New BoldGroupBox()
         Label55 = New Label()
         Label56 = New Label()
         Label57 = New Label()
@@ -76,7 +76,7 @@ Partial Class FinInd
         lblTotOperatingExpenseFinInd5 = New Label()
         lblDepreciationExpenseResultFinInd3 = New Label()
         lblOtherExpenseResultFindInd = New Label()
-        GroupBox13 = New GroupBox()
+        GroupBox13 = New BoldGroupBox()
         Label49 = New Label()
         Label52 = New Label()
         Label51 = New Label()
@@ -89,7 +89,7 @@ Partial Class FinInd
         lblNotesReceivableRes = New Label()
         Label134 = New Label()
         Label50 = New Label()
-        GroupBox12 = New GroupBox()
+        GroupBox12 = New BoldGroupBox()
         Label47 = New Label()
         Label39 = New Label()
         Label48 = New Label()
@@ -98,7 +98,7 @@ Partial Class FinInd
         lblAccountsRecievableResult = New Label()
         lblAllowforUncollectRes2 = New Label()
         lblTotOperatingRevResult6 = New Label()
-        GroupBox11 = New GroupBox()
+        GroupBox11 = New BoldGroupBox()
         Label38 = New Label()
         Label40 = New Label()
         Label42 = New Label()
@@ -112,7 +112,7 @@ Partial Class FinInd
         lblTotOperatingExpenseFinInd4 = New Label()
         lblInvestmentsResultFinInd = New Label()
         Button1 = New Button()
-        GroupBox1 = New GroupBox()
+        GroupBox1 = New BoldGroupBox()
         Label35 = New Label()
         lblDaysCOH = New Label()
         Label37 = New Label()
@@ -123,7 +123,7 @@ Partial Class FinInd
         lblMarketSecuritiesResult = New Label()
         lblTotOperatingExpenseFinInd3 = New Label()
         lblDepreciationExpenseResultFinInd = New Label()
-        GroupBox10 = New GroupBox()
+        GroupBox10 = New BoldGroupBox()
         lblTotCurrentLiabilitesResult2 = New Label()
         Label31 = New Label()
         Label33 = New Label()
@@ -132,14 +132,14 @@ Partial Class FinInd
         lblQuickRatioResult = New Label()
         lblTotCurrentAssetsResult2 = New Label()
         lblInventoryResult = New Label()
-        GroupBox8 = New GroupBox()
+        GroupBox8 = New BoldGroupBox()
         lblNetIncomeResult2 = New Label()
         Label25 = New Label()
         Label28 = New Label()
         Label26 = New Label()
         lblRoaResult = New Label()
         lblTotAssetsResult2 = New Label()
-        GroupBox7 = New GroupBox()
+        GroupBox7 = New BoldGroupBox()
         Label23 = New Label()
         Label21 = New Label()
         Label22 = New Label()
@@ -148,7 +148,7 @@ Partial Class FinInd
         lblNetIncomeResult = New Label()
         lblTotAssetsResult = New Label()
         lblTotLiabilitiesResult = New Label()
-        GroupBox6 = New GroupBox()
+        GroupBox6 = New BoldGroupBox()
         Label19 = New Label()
         Label16 = New Label()
         Label17 = New Label()
@@ -159,7 +159,7 @@ Partial Class FinInd
         lblContractLaborResult = New Label()
         lblFringeBenefitsResult = New Label()
         lblTotOperatingRevResult3 = New Label()
-        GroupBox5 = New GroupBox()
+        GroupBox5 = New BoldGroupBox()
         Label15 = New Label()
         Label12 = New Label()
         Label13 = New Label()
@@ -168,26 +168,15 @@ Partial Class FinInd
         lblTotOperatingRevenueFinInd2 = New Label()
         lblTotOperatingExpenseFinInd2 = New Label()
         lblNoRFinIndResult = New Label()
-        GroupBox4 = New GroupBox()
-        Label9 = New Label()
-        Label10 = New Label()
-        Label11 = New Label()
-        lblOperatingMarginFinIndResult = New Label()
-        lblTotOperatingRevFinIndResult = New Label()
+        GroupBox4 = New BoldGroupBox()
         lblTotOperatingExpenseFinIndResult = New Label()
-        GroupBox3 = New GroupBox()
-        Label4 = New Label()
-        Label5 = New Label()
-        Label6 = New Label()
-        Label7 = New Label()
-        Label8 = New Label()
-        lblEbitResult = New Label()
-        lblNetIncomeFinIndResult = New Label()
-        lblInterestExpenseFinIndResult = New Label()
-        lblDepAmortExpenseResult = New Label()
-        lblLeaseCostResult = New Label()
+        Label10 = New Label()
+        lblTotOperatingRevFinIndResult = New Label()
+        Label9 = New Label()
+        lblOperatingMarginFinIndResult = New Label()
+        Label11 = New Label()
         btnOutpatientFinInd = New Button()
-        GroupBox2 = New GroupBox()
+        GroupBox2 = New BoldGroupBox()
         Label2 = New Label()
         Label1 = New Label()
         Label3 = New Label()
@@ -199,13 +188,23 @@ Partial Class FinInd
         btnFinancialFinInd = New Button()
         btnDepartmentsFinInd = New Button()
         btnProfileFinInd = New Button()
+        Label4 = New Label()
+        Label5 = New Label()
+        Label6 = New Label()
+        Label7 = New Label()
+        Label8 = New Label()
+        lblEbitResult = New Label()
+        lblNetIncomeFinIndResult = New Label()
+        lblInterestExpenseFinIndResult = New Label()
+        lblDepAmortExpenseResult = New Label()
+        lblLeaseCostResult = New Label()
         lblTotLiabilitiesResult3 = New Label()
         lblTotAssetsResult5 = New Label()
         lblTdtna = New Label()
         Label74 = New Label()
         Label72 = New Label()
         Label73 = New Label()
-        GroupBox9 = New GroupBox()
+        GroupBox9 = New BoldGroupBox()
         lblTotCurrentLiabilitiesResult = New Label()
         Label27 = New Label()
         Label30 = New Label()
@@ -216,7 +215,7 @@ Partial Class FinInd
         ToolTip2 = New ToolTip(components)
         ToolTip1 = New ToolTip(components)
         ToolTip3 = New ToolTip(components)
-        GroupBox18 = New GroupBox()
+        GroupBox18 = New BoldGroupBox()
         Panel1.SuspendLayout()
         CType(dgvEbitdar, ComponentModel.ISupportInitialize).BeginInit()
         CType(dgvfinancialsummary, ComponentModel.ISupportInitialize).BeginInit()
@@ -236,7 +235,6 @@ Partial Class FinInd
         GroupBox6.SuspendLayout()
         GroupBox5.SuspendLayout()
         GroupBox4.SuspendLayout()
-        GroupBox3.SuspendLayout()
         GroupBox2.SuspendLayout()
         GroupBox9.SuspendLayout()
         GroupBox18.SuspendLayout()
@@ -264,7 +262,6 @@ Partial Class FinInd
         Panel1.Controls.Add(GroupBox6)
         Panel1.Controls.Add(GroupBox5)
         Panel1.Controls.Add(GroupBox4)
-        Panel1.Controls.Add(GroupBox3)
         Panel1.Controls.Add(btnOutpatientFinInd)
         Panel1.Controls.Add(GroupBox2)
         Panel1.Controls.Add(btnInpatientFinInd)
@@ -785,7 +782,7 @@ Partial Class FinInd
         ' lblDepreciationExpenseResultFinInd3
         ' 
         lblDepreciationExpenseResultFinInd3.AutoSize = True
-        lblDepreciationExpenseResultFinInd3.Location = New Point(477, 117)
+        lblDepreciationExpenseResultFinInd3.Location = New Point(476, 117)
         lblDepreciationExpenseResultFinInd3.Name = "lblDepreciationExpenseResultFinInd3"
         lblDepreciationExpenseResultFinInd3.Size = New Size(39, 15)
         lblDepreciationExpenseResultFinInd3.TabIndex = 256
@@ -1224,7 +1221,7 @@ Partial Class FinInd
         ' Label78
         ' 
         Label78.AutoSize = True
-        Label78.Location = New Point(15, 143)
+        Label78.Location = New Point(12, 143)
         Label78.Name = "Label78"
         Label78.Size = New Size(119, 15)
         Label78.TabIndex = 178
@@ -1233,7 +1230,7 @@ Partial Class FinInd
         ' Label41
         ' 
         Label41.AutoSize = True
-        Label41.Location = New Point(9, 116)
+        Label41.Location = New Point(12, 116)
         Label41.Name = "Label41"
         Label41.Size = New Size(134, 15)
         Label41.TabIndex = 60
@@ -1270,7 +1267,7 @@ Partial Class FinInd
         ' lblDepreciationExpenseResultFinInd
         ' 
         lblDepreciationExpenseResultFinInd.AutoSize = True
-        lblDepreciationExpenseResultFinInd.Location = New Point(475, 142)
+        lblDepreciationExpenseResultFinInd.Location = New Point(474, 142)
         lblDepreciationExpenseResultFinInd.Name = "lblDepreciationExpenseResultFinInd"
         lblDepreciationExpenseResultFinInd.Size = New Size(39, 15)
         lblDepreciationExpenseResultFinInd.TabIndex = 141
@@ -1414,7 +1411,7 @@ Partial Class FinInd
         ' Label26
         ' 
         Label26.AutoSize = True
-        Label26.Location = New Point(8, 69)
+        Label26.Location = New Point(8, 68)
         Label26.Name = "Label26"
         Label26.Size = New Size(69, 15)
         Label26.TabIndex = 48
@@ -1433,7 +1430,7 @@ Partial Class FinInd
         ' lblTotAssetsResult2
         ' 
         lblTotAssetsResult2.AutoSize = True
-        lblTotAssetsResult2.Location = New Point(478, 69)
+        lblTotAssetsResult2.Location = New Point(478, 68)
         lblTotAssetsResult2.Name = "lblTotAssetsResult2"
         lblTotAssetsResult2.Size = New Size(39, 15)
         lblTotAssetsResult2.TabIndex = 127
@@ -1479,7 +1476,7 @@ Partial Class FinInd
         ' Label22
         ' 
         Label22.AutoSize = True
-        Label22.Location = New Point(7, 45)
+        Label22.Location = New Point(7, 46)
         Label22.Name = "Label22"
         Label22.Size = New Size(129, 15)
         Label22.TabIndex = 42
@@ -1488,7 +1485,7 @@ Partial Class FinInd
         ' Label24
         ' 
         Label24.AutoSize = True
-        Label24.Location = New Point(7, 71)
+        Label24.Location = New Point(7, 72)
         Label24.Name = "Label24"
         Label24.Size = New Size(69, 15)
         Label24.TabIndex = 44
@@ -1507,7 +1504,7 @@ Partial Class FinInd
         ' lblNetIncomeResult
         ' 
         lblNetIncomeResult.AutoSize = True
-        lblNetIncomeResult.Location = New Point(476, 45)
+        lblNetIncomeResult.Location = New Point(476, 46)
         lblNetIncomeResult.Name = "lblNetIncomeResult"
         lblNetIncomeResult.Size = New Size(39, 15)
         lblNetIncomeResult.TabIndex = 122
@@ -1516,7 +1513,7 @@ Partial Class FinInd
         ' lblTotAssetsResult
         ' 
         lblTotAssetsResult.AutoSize = True
-        lblTotAssetsResult.Location = New Point(476, 71)
+        lblTotAssetsResult.Location = New Point(476, 72)
         lblTotAssetsResult.Name = "lblTotAssetsResult"
         lblTotAssetsResult.Size = New Size(39, 15)
         lblTotAssetsResult.TabIndex = 123
@@ -1553,7 +1550,7 @@ Partial Class FinInd
         ' Label19
         ' 
         Label19.AutoSize = True
-        Label19.Location = New Point(6, 134)
+        Label19.Location = New Point(6, 133)
         Label19.Name = "Label19"
         Label19.Size = New Size(249, 15)
         Label19.TabIndex = 40
@@ -1590,7 +1587,7 @@ Partial Class FinInd
         ' Label20
         ' 
         Label20.AutoSize = True
-        Label20.Location = New Point(6, 107)
+        Label20.Location = New Point(6, 106)
         Label20.Name = "Label20"
         Label20.Size = New Size(85, 15)
         Label20.TabIndex = 39
@@ -1627,7 +1624,7 @@ Partial Class FinInd
         ' lblFringeBenefitsResult
         ' 
         lblFringeBenefitsResult.AutoSize = True
-        lblFringeBenefitsResult.Location = New Point(476, 107)
+        lblFringeBenefitsResult.Location = New Point(476, 106)
         lblFringeBenefitsResult.Name = "lblFringeBenefitsResult"
         lblFringeBenefitsResult.Size = New Size(39, 15)
         lblFringeBenefitsResult.TabIndex = 119
@@ -1636,7 +1633,7 @@ Partial Class FinInd
         ' lblTotOperatingRevResult3
         ' 
         lblTotOperatingRevResult3.AutoSize = True
-        lblTotOperatingRevResult3.Location = New Point(476, 134)
+        lblTotOperatingRevResult3.Location = New Point(476, 133)
         lblTotOperatingRevResult3.Name = "lblTotOperatingRevResult3"
         lblTotOperatingRevResult3.Size = New Size(39, 15)
         lblTotOperatingRevResult3.TabIndex = 120
@@ -1653,6 +1650,7 @@ Partial Class FinInd
         GroupBox5.Controls.Add(lblTotOperatingRevenueFinInd2)
         GroupBox5.Controls.Add(lblTotOperatingExpenseFinInd2)
         GroupBox5.Controls.Add(lblNoRFinIndResult)
+        GroupBox5.ForeColor = SystemColors.ActiveCaptionText
         GroupBox5.Location = New Point(3, 383)
         GroupBox5.Name = "GroupBox5"
         GroupBox5.Size = New Size(627, 134)
@@ -1663,7 +1661,7 @@ Partial Class FinInd
         ' Label15
         ' 
         Label15.AutoSize = True
-        Label15.Location = New Point(7, 108)
+        Label15.Location = New Point(7, 107)
         Label15.Name = "Label15"
         Label15.Size = New Size(255, 15)
         Label15.TabIndex = 35
@@ -1682,7 +1680,7 @@ Partial Class FinInd
         ' Label13
         ' 
         Label13.AutoSize = True
-        Label13.Location = New Point(7, 51)
+        Label13.Location = New Point(7, 49)
         Label13.Name = "Label13"
         Label13.Size = New Size(137, 15)
         Label13.TabIndex = 33
@@ -1691,7 +1689,7 @@ Partial Class FinInd
         ' Label14
         ' 
         Label14.AutoSize = True
-        Label14.Location = New Point(7, 79)
+        Label14.Location = New Point(7, 78)
         Label14.Name = "Label14"
         Label14.Size = New Size(134, 15)
         Label14.TabIndex = 34
@@ -1701,7 +1699,7 @@ Partial Class FinInd
         ' 
         lblExcessMarginResult.AutoSize = True
         lblExcessMarginResult.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
-        lblExcessMarginResult.Location = New Point(477, 20)
+        lblExcessMarginResult.Location = New Point(478, 20)
         lblExcessMarginResult.Name = "lblExcessMarginResult"
         lblExcessMarginResult.Size = New Size(42, 15)
         lblExcessMarginResult.TabIndex = 112
@@ -1710,7 +1708,7 @@ Partial Class FinInd
         ' lblTotOperatingRevenueFinInd2
         ' 
         lblTotOperatingRevenueFinInd2.AutoSize = True
-        lblTotOperatingRevenueFinInd2.Location = New Point(477, 51)
+        lblTotOperatingRevenueFinInd2.Location = New Point(477, 52)
         lblTotOperatingRevenueFinInd2.Name = "lblTotOperatingRevenueFinInd2"
         lblTotOperatingRevenueFinInd2.Size = New Size(39, 15)
         lblTotOperatingRevenueFinInd2.TabIndex = 113
@@ -1719,7 +1717,7 @@ Partial Class FinInd
         ' lblTotOperatingExpenseFinInd2
         ' 
         lblTotOperatingExpenseFinInd2.AutoSize = True
-        lblTotOperatingExpenseFinInd2.Location = New Point(477, 79)
+        lblTotOperatingExpenseFinInd2.Location = New Point(477, 84)
         lblTotOperatingExpenseFinInd2.Name = "lblTotOperatingExpenseFinInd2"
         lblTotOperatingExpenseFinInd2.Size = New Size(39, 15)
         lblTotOperatingExpenseFinInd2.TabIndex = 114
@@ -1736,12 +1734,12 @@ Partial Class FinInd
         ' 
         ' GroupBox4
         ' 
-        GroupBox4.Controls.Add(Label9)
-        GroupBox4.Controls.Add(Label10)
-        GroupBox4.Controls.Add(Label11)
-        GroupBox4.Controls.Add(lblOperatingMarginFinIndResult)
-        GroupBox4.Controls.Add(lblTotOperatingRevFinIndResult)
         GroupBox4.Controls.Add(lblTotOperatingExpenseFinIndResult)
+        GroupBox4.Controls.Add(Label10)
+        GroupBox4.Controls.Add(lblTotOperatingRevFinIndResult)
+        GroupBox4.Controls.Add(Label9)
+        GroupBox4.Controls.Add(lblOperatingMarginFinIndResult)
+        GroupBox4.Controls.Add(Label11)
         GroupBox4.Location = New Point(3, 267)
         GroupBox4.Name = "GroupBox4"
         GroupBox4.Size = New Size(627, 105)
@@ -1749,81 +1747,189 @@ Partial Class FinInd
         GroupBox4.TabStop = False
         GroupBox4.Text = "."
         ' 
-        ' Label9
-        ' 
-        Label9.AutoSize = True
-        Label9.Location = New Point(9, 54)
-        Label9.Name = "Label9"
-        Label9.Size = New Size(137, 15)
-        Label9.TabIndex = 29
-        Label9.Text = "Total Operating Revenue"
-        ' 
-        ' Label10
-        ' 
-        Label10.AutoSize = True
-        Label10.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
-        Label10.Location = New Point(9, 29)
-        Label10.Name = "Label10"
-        Label10.Size = New Size(105, 15)
-        Label10.TabIndex = 30
-        Label10.Text = "Operating Margin"
-        ' 
-        ' Label11
-        ' 
-        Label11.AutoSize = True
-        Label11.Location = New Point(10, 82)
-        Label11.Name = "Label11"
-        Label11.Size = New Size(134, 15)
-        Label11.TabIndex = 31
-        Label11.Text = "Total Operating Expense"
-        ' 
-        ' lblOperatingMarginFinIndResult
-        ' 
-        lblOperatingMarginFinIndResult.AutoSize = True
-        lblOperatingMarginFinIndResult.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
-        lblOperatingMarginFinIndResult.Location = New Point(477, 28)
-        lblOperatingMarginFinIndResult.Name = "lblOperatingMarginFinIndResult"
-        lblOperatingMarginFinIndResult.Size = New Size(42, 15)
-        lblOperatingMarginFinIndResult.TabIndex = 109
-        lblOperatingMarginFinIndResult.Text = "Result"
-        ' 
-        ' lblTotOperatingRevFinIndResult
-        ' 
-        lblTotOperatingRevFinIndResult.AutoSize = True
-        lblTotOperatingRevFinIndResult.Location = New Point(477, 54)
-        lblTotOperatingRevFinIndResult.Name = "lblTotOperatingRevFinIndResult"
-        lblTotOperatingRevFinIndResult.Size = New Size(39, 15)
-        lblTotOperatingRevFinIndResult.TabIndex = 110
-        lblTotOperatingRevFinIndResult.Text = "Result"
-        ' 
         ' lblTotOperatingExpenseFinIndResult
         ' 
         lblTotOperatingExpenseFinIndResult.AutoSize = True
-        lblTotOperatingExpenseFinIndResult.Location = New Point(477, 81)
+        lblTotOperatingExpenseFinIndResult.Location = New Point(475, 87)
         lblTotOperatingExpenseFinIndResult.Name = "lblTotOperatingExpenseFinIndResult"
         lblTotOperatingExpenseFinIndResult.Size = New Size(39, 15)
         lblTotOperatingExpenseFinIndResult.TabIndex = 111
         lblTotOperatingExpenseFinIndResult.Text = "Result"
         ' 
-        ' GroupBox3
+        ' Label10
         ' 
-        GroupBox3.BackColor = Color.LightGray
-        GroupBox3.Controls.Add(Label4)
-        GroupBox3.Controls.Add(Label5)
-        GroupBox3.Controls.Add(Label6)
-        GroupBox3.Controls.Add(Label7)
-        GroupBox3.Controls.Add(Label8)
-        GroupBox3.Controls.Add(lblEbitResult)
-        GroupBox3.Controls.Add(lblNetIncomeFinIndResult)
-        GroupBox3.Controls.Add(lblInterestExpenseFinIndResult)
-        GroupBox3.Controls.Add(lblDepAmortExpenseResult)
-        GroupBox3.Controls.Add(lblLeaseCostResult)
-        GroupBox3.Location = New Point(4, 108)
-        GroupBox3.Name = "GroupBox3"
-        GroupBox3.Size = New Size(626, 153)
-        GroupBox3.TabIndex = 277
-        GroupBox3.TabStop = False
-        GroupBox3.Text = "."
+        Label10.AutoSize = True
+        Label10.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        Label10.Location = New Point(-3, 19)
+        Label10.Name = "Label10"
+        Label10.Size = New Size(105, 15)
+        Label10.TabIndex = 30
+        Label10.Text = "Operating Margin"
+        ' 
+        ' lblTotOperatingRevFinIndResult
+        ' 
+        lblTotOperatingRevFinIndResult.AutoSize = True
+        lblTotOperatingRevFinIndResult.Location = New Point(475, 53)
+        lblTotOperatingRevFinIndResult.Name = "lblTotOperatingRevFinIndResult"
+        lblTotOperatingRevFinIndResult.Size = New Size(39, 15)
+        lblTotOperatingRevFinIndResult.TabIndex = 110
+        lblTotOperatingRevFinIndResult.Text = "Result"
+        ' 
+        ' Label9
+        ' 
+        Label9.AutoSize = True
+        Label9.Location = New Point(-3, 49)
+        Label9.Name = "Label9"
+        Label9.Size = New Size(137, 15)
+        Label9.TabIndex = 29
+        Label9.Text = "Total Operating Revenue"
+        ' 
+        ' lblOperatingMarginFinIndResult
+        ' 
+        lblOperatingMarginFinIndResult.AutoSize = True
+        lblOperatingMarginFinIndResult.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        lblOperatingMarginFinIndResult.Location = New Point(473, 19)
+        lblOperatingMarginFinIndResult.Name = "lblOperatingMarginFinIndResult"
+        lblOperatingMarginFinIndResult.Size = New Size(42, 15)
+        lblOperatingMarginFinIndResult.TabIndex = 109
+        lblOperatingMarginFinIndResult.Text = "Result"
+        ' 
+        ' Label11
+        ' 
+        Label11.AutoSize = True
+        Label11.Location = New Point(-3, 87)
+        Label11.Name = "Label11"
+        Label11.Size = New Size(134, 15)
+        Label11.TabIndex = 31
+        Label11.Text = "Total Operating Expense"
+        ' 
+        ' btnOutpatientFinInd
+        ' 
+        btnOutpatientFinInd.BackColor = SystemColors.ButtonHighlight
+        btnOutpatientFinInd.Location = New Point(1085, 4)
+        btnOutpatientFinInd.Name = "btnOutpatientFinInd"
+        btnOutpatientFinInd.Size = New Size(95, 29)
+        btnOutpatientFinInd.TabIndex = 195
+        btnOutpatientFinInd.Text = "Outp"
+        btnOutpatientFinInd.UseVisualStyleBackColor = False
+        ' 
+        ' GroupBox2
+        ' 
+        GroupBox2.Controls.Add(Label2)
+        GroupBox2.Controls.Add(Label1)
+        GroupBox2.Controls.Add(Label3)
+        GroupBox2.Controls.Add(lblPedFinIndResult)
+        GroupBox2.Controls.Add(lblNumMonthsFinIndResult)
+        GroupBox2.Controls.Add(Label80)
+        GroupBox2.Location = New Point(4, 0)
+        GroupBox2.Name = "GroupBox2"
+        GroupBox2.Size = New Size(626, 99)
+        GroupBox2.TabIndex = 276
+        GroupBox2.TabStop = False
+        GroupBox2.Text = "."
+        ' 
+        ' Label2
+        ' 
+        Label2.AutoSize = True
+        Label2.Location = New Point(6, 49)
+        Label2.Name = "Label2"
+        Label2.Size = New Size(159, 15)
+        Label2.TabIndex = 22
+        Label2.Text = "Number of Months in Period"
+        ' 
+        ' Label1
+        ' 
+        Label1.AutoSize = True
+        Label1.Location = New Point(6, 18)
+        Label1.Name = "Label1"
+        Label1.Size = New Size(108, 15)
+        Label1.TabIndex = 21
+        Label1.Text = "Period Ending Date"
+        ' 
+        ' Label3
+        ' 
+        Label3.AutoSize = True
+        Label3.Location = New Point(6, 80)
+        Label3.Name = "Label3"
+        Label3.Size = New Size(104, 15)
+        Label3.TabIndex = 23
+        Label3.Text = "Cost Report Status"
+        ' 
+        ' lblPedFinIndResult
+        ' 
+        lblPedFinIndResult.AutoSize = True
+        lblPedFinIndResult.Location = New Point(477, 11)
+        lblPedFinIndResult.Name = "lblPedFinIndResult"
+        lblPedFinIndResult.Size = New Size(39, 15)
+        lblPedFinIndResult.TabIndex = 101
+        lblPedFinIndResult.Text = "Result"
+        ' 
+        ' lblNumMonthsFinIndResult
+        ' 
+        lblNumMonthsFinIndResult.AutoSize = True
+        lblNumMonthsFinIndResult.Location = New Point(477, 46)
+        lblNumMonthsFinIndResult.Name = "lblNumMonthsFinIndResult"
+        lblNumMonthsFinIndResult.Size = New Size(39, 15)
+        lblNumMonthsFinIndResult.TabIndex = 102
+        lblNumMonthsFinIndResult.Text = "Result"
+        ' 
+        ' Label80
+        ' 
+        Label80.AutoSize = True
+        Label80.Location = New Point(477, 81)
+        Label80.Name = "Label80"
+        Label80.Size = New Size(39, 15)
+        Label80.TabIndex = 103
+        Label80.Text = "Result"
+        ' 
+        ' btnInpatientFinInd
+        ' 
+        btnInpatientFinInd.BackColor = SystemColors.ButtonHighlight
+        btnInpatientFinInd.Location = New Point(984, 4)
+        btnInpatientFinInd.Name = "btnInpatientFinInd"
+        btnInpatientFinInd.Size = New Size(95, 29)
+        btnInpatientFinInd.TabIndex = 194
+        btnInpatientFinInd.Text = "Inp"
+        btnInpatientFinInd.UseVisualStyleBackColor = False
+        ' 
+        ' btnQualityFinInd
+        ' 
+        btnQualityFinInd.Location = New Point(883, 4)
+        btnQualityFinInd.Name = "btnQualityFinInd"
+        btnQualityFinInd.Size = New Size(95, 29)
+        btnQualityFinInd.TabIndex = 193
+        btnQualityFinInd.Text = "Quality"
+        btnQualityFinInd.UseVisualStyleBackColor = True
+        ' 
+        ' btnFinancialFinInd
+        ' 
+        btnFinancialFinInd.BackColor = SystemColors.ButtonHighlight
+        btnFinancialFinInd.Location = New Point(782, 4)
+        btnFinancialFinInd.Name = "btnFinancialFinInd"
+        btnFinancialFinInd.Size = New Size(95, 29)
+        btnFinancialFinInd.TabIndex = 192
+        btnFinancialFinInd.Text = "Financial"
+        btnFinancialFinInd.UseVisualStyleBackColor = False
+        ' 
+        ' btnDepartmentsFinInd
+        ' 
+        btnDepartmentsFinInd.BackColor = SystemColors.ButtonHighlight
+        btnDepartmentsFinInd.Location = New Point(681, 4)
+        btnDepartmentsFinInd.Name = "btnDepartmentsFinInd"
+        btnDepartmentsFinInd.Size = New Size(95, 29)
+        btnDepartmentsFinInd.TabIndex = 191
+        btnDepartmentsFinInd.Text = "Departments"
+        btnDepartmentsFinInd.UseVisualStyleBackColor = False
+        ' 
+        ' btnProfileFinInd
+        ' 
+        btnProfileFinInd.BackColor = SystemColors.ButtonHighlight
+        btnProfileFinInd.Location = New Point(636, 4)
+        btnProfileFinInd.Name = "btnProfileFinInd"
+        btnProfileFinInd.Size = New Size(39, 29)
+        btnProfileFinInd.TabIndex = 190
+        btnProfileFinInd.Text = "Profile"
+        btnProfileFinInd.UseVisualStyleBackColor = False
         ' 
         ' Label4
         ' 
@@ -1917,134 +2023,6 @@ Partial Class FinInd
         lblLeaseCostResult.Size = New Size(39, 15)
         lblLeaseCostResult.TabIndex = 108
         lblLeaseCostResult.Text = "Result"
-        ' 
-        ' btnOutpatientFinInd
-        ' 
-        btnOutpatientFinInd.BackColor = SystemColors.ButtonHighlight
-        btnOutpatientFinInd.Location = New Point(1085, 4)
-        btnOutpatientFinInd.Name = "btnOutpatientFinInd"
-        btnOutpatientFinInd.Size = New Size(95, 29)
-        btnOutpatientFinInd.TabIndex = 195
-        btnOutpatientFinInd.Text = "Outp"
-        btnOutpatientFinInd.UseVisualStyleBackColor = False
-        ' 
-        ' GroupBox2
-        ' 
-        GroupBox2.Controls.Add(Label2)
-        GroupBox2.Controls.Add(Label1)
-        GroupBox2.Controls.Add(Label3)
-        GroupBox2.Controls.Add(lblPedFinIndResult)
-        GroupBox2.Controls.Add(lblNumMonthsFinIndResult)
-        GroupBox2.Controls.Add(Label80)
-        GroupBox2.Location = New Point(4, 0)
-        GroupBox2.Name = "GroupBox2"
-        GroupBox2.Size = New Size(626, 99)
-        GroupBox2.TabIndex = 276
-        GroupBox2.TabStop = False
-        GroupBox2.Text = "."
-        ' 
-        ' Label2
-        ' 
-        Label2.AutoSize = True
-        Label2.Location = New Point(6, 45)
-        Label2.Name = "Label2"
-        Label2.Size = New Size(159, 15)
-        Label2.TabIndex = 22
-        Label2.Text = "Number of Months in Period"
-        ' 
-        ' Label1
-        ' 
-        Label1.AutoSize = True
-        Label1.Location = New Point(6, 18)
-        Label1.Name = "Label1"
-        Label1.Size = New Size(108, 15)
-        Label1.TabIndex = 21
-        Label1.Text = "Period Ending Date"
-        ' 
-        ' Label3
-        ' 
-        Label3.AutoSize = True
-        Label3.Location = New Point(6, 75)
-        Label3.Name = "Label3"
-        Label3.Size = New Size(104, 15)
-        Label3.TabIndex = 23
-        Label3.Text = "Cost Report Status"
-        ' 
-        ' lblPedFinIndResult
-        ' 
-        lblPedFinIndResult.AutoSize = True
-        lblPedFinIndResult.Location = New Point(477, 11)
-        lblPedFinIndResult.Name = "lblPedFinIndResult"
-        lblPedFinIndResult.Size = New Size(39, 15)
-        lblPedFinIndResult.TabIndex = 101
-        lblPedFinIndResult.Text = "Result"
-        ' 
-        ' lblNumMonthsFinIndResult
-        ' 
-        lblNumMonthsFinIndResult.AutoSize = True
-        lblNumMonthsFinIndResult.Location = New Point(477, 45)
-        lblNumMonthsFinIndResult.Name = "lblNumMonthsFinIndResult"
-        lblNumMonthsFinIndResult.Size = New Size(39, 15)
-        lblNumMonthsFinIndResult.TabIndex = 102
-        lblNumMonthsFinIndResult.Text = "Result"
-        ' 
-        ' Label80
-        ' 
-        Label80.AutoSize = True
-        Label80.Location = New Point(477, 81)
-        Label80.Name = "Label80"
-        Label80.Size = New Size(39, 15)
-        Label80.TabIndex = 103
-        Label80.Text = "Result"
-        ' 
-        ' btnInpatientFinInd
-        ' 
-        btnInpatientFinInd.BackColor = SystemColors.ButtonHighlight
-        btnInpatientFinInd.Location = New Point(984, 4)
-        btnInpatientFinInd.Name = "btnInpatientFinInd"
-        btnInpatientFinInd.Size = New Size(95, 29)
-        btnInpatientFinInd.TabIndex = 194
-        btnInpatientFinInd.Text = "Inp"
-        btnInpatientFinInd.UseVisualStyleBackColor = False
-        ' 
-        ' btnQualityFinInd
-        ' 
-        btnQualityFinInd.Location = New Point(883, 4)
-        btnQualityFinInd.Name = "btnQualityFinInd"
-        btnQualityFinInd.Size = New Size(95, 29)
-        btnQualityFinInd.TabIndex = 193
-        btnQualityFinInd.Text = "Quality"
-        btnQualityFinInd.UseVisualStyleBackColor = True
-        ' 
-        ' btnFinancialFinInd
-        ' 
-        btnFinancialFinInd.BackColor = SystemColors.ButtonHighlight
-        btnFinancialFinInd.Location = New Point(782, 4)
-        btnFinancialFinInd.Name = "btnFinancialFinInd"
-        btnFinancialFinInd.Size = New Size(95, 29)
-        btnFinancialFinInd.TabIndex = 192
-        btnFinancialFinInd.Text = "Financial"
-        btnFinancialFinInd.UseVisualStyleBackColor = False
-        ' 
-        ' btnDepartmentsFinInd
-        ' 
-        btnDepartmentsFinInd.BackColor = SystemColors.ButtonHighlight
-        btnDepartmentsFinInd.Location = New Point(681, 4)
-        btnDepartmentsFinInd.Name = "btnDepartmentsFinInd"
-        btnDepartmentsFinInd.Size = New Size(95, 29)
-        btnDepartmentsFinInd.TabIndex = 191
-        btnDepartmentsFinInd.Text = "Departments"
-        btnDepartmentsFinInd.UseVisualStyleBackColor = False
-        ' 
-        ' btnProfileFinInd
-        ' 
-        btnProfileFinInd.BackColor = SystemColors.ButtonHighlight
-        btnProfileFinInd.Location = New Point(636, 4)
-        btnProfileFinInd.Name = "btnProfileFinInd"
-        btnProfileFinInd.Size = New Size(39, 29)
-        btnProfileFinInd.TabIndex = 190
-        btnProfileFinInd.Text = "Profile"
-        btnProfileFinInd.UseVisualStyleBackColor = False
         ' 
         ' lblTotLiabilitiesResult3
         ' 
@@ -2236,8 +2214,6 @@ Partial Class FinInd
         GroupBox5.PerformLayout()
         GroupBox4.ResumeLayout(False)
         GroupBox4.PerformLayout()
-        GroupBox3.ResumeLayout(False)
-        GroupBox3.PerformLayout()
         GroupBox2.ResumeLayout(False)
         GroupBox2.PerformLayout()
         GroupBox9.ResumeLayout(False)
@@ -2258,7 +2234,7 @@ Partial Class FinInd
     Friend WithEvents lblTotLiabilitiesResult2 As Label
     Friend WithEvents lblTotAssetsResult4 As Label
     Friend WithEvents Button1 As Button
-    Friend WithEvents GroupBox1 As GroupBox
+    Friend WithEvents GroupBox1 As BoldGroupBox
     Friend WithEvents Label35 As Label
     Friend WithEvents lblDaysCOH As Label
     Friend WithEvents Label37 As Label
@@ -2269,7 +2245,7 @@ Partial Class FinInd
     Friend WithEvents lblMarketSecuritiesResult As Label
     Friend WithEvents lblTotOperatingExpenseFinInd3 As Label
     Friend WithEvents lblDepreciationExpenseResultFinInd As Label
-    Friend WithEvents GroupBox10 As GroupBox
+    Friend WithEvents GroupBox10 As BoldGroupBox
     Friend WithEvents lblTotCurrentLiabilitesResult2 As Label
     Friend WithEvents Label31 As Label
     Friend WithEvents Label33 As Label
@@ -2278,21 +2254,20 @@ Partial Class FinInd
     Friend WithEvents lblQuickRatioResult As Label
     Friend WithEvents lblTotCurrentAssetsResult2 As Label
     Friend WithEvents lblInventoryResult As Label
-    Friend WithEvents GroupBox9 As GroupBox
     Friend WithEvents lblTotCurrentLiabilitiesResult As Label
     Friend WithEvents Label27 As Label
     Friend WithEvents Label30 As Label
     Friend WithEvents Label29 As Label
     Friend WithEvents lblCurrentRatioResult As Label
     Friend WithEvents lblTotCurrentAssetsResult As Label
-    Friend WithEvents GroupBox8 As GroupBox
+    Friend WithEvents GroupBox8 As BoldGroupBox
     Friend WithEvents lblNetIncomeResult2 As Label
     Friend WithEvents Label25 As Label
     Friend WithEvents Label28 As Label
     Friend WithEvents Label26 As Label
     Friend WithEvents lblRoaResult As Label
     Friend WithEvents lblTotAssetsResult2 As Label
-    Friend WithEvents GroupBox7 As GroupBox
+    Friend WithEvents GroupBox7 As BoldGroupBox
     Friend WithEvents Label23 As Label
     Friend WithEvents Label21 As Label
     Friend WithEvents Label22 As Label
@@ -2301,7 +2276,7 @@ Partial Class FinInd
     Friend WithEvents lblNetIncomeResult As Label
     Friend WithEvents lblTotAssetsResult As Label
     Friend WithEvents lblTotLiabilitiesResult As Label
-    Friend WithEvents GroupBox6 As GroupBox
+    Friend WithEvents GroupBox6 As BoldGroupBox
     Friend WithEvents Label19 As Label
     Friend WithEvents Label16 As Label
     Friend WithEvents Label17 As Label
@@ -2312,7 +2287,7 @@ Partial Class FinInd
     Friend WithEvents lblContractLaborResult As Label
     Friend WithEvents lblFringeBenefitsResult As Label
     Friend WithEvents lblTotOperatingRevResult3 As Label
-    Friend WithEvents GroupBox5 As GroupBox
+    Friend WithEvents GroupBox5 As BoldGroupBox
     Friend WithEvents Label15 As Label
     Friend WithEvents Label12 As Label
     Friend WithEvents Label13 As Label
@@ -2321,14 +2296,14 @@ Partial Class FinInd
     Friend WithEvents lblTotOperatingRevenueFinInd2 As Label
     Friend WithEvents lblTotOperatingExpenseFinInd2 As Label
     Friend WithEvents lblNoRFinIndResult As Label
-    Friend WithEvents GroupBox4 As GroupBox
+    Friend WithEvents GroupBox4 As BoldGroupBox
     Friend WithEvents Label9 As Label
     Friend WithEvents Label10 As Label
     Friend WithEvents Label11 As Label
     Friend WithEvents lblOperatingMarginFinIndResult As Label
     Friend WithEvents lblTotOperatingRevFinIndResult As Label
     Friend WithEvents lblTotOperatingExpenseFinIndResult As Label
-    Friend WithEvents GroupBox3 As GroupBox
+
     Friend WithEvents Label4 As Label
     Friend WithEvents ToolTip1 As ToolTip
     Friend WithEvents Label5 As Label
@@ -2371,7 +2346,7 @@ Partial Class FinInd
     Friend WithEvents lblCashonHandResult As Label
     Friend WithEvents Label118 As Label
     Friend WithEvents btnOutpatientFinInd As Button
-    Friend WithEvents GroupBox2 As GroupBox
+    Friend WithEvents GroupBox2 As BoldGroupBox
     Friend WithEvents Label2 As Label
     Friend WithEvents Label1 As Label
     Friend WithEvents Label3 As Label
@@ -2425,21 +2400,22 @@ Partial Class FinInd
     Friend WithEvents ToolTip4 As ToolTip
     Friend WithEvents ToolTip2 As ToolTip
     Friend WithEvents ToolTip3 As ToolTip
-    Friend WithEvents GroupBox13 As GroupBox
-    Friend WithEvents GroupBox12 As GroupBox
-    Friend WithEvents GroupBox11 As GroupBox
-    Friend WithEvents GroupBox17 As GroupBox
-    Friend WithEvents GroupBox16 As GroupBox
-    Friend WithEvents GroupBox15 As GroupBox
-    Friend WithEvents GroupBox14 As GroupBox
-    Friend WithEvents GroupBox18 As GroupBox
-    Friend WithEvents GroupBox19 As GroupBox
-    Friend WithEvents GroupBox20 As GroupBox
+    Friend WithEvents GroupBox13 As BoldGroupBox
+    Friend WithEvents GroupBox12 As BoldGroupBox
+    Friend WithEvents GroupBox11 As BoldGroupBox
+    Friend WithEvents GroupBox17 As BoldGroupBox
+    Friend WithEvents GroupBox16 As BoldGroupBox
+    Friend WithEvents GroupBox15 As BoldGroupBox
+    Friend WithEvents GroupBox14 As BoldGroupBox
+    Friend WithEvents GroupBox18 As BoldGroupBox
+    Friend WithEvents GroupBox19 As BoldGroupBox
+    Friend WithEvents GroupBox20 As BoldGroupBox
     Friend WithEvents lblTotCurrentLiabilities10 As Label
     Friend WithEvents lblTotCurrentAssets10 As Label
     Friend WithEvents Label82 As Label
     Friend WithEvents Label79 As Label
     Friend WithEvents dgvfinancialsummary As DataGridView
     Friend WithEvents dgvEbitdar As DataGridView
+    Friend WithEvents GroupBox9 As BoldGroupBox
 
 End Class

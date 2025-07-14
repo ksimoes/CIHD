@@ -260,8 +260,33 @@ Public Class FinInd
 
 
     Private Sub finind_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        Me.Size = New Size(900, 1500) ' or whatever you want
-        Me.MaximumSize = New Size(0, 0) ' unlimited
+        ' Me.Size = New Size(900, 1500) ' or whatever you want
+        '  Me.MaximumSize = New Size(0, 0) ' unlimited
+
+
+        ' Create a new BoldGroupBox
+        Dim boldGb As New BoldGroupBox With {
+            .Text = ".",
+            .Location = New Point(4, 108),    ' Use the same location as GroupBox3
+            .Size = New Size(626, 153),       ' Use the same size as GroupBox3
+            .BackColor = Color.LightGray
+        }
+
+        ' Add the relevant controls to the new BoldGroupBox
+        boldGb.Controls.Add(Label4)   ' "EBITDAR - (Earnings before Interest, Taxes, Depreciation, Amortization, and Rent)"
+        boldGb.Controls.Add(Label5)   ' "Net Income (Before Taxes)"
+        boldGb.Controls.Add(Label6)   ' "Interest Expense"
+        boldGb.Controls.Add(Label7)   ' "Depreciation and Amortization Expense"
+        boldGb.Controls.Add(Label8)   ' "Lease Cost"
+        boldGb.Controls.Add(lblEbitResult)
+        boldGb.Controls.Add(lblNetIncomeFinIndResult)
+        boldGb.Controls.Add(lblInterestExpenseFinIndResult)
+        boldGb.Controls.Add(lblDepAmortExpenseResult)
+        boldGb.Controls.Add(lblLeaseCostResult)
+        ' Add other labels as needed
+
+        ' Add the new BoldGroupBox to the form
+        Panel1.Controls.Add(boldGb)
 
 
         ' Test Financial Summary Grid
@@ -353,6 +378,10 @@ Public Class FinInd
     End Sub
 
     Private Sub dgvfinancialsummary_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvfinancialsummary.CellContentClick
+
+    End Sub
+
+    Private Sub Label2_Click(sender As Object, e As EventArgs) Handles Label2.Click
 
     End Sub
 End Class

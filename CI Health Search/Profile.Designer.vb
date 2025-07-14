@@ -100,6 +100,7 @@ Partial Class Profile
         lblCooResult = New Label()
         lblPurchasingMatResult = New Label()
         Panel1 = New Panel()
+        btnyk = New Button()
         GroupBox2 = New GroupBox()
         Label3 = New Label()
         GroupBox1 = New GroupBox()
@@ -930,6 +931,7 @@ Partial Class Profile
         ' Panel1
         ' 
         Panel1.AutoScroll = True
+        Panel1.Controls.Add(btnyk)
         Panel1.Controls.Add(GroupBox2)
         Panel1.Controls.Add(GroupBox1)
         Panel1.Controls.Add(DataGridView4)
@@ -951,6 +953,15 @@ Partial Class Profile
         Panel1.Name = "Panel1"
         Panel1.Size = New Size(1065, 2000)
         Panel1.TabIndex = 81
+        ' 
+        ' btnyk
+        ' 
+        btnyk.Location = New Point(665, 247)
+        btnyk.Name = "btnyk"
+        btnyk.Size = New Size(134, 87)
+        btnyk.TabIndex = 93
+        btnyk.Text = "yk"
+        btnyk.UseVisualStyleBackColor = True
         ' 
         ' GroupBox2
         ' 
@@ -1364,5 +1375,6 @@ Partial Class Profile
     Friend WithEvents Column6 As DataGridViewTextBoxColumn
     Friend WithEvents GroupBox2 As GroupBox
     Friend WithEvents GroupBox1 As GroupBox
+    Friend WithEvents btnyk As Button
 
 End Class

@@ -99,7 +99,9 @@ Public Class Profile
             'lblTotalDischargesResult.Text = If(provider("Total Discharges Title V") IsNot Nothing, provider("Total Discharges Title V").ToString(), "N/A")
             lblTotalPatientRevenueResult.Text = If(provider("Total Patient Revenue") IsNot Nothing, provider("Total Patient Revenue").ToString(), "N/A")
             lblTypeControlResult.Text = If(provider("Type of Control") IsNot Nothing, provider("Type of Control").ToString(), "N/A")
+            lblZipCodeResult.Text = If(provider("Zip Code") IsNot Nothing, provider("Zip Code").ToString(), "N/A")
             'lblCmsUrbRurDesigResult.Text = If(provider("Rural Versus Urban") IsNot Nothing, provider("Rural Versus Urban").ToString(), "N/A")
+            lblTotalPatientDaysResult.Text = If(provider("Hospital Total Days (V + XVIII + XIX + Unknown) For Adults & Peds ") IsNot Nothing, provider("Hospital Total Days (V + XVIII + XIX + Unknown) For Adults & Peds ").ToString(), "N/A")
 
         Else
             lblCmsCertNumProfileResult.Text = "No result"
@@ -111,6 +113,7 @@ Public Class Profile
             lblTotalEmployeesResult.Text = "No result"
             lblTotalDischargesResult.Text = "No result"
             lblCmsUrbRurDesigResult.Text = "No result"
+            lblZipCodeResult.Text = "No result"
 
         End If
         'Else
@@ -207,5 +210,10 @@ Public Class Profile
 
     Private Sub DataGridView1_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles DataGridView1.CellContentClick
 
+    End Sub
+
+    Private Sub btnpoo_Click(sender As Object, e As EventArgs) Handles btnyk.Click
+        Me.Hide()
+        yk.Show()
     End Sub
 End Class
