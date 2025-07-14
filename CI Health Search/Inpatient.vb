@@ -8,6 +8,7 @@ Public Class Inpatient
     Dim strURLPatientOrigin2019 As String = "https://data.cms.gov/data-api/v1/dataset/2713ba99-c59e-4b25-9a3d-3661d35988da/data"
     Dim strURLPatientOrigin2023 As String = "https://data.cms.gov/data-api/v1/dataset/7f749f00-bfa9-4377-9a98-90c15cacc2f3/data"
     Dim strUrlCeoApi As String = "https://data.cms.gov/data-api/v1/dataset/029c119f-f79c-49be-9100-344d31d10344/data"
+    Dim strUrlNewApi As String = "https://data.cms.gov/data-api/v1/dataset/690ddc6c-2767-4618-b277-420ffb2bf27c/data"
 
     ' Call this method to load data into the DataGridView
     Public Async Function LoadPatientOriginDataAsync(myHospital As HospitalContext) As Task
@@ -109,7 +110,44 @@ Public Class Inpatient
         dgvCeo.DataSource = dtMasterCeo
     End Function
 
+    Public Async Function LoadNewApiDataAsync(apiUrl As String) As Task
+        Dim rawDt As DataTable = Await GetTablefromAPI(apiUrl)
+        Dim dtCustom As New DataTable()
 
+
+        ' Customize columns
+        dtCustom.Columns.Add("Provider Name")
+        dtCustom.Columns.Add("DRG Description")
+        dtCustom.Columns.Add("Avg Charge")
+        dtCustom.Columns.Add("Avg Cost")
+        dtCustom.Columns.Add("Avg Payment")
+
+        For Each row As DataRow In rawDt.Rows
+            dtCustom.Rows.Add(
+            row("Rndrng_Prvdr_Org_Name").ToString(),
+            row("DRG_Desc").ToString(),
+            row("Avg_Submtd_Cvrd_chrg").ToString(),
+            row("Avg_Tot_Pymt_Amt").ToString())
+            row("Avg_Mdcr_Pymt_Amt").ToString()
+
+        Next
+
+        dgvNewApiTable.DataSource = dtCustom
+        FormatNewApiTable()
+    End Function
+
+    Private Sub FormatNewApiTable()
+        With dgvNewApiTable
+            .AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
+            .ColumnHeadersDefaultCellStyle.Font = New Font("Segoe UI", 10, FontStyle.Bold)
+            .AlternatingRowsDefaultCellStyle.BackColor = Color.LightGray
+            .DefaultCellStyle.Font = New Font("Segoe UI", 10)
+            .ReadOnly = True
+            .AllowUserToAddRows = False
+            .AllowUserToDeleteRows = False
+            .RowHeadersVisible = False
+        End With
+    End Sub
     Public Async Function GetTablefromAPI(strAPI As String) As Task(Of DataTable)
         Dim dt As New DataTable()
         Using client As New HttpClient()
@@ -182,6 +220,11 @@ Public Class Inpatient
     Private Async Sub Inpatient_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Await LoadPatientOriginDataAsync(Results.SelectedHospital)
         Await LoadCeoDataAsync(Results.SelectedHospital)
+        Dim apiUrl As String = strUrlNewApi & "?filter[Rndrng_Prvdr_CCN]=" & Results.SelectedHospital.CMSNum
+        Await LoadNewApiDataAsync(apiUrl) ' <-- Use the filtered URL here!
     End Sub
 
+    Private Sub DataGridView1_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvNewApiTable.CellContentClick
+
+    End Sub
 End Class

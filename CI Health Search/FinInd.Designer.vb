@@ -296,9 +296,9 @@ Partial Class FinInd
         GroupBox20.Controls.Add(lblTotCurrentAssets10)
         GroupBox20.Controls.Add(Label82)
         GroupBox20.Controls.Add(Label79)
-        GroupBox20.Location = New Point(0, 909)
+        GroupBox20.Location = New Point(2, 909)
         GroupBox20.Name = "GroupBox20"
-        GroupBox20.Size = New Size(630, 110)
+        GroupBox20.Size = New Size(628, 110)
         GroupBox20.TabIndex = 293
         GroupBox20.TabStop = False
         GroupBox20.Text = "."
@@ -605,9 +605,9 @@ Partial Class FinInd
         GroupBox15.Controls.Add(lblTotOperatingRevResult4)
         GroupBox15.Controls.Add(Label137)
         GroupBox15.Controls.Add(lblInventoryResult2)
-        GroupBox15.Location = New Point(6, 1870)
+        GroupBox15.Location = New Point(3, 1870)
         GroupBox15.Name = "GroupBox15"
-        GroupBox15.Size = New Size(624, 113)
+        GroupBox15.Size = New Size(627, 113)
         GroupBox15.TabIndex = 289
         GroupBox15.TabStop = False
         GroupBox15.Text = "."
@@ -939,9 +939,9 @@ Partial Class FinInd
         GroupBox12.Controls.Add(lblAccountsRecievableResult)
         GroupBox12.Controls.Add(lblAllowforUncollectRes2)
         GroupBox12.Controls.Add(lblTotOperatingRevResult6)
-        GroupBox12.Location = New Point(6, 1450)
+        GroupBox12.Location = New Point(2, 1450)
         GroupBox12.Name = "GroupBox12"
-        GroupBox12.Size = New Size(624, 122)
+        GroupBox12.Size = New Size(628, 122)
         GroupBox12.TabIndex = 286
         GroupBox12.TabStop = False
         GroupBox12.Text = "."
@@ -1035,9 +1035,9 @@ Partial Class FinInd
         GroupBox11.Controls.Add(lblDepreciationExpenseResultFinInd2)
         GroupBox11.Controls.Add(lblTotOperatingExpenseFinInd4)
         GroupBox11.Controls.Add(lblInvestmentsResultFinInd)
-        GroupBox11.Location = New Point(6, 1280)
+        GroupBox11.Location = New Point(2, 1280)
         GroupBox11.Name = "GroupBox11"
-        GroupBox11.Size = New Size(624, 170)
+        GroupBox11.Size = New Size(628, 170)
         GroupBox11.TabIndex = 285
         GroupBox11.TabStop = False
         GroupBox11.Text = "."
@@ -1173,9 +1173,9 @@ Partial Class FinInd
         GroupBox1.Controls.Add(lblMarketSecuritiesResult)
         GroupBox1.Controls.Add(lblTotOperatingExpenseFinInd3)
         GroupBox1.Controls.Add(lblDepreciationExpenseResultFinInd)
-        GroupBox1.Location = New Point(6, 1119)
+        GroupBox1.Location = New Point(2, 1119)
         GroupBox1.Name = "GroupBox1"
-        GroupBox1.Size = New Size(624, 165)
+        GroupBox1.Size = New Size(628, 165)
         GroupBox1.TabIndex = 275
         GroupBox1.TabStop = False
         GroupBox1.Text = "."
@@ -1284,9 +1284,9 @@ Partial Class FinInd
         GroupBox10.Controls.Add(lblQuickRatioResult)
         GroupBox10.Controls.Add(lblTotCurrentAssetsResult2)
         GroupBox10.Controls.Add(lblInventoryResult)
-        GroupBox10.Location = New Point(6, 1025)
+        GroupBox10.Location = New Point(2, 1025)
         GroupBox10.Name = "GroupBox10"
-        GroupBox10.Size = New Size(624, 94)
+        GroupBox10.Size = New Size(628, 94)
         GroupBox10.TabIndex = 284
         GroupBox10.TabStop = False
         GroupBox10.Text = "."

@@ -48,12 +48,14 @@ Partial Class Inpatient
         Label18 = New Label()
         Label17 = New Label()
         Button1 = New Button()
+        dgvNewApiTable = New DataGridView()
         gbKeyAttending.SuspendLayout()
         CType(dgvCeo, ComponentModel.ISupportInitialize).BeginInit()
         gbPatientOrigin.SuspendLayout()
         CType(dgvPatientOrigin, ComponentModel.ISupportInitialize).BeginInit()
         gbTrendReport.SuspendLayout()
         gbStatsforTop20BaseMsdrg.SuspendLayout()
+        CType(dgvNewApiTable, ComponentModel.ISupportInitialize).BeginInit()
         SuspendLayout()
         ' 
         ' btnOutpatientInpatient
@@ -210,9 +212,9 @@ Partial Class Inpatient
         gbStatsforTop20BaseMsdrg.Controls.Add(Label19)
         gbStatsforTop20BaseMsdrg.Controls.Add(Label18)
         gbStatsforTop20BaseMsdrg.Controls.Add(Label17)
-        gbStatsforTop20BaseMsdrg.Location = New Point(12, 645)
+        gbStatsforTop20BaseMsdrg.Location = New Point(1391, 669)
         gbStatsforTop20BaseMsdrg.Name = "gbStatsforTop20BaseMsdrg"
-        gbStatsforTop20BaseMsdrg.Size = New Size(1130, 322)
+        gbStatsforTop20BaseMsdrg.Size = New Size(134, 144)
         gbStatsforTop20BaseMsdrg.TabIndex = 23
         gbStatsforTop20BaseMsdrg.TabStop = False
         gbStatsforTop20BaseMsdrg.Text = "Stats for Top 20 Base MS-DRGs"
@@ -316,11 +318,20 @@ Partial Class Inpatient
         Button1.Text = "Return to Search"
         Button1.UseVisualStyleBackColor = True
         ' 
+        ' dgvNewApiTable
+        ' 
+        dgvNewApiTable.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        dgvNewApiTable.Location = New Point(12, 685)
+        dgvNewApiTable.Name = "dgvNewApiTable"
+        dgvNewApiTable.Size = New Size(809, 364)
+        dgvNewApiTable.TabIndex = 25
+        ' 
         ' Inpatient
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(1537, 1061)
+        Controls.Add(dgvNewApiTable)
         Controls.Add(Button1)
         Controls.Add(gbStatsforTop20BaseMsdrg)
         Controls.Add(gbTrendReport)
@@ -343,6 +354,7 @@ Partial Class Inpatient
         gbTrendReport.PerformLayout()
         gbStatsforTop20BaseMsdrg.ResumeLayout(False)
         gbStatsforTop20BaseMsdrg.PerformLayout()
+        CType(dgvNewApiTable, ComponentModel.ISupportInitialize).EndInit()
         ResumeLayout(False)
     End Sub
 
@@ -372,4 +384,5 @@ Partial Class Inpatient
     Friend WithEvents Label20 As Label
     Friend WithEvents dgvPatientOrigin As DataGridView
     Friend WithEvents dgvCeo As DataGridView
+    Friend WithEvents dgvNewApiTable As DataGridView
 End Class
