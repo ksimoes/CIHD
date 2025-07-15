@@ -127,9 +127,9 @@ Public Class Inpatient
             row("Rndrng_Prvdr_Org_Name").ToString(),
             row("DRG_Desc").ToString(),
             row("Avg_Submtd_Cvrd_chrg").ToString(),
-            row("Avg_Tot_Pymt_Amt").ToString())
+            row("Avg_Tot_Pymt_Amt").ToString(),
             row("Avg_Mdcr_Pymt_Amt").ToString()
-
+            )
         Next
 
         dgvNewApiTable.DataSource = dtCustom

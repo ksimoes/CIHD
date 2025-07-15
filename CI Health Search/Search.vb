@@ -1,6 +1,5 @@
 ﻿Imports System.Data.SqlClient
 Imports System.Net.Http
-Imports Google.Apis.Requests
 Imports Newtonsoft.Json.Linq
 
 Public Class Search
@@ -8,12 +7,9 @@ Public Class Search
     Public Shared SearchHospital As New HospitalContext()
 
     Public Function useSQL(ByRef selectedState As String) As Boolean
-        ' Determine if SQL should be used based on the selected state
         Using conn As New SqlConnection(connectionString)
             Using cmd As New SqlCommand("Select UseSql from dbo.States Where StateCode = '" + selectedState + "'", conn)
-                'Dim da As New SqlDataAdapter(cmd)
                 conn.Open()
-
                 Return cmd.ExecuteScalar()
             End Using
         End Using
@@ -37,42 +33,44 @@ Public Class Search
         End If
     End Function
 
-    Public Function CleanMeUp(strMydata As String, Optional ByRef isNumber As Boolean = False) As String
+    Public Function CleanMeUp(strMydata As Object, Optional ByRef isNumber As Boolean = False) As String
         If strMydata Is Nothing Then
-            Select Case isNumber
-                Case True
-                    Return 0
-                Case False
-                    Return "N/A"
-            End Select
-            Return ""
-        End If
-        If (strMydata Is Nothing) Or String.IsNullOrEmpty(strMydata) Or strMydata.Length = 0 Or strMydata = "Result" Or strMydata = "N/A" Then
-            If isNumber = True Then
-                Return 0
+            If isNumber Then
+                Return "0"
             Else
                 Return "N/A"
             End If
-        ElseIf isNumber = True Then
-            Return CDec(strMydata).ToString("N")
-        Else
-            Return strMydata.ToString
         End If
-        'Return String.IsNullOrEmpty(strMydata) Or strMydata.Length = 0 OrElse strMydata.Trim() = ""
+
+        Dim strVal As String = strMydata.ToString().Trim()
+        If String.IsNullOrEmpty(strVal) OrElse strVal = "Result" OrElse strVal = "N/A" Then
+            If isNumber Then
+                Return "0"
+            Else
+                Return "N/A"
+            End If
+        End If
+
+        If isNumber Then
+            Dim dec As Decimal
+            If Decimal.TryParse(strVal.Replace("$", "").Replace(",", ""), dec) Then
+                Return dec.ToString("N")
+            Else
+                Return "0"
+            End If
+        Else
+            Return strVal
+        End If
     End Function
 
     Private Async Sub btnSearchAll_Click(sender As Object, e As EventArgs) Handles btnSearchAll.Click
-        ' Declare filters and parameters at the top so they are always in scope
         Dim filters As New List(Of String)
         Dim parameters As New List(Of SqlParameter)
 
-        ' Get selected state from ListBox
         Dim selectedState As String = ""
         If lbStateAll.SelectedItem IsNot Nothing Then
             selectedState = lbStateAll.SelectedItem.ToString().Trim()
         End If
-
-        'Dim useSql As Boolean = (selectedState = "TN" Or selectedState = "TX") ' Adjust for your states with SQL data
 
         If useSQL(selectedState) Then
             ' --- SQL Search ---
@@ -93,12 +91,12 @@ Public Class Search
             '    parameters.Add(New SqlParameter("@Beds", txtBeds.Text.Trim()))
             'End If
             'If Not String.IsNullOrEmpty(txtCmsCertNumDemoAll.Text) Then
-            'fil'ters.Add("CMSNum = @CMSNum")
-            'parameters.Add(New SqlParameter("@CMSNum", txtCmsCertNumDemoAll.Text.Trim()))
+            '    filters.Add("CMSNum = @CMSNum")
+            '    parameters.Add(New SqlParameter("@CMSNum", txtCmsCertNumDemoAll.Text.Trim()))
             'End If
             'If Not String.IsNullOrEmpty(txtNpiAll.Text) Then
-            'fil'ters.Add("NPI = @NPI")
-            'parameters.Add(New SqlParameter("@NPI", txtNpiAll.Text.Trim()))
+            '    filters.Add("NPI = @NPI")
+            '    parameters.Add(New SqlParameter("@NPI", txtNpiAll.Text.Trim()))
             'End If
             ' Add more filters as needed
 
@@ -108,7 +106,7 @@ Public Class Search
             ElseIf selectedState = "TX" Then
                 query = "SELECT id AS LicenseNum, [Facility Name], State, City, County FROM tx.Utilization WHERE 1=1"
             Else
-                query = "" ' Should not happen
+                query = ""
             End If
 
             If filters.Count > 0 Then
@@ -203,19 +201,14 @@ Public Class Search
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         lbStateAll.ClearSelected()
         txtCityAll.Clear()
-
-
         txtCmsCertNumDemoAll.Clear()
         txtNpiAll.Clear()
         txtHospitalNameAll.Clear()
         txtAreaCodeAll.Clear()
-
         txtZipCodeDemoAll.Clear()
         txtMaxTotalBedsAll.Clear()
         txtMinTotalBedsAll.Clear()
         txtNpiAll.Clear()
-
-
     End Sub
 
     Public Function GetAPIArray(strAPIurl As String) As JArray
@@ -233,4 +226,3 @@ Public Class Search
 
     End Sub
 End Class
-

@@ -949,7 +949,7 @@ Partial Class FinInd
         ' Label47
         ' 
         Label47.AutoSize = True
-        Label47.Location = New Point(3, 98)
+        Label47.Location = New Point(16, 98)
         Label47.Name = "Label47"
         Label47.Size = New Size(249, 15)
         Label47.TabIndex = 205
@@ -968,7 +968,7 @@ Partial Class FinInd
         ' Label48
         ' 
         Label48.AutoSize = True
-        Label48.Location = New Point(6, 47)
+        Label48.Location = New Point(15, 47)
         Label48.Name = "Label48"
         Label48.Size = New Size(116, 15)
         Label48.TabIndex = 203
@@ -977,7 +977,7 @@ Partial Class FinInd
         ' Label46
         ' 
         Label46.AutoSize = True
-        Label46.Location = New Point(3, 73)
+        Label46.Location = New Point(15, 73)
         Label46.Name = "Label46"
         Label46.Size = New Size(157, 15)
         Label46.TabIndex = 204
@@ -1304,7 +1304,7 @@ Partial Class FinInd
         ' 
         Label31.AutoSize = True
         Label31.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
-        Label31.Location = New Point(3, 19)
+        Label31.Location = New Point(3, 10)
         Label31.Name = "Label31"
         Label31.Size = New Size(71, 15)
         Label31.TabIndex = 52
@@ -1313,7 +1313,7 @@ Partial Class FinInd
         ' Label33
         ' 
         Label33.AutoSize = True
-        Label33.Location = New Point(4, 52)
+        Label33.Location = New Point(4, 43)
         Label33.Name = "Label33"
         Label33.Size = New Size(112, 15)
         Label33.TabIndex = 53
@@ -1331,7 +1331,7 @@ Partial Class FinInd
         ' Label34
         ' 
         Label34.AutoSize = True
-        Label34.Location = New Point(5, 76)
+        Label34.Location = New Point(5, 67)
         Label34.Name = "Label34"
         Label34.Size = New Size(57, 15)
         Label34.TabIndex = 55
@@ -1341,7 +1341,7 @@ Partial Class FinInd
         ' 
         lblQuickRatioResult.AutoSize = True
         lblQuickRatioResult.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
-        lblQuickRatioResult.Location = New Point(474, 19)
+        lblQuickRatioResult.Location = New Point(474, 10)
         lblQuickRatioResult.Name = "lblQuickRatioResult"
         lblQuickRatioResult.Size = New Size(42, 15)
         lblQuickRatioResult.TabIndex = 131
@@ -1350,7 +1350,7 @@ Partial Class FinInd
         ' lblTotCurrentAssetsResult2
         ' 
         lblTotCurrentAssetsResult2.AutoSize = True
-        lblTotCurrentAssetsResult2.Location = New Point(474, 52)
+        lblTotCurrentAssetsResult2.Location = New Point(474, 43)
         lblTotCurrentAssetsResult2.Name = "lblTotCurrentAssetsResult2"
         lblTotCurrentAssetsResult2.Size = New Size(39, 15)
         lblTotCurrentAssetsResult2.TabIndex = 132
@@ -1359,7 +1359,7 @@ Partial Class FinInd
         ' lblInventoryResult
         ' 
         lblInventoryResult.AutoSize = True
-        lblInventoryResult.Location = New Point(474, 79)
+        lblInventoryResult.Location = New Point(474, 70)
         lblInventoryResult.Name = "lblInventoryResult"
         lblInventoryResult.Size = New Size(39, 15)
         lblInventoryResult.TabIndex = 133
@@ -1383,7 +1383,7 @@ Partial Class FinInd
         ' lblNetIncomeResult2
         ' 
         lblNetIncomeResult2.AutoSize = True
-        lblNetIncomeResult2.Location = New Point(478, 43)
+        lblNetIncomeResult2.Location = New Point(477, 33)
         lblNetIncomeResult2.Name = "lblNetIncomeResult2"
         lblNetIncomeResult2.Size = New Size(39, 15)
         lblNetIncomeResult2.TabIndex = 126
@@ -1393,7 +1393,7 @@ Partial Class FinInd
         ' 
         Label25.AutoSize = True
         Label25.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
-        Label25.Location = New Point(8, 18)
+        Label25.Location = New Point(8, 9)
         Label25.Name = "Label25"
         Label25.Size = New Size(101, 15)
         Label25.TabIndex = 45
@@ -1402,7 +1402,7 @@ Partial Class FinInd
         ' Label28
         ' 
         Label28.AutoSize = True
-        Label28.Location = New Point(8, 43)
+        Label28.Location = New Point(8, 34)
         Label28.Name = "Label28"
         Label28.Size = New Size(129, 15)
         Label28.TabIndex = 46
@@ -1411,7 +1411,7 @@ Partial Class FinInd
         ' Label26
         ' 
         Label26.AutoSize = True
-        Label26.Location = New Point(8, 68)
+        Label26.Location = New Point(8, 59)
         Label26.Name = "Label26"
         Label26.Size = New Size(69, 15)
         Label26.TabIndex = 48
@@ -1421,7 +1421,7 @@ Partial Class FinInd
         ' 
         lblRoaResult.AutoSize = True
         lblRoaResult.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
-        lblRoaResult.Location = New Point(478, 18)
+        lblRoaResult.Location = New Point(476, 9)
         lblRoaResult.Name = "lblRoaResult"
         lblRoaResult.Size = New Size(42, 15)
         lblRoaResult.TabIndex = 125
@@ -1430,7 +1430,7 @@ Partial Class FinInd
         ' lblTotAssetsResult2
         ' 
         lblTotAssetsResult2.AutoSize = True
-        lblTotAssetsResult2.Location = New Point(478, 68)
+        lblTotAssetsResult2.Location = New Point(477, 57)
         lblTotAssetsResult2.Name = "lblTotAssetsResult2"
         lblTotAssetsResult2.Size = New Size(39, 15)
         lblTotAssetsResult2.TabIndex = 127

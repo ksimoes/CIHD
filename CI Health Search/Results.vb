@@ -13,10 +13,16 @@
         CheckedListBox1.Items.Clear()
         ' Determine which column to use for display
         Dim displayCol As String = ""
-        If dt.Columns.Contains("Facility Name") Then
-            displayCol = "Facility Name"
+        If dt.Columns.Contains("facility_name") Then
+            displayCol = "facility_name"
+        ElseIf dt.Columns.Contains("provider_name") Then
+            displayCol = "provider_name"
+        ElseIf dt.Columns.Contains("Rndrng_Prvdr_Org_Name") Then
+            displayCol = "Rndrng_Prvdr_Org_Name"
         ElseIf dt.Columns.Contains("Hospital Name") Then
             displayCol = "Hospital Name"
+        ElseIf dt.Columns.Contains("Facility Name") Then
+            displayCol = "Facility Name"
         ElseIf dt.Columns.Count > 0 Then
             displayCol = dt.Columns(0).ColumnName ' fallback
         End If
@@ -66,6 +72,7 @@
             selectedRow = resultsTable.Select($"[Facility Name] = '{selectedName.Replace("'", "''")}'").FirstOrDefault()
         ElseIf resultsTable.Columns.Contains("Hospital Name") Then
             selectedRow = resultsTable.Select($"[Hospital Name] = '{selectedName.Replace("'", "''")}'").FirstOrDefault()
+
             SelectedHospital.CMSNum = Search.CleanMeUp(selectedRow(1))
             SelectedHospital.State = selectedRow(5)
             SelectedHospital.Name = Search.CleanMeUp(selectedRow(2))
