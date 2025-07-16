@@ -82,22 +82,8 @@ Public Class Search
                 filters.Add("City = @City")
                 parameters.Add(New SqlParameter("@City", txtCityAll.Text.Trim()))
             End If
-            'If Not String.IsNullOrEmpty(txtCountyAll.Text) Then
-            '    filters.Add("County = @County")
-            '    parameters.Add(New SqlParameter("@County", txtCountyAll.Text.Trim()))
-            'End If
-            'If Not String.IsNullOrEmpty(txtBeds.Text) Then
-            '    filters.Add("Beds = @Beds")
-            '    parameters.Add(New SqlParameter("@Beds", txtBeds.Text.Trim()))
-            'End If
-            'If Not String.IsNullOrEmpty(txtCmsCertNumDemoAll.Text) Then
-            '    filters.Add("CMSNum = @CMSNum")
-            '    parameters.Add(New SqlParameter("@CMSNum", txtCmsCertNumDemoAll.Text.Trim()))
-            'End If
-            'If Not String.IsNullOrEmpty(txtNpiAll.Text) Then
-            '    filters.Add("NPI = @NPI")
-            '    parameters.Add(New SqlParameter("@NPI", txtNpiAll.Text.Trim()))
-            'End If
+
+
             ' Add more filters as needed
 
             Dim query As String
@@ -144,6 +130,15 @@ Public Class Search
         If Not String.IsNullOrEmpty(txtCmsCertNumDemoAll.Text) Then filters.Add("keyword=" & Uri.EscapeDataString(txtCmsCertNumDemoAll.Text.Trim()))
         If Not String.IsNullOrEmpty(txtNpiAll.Text) Then filters.Add("keyword=" & Uri.EscapeDataString(txtNpiAll.Text.Trim()))
         If Not String.IsNullOrEmpty(txtHospitalNameAll.Text) Then filters.Add("keyword=" & Uri.EscapeDataString(txtHospitalNameAll.Text.Trim()))
+        If cbRUAll.SelectedItem IsNot Nothing AndAlso Not String.IsNullOrEmpty(cbRUAll.SelectedItem.ToString()) Then
+            filters.Add("keyword=" & Uri.EscapeDataString(cbRUAll.SelectedItem.ToString()))
+        End If
+        If Not String.IsNullOrEmpty(txtMinTotPatRevAll.Text) Then
+            filters.Add("keyword=" & Uri.EscapeDataString(txtMinTotPatRevAll.Text))
+        End If
+        If Not String.IsNullOrEmpty(txtMaxTotPatRevAll.Text) Then
+            filters.Add("keyword=" & Uri.EscapeDataString(txtMaxTotPatRevAll.Text))
+        End If
         ' Add more keyword filters as needed
 
         filters.Add("size=1000") ' Increase size as needed
@@ -183,6 +178,60 @@ Public Class Search
                     End If
                     If Not String.IsNullOrEmpty(txtNpiAll.Text) AndAlso dt.Columns.Contains("NPI") Then
                         dt = dt.Select($"[NPI] = '{txtNpiAll.Text.Trim()}'").CopyToDataTable()
+                    End If
+                    If cbRUAll.SelectedItem IsNot Nothing AndAlso dt.Columns.Contains("Rural Versus Urban") Then
+                        Dim filteredRows = dt.Select($"[Rural Versus Urban] = '{cbRUAll.SelectedItem.ToString()}'")
+                        If filteredRows.Length > 0 Then
+                            dt = filteredRows.CopyToDataTable()
+                        Else
+                            dt = dt.Clone() ' Empty table with same schema
+                        End If
+                    End If
+
+                    ' --- Debug: Check DataTable before filtering ---
+                    If dt.Columns.Contains("Total Patient Revenue") Then
+                        ' Show all values before filtering for debugging
+                        Dim allVals As String = ""
+                        For Each row As DataRow In dt.Rows
+                            allVals &= "'" & row("Total Patient Revenue").ToString() & "'" & vbCrLf
+                        Next
+                        MessageBox.Show("All revenue values before filtering:" & vbCrLf & allVals)
+
+                        Dim minRev As Double = 0
+                        Dim maxRev As Double = Double.MaxValue
+
+                        If Not String.IsNullOrWhiteSpace(txtMinTotPatRevAll.Text) Then
+                            Double.TryParse(txtMinTotPatRevAll.Text.Trim(), minRev)
+                        End If
+
+                        If Not String.IsNullOrWhiteSpace(txtMaxTotPatRevAll.Text) Then
+                            Dim tempMax As Double
+                            If Double.TryParse(txtMaxTotPatRevAll.Text.Trim(), tempMax) Then
+                                maxRev = tempMax
+                            Else
+                                MessageBox.Show("Could not parse max: " & txtMaxTotPatRevAll.Text)
+                            End If
+                        End If
+
+                        MessageBox.Show("Filtering for min: " & minRev & " max: " & maxRev)
+
+                        Dim filteredDt As DataTable = dt.Clone()
+                        Dim matchCount As Integer = 0
+                        For Each row As DataRow In dt.Rows
+                            Dim rawValue As String = row("Total Patient Revenue").ToString().Trim()
+                            Dim revenue As Double
+                            If Double.TryParse(rawValue, revenue) Then
+                                MessageBox.Show("Comparing: " & revenue & " >= " & minRev & " AND " & revenue & " <= " & maxRev)
+                                If revenue >= minRev AndAlso revenue <= maxRev Then
+                                    filteredDt.ImportRow(row)
+                                    matchCount += 1
+                                End If
+                            Else
+                                MessageBox.Show("Could not parse row value: '" & rawValue & "'")
+                            End If
+                        Next
+                        MessageBox.Show("Rows after revenue filter: " & matchCount)
+                        dt = filteredDt
                     End If
 
                     Results.SetResults(dt)

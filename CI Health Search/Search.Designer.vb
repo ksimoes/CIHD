@@ -80,7 +80,7 @@ Partial Class Search
         lblCountyStateAll = New Label()
         TextBox40 = New TextBox()
         lblZipCodeGeoAll = New Label()
-        ComboBox9 = New ComboBox()
+        cbRUAll = New ComboBox()
         lblCmsCertNumGeoALl = New Label()
         ComboBox10 = New ComboBox()
         lblCountyAll = New Label()
@@ -717,7 +717,7 @@ Partial Class Search
         GroupBox3.Controls.Add(lblCountyStateAll)
         GroupBox3.Controls.Add(TextBox40)
         GroupBox3.Controls.Add(lblZipCodeGeoAll)
-        GroupBox3.Controls.Add(ComboBox9)
+        GroupBox3.Controls.Add(cbRUAll)
         GroupBox3.Controls.Add(lblCmsCertNumGeoALl)
         GroupBox3.Controls.Add(ComboBox10)
         GroupBox3.Controls.Add(lblCountyAll)
@@ -792,13 +792,14 @@ Partial Class Search
         lblZipCodeGeoAll.TabIndex = 62
         lblZipCodeGeoAll.Text = "ZIP Code"
         ' 
-        ' ComboBox9
+        ' cbRUAll
         ' 
-        ComboBox9.FormattingEnabled = True
-        ComboBox9.Location = New Point(281, 96)
-        ComboBox9.Name = "ComboBox9"
-        ComboBox9.Size = New Size(121, 23)
-        ComboBox9.TabIndex = 69
+        cbRUAll.FormattingEnabled = True
+        cbRUAll.Items.AddRange(New Object() {"U", "R"})
+        cbRUAll.Location = New Point(281, 96)
+        cbRUAll.Name = "cbRUAll"
+        cbRUAll.Size = New Size(121, 23)
+        cbRUAll.TabIndex = 69
         ' 
         ' lblCmsCertNumGeoALl
         ' 
@@ -1943,7 +1944,7 @@ Partial Class Search
     Friend WithEvents lblCountyStateAll As Label
     Friend WithEvents TextBox40 As TextBox
     Friend WithEvents lblZipCodeGeoAll As Label
-    Friend WithEvents ComboBox9 As ComboBox
+    Friend WithEvents cbRUAll As ComboBox
     Friend WithEvents lblCmsCertNumGeoALl As Label
     Friend WithEvents ComboBox10 As ComboBox
     Friend WithEvents lblCountyAll As Label

@@ -361,6 +361,8 @@ Public Class FinInd
     Private Sub btnInpatientFinInd_Click(sender As Object, e As EventArgs) Handles btnInpatientFinInd.Click
         Hide()
         Inpatient.Show()
+        Inpatient.LoadPatientOriginDataAsync(Results.SelectedHospital)
+        Inpatient.LoadCeoDataAsync(Results.SelectedHospital)
     End Sub
 
     Private Sub btnOutpatientFinInd_Click(sender As Object, e As EventArgs) Handles btnOutpatientFinInd.Click

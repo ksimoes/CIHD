@@ -22,6 +22,8 @@
     Private Sub Button6_Click(sender As Object, e As EventArgs) Handles btnInpatientQuality.Click
         Me.Hide()
         Inpatient.Show()
+        Inpatient.LoadPatientOriginDataAsync(Results.SelectedHospital)
+        Inpatient.LoadCeoDataAsync(Results.SelectedHospital)
     End Sub
 
     Private Sub Button7_Click(sender As Object, e As EventArgs) Handles btnOutpatientQuality.Click

@@ -208,6 +208,8 @@ Public Class Financial
     Private Sub btnInpatientFinancial_Click(sender As Object, e As EventArgs) Handles btnInpatientFinancial.Click
         Me.Hide()
         Inpatient.Show()
+        Inpatient.LoadPatientOriginDataAsync(Results.SelectedHospital)
+        Inpatient.LoadCeoDataAsync(Results.SelectedHospital)
     End Sub
 
     Private Sub btnDepartmentsFinancial_Click(sender As Object, e As EventArgs) Handles btnDepartmentsFinancial.Click

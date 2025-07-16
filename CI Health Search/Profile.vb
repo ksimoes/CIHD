@@ -86,11 +86,18 @@ Public Class Profile
             lblCmsCertNumProfileResult.Text = foundHosp.CMSNum
             lblNameAddressResult.Text = foundHosp.Name
             lbladdy.Text = foundHosp.Address
-            lblCbsa.Text = foundHosp.CBSAnum
+            lblCbsaResult.Text = foundHosp.CBSAnum
             lblGeneralMedSurgBedsResult.Text = foundHosp.NumOfBeds.ToString()
             lblTotalEmployeesResult.Text = foundHosp.NumOfEmployees
             lblTotalDischargesResult.Text = foundHosp.TotalDischarges.ToString()
             lblCmsUrbRurDesigResult.Text = foundHosp.RuralOUrban
+            If lblCmsUrbRurDesigResult.Text = "R" Then
+                lblRuralReferralResult.Text = "Y"
+            ElseIf lblCmsUrbRurDesigResult.Text = "U" Then
+                lblRuralReferralResult.Text = "N"
+            Else
+                lblRuralReferralResult.Text = ""
+            End If
             lblZipCodeResult.Text = foundHosp.Zip
 
             'lblCbsaResult.Text = If(provider("Medicare CBSA Number") IsNot Nothing, provider("Medicare CBSA Number").ToString(), "N/A")
@@ -215,5 +222,10 @@ Public Class Profile
     Private Sub btnpoo_Click(sender As Object, e As EventArgs) Handles btnyk.Click
         Me.Hide()
         yk.Show()
+    End Sub
+
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        Me.Hide()
+        Search.Show()
     End Sub
 End Class
