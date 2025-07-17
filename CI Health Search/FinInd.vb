@@ -181,75 +181,16 @@ Public Class FinInd
         ''''lblDaysCOH.Text = FormatCurrency((CDec(lblCashonHandResult.Text) + CDec(Search.CleanMeUp(lblMarketSecuritiesResult.Text, True))) / ((CDec(Search.CleanMeUp(lblTotOperatingExpenseFinIndResult.Text, True) - CDec(Search.CleanMeUp(lblDepreciationExpenseResultFinInd.Text) / 365)))).ToString("N2")).ToString("N2")
 
 
-        PopulateEbitdarTable()
-        PopulateFinancialGrid()
+
+
 
 
 
     End Function
 
-    Private Sub PopulateEbitdarTable()
-        Dim dt As New DataTable()
-        dt.Columns.Add("Metric")
-        dt.Columns.Add("Value")
-        dt.Rows.Add("EBITDAR", lblEbitResult.Text)
-        dt.Rows.Add("Net Income", lblNetIncomeFinIndResult.Text)
-        dt.Rows.Add("Interest Expense", lblInterestExpenseFinIndResult.Text)
-        dt.Rows.Add("Depreciation/Amortization", lblDepAmortExpenseResult.Text)
-        dt.Rows.Add("Lease Cost", lblLeaseCostResult.Text)
-        dgvEbitdar.DataSource = dt
-    End Sub
 
-    Private Sub PopulateFinancialGrid()
-        Dim dt As New DataTable()
-        dt.Columns.Add("Metric")
-        dt.Columns.Add("Value")
 
-        dt.Rows.Add("Total Current Assets", lblTotCurrentAssetsResult.Text)
-        dt.Rows.Add("Total Assets", lblTotAssetsResult.Text)
-        dt.Rows.Add("Total Operating Revenue", lblTotOperatingRevFinIndResult.Text)
-        dt.Rows.Add("Total Inventory", lblInventoryResult.Text)
-        dt.Rows.Add("Accounts Receivable", lblAccountsRecievableResult.Text)
-        dt.Rows.Add("Other Expenses", lblOtherExpenseResultFindInd.Text)
-        dt.Rows.Add("Total Long Term Liabilities", lblTotLongTermLiabilitiesResult.Text)
-        dt.Rows.Add("Lease Cost", lblLeaseCostResult.Text)
-        dt.Rows.Add("Notes Receivable", lblNotesReceivableRes.Text)
-        dt.Rows.Add("Total Liabilities", lblTotLiabilitiesResult.Text)
-        dt.Rows.Add("Cash on Hand", lblCashonHandResult.Text)
-        dt.Rows.Add("Total Current Liabilities", lblTotCurrentLiabilitiesResult.Text)
-        dt.Rows.Add("Total Operating Expense", lblTotOperatingExpenseFinIndResult.Text)
-        dt.Rows.Add("Net Income", lblNetIncomeResult.Text)
-        dt.Rows.Add("EBITDAR", lblEbitResult.Text)
-        dt.Rows.Add("Operating Margin", lblOperatingMarginFinIndResult.Text)
-        dt.Rows.Add("ROE", lblROEResult.Text)
-        dt.Rows.Add("ROA", lblRoaResult.Text)
-        dt.Rows.Add("Current Ratio", lblCurrentRatioResult.Text)
-        dt.Rows.Add("Quick Ratio", lblQuickRatioResult.Text)
-        dt.Rows.Add("Long Term Debt to Net Assets Ratio", lblLtdtnaResult.Text)
-        dt.Rows.Add("Total Debt to Net Assets Ratio", lblTdtna.Text)
-        dt.Rows.Add("Depreciation Expense", lblDepreciationExpenseResultFinInd.Text)
-        dt.Rows.Add("Salary Expense", lblSalaryExpenseResult.Text)
-        dt.Rows.Add("Contract Labor", lblContractLaborResult.Text)
-        dt.Rows.Add("Allowances for Uncollectible", lblAllowforUncollectRes.Text)
-        dt.Rows.Add("Market Securities", lblMarketSecuritiesResult.Text)
-        dt.Rows.Add("Investments", lblInvestmentsResultFinInd.Text)
-        dt.Rows.Add("Days Cash on Hand", lblDaysCOH.Text)
 
-        dgvfinancialsummary.DataSource = dt
-
-        dgvfinancialsummary.CellBorderStyle = DataGridViewCellBorderStyle.Single
-        dgvfinancialsummary.GridColor = Color.Black
-        dgvfinancialsummary.RowHeadersVisible = False
-        dgvfinancialsummary.ColumnHeadersVisible = True
-        dgvfinancialsummary.AllowUserToAddRows = False
-        dgvfinancialsummary.AllowUserToDeleteRows = False
-        dgvfinancialsummary.AllowUserToResizeRows = False
-        dgvfinancialsummary.AllowUserToResizeColumns = False
-        dgvfinancialsummary.ReadOnly = True
-
-        ' Optional: Make alternating row colors for better readability
-        dgvfinancialsummary.AlternatingRowsDefaultCellStyle.BackColor = Color.LightGray
-    End Sub
 
     '
 
@@ -379,7 +320,7 @@ Public Class FinInd
 
     End Sub
 
-    Private Sub dgvfinancialsummary_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvfinancialsummary.CellContentClick
+    Private Sub dgvfinancialsummary_CellContentClick(sender As Object, e As DataGridViewCellEventArgs)
 
     End Sub
 

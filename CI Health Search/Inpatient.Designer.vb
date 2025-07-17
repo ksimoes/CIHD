@@ -37,16 +37,6 @@ Partial Class Inpatient
         Label15 = New Label()
         Label14 = New Label()
         Label13 = New Label()
-        gbStatsforTop20BaseMsdrg = New GroupBox()
-        Label25 = New Label()
-        Label24 = New Label()
-        Label23 = New Label()
-        Label22 = New Label()
-        Label21 = New Label()
-        Label20 = New Label()
-        Label19 = New Label()
-        Label18 = New Label()
-        Label17 = New Label()
         Button1 = New Button()
         dgvNewApiTable = New DataGridView()
         gbKeyAttending.SuspendLayout()
@@ -54,7 +44,6 @@ Partial Class Inpatient
         gbPatientOrigin.SuspendLayout()
         CType(dgvPatientOrigin, ComponentModel.ISupportInitialize).BeginInit()
         gbTrendReport.SuspendLayout()
-        gbStatsforTop20BaseMsdrg.SuspendLayout()
         CType(dgvNewApiTable, ComponentModel.ISupportInitialize).BeginInit()
         SuspendLayout()
         ' 
@@ -201,114 +190,6 @@ Partial Class Inpatient
         Label13.TabIndex = 28
         Label13.Text = "Inpatient Utilization Statistics"
         ' 
-        ' gbStatsforTop20BaseMsdrg
-        ' 
-        gbStatsforTop20BaseMsdrg.Controls.Add(Label25)
-        gbStatsforTop20BaseMsdrg.Controls.Add(Label24)
-        gbStatsforTop20BaseMsdrg.Controls.Add(Label23)
-        gbStatsforTop20BaseMsdrg.Controls.Add(Label22)
-        gbStatsforTop20BaseMsdrg.Controls.Add(Label21)
-        gbStatsforTop20BaseMsdrg.Controls.Add(Label20)
-        gbStatsforTop20BaseMsdrg.Controls.Add(Label19)
-        gbStatsforTop20BaseMsdrg.Controls.Add(Label18)
-        gbStatsforTop20BaseMsdrg.Controls.Add(Label17)
-        gbStatsforTop20BaseMsdrg.Location = New Point(1391, 669)
-        gbStatsforTop20BaseMsdrg.Name = "gbStatsforTop20BaseMsdrg"
-        gbStatsforTop20BaseMsdrg.Size = New Size(134, 144)
-        gbStatsforTop20BaseMsdrg.TabIndex = 23
-        gbStatsforTop20BaseMsdrg.TabStop = False
-        gbStatsforTop20BaseMsdrg.Text = "Stats for Top 20 Base MS-DRGs"
-        ' 
-        ' Label25
-        ' 
-        Label25.AutoSize = True
-        Label25.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
-        Label25.Location = New Point(1024, 28)
-        Label25.Name = "Label25"
-        Label25.Size = New Size(61, 15)
-        Label25.TabIndex = 38
-        Label25.Text = "MCC Rate"
-        ' 
-        ' Label24
-        ' 
-        Label24.AutoSize = True
-        Label24.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
-        Label24.Location = New Point(904, 28)
-        Label24.Name = "Label24"
-        Label24.Size = New Size(80, 15)
-        Label24.TabIndex = 37
-        Label24.Text = "CC/MCC Rate"
-        ' 
-        ' Label23
-        ' 
-        Label23.AutoSize = True
-        Label23.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
-        Label23.Location = New Point(789, 28)
-        Label23.Name = "Label23"
-        Label23.Size = New Size(91, 15)
-        Label23.TabIndex = 36
-        Label23.Text = "Case Mix Index"
-        ' 
-        ' Label22
-        ' 
-        Label22.AutoSize = True
-        Label22.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
-        Label22.Location = New Point(664, 28)
-        Label22.Name = "Label22"
-        Label22.Size = New Size(81, 15)
-        Label22.TabIndex = 35
-        Label22.Text = "Average Cost"
-        ' 
-        ' Label21
-        ' 
-        Label21.AutoSize = True
-        Label21.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
-        Label21.Location = New Point(518, 28)
-        Label21.Name = "Label21"
-        Label21.Size = New Size(106, 15)
-        Label21.TabIndex = 34
-        Label21.Text = "Average Payment"
-        ' 
-        ' Label20
-        ' 
-        Label20.AutoSize = True
-        Label20.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
-        Label20.Location = New Point(433, 28)
-        Label20.Name = "Label20"
-        Label20.Size = New Size(37, 15)
-        Label20.TabIndex = 33
-        Label20.Text = "ALOS"
-        ' 
-        ' Label19
-        ' 
-        Label19.AutoSize = True
-        Label19.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
-        Label19.Location = New Point(317, 28)
-        Label19.Name = "Label19"
-        Label19.Size = New Size(65, 15)
-        Label19.TabIndex = 32
-        Label19.Text = "IPPS Cases"
-        ' 
-        ' Label18
-        ' 
-        Label18.AutoSize = True
-        Label18.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
-        Label18.Location = New Point(126, 28)
-        Label18.Name = "Label18"
-        Label18.Size = New Size(152, 15)
-        Label18.TabIndex = 31
-        Label18.Text = "Base MS-DRG Description"
-        ' 
-        ' Label17
-        ' 
-        Label17.AutoSize = True
-        Label17.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
-        Label17.Location = New Point(6, 28)
-        Label17.Name = "Label17"
-        Label17.Size = New Size(85, 15)
-        Label17.TabIndex = 30
-        Label17.Text = "Base MS-DRG"
-        ' 
         ' Button1
         ' 
         Button1.Location = New Point(1393, 575)
@@ -333,7 +214,6 @@ Partial Class Inpatient
         ClientSize = New Size(1537, 1061)
         Controls.Add(dgvNewApiTable)
         Controls.Add(Button1)
-        Controls.Add(gbStatsforTop20BaseMsdrg)
         Controls.Add(gbTrendReport)
         Controls.Add(gbPatientOrigin)
         Controls.Add(gbKeyAttending)
@@ -352,8 +232,6 @@ Partial Class Inpatient
         CType(dgvPatientOrigin, ComponentModel.ISupportInitialize).EndInit()
         gbTrendReport.ResumeLayout(False)
         gbTrendReport.PerformLayout()
-        gbStatsforTop20BaseMsdrg.ResumeLayout(False)
-        gbStatsforTop20BaseMsdrg.PerformLayout()
         CType(dgvNewApiTable, ComponentModel.ISupportInitialize).EndInit()
         ResumeLayout(False)
     End Sub
@@ -367,21 +245,11 @@ Partial Class Inpatient
     Friend WithEvents gbKeyAttending As GroupBox
     Friend WithEvents gbPatientOrigin As GroupBox
     Friend WithEvents gbTrendReport As GroupBox
-    Friend WithEvents gbStatsforTop20BaseMsdrg As GroupBox
     Friend WithEvents Button1 As Button
     Friend WithEvents Label14 As Label
     Friend WithEvents Label13 As Label
     Friend WithEvents Label16 As Label
     Friend WithEvents Label15 As Label
-    Friend WithEvents Label19 As Label
-    Friend WithEvents Label18 As Label
-    Friend WithEvents Label17 As Label
-    Friend WithEvents Label25 As Label
-    Friend WithEvents Label24 As Label
-    Friend WithEvents Label23 As Label
-    Friend WithEvents Label22 As Label
-    Friend WithEvents Label21 As Label
-    Friend WithEvents Label20 As Label
     Friend WithEvents dgvPatientOrigin As DataGridView
     Friend WithEvents dgvCeo As DataGridView
     Friend WithEvents dgvNewApiTable As DataGridView

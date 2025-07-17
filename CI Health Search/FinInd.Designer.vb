@@ -24,8 +24,6 @@ Partial Class FinInd
     Private Sub InitializeComponent()
         components = New ComponentModel.Container()
         Panel1 = New Panel()
-        dgvEbitdar = New DataGridView()
-        dgvfinancialsummary = New DataGridView()
         GroupBox20 = New BoldGroupBox()
         lblTotCurrentLiabilities10 = New Label()
         lblTotCurrentAssets10 = New Label()
@@ -217,8 +215,6 @@ Partial Class FinInd
         ToolTip3 = New ToolTip(components)
         GroupBox18 = New BoldGroupBox()
         Panel1.SuspendLayout()
-        CType(dgvEbitdar, ComponentModel.ISupportInitialize).BeginInit()
-        CType(dgvfinancialsummary, ComponentModel.ISupportInitialize).BeginInit()
         GroupBox20.SuspendLayout()
         GroupBox19.SuspendLayout()
         GroupBox17.SuspendLayout()
@@ -243,8 +239,6 @@ Partial Class FinInd
         ' Panel1
         ' 
         Panel1.AutoScroll = True
-        Panel1.Controls.Add(dgvEbitdar)
-        Panel1.Controls.Add(dgvfinancialsummary)
         Panel1.Controls.Add(GroupBox20)
         Panel1.Controls.Add(GroupBox19)
         Panel1.Controls.Add(GroupBox17)
@@ -273,22 +267,6 @@ Partial Class FinInd
         Panel1.Name = "Panel1"
         Panel1.Size = New Size(1774, 2500)
         Panel1.TabIndex = 0
-        ' 
-        ' dgvEbitdar
-        ' 
-        dgvEbitdar.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        dgvEbitdar.Location = New Point(1173, 65)
-        dgvEbitdar.Name = "dgvEbitdar"
-        dgvEbitdar.Size = New Size(38, 73)
-        dgvEbitdar.TabIndex = 295
-        ' 
-        ' dgvfinancialsummary
-        ' 
-        dgvfinancialsummary.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        dgvfinancialsummary.Location = New Point(1173, 149)
-        dgvfinancialsummary.Name = "dgvfinancialsummary"
-        dgvfinancialsummary.Size = New Size(174, 468)
-        dgvfinancialsummary.TabIndex = 294
         ' 
         ' GroupBox20
         ' 
@@ -2180,8 +2158,6 @@ Partial Class FinInd
         StartPosition = FormStartPosition.CenterScreen
         Text = "FinInd"
         Panel1.ResumeLayout(False)
-        CType(dgvEbitdar, ComponentModel.ISupportInitialize).EndInit()
-        CType(dgvfinancialsummary, ComponentModel.ISupportInitialize).EndInit()
         GroupBox20.ResumeLayout(False)
         GroupBox20.PerformLayout()
         GroupBox19.ResumeLayout(False)
@@ -2414,8 +2390,6 @@ Partial Class FinInd
     Friend WithEvents lblTotCurrentAssets10 As Label
     Friend WithEvents Label82 As Label
     Friend WithEvents Label79 As Label
-    Friend WithEvents dgvfinancialsummary As DataGridView
-    Friend WithEvents dgvEbitdar As DataGridView
     Friend WithEvents GroupBox9 As BoldGroupBox
 
 End Class

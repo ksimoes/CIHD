@@ -59,7 +59,6 @@ Partial Class Search
         lblFacilityAll = New Label()
         ComboBox19 = New ComboBox()
         lblServiceAll = New Label()
-        Label50 = New Label()
         ComboBox20 = New ComboBox()
         lblControlAll = New Label()
         ListBox13 = New ListBox()
@@ -70,9 +69,10 @@ Partial Class Search
         lblGpoAll = New Label()
         ComboBox21 = New ComboBox()
         lblAcoAll = New Label()
-        ListBox16 = New ListBox()
+        lbTypeFacilityCharAll = New ListBox()
         lblEhrAll = New Label()
         GroupBox3 = New GroupBox()
+        txtcountygeoall = New TextBox()
         lblCmsUrbRurAll = New Label()
         TextBox38 = New TextBox()
         lblUrbRurAll = New Label()
@@ -82,7 +82,6 @@ Partial Class Search
         lblZipCodeGeoAll = New Label()
         cbRUAll = New ComboBox()
         lblCmsCertNumGeoALl = New Label()
-        ComboBox10 = New ComboBox()
         lblCountyAll = New Label()
         ComboBox11 = New ComboBox()
         lblMilesAll = New Label()
@@ -507,7 +506,6 @@ Partial Class Search
         GroupBox2.Controls.Add(lblFacilityAll)
         GroupBox2.Controls.Add(ComboBox19)
         GroupBox2.Controls.Add(lblServiceAll)
-        GroupBox2.Controls.Add(Label50)
         GroupBox2.Controls.Add(ComboBox20)
         GroupBox2.Controls.Add(lblControlAll)
         GroupBox2.Controls.Add(ListBox13)
@@ -518,7 +516,7 @@ Partial Class Search
         GroupBox2.Controls.Add(lblGpoAll)
         GroupBox2.Controls.Add(ComboBox21)
         GroupBox2.Controls.Add(lblAcoAll)
-        GroupBox2.Controls.Add(ListBox16)
+        GroupBox2.Controls.Add(lbTypeFacilityCharAll)
         GroupBox2.Controls.Add(lblEhrAll)
         GroupBox2.Location = New Point(874, 3)
         GroupBox2.Name = "GroupBox2"
@@ -530,16 +528,16 @@ Partial Class Search
         ' ComboBox17
         ' 
         ComboBox17.FormattingEnabled = True
-        ComboBox17.Location = New Point(348, 501)
+        ComboBox17.Location = New Point(349, 627)
         ComboBox17.Name = "ComboBox17"
-        ComboBox17.Size = New Size(121, 23)
+        ComboBox17.Size = New Size(187, 23)
         ComboBox17.TabIndex = 91
         ' 
         ' lblMedicareAll
         ' 
         lblMedicareAll.AutoSize = True
         lblMedicareAll.Font = New Font("Times New Roman", 14.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        lblMedicareAll.Location = New Point(6, 70)
+        lblMedicareAll.Location = New Point(7, 186)
         lblMedicareAll.Name = "lblMedicareAll"
         lblMedicareAll.Size = New Size(297, 21)
         lblMedicareAll.TabIndex = 75
@@ -548,16 +546,16 @@ Partial Class Search
         ' ComboBox18
         ' 
         ComboBox18.FormattingEnabled = True
-        ComboBox18.Location = New Point(348, 412)
+        ComboBox18.Location = New Point(349, 551)
         ComboBox18.Name = "ComboBox18"
-        ComboBox18.Size = New Size(121, 23)
+        ComboBox18.Size = New Size(187, 23)
         ComboBox18.TabIndex = 90
         ' 
         ' lblFacilityAll
         ' 
         lblFacilityAll.AutoSize = True
         lblFacilityAll.Font = New Font("Times New Roman", 14.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        lblFacilityAll.Location = New Point(6, 19)
+        lblFacilityAll.Location = New Point(7, 80)
         lblFacilityAll.Name = "lblFacilityAll"
         lblFacilityAll.Size = New Size(128, 21)
         lblFacilityAll.TabIndex = 74
@@ -566,44 +564,34 @@ Partial Class Search
         ' ComboBox19
         ' 
         ComboBox19.FormattingEnabled = True
-        ComboBox19.Location = New Point(348, 376)
+        ComboBox19.Location = New Point(349, 514)
         ComboBox19.Name = "ComboBox19"
-        ComboBox19.Size = New Size(121, 23)
+        ComboBox19.Size = New Size(187, 23)
         ComboBox19.TabIndex = 89
         ' 
         ' lblServiceAll
         ' 
         lblServiceAll.AutoSize = True
         lblServiceAll.Font = New Font("Times New Roman", 14.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        lblServiceAll.Location = New Point(6, 169)
+        lblServiceAll.Location = New Point(7, 314)
         lblServiceAll.Name = "lblServiceAll"
         lblServiceAll.Size = New Size(85, 21)
         lblServiceAll.TabIndex = 76
         lblServiceAll.Text = "Service(s)"
         ' 
-        ' Label50
-        ' 
-        Label50.AutoSize = True
-        Label50.Font = New Font("Times New Roman", 14.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        Label50.Location = New Point(9, 166)
-        Label50.Name = "Label50"
-        Label50.Size = New Size(85, 21)
-        Label50.TabIndex = 76
-        Label50.Text = "Service(s)"
-        ' 
         ' ComboBox20
         ' 
         ComboBox20.FormattingEnabled = True
-        ComboBox20.Location = New Point(348, 463)
+        ComboBox20.Location = New Point(349, 589)
         ComboBox20.Name = "ComboBox20"
-        ComboBox20.Size = New Size(121, 23)
+        ComboBox20.Size = New Size(187, 23)
         ComboBox20.TabIndex = 88
         ' 
         ' lblControlAll
         ' 
         lblControlAll.AutoSize = True
         lblControlAll.Font = New Font("Times New Roman", 14.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        lblControlAll.Location = New Point(6, 266)
+        lblControlAll.Location = New Point(7, 420)
         lblControlAll.Name = "lblControlAll"
         lblControlAll.Size = New Size(131, 21)
         lblControlAll.TabIndex = 77
@@ -614,16 +602,16 @@ Partial Class Search
         ListBox13.FormattingEnabled = True
         ListBox13.ItemHeight = 15
         ListBox13.Items.AddRange(New Object() {"Government Hospital District", "Governmental, City", "Governmental, City-County", "Governmental, County", "Governmental, Federal ", "Governmental, Other", "Governmental, State", "Proprietary, Corporation", "Proprietary, Individual", "Proprietary, Other", "Proprietary, Partnership", "Voluntary Nonprofit, Church", "Voluntary Nonprofit, Other"})
-        ListBox13.Location = New Point(349, 266)
+        ListBox13.Location = New Point(349, 407)
         ListBox13.Name = "ListBox13"
-        ListBox13.Size = New Size(120, 49)
+        ListBox13.Size = New Size(187, 49)
         ListBox13.TabIndex = 87
         ' 
         ' lblTeachingAll
         ' 
         lblTeachingAll.AutoSize = True
         lblTeachingAll.Font = New Font("Times New Roman", 14.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        lblTeachingAll.Location = New Point(9, 326)
+        lblTeachingAll.Location = New Point(7, 472)
         lblTeachingAll.Name = "lblTeachingAll"
         lblTeachingAll.Size = New Size(128, 21)
         lblTeachingAll.TabIndex = 78
@@ -634,16 +622,16 @@ Partial Class Search
         ListBox14.FormattingEnabled = True
         ListBox14.ItemHeight = 15
         ListBox14.Items.AddRange(New Object() {"Arthoscopy", "Burn Intensive Care(BICU)", "Cardiac Cath Lab", "Cardiac Rehab", "Cardiac Surgery", "Carotid Stenting", "Chemotherapy", "Camputed Tomography(CT)", "Computed Tomography-Angiography(CTA)", "Coronary Intensive Care(CCU)", "Coronary Interventions", "Detox Intensive Care", "Digital Mammography", "Electroencephalography(EEG)", "Electrophysiology", "Emergency Department", "Heart Transplant", "Helipad", "Hemodialysis", "Home Health", "Hospice", "Hyperbaric Oxygen", "Inpatient Surgery", "Intensity-Modulated Radiation Therapy (IMRT)", "Intensive Care Unit(ICU)", "Intestinal Transplant", "Joint Replacement", "Kidney Transplant", "Lithotripsy(ESWL)", "Liver Transplant", "Lung Transplant", "Magnetic Resonance Angiography (MRA)", "Magnetic Resonance Imaging (MRI)", "Neonatal Intensive Care", "Nursing Facility(NF)", "Obstetrics", "Pancreas Transplant", "Pediatric Intensive Care", "Pediatric Trauma Center", "Physical Therapy", "Positron Emission Tomography (PET)", "Premature Intensive Care", "Psychiatric", "Psychiatric Intensive Care", "Radiation Therapy", "Radiosurgery", "Rehabilitation", "Robotic Surgery", "Single Photon Emission Computerized Tomography (SPECT)", "Skilled Nursing (SNF)", "Sleep Studies", "Speech Therapy", "Spine Surgery", "Surgical Intensive Care (SICU)", "Swing Beds - NF", "Swing Beds - SNF", "Trauma Center", "Trauma Intensive Care", "Vascular Intervention", "Vascular Surgery", "Wound Care"})
-        ListBox14.Location = New Point(349, 166)
+        ListBox14.Location = New Point(349, 271)
         ListBox14.Name = "ListBox14"
-        ListBox14.Size = New Size(120, 94)
+        ListBox14.Size = New Size(187, 94)
         ListBox14.TabIndex = 86
         ' 
         ' lblHealthCareAll
         ' 
         lblHealthCareAll.AutoSize = True
         lblHealthCareAll.Font = New Font("Times New Roman", 14.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        lblHealthCareAll.Location = New Point(9, 368)
+        lblHealthCareAll.Location = New Point(7, 514)
         lblHealthCareAll.Name = "lblHealthCareAll"
         lblHealthCareAll.Size = New Size(152, 21)
         lblHealthCareAll.TabIndex = 79
@@ -654,16 +642,16 @@ Partial Class Search
         ListBox15.FormattingEnabled = True
         ListBox15.ItemHeight = 15
         ListBox15.Items.AddRange(New Object() {"Low Volume Hospital", "Medicare Dependent Hospital", "Participates in 340B", "Rural Referral Center", "Sole Community Hospital"})
-        ListBox15.Location = New Point(349, 67)
+        ListBox15.Location = New Point(349, 145)
         ListBox15.Name = "ListBox15"
-        ListBox15.Size = New Size(120, 94)
+        ListBox15.Size = New Size(187, 94)
         ListBox15.TabIndex = 85
         ' 
         ' lblGpoAll
         ' 
         lblGpoAll.AutoSize = True
         lblGpoAll.Font = New Font("Times New Roman", 14.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        lblGpoAll.Location = New Point(6, 411)
+        lblGpoAll.Location = New Point(7, 553)
         lblGpoAll.Name = "lblGpoAll"
         lblGpoAll.Size = New Size(180, 21)
         lblGpoAll.TabIndex = 80
@@ -672,36 +660,36 @@ Partial Class Search
         ' ComboBox21
         ' 
         ComboBox21.FormattingEnabled = True
-        ComboBox21.Location = New Point(349, 327)
+        ComboBox21.Location = New Point(349, 470)
         ComboBox21.Name = "ComboBox21"
-        ComboBox21.Size = New Size(121, 23)
+        ComboBox21.Size = New Size(187, 23)
         ComboBox21.TabIndex = 84
         ' 
         ' lblAcoAll
         ' 
         lblAcoAll.AutoSize = True
         lblAcoAll.Font = New Font("Times New Roman", 14.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        lblAcoAll.Location = New Point(12, 459)
+        lblAcoAll.Location = New Point(13, 594)
         lblAcoAll.Name = "lblAcoAll"
         lblAcoAll.Size = New Size(50, 21)
         lblAcoAll.TabIndex = 81
         lblAcoAll.Text = "ACO"
         ' 
-        ' ListBox16
+        ' lbTypeFacilityCharAll
         ' 
-        ListBox16.FormattingEnabled = True
-        ListBox16.ItemHeight = 15
-        ListBox16.Items.AddRange(New Object() {"Any", "Childrens", "Critical Access", "Long Term", "Other", "Psychiatric", "Rahabilitation", "Rural Emergency Hospital", "Short Term Acute Care"})
-        ListBox16.Location = New Point(349, 0)
-        ListBox16.Name = "ListBox16"
-        ListBox16.Size = New Size(120, 64)
-        ListBox16.TabIndex = 83
+        lbTypeFacilityCharAll.FormattingEnabled = True
+        lbTypeFacilityCharAll.ItemHeight = 15
+        lbTypeFacilityCharAll.Items.AddRange(New Object() {"Childrens", "Critical Access", "Long Term", "Psychiatric", "Rehabilitation", "Rural Emergency Hospital", "Short Term Acute Care"})
+        lbTypeFacilityCharAll.Location = New Point(349, 7)
+        lbTypeFacilityCharAll.Name = "lbTypeFacilityCharAll"
+        lbTypeFacilityCharAll.Size = New Size(187, 109)
+        lbTypeFacilityCharAll.TabIndex = 83
         ' 
         ' lblEhrAll
         ' 
         lblEhrAll.AutoSize = True
         lblEhrAll.Font = New Font("Times New Roman", 14.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        lblEhrAll.Location = New Point(15, 500)
+        lblEhrAll.Location = New Point(13, 630)
         lblEhrAll.Name = "lblEhrAll"
         lblEhrAll.Size = New Size(47, 21)
         lblEhrAll.TabIndex = 82
@@ -710,6 +698,7 @@ Partial Class Search
         ' GroupBox3
         ' 
         GroupBox3.BackColor = Color.Orange
+        GroupBox3.Controls.Add(txtcountygeoall)
         GroupBox3.Controls.Add(lblCmsUrbRurAll)
         GroupBox3.Controls.Add(TextBox38)
         GroupBox3.Controls.Add(lblUrbRurAll)
@@ -719,7 +708,6 @@ Partial Class Search
         GroupBox3.Controls.Add(lblZipCodeGeoAll)
         GroupBox3.Controls.Add(cbRUAll)
         GroupBox3.Controls.Add(lblCmsCertNumGeoALl)
-        GroupBox3.Controls.Add(ComboBox10)
         GroupBox3.Controls.Add(lblCountyAll)
         GroupBox3.Controls.Add(ComboBox11)
         GroupBox3.Controls.Add(lblMilesAll)
@@ -730,6 +718,13 @@ Partial Class Search
         GroupBox3.TabIndex = 73
         GroupBox3.TabStop = False
         GroupBox3.Text = "Geographic"
+        ' 
+        ' txtcountygeoall
+        ' 
+        txtcountygeoall.Location = New Point(281, 360)
+        txtcountygeoall.Name = "txtcountygeoall"
+        txtcountygeoall.Size = New Size(100, 23)
+        txtcountygeoall.TabIndex = 73
         ' 
         ' lblCmsUrbRurAll
         ' 
@@ -810,14 +805,6 @@ Partial Class Search
         lblCmsCertNumGeoALl.Size = New Size(211, 21)
         lblCmsCertNumGeoALl.TabIndex = 63
         lblCmsCertNumGeoALl.Text = "CMS Certification Number"
-        ' 
-        ' ComboBox10
-        ' 
-        ComboBox10.FormattingEnabled = True
-        ComboBox10.Location = New Point(281, 357)
-        ComboBox10.Name = "ComboBox10"
-        ComboBox10.Size = New Size(121, 23)
-        ComboBox10.TabIndex = 68
         ' 
         ' lblCountyAll
         ' 
@@ -1946,7 +1933,6 @@ Partial Class Search
     Friend WithEvents lblZipCodeGeoAll As Label
     Friend WithEvents cbRUAll As ComboBox
     Friend WithEvents lblCmsCertNumGeoALl As Label
-    Friend WithEvents ComboBox10 As ComboBox
     Friend WithEvents lblCountyAll As Label
     Friend WithEvents ComboBox11 As ComboBox
     Friend WithEvents lblMilesAll As Label
@@ -1986,7 +1972,7 @@ Partial Class Search
     Friend WithEvents lblGpoAll As Label
     Friend WithEvents ComboBox21 As ComboBox
     Friend WithEvents lblAcoAll As Label
-    Friend WithEvents ListBox16 As ListBox
+    Friend WithEvents lbTypeFacilityCharAll As ListBox
     Friend WithEvents lblEhrAll As Label
     Friend WithEvents btnSearchAll As Button
     Friend WithEvents GroupBox5 As GroupBox
@@ -2020,4 +2006,5 @@ Partial Class Search
     Friend WithEvents Button3 As Button
     Friend WithEvents Button4 As Button
     Friend WithEvents Button5 As Button
+    Friend WithEvents txtcountygeoall As TextBox
 End Class

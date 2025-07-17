@@ -6,6 +6,16 @@ Public Class Search
     Private connectionString As String = "Data Source=cihg-sql1.database.windows.net;Initial Catalog=CIHData;User ID=cihgadmin;Password=P!bxbFrHw4-jCvU*;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
     Public Shared SearchHospital As New HospitalContext()
 
+    Private ReadOnly FacilityTypeMap As New Dictionary(Of String, String) From {
+        {"Childrens", "CH"},
+        {"Critical Access", "CAH"},
+        {"Long Term", "LTCH"},
+        {"Psychiatric", "PH"},
+        {"Rehabilitation", "RH"},
+        {"Rural Emergency Hospital", "RHC"},
+        {"Short Term Acute Care", "STH"}
+    }
+
     Public Function useSQL(ByRef selectedState As String) As Boolean
         Using conn As New SqlConnection(connectionString)
             Using cmd As New SqlCommand("Select UseSql from dbo.States Where StateCode = '" + selectedState + "'", conn)
@@ -16,11 +26,12 @@ Public Class Search
     End Function
 
     Private Sub SetupHospProfile()
-        SearchHospital.CMSNum = VerifiySearch(txtCmsCertNumDemoAll)
+        SearchHospital.CMSNum = If(Not String.IsNullOrWhiteSpace(txtCmsCertNumDemoAll.Text), txtCmsCertNumDemoAll.Text.Trim(), TextBox39.Text.Trim())
+        SearchHospital.Zip = If(Not String.IsNullOrWhiteSpace(txtZipCodeDemoAll.Text), txtZipCodeDemoAll.Text.Trim(), TextBox40.Text.Trim())
         SearchHospital.State = If(lbStateAll.SelectedItem IsNot Nothing, lbStateAll.SelectedItem.ToString().Trim(), "")
         SearchHospital.Name = VerifiySearch(txtHospitalNameAll)
         SearchHospital.City = VerifiySearch(txtCityAll)
-        SearchHospital.Zip = VerifiySearch(txtZipCodeDemoAll)
+
         SearchHospital.Phone = VerifiySearch(txtAreaCodeAll)
         SearchHospital.NPI = VerifiySearch(txtNpiAll)
     End Sub
@@ -127,7 +138,20 @@ Public Class Search
         ' Add keyword parameters for broad API search
         If Not String.IsNullOrEmpty(selectedState) Then filters.Add("keyword=" & Uri.EscapeDataString(selectedState))
         If Not String.IsNullOrEmpty(txtCityAll.Text) Then filters.Add("keyword=" & Uri.EscapeDataString(txtCityAll.Text.Trim()))
-        If Not String.IsNullOrEmpty(txtCmsCertNumDemoAll.Text) Then filters.Add("keyword=" & Uri.EscapeDataString(txtCmsCertNumDemoAll.Text.Trim()))
+        Dim cmsNum As String = If(Not String.IsNullOrWhiteSpace(txtCmsCertNumDemoAll.Text), txtCmsCertNumDemoAll.Text.Trim(), TextBox39.Text.Trim())
+        If Not String.IsNullOrEmpty(cmsNum) Then
+            filters.Add("keyword=" & Uri.EscapeDataString(cmsNum))
+        End If
+        If Not String.IsNullOrWhiteSpace(txtcountygeoall.Text) Then
+            filters.Add("keyword=" & Uri.EscapeDataString(txtcountygeoall.Text.Trim().ToUpper()))
+        End If
+        If lbTypeFacilityCharAll.SelectedItem IsNot Nothing Then
+            Dim selectedDisplay = lbTypeFacilityCharAll.SelectedItem.ToString()
+            If FacilityTypeMap.ContainsKey(selectedDisplay) Then
+                Dim acronym = FacilityTypeMap(selectedDisplay)
+                filters.Add("keyword=" & Uri.EscapeDataString(acronym))
+            End If
+        End If
         If Not String.IsNullOrEmpty(txtNpiAll.Text) Then filters.Add("keyword=" & Uri.EscapeDataString(txtNpiAll.Text.Trim()))
         If Not String.IsNullOrEmpty(txtHospitalNameAll.Text) Then filters.Add("keyword=" & Uri.EscapeDataString(txtHospitalNameAll.Text.Trim()))
         If cbRUAll.SelectedItem IsNot Nothing AndAlso Not String.IsNullOrEmpty(cbRUAll.SelectedItem.ToString()) Then
@@ -138,6 +162,10 @@ Public Class Search
         End If
         If Not String.IsNullOrEmpty(txtMaxTotPatRevAll.Text) Then
             filters.Add("keyword=" & Uri.EscapeDataString(txtMaxTotPatRevAll.Text))
+        End If
+        Dim zipCode As String = If(Not String.IsNullOrWhiteSpace(txtZipCodeDemoAll.Text), txtZipCodeDemoAll.Text.Trim(), TextBox40.Text.Trim())
+        If Not String.IsNullOrEmpty(zipCode) Then
+            filters.Add("keyword=" & Uri.EscapeDataString(zipCode))
         End If
         ' Add more keyword filters as needed
 
@@ -190,13 +218,6 @@ Public Class Search
 
                     ' --- Debug: Check DataTable before filtering ---
                     If dt.Columns.Contains("Total Patient Revenue") Then
-                        ' Show all values before filtering for debugging
-                        Dim allVals As String = ""
-                        For Each row As DataRow In dt.Rows
-                            allVals &= "'" & row("Total Patient Revenue").ToString() & "'" & vbCrLf
-                        Next
-                        MessageBox.Show("All revenue values before filtering:" & vbCrLf & allVals)
-
                         Dim minRev As Double = 0
                         Dim maxRev As Double = Double.MaxValue
 
@@ -208,30 +229,44 @@ Public Class Search
                             Dim tempMax As Double
                             If Double.TryParse(txtMaxTotPatRevAll.Text.Trim(), tempMax) Then
                                 maxRev = tempMax
-                            Else
-                                MessageBox.Show("Could not parse max: " & txtMaxTotPatRevAll.Text)
                             End If
                         End If
-
-                        MessageBox.Show("Filtering for min: " & minRev & " max: " & maxRev)
 
                         Dim filteredDt As DataTable = dt.Clone()
                         Dim matchCount As Integer = 0
                         For Each row As DataRow In dt.Rows
                             Dim rawValue As String = row("Total Patient Revenue").ToString().Trim()
+                            rawValue = rawValue.Replace("$", "").Replace(",", "")
                             Dim revenue As Double
                             If Double.TryParse(rawValue, revenue) Then
-                                MessageBox.Show("Comparing: " & revenue & " >= " & minRev & " AND " & revenue & " <= " & maxRev)
                                 If revenue >= minRev AndAlso revenue <= maxRev Then
                                     filteredDt.ImportRow(row)
                                     matchCount += 1
                                 End If
-                            Else
-                                MessageBox.Show("Could not parse row value: '" & rawValue & "'")
                             End If
                         Next
-                        MessageBox.Show("Rows after revenue filter: " & matchCount)
                         dt = filteredDt
+                        If Not String.IsNullOrWhiteSpace(txtcountygeoall.Text) AndAlso dt.Columns.Contains("County Name") Then
+                            Dim county = txtcountygeoall.Text.Trim().ToUpper()
+                            Dim filteredRows = dt.Select($"[County Name] = '{county}'")
+                            If filteredRows.Length > 0 Then
+                                dt = filteredRows.CopyToDataTable()
+                            Else
+                                dt = dt.Clone() ' Empty table with same schema
+                            End If
+                        End If
+                        If lbTypeFacilityCharAll.SelectedItem IsNot Nothing AndAlso dt.Columns.Contains("Facility Type") Then
+                            Dim selectedDisplay = lbTypeFacilityCharAll.SelectedItem.ToString()
+                            If FacilityTypeMap.ContainsKey(selectedDisplay) Then
+                                Dim acronym = FacilityTypeMap(selectedDisplay)
+                                Dim filteredRows = dt.Select($"[Facility Type] = '{acronym}'")
+                                If filteredRows.Length > 0 Then
+                                    dt = filteredRows.CopyToDataTable()
+                                Else
+                                    dt = dt.Clone() ' Empty table with same schema
+                                End If
+                            End If
+                        End If
                     End If
 
                     Results.SetResults(dt)
@@ -258,6 +293,11 @@ Public Class Search
         txtMaxTotalBedsAll.Clear()
         txtMinTotalBedsAll.Clear()
         txtNpiAll.Clear()
+        lbTypeFacilityCharAll.ClearSelected()
+        txtcountygeoall.Clear()
+        txtMinTotPatRevAll.Clear()
+        txtMaxTotPatRevAll.Clear()
+
     End Sub
 
     Public Function GetAPIArray(strAPIurl As String) As JArray
@@ -273,5 +313,11 @@ Public Class Search
 
     Private Sub Search_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
+    End Sub
+
+    Private Sub txtCountyGeoAll_TextChanged(sender As Object, e As EventArgs) Handles txtcountygeoall.TextChanged
+        Dim selStart = txtcountygeoall.SelectionStart
+        txtcountygeoall.Text = txtcountygeoall.Text.ToUpper()
+        txtcountygeoall.SelectionStart = selStart
     End Sub
 End Class

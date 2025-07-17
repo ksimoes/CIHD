@@ -74,11 +74,14 @@ Public Class Profile
             ' Find the exact match for Provider CCN if possible
             Dim provider = myArray.FirstOrDefault(Function(x) x("Provider CCN") IsNot Nothing AndAlso x("Provider CCN").ToString() = foundHosp.CMSNum)
             If provider Is Nothing Then provider = myArray(0)
+            lblFacilityResult.Text = If(provider("CCN Facility Type") IsNot Nothing, provider("CCN Facility Type").ToString(), "N/A")
+
+
 
             'lblCmsCertNumProfileResult.Text = If(provider("Provider CCN") IsNot Nothing, provider("Provider CCN").ToString(), "N/A")
 
             'lblNameAddressResult.Text = If(provider("Hospital Name") IsNot Nothing, provider("Hospital Name").ToString(), "N/A")
-            'lblFacilityResult.Text = If(provider("CCN Facility Type") IsNot Nothing, provider("CCN Facility Type").ToString(), "N/A")
+
             'lbladdy.Text = If(provider("Street Address") IsNot Nothing, provider("Street Address").ToString(), "N/A")
             lblCountyFipsResult.Text = If(provider("County Name") IsNot Nothing, provider("County Name").ToString(), "N/A")
             If lblCountyFipsResult.Text.Equals("N/A") Then lblCountyFipsResult.Text = If(provider("County") IsNot Nothing, provider("County").ToString(), "N/A")
@@ -144,6 +147,7 @@ Public Class Profile
             lblPhoneNumResult.Text = If(provider("PHNE_NUM") IsNot Nothing, provider("PHNE_NUM").ToString(), "N/A")
             lblCbsaResult.Text = If(provider("CBSA_CD") IsNot Nothing, provider("CBSA_CD").ToString(), "N/A")
             lblMedicareCertifiedBedsResult.Text = Search.CleanMeUp(provider("MDCR_SNF_BED_CNT"))
+            'lblFacilityResult.Text = If(provider("CCN Facility Type") IsNot Nothing, provider("CCN Facility Type").ToString(), "N/A")
         End If
 
 
