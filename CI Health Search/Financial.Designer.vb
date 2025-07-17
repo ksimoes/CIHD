@@ -23,8 +23,16 @@ Partial Class Financial
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         GroupBox1 = New BoldGroupBox()
-        Label19 = New Label()
         Label18 = New Label()
+        lblTotAssetsResult = New Label()
+        lblOtherAssetsResult = New Label()
+        lblFixAssetsResult = New Label()
+        lblCurAssetResult = New Label()
+        Label8 = New Label()
+        Label7 = New Label()
+        Label6 = New Label()
+        Label5 = New Label()
+        Label19 = New Label()
         lblTlResult = New Label()
         lblCurLiabilitiesRes = New Label()
         lblTotFbResult = New Label()
@@ -34,38 +42,31 @@ Partial Class Financial
         Label12 = New Label()
         Label10 = New Label()
         lblCurrentLiab = New Label()
-        lblTotAssetsResult = New Label()
-        lblOtherAssetsResult = New Label()
         lblTotLandFbResult = New Label()
-        lblFixAssetsResult = New Label()
-        lblCurAssetResult = New Label()
-        Label8 = New Label()
-        Label7 = New Label()
-        Label6 = New Label()
-        Label5 = New Label()
         lblPedResult = New Label()
         lblNumMonthsPeriodResult = New Label()
         lblNumMonthsFin = New Label()
         lbligr = New Label()
         gbIncomeStatement = New BoldGroupBox()
-        lblDepreciationExpenseResult = New Label()
-        lblNetIncomeResult = New Label()
+        GroupBox3 = New BoldGroupBox()
         lblTotOtherExpensesResult = New Label()
-        lblTotNonpatientResult = New Label()
-        lblMiscNpRevResult = New Label()
-        lblGovAppResult = New Label()
-        lblIncomeFromInvestResult = New Label()
-        lblTotOtherIncomeResult = New Label()
-        Label28 = New Label()
-        Label27 = New Label()
-        Label26 = New Label()
-        Label25 = New Label()
-        Label24 = New Label()
-        Label23 = New Label()
-        Label22 = New Label()
-        Label21 = New Label()
-        lblOperatingIncome = New Label()
+        lblDepreciationExpenseResult = New Label()
         Label17 = New Label()
+        lblOperatingIncome = New Label()
+        lblNetIncomeResult = New Label()
+        Label21 = New Label()
+        Label22 = New Label()
+        Label23 = New Label()
+        Label24 = New Label()
+        lblTotNonpatientResult = New Label()
+        Label25 = New Label()
+        Label26 = New Label()
+        lblMiscNpRevResult = New Label()
+        Label27 = New Label()
+        Label28 = New Label()
+        lblGovAppResult = New Label()
+        lblTotOtherIncomeResult = New Label()
+        lblIncomeFromInvestResult = New Label()
         lblContractAllowanceResult = New Label()
         Label20 = New Label()
         lblNetPatRevResult = New Label()
@@ -96,13 +97,12 @@ Partial Class Financial
         Button1 = New Button()
         Panel1 = New Panel()
         GroupBox2 = New BoldGroupBox()
-        GroupBox3 = New BoldGroupBox()
         GroupBox1.SuspendLayout()
         gbIncomeStatement.SuspendLayout()
+        GroupBox3.SuspendLayout()
         gbUncompensatedCare.SuspendLayout()
         Panel1.SuspendLayout()
         GroupBox2.SuspendLayout()
-        GroupBox3.SuspendLayout()
         SuspendLayout()
         ' 
         ' GroupBox1
@@ -125,16 +125,6 @@ Partial Class Financial
         GroupBox1.TabStop = False
         GroupBox1.Text = "Balance Sheet"
         ' 
-        ' Label19
-        ' 
-        Label19.AutoSize = True
-        Label19.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
-        Label19.Location = New Point(3, 15)
-        Label19.Name = "Label19"
-        Label19.Size = New Size(162, 15)
-        Label19.TabIndex = 21
-        Label19.Text = "Liabilities and Fund Balances"
-        ' 
         ' Label18
         ' 
         Label18.AutoSize = True
@@ -144,6 +134,96 @@ Partial Class Financial
         Label18.Size = New Size(42, 15)
         Label18.TabIndex = 20
         Label18.Text = "Assets"
+        ' 
+        ' lblTotAssetsResult
+        ' 
+        lblTotAssetsResult.AutoSize = True
+        lblTotAssetsResult.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        lblTotAssetsResult.Location = New Point(314, 124)
+        lblTotAssetsResult.Name = "lblTotAssetsResult"
+        lblTotAssetsResult.Size = New Size(42, 15)
+        lblTotAssetsResult.TabIndex = 11
+        lblTotAssetsResult.Text = "Result"
+        ' 
+        ' lblOtherAssetsResult
+        ' 
+        lblOtherAssetsResult.AutoSize = True
+        lblOtherAssetsResult.Font = New Font("Segoe UI", 9.0F)
+        lblOtherAssetsResult.Location = New Point(314, 98)
+        lblOtherAssetsResult.Name = "lblOtherAssetsResult"
+        lblOtherAssetsResult.Size = New Size(39, 15)
+        lblOtherAssetsResult.TabIndex = 10
+        lblOtherAssetsResult.Text = "Result"
+        ' 
+        ' lblFixAssetsResult
+        ' 
+        lblFixAssetsResult.AutoSize = True
+        lblFixAssetsResult.Font = New Font("Segoe UI", 9.0F)
+        lblFixAssetsResult.Location = New Point(314, 71)
+        lblFixAssetsResult.Name = "lblFixAssetsResult"
+        lblFixAssetsResult.Size = New Size(39, 15)
+        lblFixAssetsResult.TabIndex = 9
+        lblFixAssetsResult.Text = "Result"
+        ' 
+        ' lblCurAssetResult
+        ' 
+        lblCurAssetResult.AutoSize = True
+        lblCurAssetResult.Font = New Font("Segoe UI", 9.0F)
+        lblCurAssetResult.Location = New Point(314, 47)
+        lblCurAssetResult.Name = "lblCurAssetResult"
+        lblCurAssetResult.Size = New Size(39, 15)
+        lblCurAssetResult.TabIndex = 8
+        lblCurAssetResult.Text = "Result"
+        ' 
+        ' Label8
+        ' 
+        Label8.AutoSize = True
+        Label8.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        Label8.Location = New Point(12, 124)
+        Label8.Name = "Label8"
+        Label8.Size = New Size(72, 15)
+        Label8.TabIndex = 7
+        Label8.Text = "Total Assets"
+        ' 
+        ' Label7
+        ' 
+        Label7.AutoSize = True
+        Label7.Font = New Font("Segoe UI", 9.0F)
+        Label7.Location = New Point(13, 98)
+        Label7.Name = "Label7"
+        Label7.Size = New Size(73, 15)
+        Label7.TabIndex = 6
+        Label7.Text = "Other Assets"
+        ' 
+        ' Label6
+        ' 
+        Label6.AutoSize = True
+        Label6.Font = New Font("Segoe UI", 9.0F)
+        Label6.Location = New Point(12, 71)
+        Label6.Name = "Label6"
+        Label6.Size = New Size(70, 15)
+        Label6.TabIndex = 5
+        Label6.Text = "Fixed Assets"
+        ' 
+        ' Label5
+        ' 
+        Label5.AutoSize = True
+        Label5.Font = New Font("Segoe UI", 9.0F)
+        Label5.Location = New Point(12, 47)
+        Label5.Name = "Label5"
+        Label5.Size = New Size(83, 15)
+        Label5.TabIndex = 4
+        Label5.Text = "Current Assets"
+        ' 
+        ' Label19
+        ' 
+        Label19.AutoSize = True
+        Label19.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        Label19.Location = New Point(3, 15)
+        Label19.Name = "Label19"
+        Label19.Size = New Size(162, 15)
+        Label19.TabIndex = 21
+        Label19.Text = "Liabilities and Fund Balances"
         ' 
         ' lblTlResult
         ' 
@@ -235,26 +315,6 @@ Partial Class Financial
         lblCurrentLiab.TabIndex = 12
         lblCurrentLiab.Text = "Current Liabilities"
         ' 
-        ' lblTotAssetsResult
-        ' 
-        lblTotAssetsResult.AutoSize = True
-        lblTotAssetsResult.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
-        lblTotAssetsResult.Location = New Point(314, 124)
-        lblTotAssetsResult.Name = "lblTotAssetsResult"
-        lblTotAssetsResult.Size = New Size(42, 15)
-        lblTotAssetsResult.TabIndex = 11
-        lblTotAssetsResult.Text = "Result"
-        ' 
-        ' lblOtherAssetsResult
-        ' 
-        lblOtherAssetsResult.AutoSize = True
-        lblOtherAssetsResult.Font = New Font("Segoe UI", 9.0F)
-        lblOtherAssetsResult.Location = New Point(314, 98)
-        lblOtherAssetsResult.Name = "lblOtherAssetsResult"
-        lblOtherAssetsResult.Size = New Size(39, 15)
-        lblOtherAssetsResult.TabIndex = 10
-        lblOtherAssetsResult.Text = "Result"
-        ' 
         ' lblTotLandFbResult
         ' 
         lblTotLandFbResult.AutoSize = True
@@ -264,66 +324,6 @@ Partial Class Financial
         lblTotLandFbResult.Size = New Size(42, 15)
         lblTotLandFbResult.TabIndex = 10
         lblTotLandFbResult.Text = "Result"
-        ' 
-        ' lblFixAssetsResult
-        ' 
-        lblFixAssetsResult.AutoSize = True
-        lblFixAssetsResult.Font = New Font("Segoe UI", 9.0F)
-        lblFixAssetsResult.Location = New Point(314, 71)
-        lblFixAssetsResult.Name = "lblFixAssetsResult"
-        lblFixAssetsResult.Size = New Size(39, 15)
-        lblFixAssetsResult.TabIndex = 9
-        lblFixAssetsResult.Text = "Result"
-        ' 
-        ' lblCurAssetResult
-        ' 
-        lblCurAssetResult.AutoSize = True
-        lblCurAssetResult.Font = New Font("Segoe UI", 9.0F)
-        lblCurAssetResult.Location = New Point(314, 47)
-        lblCurAssetResult.Name = "lblCurAssetResult"
-        lblCurAssetResult.Size = New Size(39, 15)
-        lblCurAssetResult.TabIndex = 8
-        lblCurAssetResult.Text = "Result"
-        ' 
-        ' Label8
-        ' 
-        Label8.AutoSize = True
-        Label8.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
-        Label8.Location = New Point(12, 124)
-        Label8.Name = "Label8"
-        Label8.Size = New Size(72, 15)
-        Label8.TabIndex = 7
-        Label8.Text = "Total Assets"
-        ' 
-        ' Label7
-        ' 
-        Label7.AutoSize = True
-        Label7.Font = New Font("Segoe UI", 9.0F)
-        Label7.Location = New Point(13, 98)
-        Label7.Name = "Label7"
-        Label7.Size = New Size(73, 15)
-        Label7.TabIndex = 6
-        Label7.Text = "Other Assets"
-        ' 
-        ' Label6
-        ' 
-        Label6.AutoSize = True
-        Label6.Font = New Font("Segoe UI", 9.0F)
-        Label6.Location = New Point(12, 71)
-        Label6.Name = "Label6"
-        Label6.Size = New Size(70, 15)
-        Label6.TabIndex = 5
-        Label6.Text = "Fixed Assets"
-        ' 
-        ' Label5
-        ' 
-        Label5.AutoSize = True
-        Label5.Font = New Font("Segoe UI", 9.0F)
-        Label5.Location = New Point(12, 47)
-        Label5.Name = "Label5"
-        Label5.Size = New Size(83, 15)
-        Label5.TabIndex = 4
-        Label5.Text = "Current Assets"
         ' 
         ' lblPedResult
         ' 
@@ -385,25 +385,33 @@ Partial Class Financial
         gbIncomeStatement.TabStop = False
         gbIncomeStatement.Text = "Income Statement"
         ' 
-        ' lblDepreciationExpenseResult
+        ' GroupBox3
         ' 
-        lblDepreciationExpenseResult.AutoSize = True
-        lblDepreciationExpenseResult.Font = New Font("Segoe UI", 9.0F)
-        lblDepreciationExpenseResult.Location = New Point(318, 286)
-        lblDepreciationExpenseResult.Name = "lblDepreciationExpenseResult"
-        lblDepreciationExpenseResult.Size = New Size(39, 15)
-        lblDepreciationExpenseResult.TabIndex = 42
-        lblDepreciationExpenseResult.Text = "Result"
-        ' 
-        ' lblNetIncomeResult
-        ' 
-        lblNetIncomeResult.AutoSize = True
-        lblNetIncomeResult.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
-        lblNetIncomeResult.Location = New Point(318, 226)
-        lblNetIncomeResult.Name = "lblNetIncomeResult"
-        lblNetIncomeResult.Size = New Size(42, 15)
-        lblNetIncomeResult.TabIndex = 41
-        lblNetIncomeResult.Text = "Result"
+        GroupBox3.BackColor = Color.LightSkyBlue
+        GroupBox3.Controls.Add(lblTotOtherExpensesResult)
+        GroupBox3.Controls.Add(lblDepreciationExpenseResult)
+        GroupBox3.Controls.Add(Label17)
+        GroupBox3.Controls.Add(lblOperatingIncome)
+        GroupBox3.Controls.Add(lblNetIncomeResult)
+        GroupBox3.Controls.Add(Label21)
+        GroupBox3.Controls.Add(Label22)
+        GroupBox3.Controls.Add(Label23)
+        GroupBox3.Controls.Add(Label24)
+        GroupBox3.Controls.Add(lblTotNonpatientResult)
+        GroupBox3.Controls.Add(Label25)
+        GroupBox3.Controls.Add(Label26)
+        GroupBox3.Controls.Add(lblMiscNpRevResult)
+        GroupBox3.Controls.Add(Label27)
+        GroupBox3.Controls.Add(Label28)
+        GroupBox3.Controls.Add(lblGovAppResult)
+        GroupBox3.Controls.Add(lblTotOtherIncomeResult)
+        GroupBox3.Controls.Add(lblIncomeFromInvestResult)
+        GroupBox3.Location = New Point(0, 214)
+        GroupBox3.Name = "GroupBox3"
+        GroupBox3.Size = New Size(570, 290)
+        GroupBox3.TabIndex = 43
+        GroupBox3.TabStop = False
+        GroupBox3.Text = "."
         ' 
         ' lblTotOtherExpensesResult
         ' 
@@ -415,135 +423,25 @@ Partial Class Financial
         lblTotOtherExpensesResult.TabIndex = 40
         lblTotOtherExpensesResult.Text = "Result"
         ' 
-        ' lblTotNonpatientResult
+        ' lblDepreciationExpenseResult
         ' 
-        lblTotNonpatientResult.AutoSize = True
-        lblTotNonpatientResult.Font = New Font("Segoe UI", 9.0F)
-        lblTotNonpatientResult.Location = New Point(318, 163)
-        lblTotNonpatientResult.Name = "lblTotNonpatientResult"
-        lblTotNonpatientResult.Size = New Size(39, 15)
-        lblTotNonpatientResult.TabIndex = 39
-        lblTotNonpatientResult.Text = "Result"
+        lblDepreciationExpenseResult.AutoSize = True
+        lblDepreciationExpenseResult.Font = New Font("Segoe UI", 9.0F)
+        lblDepreciationExpenseResult.Location = New Point(318, 286)
+        lblDepreciationExpenseResult.Name = "lblDepreciationExpenseResult"
+        lblDepreciationExpenseResult.Size = New Size(39, 15)
+        lblDepreciationExpenseResult.TabIndex = 42
+        lblDepreciationExpenseResult.Text = "Result"
         ' 
-        ' lblMiscNpRevResult
+        ' Label17
         ' 
-        lblMiscNpRevResult.AutoSize = True
-        lblMiscNpRevResult.Font = New Font("Segoe UI", 9.0F)
-        lblMiscNpRevResult.Location = New Point(318, 133)
-        lblMiscNpRevResult.Name = "lblMiscNpRevResult"
-        lblMiscNpRevResult.Size = New Size(39, 15)
-        lblMiscNpRevResult.TabIndex = 38
-        lblMiscNpRevResult.Text = "Result"
-        ' 
-        ' lblGovAppResult
-        ' 
-        lblGovAppResult.AutoSize = True
-        lblGovAppResult.Font = New Font("Segoe UI", 9.0F)
-        lblGovAppResult.Location = New Point(318, 101)
-        lblGovAppResult.Name = "lblGovAppResult"
-        lblGovAppResult.Size = New Size(39, 15)
-        lblGovAppResult.TabIndex = 37
-        lblGovAppResult.Text = "Result"
-        ' 
-        ' lblIncomeFromInvestResult
-        ' 
-        lblIncomeFromInvestResult.AutoSize = True
-        lblIncomeFromInvestResult.Font = New Font("Segoe UI", 9.0F)
-        lblIncomeFromInvestResult.Location = New Point(318, 76)
-        lblIncomeFromInvestResult.Name = "lblIncomeFromInvestResult"
-        lblIncomeFromInvestResult.Size = New Size(39, 15)
-        lblIncomeFromInvestResult.TabIndex = 36
-        lblIncomeFromInvestResult.Text = "Result"
-        ' 
-        ' lblTotOtherIncomeResult
-        ' 
-        lblTotOtherIncomeResult.AutoSize = True
-        lblTotOtherIncomeResult.Font = New Font("Segoe UI", 9.0F)
-        lblTotOtherIncomeResult.Location = New Point(318, 50)
-        lblTotOtherIncomeResult.Name = "lblTotOtherIncomeResult"
-        lblTotOtherIncomeResult.Size = New Size(39, 15)
-        lblTotOtherIncomeResult.TabIndex = 35
-        lblTotOtherIncomeResult.Text = "Result"
-        ' 
-        ' Label28
-        ' 
-        Label28.AutoSize = True
-        Label28.Font = New Font("Segoe UI", 9.0F)
-        Label28.Location = New Point(10, 286)
-        Label28.Name = "Label28"
-        Label28.Size = New Size(119, 15)
-        Label28.TabIndex = 34
-        Label28.Text = "Depreciation Expense"
-        ' 
-        ' Label27
-        ' 
-        Label27.AutoSize = True
-        Label27.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
-        Label27.Location = New Point(10, 226)
-        Label27.Name = "Label27"
-        Label27.Size = New Size(122, 15)
-        Label27.TabIndex = 33
-        Label27.Text = "Net Income or (Loss)"
-        ' 
-        ' Label26
-        ' 
-        Label26.AutoSize = True
-        Label26.Font = New Font("Segoe UI", 9.0F)
-        Label26.Location = New Point(10, 196)
-        Label26.Name = "Label26"
-        Label26.Size = New Size(116, 15)
-        Label26.TabIndex = 32
-        Label26.Text = "Total Other Expenses"
-        ' 
-        ' Label25
-        ' 
-        Label25.AutoSize = True
-        Label25.Font = New Font("Segoe UI", 9.0F)
-        Label25.Location = New Point(10, 163)
-        Label25.Name = "Label25"
-        Label25.Size = New Size(149, 15)
-        Label25.TabIndex = 31
-        Label25.Text = "Total Non-Patient Revenue"
-        ' 
-        ' Label24
-        ' 
-        Label24.AutoSize = True
-        Label24.Font = New Font("Segoe UI", 9.0F)
-        Label24.Location = New Point(10, 133)
-        Label24.Name = "Label24"
-        Label24.Size = New Size(198, 15)
-        Label24.TabIndex = 30
-        Label24.Text = "Miscellaneous Non-Patient Revenue"
-        ' 
-        ' Label23
-        ' 
-        Label23.AutoSize = True
-        Label23.Font = New Font("Segoe UI", 9.0F)
-        Label23.Location = New Point(10, 101)
-        Label23.Name = "Label23"
-        Label23.Size = New Size(164, 15)
-        Label23.TabIndex = 29
-        Label23.Text = "Governmental Appropriations"
-        ' 
-        ' Label22
-        ' 
-        Label22.AutoSize = True
-        Label22.Font = New Font("Segoe UI", 9.0F)
-        Label22.Location = New Point(10, 76)
-        Label22.Name = "Label22"
-        Label22.Size = New Size(145, 15)
-        Label22.TabIndex = 28
-        Label22.Text = "Income From Investments"
-        ' 
-        ' Label21
-        ' 
-        Label21.AutoSize = True
-        Label21.Font = New Font("Segoe UI", 9.0F)
-        Label21.Location = New Point(10, 50)
-        Label21.Name = "Label21"
-        Label21.Size = New Size(80, 15)
-        Label21.TabIndex = 27
-        Label21.Text = "Other Income"
+        Label17.AutoSize = True
+        Label17.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        Label17.Location = New Point(10, 22)
+        Label17.Name = "Label17"
+        Label17.Size = New Size(108, 15)
+        Label17.TabIndex = 25
+        Label17.Text = "Operating Income"
         ' 
         ' lblOperatingIncome
         ' 
@@ -555,15 +453,145 @@ Partial Class Financial
         lblOperatingIncome.TabIndex = 26
         lblOperatingIncome.Text = "Result"
         ' 
-        ' Label17
+        ' lblNetIncomeResult
         ' 
-        Label17.AutoSize = True
-        Label17.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
-        Label17.Location = New Point(10, 22)
-        Label17.Name = "Label17"
-        Label17.Size = New Size(108, 15)
-        Label17.TabIndex = 25
-        Label17.Text = "Operating Income"
+        lblNetIncomeResult.AutoSize = True
+        lblNetIncomeResult.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        lblNetIncomeResult.Location = New Point(318, 226)
+        lblNetIncomeResult.Name = "lblNetIncomeResult"
+        lblNetIncomeResult.Size = New Size(42, 15)
+        lblNetIncomeResult.TabIndex = 41
+        lblNetIncomeResult.Text = "Result"
+        ' 
+        ' Label21
+        ' 
+        Label21.AutoSize = True
+        Label21.Font = New Font("Segoe UI", 9.0F)
+        Label21.Location = New Point(10, 50)
+        Label21.Name = "Label21"
+        Label21.Size = New Size(80, 15)
+        Label21.TabIndex = 27
+        Label21.Text = "Other Income"
+        ' 
+        ' Label22
+        ' 
+        Label22.AutoSize = True
+        Label22.Font = New Font("Segoe UI", 9.0F)
+        Label22.Location = New Point(10, 76)
+        Label22.Name = "Label22"
+        Label22.Size = New Size(145, 15)
+        Label22.TabIndex = 28
+        Label22.Text = "Income From Investments"
+        ' 
+        ' Label23
+        ' 
+        Label23.AutoSize = True
+        Label23.Font = New Font("Segoe UI", 9.0F)
+        Label23.Location = New Point(10, 101)
+        Label23.Name = "Label23"
+        Label23.Size = New Size(164, 15)
+        Label23.TabIndex = 29
+        Label23.Text = "Governmental Appropriations"
+        ' 
+        ' Label24
+        ' 
+        Label24.AutoSize = True
+        Label24.Font = New Font("Segoe UI", 9.0F)
+        Label24.Location = New Point(10, 133)
+        Label24.Name = "Label24"
+        Label24.Size = New Size(198, 15)
+        Label24.TabIndex = 30
+        Label24.Text = "Miscellaneous Non-Patient Revenue"
+        ' 
+        ' lblTotNonpatientResult
+        ' 
+        lblTotNonpatientResult.AutoSize = True
+        lblTotNonpatientResult.Font = New Font("Segoe UI", 9.0F)
+        lblTotNonpatientResult.Location = New Point(318, 163)
+        lblTotNonpatientResult.Name = "lblTotNonpatientResult"
+        lblTotNonpatientResult.Size = New Size(39, 15)
+        lblTotNonpatientResult.TabIndex = 39
+        lblTotNonpatientResult.Text = "Result"
+        ' 
+        ' Label25
+        ' 
+        Label25.AutoSize = True
+        Label25.Font = New Font("Segoe UI", 9.0F)
+        Label25.Location = New Point(10, 163)
+        Label25.Name = "Label25"
+        Label25.Size = New Size(149, 15)
+        Label25.TabIndex = 31
+        Label25.Text = "Total Non-Patient Revenue"
+        ' 
+        ' Label26
+        ' 
+        Label26.AutoSize = True
+        Label26.Font = New Font("Segoe UI", 9.0F)
+        Label26.Location = New Point(10, 196)
+        Label26.Name = "Label26"
+        Label26.Size = New Size(116, 15)
+        Label26.TabIndex = 32
+        Label26.Text = "Total Other Expenses"
+        ' 
+        ' lblMiscNpRevResult
+        ' 
+        lblMiscNpRevResult.AutoSize = True
+        lblMiscNpRevResult.Font = New Font("Segoe UI", 9.0F)
+        lblMiscNpRevResult.Location = New Point(318, 133)
+        lblMiscNpRevResult.Name = "lblMiscNpRevResult"
+        lblMiscNpRevResult.Size = New Size(39, 15)
+        lblMiscNpRevResult.TabIndex = 38
+        lblMiscNpRevResult.Text = "Result"
+        ' 
+        ' Label27
+        ' 
+        Label27.AutoSize = True
+        Label27.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        Label27.Location = New Point(10, 226)
+        Label27.Name = "Label27"
+        Label27.Size = New Size(122, 15)
+        Label27.TabIndex = 33
+        Label27.Text = "Net Income or (Loss)"
+        ' 
+        ' Label28
+        ' 
+        Label28.AutoSize = True
+        Label28.Font = New Font("Segoe UI", 9.0F)
+        Label28.Location = New Point(10, 286)
+        Label28.Name = "Label28"
+        Label28.Size = New Size(119, 15)
+        Label28.TabIndex = 34
+        Label28.Text = "Depreciation Expense"
+        ' 
+        ' lblGovAppResult
+        ' 
+        lblGovAppResult.AutoSize = True
+        lblGovAppResult.Font = New Font("Segoe UI", 9.0F)
+        lblGovAppResult.Location = New Point(318, 101)
+        lblGovAppResult.Name = "lblGovAppResult"
+        lblGovAppResult.Size = New Size(39, 15)
+        lblGovAppResult.TabIndex = 37
+        lblGovAppResult.Text = "Result"
+        ' 
+        ' lblTotOtherIncomeResult
+        ' 
+        lblTotOtherIncomeResult.AutoSize = True
+        lblTotOtherIncomeResult.Font = New Font("Segoe UI", 9.0F)
+        lblTotOtherIncomeResult.Location = New Point(318, 50)
+        lblTotOtherIncomeResult.Name = "lblTotOtherIncomeResult"
+        lblTotOtherIncomeResult.Size = New Size(39, 15)
+        lblTotOtherIncomeResult.TabIndex = 35
+        lblTotOtherIncomeResult.Text = "Result"
+        ' 
+        ' lblIncomeFromInvestResult
+        ' 
+        lblIncomeFromInvestResult.AutoSize = True
+        lblIncomeFromInvestResult.Font = New Font("Segoe UI", 9.0F)
+        lblIncomeFromInvestResult.Location = New Point(318, 76)
+        lblIncomeFromInvestResult.Name = "lblIncomeFromInvestResult"
+        lblIncomeFromInvestResult.Size = New Size(39, 15)
+        lblIncomeFromInvestResult.TabIndex = 36
+        lblIncomeFromInvestResult.Text = "Result"
         ' 
         ' lblContractAllowanceResult
         ' 
@@ -864,7 +892,7 @@ Partial Class Financial
         ' 
         ' GroupBox2
         ' 
-        GroupBox2.BackColor = Color.DeepSkyBlue
+        GroupBox2.BackColor = Color.LightSkyBlue
         GroupBox2.Controls.Add(lblTotLandFbResult)
         GroupBox2.Controls.Add(Label19)
         GroupBox2.Controls.Add(lblCurrentLiab)
@@ -883,34 +911,6 @@ Partial Class Financial
         GroupBox2.TabStop = False
         GroupBox2.Text = "."
         ' 
-        ' GroupBox3
-        ' 
-        GroupBox3.BackColor = Color.DeepSkyBlue
-        GroupBox3.Controls.Add(lblTotOtherExpensesResult)
-        GroupBox3.Controls.Add(lblDepreciationExpenseResult)
-        GroupBox3.Controls.Add(Label17)
-        GroupBox3.Controls.Add(lblOperatingIncome)
-        GroupBox3.Controls.Add(lblNetIncomeResult)
-        GroupBox3.Controls.Add(Label21)
-        GroupBox3.Controls.Add(Label22)
-        GroupBox3.Controls.Add(Label23)
-        GroupBox3.Controls.Add(Label24)
-        GroupBox3.Controls.Add(lblTotNonpatientResult)
-        GroupBox3.Controls.Add(Label25)
-        GroupBox3.Controls.Add(Label26)
-        GroupBox3.Controls.Add(lblMiscNpRevResult)
-        GroupBox3.Controls.Add(Label27)
-        GroupBox3.Controls.Add(Label28)
-        GroupBox3.Controls.Add(lblGovAppResult)
-        GroupBox3.Controls.Add(lblTotOtherIncomeResult)
-        GroupBox3.Controls.Add(lblIncomeFromInvestResult)
-        GroupBox3.Location = New Point(0, 214)
-        GroupBox3.Name = "GroupBox3"
-        GroupBox3.Size = New Size(570, 290)
-        GroupBox3.TabIndex = 43
-        GroupBox3.TabStop = False
-        GroupBox3.Text = "."
-        ' 
         ' Financial
         ' 
         AutoScaleDimensions = New SizeF(7.0F, 15.0F)
@@ -924,14 +924,14 @@ Partial Class Financial
         GroupBox1.PerformLayout()
         gbIncomeStatement.ResumeLayout(False)
         gbIncomeStatement.PerformLayout()
+        GroupBox3.ResumeLayout(False)
+        GroupBox3.PerformLayout()
         gbUncompensatedCare.ResumeLayout(False)
         gbUncompensatedCare.PerformLayout()
         Panel1.ResumeLayout(False)
         Panel1.PerformLayout()
         GroupBox2.ResumeLayout(False)
         GroupBox2.PerformLayout()
-        GroupBox3.ResumeLayout(False)
-        GroupBox3.PerformLayout()
         ResumeLayout(False)
     End Sub
     Friend WithEvents lbligr As Label
@@ -1007,6 +1007,6 @@ Partial Class Financial
     Friend WithEvents Panel1 As Panel
     Friend WithEvents GroupBox1 As BoldGroupBox
     Friend WithEvents gbIncomeStatement As BoldGroupBox
-    Friend WithEvents GroupBox3 As GroupBox
-    Friend WithEvents GroupBox2 As GroupBox
+    Friend WithEvents GroupBox3 As BoldGroupBox
+    Friend WithEvents GroupBox2 As BoldGroupBox
 End Class

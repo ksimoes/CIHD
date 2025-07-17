@@ -4,6 +4,36 @@ Imports System.Net.Http
 
 
 Public Class Profile
+    Private ReadOnly FacilityTypeMap As New Dictionary(Of String, String) From {
+    {"STH", "Short-term"},
+    {"FQHC", "Federally Qualified Health Center"},
+    {"ADH", "Alcohol/Drug Hospitals"},
+    {"MAF", "Medical Assistance Facilitie"},
+    {"CAH", "Critical Access Hospital"},
+    {"CCMHC", "Continuation of Community Mental Health Center"},
+    {"HOS", "Hospice"},
+    {"RNMHC", "Religious Non-medical Health Care Institution"},
+    {"LTCH", "Long-Term Care Hospital"},
+    {"HBRDF", "Hospital-based Renal Dialysis Facility"},
+    {"IDRF", "Independent Renal Dialysis Facility"},
+    {"ISPRDF", "Independent Special Purpose Renal Dialysis Facility"},
+    {"FTH", "Formerly Tuberculosis Hospital"},
+    {"RH", "Rehabilitation Hospital"},
+    {"HHA", "Home Health Agency"},
+    {"CCORF", "Continuation of Comprehensive Outpatient Rehabilitation Facility"},
+    {"CH", "Children’s Hospital"},
+    {"RHC", "Continuation of Rural Health Clinic"},
+    {"HBSRDF", "Hospital-based Special Purpose Renal Dialysis Facility"},
+    {"PH", "Psychiatric Hospital"},
+    {"CORF", "Comprehensive Outpatient Rehabilitation Facility"},
+    {"CMHC", "Community Mental Health Center"},
+    {"SNF", "Skilled Nursing Facility"},
+    {"OPTS", "Outpatient Physical Therapy Services"},
+    {"NR", "Numbers Reserved"},
+    {"CHHA", "Continuation of Home Health Agency"},
+    {"TC", "Transplant Center"},
+    {"RFU", "Reserved for Future Use"}
+}
     Private connectionString As String = "Data Source=cihg-sql1.database.windows.net;Initial Catalog=CIHData;User ID=cihgadmin;Password=P!bxbFrHw4-jCvU*;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
     Public strCMSnum As String
     Public Async Sub ShowProfile(foundHospital As HospitalContext)
@@ -74,7 +104,9 @@ Public Class Profile
             ' Find the exact match for Provider CCN if possible
             Dim provider = myArray.FirstOrDefault(Function(x) x("Provider CCN") IsNot Nothing AndAlso x("Provider CCN").ToString() = foundHosp.CMSNum)
             If provider Is Nothing Then provider = myArray(0)
-            lblFacilityResult.Text = If(provider("CCN Facility Type") IsNot Nothing, provider("CCN Facility Type").ToString(), "N/A")
+
+            Dim facilityAcronym As String = If(provider("CCN Facility Type") IsNot Nothing, provider("CCN Facility Type").ToString(), "N/A")
+            lblFacilityResult.Text = If(FacilityTypeMap.ContainsKey(facilityAcronym), FacilityTypeMap(facilityAcronym), facilityAcronym)
 
 
 
@@ -223,8 +255,8 @@ Public Class Profile
 
     End Sub
 
-    Private Sub btnpoo_Click(sender As Object, e As EventArgs) Handles btnyk.Click
-        Me.Hide()
+    Private Sub btnpoo_Click(sender As Object, e As EventArgs)
+        Hide()
         yk.Show()
     End Sub
 
