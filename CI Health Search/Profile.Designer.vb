@@ -102,7 +102,7 @@ Partial Class Profile
         Panel1 = New Panel()
         GroupBox2 = New GroupBox()
         Label3 = New Label()
-        GroupBox1 = New GroupBox()
+        GroupBox1 = New BoldGroupBox()
         lblNPIResult = New Label()
         Label9 = New Label()
         Label4 = New Label()
@@ -991,6 +991,7 @@ Partial Class Profile
         ' 
         ' GroupBox1
         ' 
+        GroupBox1.BackColor = Color.LightSkyBlue
         GroupBox1.Controls.Add(lblNPIResult)
         GroupBox1.Controls.Add(Label9)
         GroupBox1.Controls.Add(Label4)
@@ -1150,7 +1151,7 @@ Partial Class Profile
         ' 
         ' DataGridView3
         ' 
-        DataGridView3.BackgroundColor = SystemColors.ButtonHighlight
+        DataGridView3.BackgroundColor = Color.LightSkyBlue
         DataGridView3.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
         DataGridView3.Columns.AddRange(New DataGridViewColumn() {Column7, Column8, Column9, Column10, Column11, Column12})
         DataGridView3.Location = New Point(17, 1606)
@@ -1235,7 +1236,7 @@ Partial Class Profile
         ' 
         ' DataGridView1
         ' 
-        DataGridView1.BackgroundColor = SystemColors.ButtonHighlight
+        DataGridView1.BackgroundColor = Color.LightSkyBlue
         DataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
         DataGridView1.Columns.AddRange(New DataGridViewColumn() {Column1, Column2, Column3})
         DataGridView1.GridColor = Color.DimGray

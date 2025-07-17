@@ -679,10 +679,10 @@ Partial Class Search
         ' 
         lbTypeFacilityCharAll.FormattingEnabled = True
         lbTypeFacilityCharAll.ItemHeight = 15
-        lbTypeFacilityCharAll.Items.AddRange(New Object() {"Childrens", "Critical Access", "Long Term", "Psychiatric", "Rehabilitation", "Rural Emergency Hospital", "Short Term Acute Care"})
+        lbTypeFacilityCharAll.Items.AddRange(New Object() {"Childrens", "Critical Access", "Long Term", "Psychiatric", "Rehabilitation", "Rural Emergency Hospital", "Short Term Acute Care", "Federally Qualified Health Centers"})
         lbTypeFacilityCharAll.Location = New Point(349, 7)
         lbTypeFacilityCharAll.Name = "lbTypeFacilityCharAll"
-        lbTypeFacilityCharAll.Size = New Size(187, 109)
+        lbTypeFacilityCharAll.Size = New Size(187, 124)
         lbTypeFacilityCharAll.TabIndex = 83
         ' 
         ' lblEhrAll

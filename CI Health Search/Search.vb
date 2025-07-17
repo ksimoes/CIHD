@@ -13,7 +13,9 @@ Public Class Search
         {"Psychiatric", "PH"},
         {"Rehabilitation", "RH"},
         {"Rural Emergency Hospital", "RHC"},
-        {"Short Term Acute Care", "STH"}
+        {"Short Term Acute Care", "STH"},
+        {"Federally Qualified Health Centers", "FQHC"},
+        {"Rural Health Clinic", "RHC"}
     }
 
     Public Function useSQL(ByRef selectedState As String) As Boolean
@@ -191,7 +193,9 @@ Public Class Search
                             row(col.ToString()) = item(col.ToString())
                         Next
                         dt.Rows.Add(row)
-                    Next      ' --- Client-side filtering for exact matches ---
+                    Next
+
+                    ' --- Client-side filtering for exact matches ---
                     If Not String.IsNullOrEmpty(selectedState) AndAlso dt.Columns.Contains("State Code") Then
                         dt = dt.Select($"[State Code] = '{selectedState}'").CopyToDataTable()
                     End If
@@ -215,56 +219,24 @@ Public Class Search
                             dt = dt.Clone() ' Empty table with same schema
                         End If
                     End If
-
-                    ' --- Debug: Check DataTable before filtering ---
-                    If dt.Columns.Contains("Total Patient Revenue") Then
-                        Dim minRev As Double = 0
-                        Dim maxRev As Double = Double.MaxValue
-
-                        If Not String.IsNullOrWhiteSpace(txtMinTotPatRevAll.Text) Then
-                            Double.TryParse(txtMinTotPatRevAll.Text.Trim(), minRev)
+                    If Not String.IsNullOrWhiteSpace(txtcountygeoall.Text) AndAlso dt.Columns.Contains("County Name") Then
+                        Dim county = txtcountygeoall.Text.Trim().ToUpper()
+                        Dim filteredRows = dt.Select($"[County Name] = '{county}'")
+                        If filteredRows.Length > 0 Then
+                            dt = filteredRows.CopyToDataTable()
+                        Else
+                            dt = dt.Clone() ' Empty table with same schema
                         End If
-
-                        If Not String.IsNullOrWhiteSpace(txtMaxTotPatRevAll.Text) Then
-                            Dim tempMax As Double
-                            If Double.TryParse(txtMaxTotPatRevAll.Text.Trim(), tempMax) Then
-                                maxRev = tempMax
-                            End If
-                        End If
-
-                        Dim filteredDt As DataTable = dt.Clone()
-                        Dim matchCount As Integer = 0
-                        For Each row As DataRow In dt.Rows
-                            Dim rawValue As String = row("Total Patient Revenue").ToString().Trim()
-                            rawValue = rawValue.Replace("$", "").Replace(",", "")
-                            Dim revenue As Double
-                            If Double.TryParse(rawValue, revenue) Then
-                                If revenue >= minRev AndAlso revenue <= maxRev Then
-                                    filteredDt.ImportRow(row)
-                                    matchCount += 1
-                                End If
-                            End If
-                        Next
-                        dt = filteredDt
-                        If Not String.IsNullOrWhiteSpace(txtcountygeoall.Text) AndAlso dt.Columns.Contains("County Name") Then
-                            Dim county = txtcountygeoall.Text.Trim().ToUpper()
-                            Dim filteredRows = dt.Select($"[County Name] = '{county}'")
+                    End If
+                    If lbTypeFacilityCharAll.SelectedItem IsNot Nothing AndAlso dt.Columns.Contains("Facility Type") Then
+                        Dim selectedDisplay = lbTypeFacilityCharAll.SelectedItem.ToString()
+                        If FacilityTypeMap.ContainsKey(selectedDisplay) Then
+                            Dim acronym = FacilityTypeMap(selectedDisplay)
+                            Dim filteredRows = dt.Select($"[Facility Type] = '{acronym}'")
                             If filteredRows.Length > 0 Then
                                 dt = filteredRows.CopyToDataTable()
                             Else
                                 dt = dt.Clone() ' Empty table with same schema
-                            End If
-                        End If
-                        If lbTypeFacilityCharAll.SelectedItem IsNot Nothing AndAlso dt.Columns.Contains("Facility Type") Then
-                            Dim selectedDisplay = lbTypeFacilityCharAll.SelectedItem.ToString()
-                            If FacilityTypeMap.ContainsKey(selectedDisplay) Then
-                                Dim acronym = FacilityTypeMap(selectedDisplay)
-                                Dim filteredRows = dt.Select($"[Facility Type] = '{acronym}'")
-                                If filteredRows.Length > 0 Then
-                                    dt = filteredRows.CopyToDataTable()
-                                Else
-                                    dt = dt.Clone() ' Empty table with same schema
-                                End If
                             End If
                         End If
                     End If
