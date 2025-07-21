@@ -37,14 +37,30 @@ Public Class Profile
     Public strCMSnum As String
 
     Public Async Sub ShowProfile(foundHospital As HospitalContext)
-        Dim useSql As Boolean = (foundHospital.State = "TN" Or foundHospital.State = "TX")
-        Results.SelectedHospital = foundHospital
-        strCMSnum = foundHospital.CMSNum
+        ' Always show the basic info from the context first
+        lblNameAddressResult.Text = If(Not String.IsNullOrWhiteSpace(foundHospital.Name), foundHospital.Name, "N/A")
+        lbladdy.Text = If(Not String.IsNullOrWhiteSpace(foundHospital.Address), foundHospital.Address, "N/A")
+        ' lblCityResult.Text = If(Not String.IsNullOrWhiteSpace(foundHospital.City), foundHospital.City, "N/A")
+        lblZipCodeResult.Text = If(Not String.IsNullOrWhiteSpace(foundHospital.Zip), foundHospital.Zip, "N/A")
+        lblCountyFipsResult.Text = If(Not String.IsNullOrWhiteSpace(foundHospital.County), foundHospital.County, "N/A")
+        lblCmsCertNumProfileResult.Text = If(Not String.IsNullOrWhiteSpace(foundHospital.CMSNum), foundHospital.CMSNum, "N/A")
+        lblNpiResult.Text = If(Not String.IsNullOrWhiteSpace(foundHospital.NPI), foundHospital.NPI, "N/A")
+        lblGeneralMedSurgBedsResult.Text = If(foundHospital.NumOfBeds > 0, foundHospital.NumOfBeds.ToString(), "N/A")
+        lblTotalEmployeesResult.Text = If(foundHospital.NumOfEmployees > 0, foundHospital.NumOfEmployees.ToString(), "N/A")
+        lblTotalDischargesResult.Text = If(foundHospital.TotalDischarges > 0, foundHospital.TotalDischarges.ToString(), "N/A")
+        lblTotalPatientRevenueResult.Text = If(foundHospital.TotalPatientRev > 0, foundHospital.TotalPatientRev.ToString("N0"), "N/A")
+        lblTypeControlResult.Text = If(Not String.IsNullOrWhiteSpace(foundHospital.FacilityType), foundHospital.FacilityType, "N/A")
+        lblCmsUrbRurDesigResult.Text = If(Not String.IsNullOrWhiteSpace(foundHospital.RuralOUrban), foundHospital.RuralOUrban, "N/A")
+        lblCbsaResult.Text = If(Not String.IsNullOrWhiteSpace(foundHospital.CBSAnum), foundHospital.CBSAnum, "N/A")
+        lblPhoneNumResult.Text = If(Not String.IsNullOrWhiteSpace(foundHospital.Phone), foundHospital.Phone, "N/A")
+        ' Add more label assignments as needed
 
+        ' If TN/TX, supplement with SQL data
+        Dim useSql As Boolean = (foundHospital.State = "TN" Or foundHospital.State = "TX")
         If useSql Then
             Dim queryProfile As String = If(foundHospital.State = "TN",
-                "SELECT * FROM tn.AdminCon WHERE LicenseNum = @LicenseNum",
-                "SELECT * FROM tx.Utilization WHERE id = @id")
+            "SELECT * FROM tn.AdminCon WHERE LicenseNum = @LicenseNum",
+            "SELECT * FROM tx.Utilization WHERE id = @id")
             Using conn As New SqlConnection(connectionString)
                 Using cmd As New SqlCommand(queryProfile, conn)
                     If foundHospital.State = "TN" Then
@@ -60,31 +76,21 @@ Public Class Profile
                             lblCeoPresResult.Text = SafeGet(reader, "Admin")
                             lblCountyFipsResult.Text = SafeGet(reader, "County")
                             lblTotalPatientDaysResult.Text = SafeGet(reader, "Inpatient Days")
-                        Else
-                            lblNameAddressResult.Text = "No result"
-                            lblPhoneNumResult.Text = "No result"
-                            lblCeoPresResult.Text = "No result"
-                            lblCountyFipsResult.Text = "No result"
-                            lblTotalPatientDaysResult.Text = "No result"
                         End If
-                        Await ShowApiProfileAsync(foundHospital)
                     End Using
                 End Using
             End Using
-        Else
-            Await ShowApiProfileAsync(foundHospital)
         End If
+
+        ' Always supplement with API data for the most up-to-date info
+        Await ShowApiProfileAsync(foundHospital)
 
         ' Fetch and display NPI from NPPES API (by NPI if available, else by name/state)
         Dim npiData As JObject = Await FetchNpiDataAsync(foundHospital.NPI, foundHospital.Name, foundHospital.State)
         If npiData IsNot Nothing Then
-            lblNpiResult.Text = npiData("number")?.ToString() ' "NPI not found"'
+            lblNpiResult.Text = npiData("number")?.ToString()
             foundHospital.NPI = npiData("number")?.ToString()
-            ' Optionally display more NPPES fields here
-            ' Example:
-            ' lblNpiOrgName.Text = npiData("basic")?("organization_name")?.ToString()
-            ' lblNpiAddress.Text = npiData("addresses")?(0)?("address_1")?.ToString()
-        Else
+        ElseIf String.IsNullOrWhiteSpace(lblNpiResult.Text) OrElse lblNpiResult.Text = "N/A" Then
             lblNpiResult.Text = "NPI not found"
         End If
     End Sub

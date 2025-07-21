@@ -7,68 +7,79 @@ Public Class Financial
     Public strCMSnum As String
     ' Call this method to load data for the selected hospital
     Public Async Function ShowFinancialData(hospitalId As Integer, state As String) As Task
-        Dim queryFinance As String = ""
-        Dim queryCharity As String = ""
+        ' Step 1: Populate from Results.SelectedHospital
+        Dim hosp = Results.SelectedHospital
 
-        ' Choose the correct table based on state
-        Select Case state
-            Case "TN"
+        lblPedResult.Text = If(hosp.TotalDays > 0, hosp.TotalDays.ToString(), "N/A")
+        lblCurAssetResult.Text = If(hosp.TotalCurrentAssets > 0, hosp.TotalCurrentAssets.ToString("N0"), "N/A")
+        lblFixAssetsResult.Text = If(hosp.TotalAssets > 0, hosp.TotalAssets.ToString("N0"), "N/A")
+        lblTotAssetsResult.Text = If(hosp.TotalAssets > 0, hosp.TotalAssets.ToString("N0"), "N/A")
+        lblNetPatRevResult.Text = If(hosp.NetPatientRev > 0, hosp.NetPatientRev.ToString("N0"), "N/A")
+        lblTotPatRevResult.Text = If(hosp.TotalPatientRev > 0, hosp.TotalPatientRev.ToString("N0"), "N/A")
+        lblOutPatResult.Text = "N/A"
+        lblInpRevResult.Text = "N/A"
+        lblTotOperatingExpenseResult.Text = If(hosp.TotalOperatingExpense > 0, hosp.TotalOperatingExpense.ToString("N0"), "N/A")
+        lblNetIncomeResult.Text = If(hosp.NetIncome > 0, hosp.NetIncome.ToString("N0"), "N/A")
+        lblDepreciationExpenseResult.Text = If(hosp.DepreciationCost > 0, hosp.DepreciationCost.ToString("N0"), "N/A")
+        lblCcResult.Text = If(hosp.CharityCost > 0, hosp.CharityCost.ToString("N0"), "N/A")
+        lblUncompResult.Text = If(hosp.UncompensatedCost > 0, hosp.UncompensatedCost.ToString("N0"), "N/A")
+        lblTotUcResult.Text = If(hosp.UncompensatedCost > 0, hosp.UncompensatedCost.ToString("N0"), "N/A")
+        lblCurLiabilitiesRes.Text = If(hosp.TotalCurrentLiabilities > 0, hosp.TotalCurrentLiabilities.ToString("N0"), "N/A")
+        lblLtResult.Text = If(hosp.TotalLongTermLiabilities > 0, hosp.TotalLongTermLiabilities.ToString("N0"), "N/A")
+        lblTlResult.Text = If(hosp.TotalLiabilities > 0, hosp.TotalLiabilities.ToString("N0"), "N/A")
+        ' ...add more as needed...
+
+        ' Step 2: Supplement with DB for TN/TX
+        If state = "TN" Or state = "TX" Then
+            Dim queryFinance As String = ""
+            Dim queryCharity As String = ""
+            If state = "TN" Then
                 queryFinance = "SELECT * FROM tn.Financials WHERE LicenseNum = @LicenseNum"
-            Case "TX"
+            ElseIf state = "TX" Then
                 queryFinance = "SELECT * FROM tx.Finance WHERE id = @id"
                 queryCharity = "SELECT * FROM tx.Charity WHERE id = @id"
-            Case Else
-                ' For all other states, use API
-                Await ShowFinancialDataApi(Results.SelectedHospital.CMSNum)
-                Exit Function
-        End Select
+            End If
 
-        ' --- Query 1: Finance Table ---
-        Using conn As New SqlConnection(connectionString)
-            Using cmd As New SqlCommand(queryFinance, conn)
-                If state = "TN" Then
-                    cmd.Parameters.AddWithValue("@LicenseNum", hospitalId)
-                ElseIf state = "TX" Then
-                    cmd.Parameters.AddWithValue("@id", hospitalId)
-                End If
-                conn.Open()
-                Using reader = cmd.ExecuteReader()
-                    If reader.Read() Then
-                        lblInpRevResult.Text = If(Not IsDBNull(reader("Total Gross Inpatient Revenue")), reader("Total Gross Inpatient Revenue").ToString(), "N/A")
-                        lblOutPatResult.Text = If(Not IsDBNull(reader("Total Gross Outpatient Revenue")), reader("Total Gross Outpatient Revenue").ToString(), "N/A")
-                        ' Add more fields as needed for TN/TX
-                    Else
-                        lblPedResult.Text = "No result"
-                        lblNumMonthsPeriodResult.Text = "No result"
+            Using conn As New SqlConnection(connectionString)
+                Using cmd As New SqlCommand(queryFinance, conn)
+                    If state = "TN" Then
+                        cmd.Parameters.AddWithValue("@LicenseNum", hospitalId)
+                    ElseIf state = "TX" Then
+                        cmd.Parameters.AddWithValue("@id", hospitalId)
                     End If
-                End Using
-                conn.Close()
-            End Using
-        End Using
-
-        '--- Query 2 Charity Table(TX only) - --
-        If state = "TX" Then
-            Using conn2 As New SqlConnection(connectionString)
-                Using cmd2 As New SqlCommand(queryCharity, conn2)
-                    cmd2.Parameters.AddWithValue("@id", hospitalId)
-                    conn2.Open()
-                    Using reader2 = cmd2.ExecuteReader()
-                        If reader2.Read() Then
-                            lblTotUcResult.Text = If(Not IsDBNull(reader2("Total Uncompensated Care")), reader2("Total Uncompensated Care").ToString(), "N/A")
-                            lblUncompResult.Text = If(Not IsDBNull(reader2("Bad Debt Charges")), reader2("Bad Debt Charges").ToString(), "N/A")
-                            lblCcResult.Text = If(Not IsDBNull(reader2("Charity Charges")), reader2("Charity Charges").ToString(), "N/A")
-                            lblucpctResult.Text = If(Not IsDBNull(reader2("Uncompensated Care as pcnt of GPR")), reader2("Uncompensated Care as pcnt of GPR").ToString(), "N/A")
-                        Else
-                            lblTotUcResult.Text = "No result"
-                            lblUncompResult.Text = "No result"
-                            lblCcResult.Text = "No result"
-                            lblucpctResult.Text = "No result"
+                    conn.Open()
+                    Using reader = cmd.ExecuteReader()
+                        If reader.Read() Then
+                            ' Overwrite with DB values if available
+                            lblInpRevResult.Text = If(Not IsDBNull(reader("Total Gross Inpatient Revenue")), reader("Total Gross Inpatient Revenue").ToString(), lblInpRevResult.Text)
+                            lblOutPatResult.Text = If(Not IsDBNull(reader("Total Gross Outpatient Revenue")), reader("Total Gross Outpatient Revenue").ToString(), lblOutPatResult.Text)
+                            ' ...add more as needed...
                         End If
                     End Using
                 End Using
             End Using
-            ShowFinancialDataApi(hospitalId)
+
+            If state = "TX" Then
+                Using conn2 As New SqlConnection(connectionString)
+                    Using cmd2 As New SqlCommand(queryCharity, conn2)
+                        cmd2.Parameters.AddWithValue("@id", hospitalId)
+                        conn2.Open()
+                        Using reader2 = cmd2.ExecuteReader()
+                            If reader2.Read() Then
+                                lblTotUcResult.Text = If(Not IsDBNull(reader2("Total Uncompensated Care")), reader2("Total Uncompensated Care").ToString(), lblTotUcResult.Text)
+                                lblUncompResult.Text = If(Not IsDBNull(reader2("Bad Debt Charges")), reader2("Bad Debt Charges").ToString(), lblUncompResult.Text)
+                                lblCcResult.Text = If(Not IsDBNull(reader2("Charity Charges")), reader2("Charity Charges").ToString(), lblCcResult.Text)
+                                lblucpctResult.Text = If(Not IsDBNull(reader2("Uncompensated Care as pcnt of GPR")), reader2("Uncompensated Care as pcnt of GPR").ToString(), "N/A")
+                            End If
+                        End Using
+                    End Using
+                End Using
+            End If
+            Return
         End If
+
+        ' Step 3: Supplement with API for all other states
+        Await ShowFinancialDataApi(hosp.CMSNum)
     End Function
 
 

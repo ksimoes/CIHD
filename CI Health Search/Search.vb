@@ -133,49 +133,43 @@ Public Class Search
     End Sub
 
     Private Async Function SearchByApiAsync(selectedState As String) As Task
-        ' Use the correct dataset and keyword parameter
         Dim apiUrl As String = "https://data.cms.gov/data-api/v1/dataset/8015f175-35cc-4cab-a664-b7c87d91a027/data?"
         Dim filters As New List(Of String)
 
-        ' Add keyword parameters for broad API search
-        If Not String.IsNullOrEmpty(selectedState) Then filters.Add("keyword=" & Uri.EscapeDataString(selectedState))
-        If Not String.IsNullOrEmpty(txtCityAll.Text) Then filters.Add("keyword=" & Uri.EscapeDataString(txtCityAll.Text.Trim()))
+        ' Use filter parameters for precise, field-specific filtering (using correct column names)
+        If Not String.IsNullOrEmpty(selectedState) Then filters.Add("filter[State Code]=" & Uri.EscapeDataString(selectedState))
+        If Not String.IsNullOrEmpty(txtCityAll.Text) Then filters.Add("filter[City]=" & Uri.EscapeDataString(txtCityAll.Text.Trim()))
         Dim cmsNum As String = If(Not String.IsNullOrWhiteSpace(txtCmsCertNumDemoAll.Text), txtCmsCertNumDemoAll.Text.Trim(), TextBox39.Text.Trim())
         If Not String.IsNullOrEmpty(cmsNum) Then
-            filters.Add("keyword=" & Uri.EscapeDataString(cmsNum))
+            filters.Add("filter[Provider CCN]=" & Uri.EscapeDataString(cmsNum))
         End If
         If Not String.IsNullOrWhiteSpace(txtcountygeoall.Text) Then
-            filters.Add("keyword=" & Uri.EscapeDataString(txtcountygeoall.Text.Trim().ToUpper()))
+            filters.Add("filter[County]=" & Uri.EscapeDataString(txtcountygeoall.Text.Trim()))
         End If
         If lbTypeFacilityCharAll.SelectedItem IsNot Nothing Then
             Dim selectedDisplay = lbTypeFacilityCharAll.SelectedItem.ToString()
             If FacilityTypeMap.ContainsKey(selectedDisplay) Then
                 Dim acronym = FacilityTypeMap(selectedDisplay)
-                filters.Add("keyword=" & Uri.EscapeDataString(acronym))
+                filters.Add("filter[CCN Facility Type]=" & Uri.EscapeDataString(acronym))
             End If
         End If
-        If Not String.IsNullOrEmpty(txtNpiAll.Text) Then filters.Add("keyword=" & Uri.EscapeDataString(txtNpiAll.Text.Trim()))
-        If Not String.IsNullOrEmpty(txtHospitalNameAll.Text) Then filters.Add("keyword=" & Uri.EscapeDataString(txtHospitalNameAll.Text.Trim()))
+        If Not String.IsNullOrEmpty(txtNpiAll.Text) Then filters.Add("filter[NPI]=" & Uri.EscapeDataString(txtNpiAll.Text.Trim()))
+        If Not String.IsNullOrEmpty(txtHospitalNameAll.Text) Then filters.Add("filter[Hospital Name]=" & Uri.EscapeDataString(txtHospitalNameAll.Text.Trim()))
         If cbRUAll.SelectedItem IsNot Nothing AndAlso Not String.IsNullOrEmpty(cbRUAll.SelectedItem.ToString()) Then
-            filters.Add("keyword=" & Uri.EscapeDataString(cbRUAll.SelectedItem.ToString()))
+            filters.Add("filter[Rural Versus Urban]=" & Uri.EscapeDataString(cbRUAll.SelectedItem.ToString()))
         End If
-        If Not String.IsNullOrEmpty(txtMinTotPatRevAll.Text) Then
-            filters.Add("keyword=" & Uri.EscapeDataString(txtMinTotPatRevAll.Text))
-        End If
-        If Not String.IsNullOrEmpty(txtMaxTotPatRevAll.Text) Then
-            filters.Add("keyword=" & Uri.EscapeDataString(txtMaxTotPatRevAll.Text))
-        End If
+
+        ' Remove API-side range filtering for Total Patient Revenue (not reliable)
+        ' We'll do client-side numeric filtering after loading the DataTable
+
         Dim zipCode As String = If(Not String.IsNullOrWhiteSpace(txtZipCodeDemoAll.Text), txtZipCodeDemoAll.Text.Trim(), TextBox40.Text.Trim())
         If Not String.IsNullOrEmpty(zipCode) Then
-            filters.Add("keyword=" & Uri.EscapeDataString(zipCode))
+            filters.Add("filter[Zip Code]=" & Uri.EscapeDataString(zipCode))
         End If
-        ' Add more keyword filters as needed
 
         filters.Add("size=1000") ' Increase size as needed
 
         apiUrl &= String.Join("&", filters)
-
-        'MessageBox.Show(apiUrl) ' For debugging
 
         Using client As New HttpClient()
             Dim response As HttpResponseMessage = Await client.GetAsync(apiUrl)
@@ -195,50 +189,28 @@ Public Class Search
                         dt.Rows.Add(row)
                     Next
 
-                    ' --- Client-side filtering for exact matches ---
-                    If Not String.IsNullOrEmpty(selectedState) AndAlso dt.Columns.Contains("State Code") Then
-                        dt = dt.Select($"[State Code] = '{selectedState}'").CopyToDataTable()
+                    ' --- Client-side numeric filtering for Total Patient Revenue ---
+                    If (Not String.IsNullOrEmpty(txtMinTotPatRevAll.Text) OrElse Not String.IsNullOrEmpty(txtMaxTotPatRevAll.Text)) AndAlso dt.Columns.Contains("Total Patient Revenue") Then
+                        Dim minVal As Decimal = 0
+                        Dim maxVal As Decimal = Decimal.MaxValue
+                        If Not String.IsNullOrEmpty(txtMinTotPatRevAll.Text) Then Decimal.TryParse(txtMinTotPatRevAll.Text, minVal)
+                        If Not String.IsNullOrEmpty(txtMaxTotPatRevAll.Text) Then Decimal.TryParse(txtMaxTotPatRevAll.Text, maxVal)
+                        Dim filteredRows = dt.AsEnumerable().Where(
+        Function(r)
+            Dim val As Decimal = 0
+            Dim strVal = r.Field(Of String)("Total Patient Revenue")
+            If String.IsNullOrWhiteSpace(strVal) OrElse Not Decimal.TryParse(strVal.Replace("$", "").Replace(",", ""), val) Then
+                Return False ' Exclude rows with missing or non-numeric values
+            End If
+            Return val >= minVal AndAlso val <= maxVal
+        End Function
+    ).ToArray()
+                        dt = If(filteredRows.Length > 0, filteredRows.CopyToDataTable(), dt.Clone())
                     End If
-                    If Not String.IsNullOrEmpty(txtCityAll.Text) AndAlso dt.Columns.Contains("City") Then
-                        dt = dt.Select($"[City] = '{txtCityAll.Text.Trim()}'").CopyToDataTable()
-                    End If
-                    If Not String.IsNullOrEmpty(txtCmsCertNumDemoAll.Text) AndAlso dt.Columns.Contains("Provider CCN") Then
-                        dt = dt.Select($"[Provider CCN] = '{txtCmsCertNumDemoAll.Text.Trim()}'").CopyToDataTable()
-                    End If
-                    If Not String.IsNullOrEmpty(txtHospitalNameAll.Text) AndAlso dt.Columns.Contains("Hospital Name") Then
-                        dt = dt.Select($"[Hospital Name] = '{txtHospitalNameAll.Text.Trim()}'").CopyToDataTable()
-                    End If
-                    If Not String.IsNullOrEmpty(txtNpiAll.Text) AndAlso dt.Columns.Contains("NPI") Then
-                        dt = dt.Select($"[NPI] = '{txtNpiAll.Text.Trim()}'").CopyToDataTable()
-                    End If
-                    If cbRUAll.SelectedItem IsNot Nothing AndAlso dt.Columns.Contains("Rural Versus Urban") Then
-                        Dim filteredRows = dt.Select($"[Rural Versus Urban] = '{cbRUAll.SelectedItem.ToString()}'")
-                        If filteredRows.Length > 0 Then
-                            dt = filteredRows.CopyToDataTable()
-                        Else
-                            dt = dt.Clone() ' Empty table with same schema
-                        End If
-                    End If
-                    If Not String.IsNullOrWhiteSpace(txtcountygeoall.Text) AndAlso dt.Columns.Contains("County Name") Then
-                        Dim county = txtcountygeoall.Text.Trim().ToUpper()
-                        Dim filteredRows = dt.Select($"[County Name] = '{county}'")
-                        If filteredRows.Length > 0 Then
-                            dt = filteredRows.CopyToDataTable()
-                        Else
-                            dt = dt.Clone() ' Empty table with same schema
-                        End If
-                    End If
-                    If lbTypeFacilityCharAll.SelectedItem IsNot Nothing AndAlso dt.Columns.Contains("Facility Type") Then
-                        Dim selectedDisplay = lbTypeFacilityCharAll.SelectedItem.ToString()
-                        If FacilityTypeMap.ContainsKey(selectedDisplay) Then
-                            Dim acronym = FacilityTypeMap(selectedDisplay)
-                            Dim filteredRows = dt.Select($"[Facility Type] = '{acronym}'")
-                            If filteredRows.Length > 0 Then
-                                dt = filteredRows.CopyToDataTable()
-                            Else
-                                dt = dt.Clone() ' Empty table with same schema
-                            End If
-                        End If
+
+                    If dt.Rows.Count = 0 Then
+                        MessageBox.Show("No results found for your search.")
+                        Return
                     End If
 
                     Results.SetResults(dt)

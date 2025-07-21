@@ -67,60 +67,95 @@
         Dim selectedName As String = CheckedListBox1.SelectedItem.ToString().Trim()
         Dim selectedRow As DataRow = Nothing
 
-        ' Match on the correct column
+        ' Try to match on the most likely column names
         If resultsTable.Columns.Contains("Facility Name") Then
             selectedRow = resultsTable.Select($"[Facility Name] = '{selectedName.Replace("'", "''")}'").FirstOrDefault()
         ElseIf resultsTable.Columns.Contains("Hospital Name") Then
             selectedRow = resultsTable.Select($"[Hospital Name] = '{selectedName.Replace("'", "''")}'").FirstOrDefault()
-
-            SelectedHospital.CMSNum = Search.CleanMeUp(selectedRow(1))
-            SelectedHospital.State = selectedRow(5)
-            SelectedHospital.Name = Search.CleanMeUp(selectedRow(2))
-            SelectedHospital.Address = Search.CleanMeUp(selectedRow(3))
-            SelectedHospital.City = Search.CleanMeUp(selectedRow(4))
-            SelectedHospital.CBSAnum = Search.CleanMeUp(selectedRow(8))
-            SelectedHospital.TotalDays = Search.CleanMeUp(selectedRow(20), True)
-            SelectedHospital.FacilityType = Search.CleanMeUp(selectedRow(10))
-            SelectedHospital.NumOfBeds = Search.CleanMeUp(selectedRow(21), True)
-            SelectedHospital.NumOfEmployees = Search.CleanMeUp(selectedRow(15))
-            SelectedHospital.TotalDischarges = Search.CleanMeUp(selectedRow(26), True)
-            SelectedHospital.TotalPatientRev = Search.CleanMeUp(selectedRow(105), True)
-            SelectedHospital.NetPatientRev = Search.CleanMeUp(selectedRow(107), True)
-            SelectedHospital.RuralOUrban = Search.CleanMeUp(selectedRow(9))
-            SelectedHospital.charityCost = Search.CleanMeUp(selectedRow(38), True)
-            SelectedHospital.uncompensatedCost = Search.CleanMeUp(selectedRow(40), True)
         End If
 
         If selectedRow IsNot Nothing Then
-            Dim hospitalId As Integer = 0
-            If resultsTable.Columns.Contains("LicenseNum") Then
-                Integer.TryParse(selectedRow("LicenseNum").ToString(), hospitalId)
-            End If
+            Dim hosp As New HospitalContext()
 
-            Dim npi As String = If(resultsTable.Columns.Contains("NPI"), selectedRow("NPI").ToString(), "")
-            Dim cmsNum As String = If(resultsTable.Columns.Contains("CMSNum"), selectedRow("CMSNum").ToString(), "")
+            ' Core Identifiers
+            hosp.HospitalId = If(resultsTable.Columns.Contains("LicenseNum"), SafeInt(selectedRow("LicenseNum")), 0)
+            hosp.CMSNum = SafeStr(selectedRow, "Provider CCN", "CMSNum")
+            hosp.NPI = SafeStr(selectedRow, "NPI")
+            hosp.Name = SafeStr(selectedRow, "Facility Name", "Hospital Name", "provider_name")
 
-            'SelectedHospital.HospitalId = hospitalId
+            ' Location & Contact
+            hosp.Address = SafeStr(selectedRow, "Address", "Facility Address")
+            hosp.City = SafeStr(selectedRow, "City")
+            hosp.Zip = SafeStr(selectedRow, "Zip Code", "ZIP")
+            hosp.County = SafeStr(selectedRow, "County Name", "County")
+            hosp.Phone = SafeStr(selectedRow, "Phone", "Telephone Number")
+            hosp.Website = SafeStr(selectedRow, "Website")
 
+            ' Classification
+            hosp.CBSAnum = SafeStr(selectedRow, "CBSA", "CBSA Code")
+            hosp.FacilityType = SafeStr(selectedRow, "Facility Type")
+            hosp.RuralOUrban = SafeStr(selectedRow, "Rural Versus Urban")
 
-            If (resultsTable.Columns.Count < 6) Then
-                SelectedHospital.State = selectedRow(2)
-                SelectedHospital.HospitalId = selectedRow(0)
-                SelectedHospital.CMSNum = selectedRow(3)
+            ' Capacity & Staffing
+            hosp.NumOfBeds = SafeInt(selectedRow, "Number of Beds", "General Med/Surg Beds")
+            hosp.NumOfEmployees = SafeInt(selectedRow, "Total Employees")
+            hosp.TotalDays = SafeInt(selectedRow, "Total Days", "Inpatient Days")
+            hosp.TotalDischarges = SafeInt(selectedRow, "Total Discharges")
 
-            Else
-                SelectedHospital.State = selectedRow(5)
-                SelectedHospital.HospitalId = selectedRow(1)
-                SelectedHospital.CMSNum = cmsNum
-            End If
+            ' Financials
+            hosp.TotalPatientRev = SafeDec(selectedRow, "Total Patient Revenue")
+            hosp.NetPatientRev = SafeDec(selectedRow, "Net Patient Revenue")
+            hosp.CharityCost = SafeDec(selectedRow, "Cost of Charity Care")
+            hosp.UncompensatedCost = SafeDec(selectedRow, "Cost of Uncompensated Care")
 
+            ' Additional/Expandable fields
+            hosp.TotalCurrentAssets = SafeDec(selectedRow, "Total Current Assets")
+            hosp.TotalAssets = SafeDec(selectedRow, "Total Assets")
+            hosp.NetIncome = SafeDec(selectedRow, "Net Income")
+            hosp.TotalOperatingRevenue = SafeDec(selectedRow, "Net Patient Revenue")
+            hosp.TotalOperatingExpense = SafeDec(selectedRow, "Less Total Operating Expense")
+            hosp.TotalLiabilities = SafeDec(selectedRow, "Total Liabilities")
+            hosp.TotalCurrentLiabilities = SafeDec(selectedRow, "Total Current Liabilities")
+            hosp.TotalLongTermLiabilities = SafeDec(selectedRow, "Total Long Term Liabilities")
+            hosp.DepreciationCost = SafeDec(selectedRow, "Depreciation Cost")
+            hosp.LeaseCost = SafeDec(selectedRow, "Leasehold Improvements")
+            hosp.Inventory = SafeDec(selectedRow, "Inventory")
+            hosp.NotesReceivable = SafeDec(selectedRow, "Notes Receivable")
+            hosp.MarketSecurities = SafeDec(selectedRow, "Temporary Investments")
+            hosp.Investments = SafeDec(selectedRow, "Investments")
 
-            SelectedHospital.CMSNum = selectedRow(1)
-
-
+            Results.SelectedHospital = hosp
         End If
     End Sub
 
+    Private Function SafeStr(row As DataRow, ParamArray names() As String) As String
+        For Each n In names
+            If row.Table.Columns.Contains(n) AndAlso Not IsDBNull(row(n)) Then
+                Return row(n).ToString().Trim()
+            End If
+        Next
+        Return ""
+    End Function
+
+    Private Function SafeInt(row As DataRow, ParamArray names() As String) As Integer
+        For Each n In names
+            If row.Table.Columns.Contains(n) AndAlso Not IsDBNull(row(n)) Then
+                Dim val As Integer
+                If Integer.TryParse(row(n).ToString(), val) Then Return val
+            End If
+        Next
+        Return 0
+    End Function
+
+    Private Function SafeDec(row As DataRow, ParamArray names() As String) As Decimal
+        For Each n In names
+            If row.Table.Columns.Contains(n) AndAlso Not IsDBNull(row(n)) Then
+                Dim val As Decimal
+                If Decimal.TryParse(row(n).ToString().Replace("$", "").Replace(",", ""), val) Then Return val
+            End If
+        Next
+        Return 0D
+    End Function
     Private Sub Results_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
     End Sub
