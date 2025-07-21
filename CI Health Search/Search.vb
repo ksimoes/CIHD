@@ -33,7 +33,6 @@ Public Class Search
         SearchHospital.State = If(lbStateAll.SelectedItem IsNot Nothing, lbStateAll.SelectedItem.ToString().Trim(), "")
         SearchHospital.Name = VerifiySearch(txtHospitalNameAll)
         SearchHospital.City = VerifiySearch(txtCityAll)
-
         SearchHospital.Phone = VerifiySearch(txtAreaCodeAll)
         SearchHospital.NPI = VerifiySearch(txtNpiAll)
     End Sub
@@ -77,59 +76,64 @@ Public Class Search
     End Function
 
     Private Async Sub btnSearchAll_Click(sender As Object, e As EventArgs) Handles btnSearchAll.Click
-        Dim filters As New List(Of String)
-        Dim parameters As New List(Of SqlParameter)
+        lblstatus.Text = "Searching..."
+        lblstatus.Visible = True
 
-        Dim selectedState As String = ""
-        If lbStateAll.SelectedItem IsNot Nothing Then
-            selectedState = lbStateAll.SelectedItem.ToString().Trim()
-        End If
-
-        If useSQL(selectedState) Then
-            ' --- SQL Search ---
-            If Not String.IsNullOrEmpty(selectedState) Then
-                filters.Add("State = @State")
-                parameters.Add(New SqlParameter("@State", selectedState))
-            End If
-            If Not String.IsNullOrEmpty(txtCityAll.Text) Then
-                filters.Add("City = @City")
-                parameters.Add(New SqlParameter("@City", txtCityAll.Text.Trim()))
+        Try
+            Dim filters As New List(Of String)
+            Dim parameters As New List(Of SqlParameter)
+            Dim selectedState As String = ""
+            If lbStateAll.SelectedItem IsNot Nothing Then
+                selectedState = lbStateAll.SelectedItem.ToString().Trim()
             End If
 
+            If useSQL(selectedState) Then
+                If Not String.IsNullOrEmpty(selectedState) Then
+                    filters.Add("State = @State")
+                    parameters.Add(New SqlParameter("@State", selectedState))
+                End If
+                If Not String.IsNullOrEmpty(txtCityAll.Text) Then
+                    filters.Add("City = @City")
+                    parameters.Add(New SqlParameter("@City", txtCityAll.Text.Trim()))
+                End If
 
-            ' Add more filters as needed
+                Dim query As String
+                If selectedState = "TN" Then
+                    query = "SELECT LicenseNum, [Facility Name], State, City, County FROM tn.AdminCon WHERE 1=1"
+                ElseIf selectedState = "TX" Then
+                    query = "SELECT id AS LicenseNum, [Facility Name], State, City, County FROM tx.Utilization WHERE 1=1"
+                Else
+                    query = ""
+                End If
 
-            Dim query As String
-            If selectedState = "TN" Then
-                query = "SELECT LicenseNum, [Facility Name], State, City, County FROM tn.AdminCon WHERE 1=1"
-            ElseIf selectedState = "TX" Then
-                query = "SELECT id AS LicenseNum, [Facility Name], State, City, County FROM tx.Utilization WHERE 1=1"
-            Else
-                query = ""
-            End If
+                If filters.Count > 0 Then
+                    query &= " AND " & String.Join(" AND ", filters)
+                End If
 
-            If filters.Count > 0 Then
-                query &= " AND " & String.Join(" AND ", filters)
-            End If
-
-            Dim dt As New DataTable()
-            Using conn As New SqlConnection(connectionString)
-                Using cmd As New SqlCommand(query, conn)
-                    cmd.Parameters.AddRange(parameters.ToArray())
-                    Dim da As New SqlDataAdapter(cmd)
-                    da.Fill(dt)
+                Dim dt As New DataTable()
+                Using conn As New SqlConnection(connectionString)
+                    Using cmd As New SqlCommand(query, conn)
+                        cmd.Parameters.AddRange(parameters.ToArray())
+                        Dim da As New SqlDataAdapter(cmd)
+                        da.Fill(dt)
+                    End Using
                 End Using
-            End Using
 
-            Results.SetResults(dt)
-            Results.SelectedState = selectedState
-            Hide()
-            Results.Show()
-            Await SearchByApiAsync(selectedState)
-        Else
-            ' --- API Search ---
-            Await SearchByApiAsync(selectedState)
-        End If
+                Results.SetResults(dt)
+                Results.SelectedState = selectedState
+                Hide()
+                Results.Show()
+                Await SearchByApiAsync(selectedState)
+            Else
+                Await SearchByApiAsync(selectedState)
+            End If
+
+            lblstatus.Text = ""
+        Catch ex As Exception
+            lblstatus.Text = "Error during search. Please try again."
+        End Try
+
+        lblstatus.Visible = False
     End Sub
 
     Private Async Function SearchByApiAsync(selectedState As String) As Task
@@ -159,9 +163,7 @@ Public Class Search
             filters.Add("filter[Rural Versus Urban]=" & Uri.EscapeDataString(cbRUAll.SelectedItem.ToString()))
         End If
 
-        ' Remove API-side range filtering for Total Patient Revenue (not reliable)
-        ' We'll do client-side numeric filtering after loading the DataTable
-
+        ' Client-side numeric filtering for Total Patient Revenue (API-side not reliable)
         Dim zipCode As String = If(Not String.IsNullOrWhiteSpace(txtZipCodeDemoAll.Text), txtZipCodeDemoAll.Text.Trim(), TextBox40.Text.Trim())
         If Not String.IsNullOrEmpty(zipCode) Then
             filters.Add("filter[Zip Code]=" & Uri.EscapeDataString(zipCode))
@@ -196,15 +198,15 @@ Public Class Search
                         If Not String.IsNullOrEmpty(txtMinTotPatRevAll.Text) Then Decimal.TryParse(txtMinTotPatRevAll.Text, minVal)
                         If Not String.IsNullOrEmpty(txtMaxTotPatRevAll.Text) Then Decimal.TryParse(txtMaxTotPatRevAll.Text, maxVal)
                         Dim filteredRows = dt.AsEnumerable().Where(
-        Function(r)
-            Dim val As Decimal = 0
-            Dim strVal = r.Field(Of String)("Total Patient Revenue")
-            If String.IsNullOrWhiteSpace(strVal) OrElse Not Decimal.TryParse(strVal.Replace("$", "").Replace(",", ""), val) Then
-                Return False ' Exclude rows with missing or non-numeric values
-            End If
-            Return val >= minVal AndAlso val <= maxVal
-        End Function
-    ).ToArray()
+                            Function(r)
+                                Dim val As Decimal = 0
+                                Dim strVal = r.Field(Of String)("Total Patient Revenue")
+                                If String.IsNullOrWhiteSpace(strVal) OrElse Not Decimal.TryParse(strVal.Replace("$", "").Replace(",", ""), val) Then
+                                    Return False ' Exclude rows with missing or non-numeric values
+                                End If
+                                Return val >= minVal AndAlso val <= maxVal
+                            End Function
+                        ).ToArray()
                         dt = If(filteredRows.Length > 0, filteredRows.CopyToDataTable(), dt.Clone())
                     End If
 
@@ -241,7 +243,6 @@ Public Class Search
         txtcountygeoall.Clear()
         txtMinTotPatRevAll.Clear()
         txtMaxTotPatRevAll.Clear()
-
     End Sub
 
     Public Function GetAPIArray(strAPIurl As String) As JArray
@@ -256,7 +257,8 @@ Public Class Search
     End Function
 
     Private Sub Search_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-
+        lblstatus.Text = ""
+        lblstatus.Visible = False
     End Sub
 
     Private Sub txtCountyGeoAll_TextChanged(sender As Object, e As EventArgs) Handles txtcountygeoall.TextChanged
