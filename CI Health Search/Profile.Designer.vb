@@ -103,7 +103,7 @@ Partial Class Profile
         GroupBox2 = New GroupBox()
         Label3 = New Label()
         GroupBox1 = New BoldGroupBox()
-        lblNPIResult = New Label()
+        lblNpiResult = New Label()
         Label9 = New Label()
         Label4 = New Label()
         DataGridView4 = New DataGridView()
@@ -862,7 +862,7 @@ Partial Class Profile
         ' lblCeoPresResult
         ' 
         lblCeoPresResult.AutoSize = True
-        lblCeoPresResult.Font = New Font("Segoe UI", 9.0F)
+        lblCeoPresResult.Font = New Font("Segoe UI", 9F)
         lblCeoPresResult.Location = New Point(375, 36)
         lblCeoPresResult.Name = "lblCeoPresResult"
         lblCeoPresResult.Size = New Size(39, 15)
@@ -872,7 +872,7 @@ Partial Class Profile
         ' lblCmoResult
         ' 
         lblCmoResult.AutoSize = True
-        lblCmoResult.Font = New Font("Segoe UI", 9.0F)
+        lblCmoResult.Font = New Font("Segoe UI", 9F)
         lblCmoResult.Location = New Point(375, 112)
         lblCmoResult.Name = "lblCmoResult"
         lblCmoResult.Size = New Size(39, 15)
@@ -882,7 +882,7 @@ Partial Class Profile
         ' lblCfoResult
         ' 
         lblCfoResult.AutoSize = True
-        lblCfoResult.Font = New Font("Segoe UI", 9.0F)
+        lblCfoResult.Font = New Font("Segoe UI", 9F)
         lblCfoResult.Location = New Point(375, 62)
         lblCfoResult.Name = "lblCfoResult"
         lblCfoResult.Size = New Size(39, 15)
@@ -892,7 +892,7 @@ Partial Class Profile
         ' lblCioResult
         ' 
         lblCioResult.AutoSize = True
-        lblCioResult.Font = New Font("Segoe UI", 9.0F)
+        lblCioResult.Font = New Font("Segoe UI", 9F)
         lblCioResult.Location = New Point(375, 86)
         lblCioResult.Name = "lblCioResult"
         lblCioResult.Size = New Size(39, 15)
@@ -902,7 +902,7 @@ Partial Class Profile
         ' lblCnoResult
         ' 
         lblCnoResult.AutoSize = True
-        lblCnoResult.Font = New Font("Segoe UI", 9.0F)
+        lblCnoResult.Font = New Font("Segoe UI", 9F)
         lblCnoResult.Location = New Point(375, 206)
         lblCnoResult.Name = "lblCnoResult"
         lblCnoResult.Size = New Size(39, 15)
@@ -912,7 +912,7 @@ Partial Class Profile
         ' lblCooResult
         ' 
         lblCooResult.AutoSize = True
-        lblCooResult.Font = New Font("Segoe UI", 9.0F)
+        lblCooResult.Font = New Font("Segoe UI", 9F)
         lblCooResult.Location = New Point(375, 142)
         lblCooResult.Name = "lblCooResult"
         lblCooResult.Size = New Size(39, 15)
@@ -922,7 +922,7 @@ Partial Class Profile
         ' lblPurchasingMatResult
         ' 
         lblPurchasingMatResult.AutoSize = True
-        lblPurchasingMatResult.Font = New Font("Segoe UI", 9.0F)
+        lblPurchasingMatResult.Font = New Font("Segoe UI", 9F)
         lblPurchasingMatResult.Location = New Point(375, 172)
         lblPurchasingMatResult.Name = "lblPurchasingMatResult"
         lblPurchasingMatResult.Size = New Size(39, 15)
@@ -992,7 +992,7 @@ Partial Class Profile
         ' GroupBox1
         ' 
         GroupBox1.BackColor = Color.LightSkyBlue
-        GroupBox1.Controls.Add(lblNPIResult)
+        GroupBox1.Controls.Add(lblNpiResult)
         GroupBox1.Controls.Add(Label9)
         GroupBox1.Controls.Add(Label4)
         GroupBox1.Controls.Add(lblPhoneNum)
@@ -1058,16 +1058,16 @@ Partial Class Profile
         GroupBox1.TabStop = False
         GroupBox1.Text = "GroupBox1"
         ' 
-        ' lblNPIResult
+        ' lblNpiResult
         ' 
-        lblNPIResult.AutoSize = True
-        lblNPIResult.Font = New Font("Segoe UI", 9.75F)
-        lblNPIResult.Location = New Point(369, 137)
-        lblNPIResult.Name = "lblNPIResult"
-        lblNPIResult.Size = New Size(43, 17)
-        lblNPIResult.TabIndex = 84
-        lblNPIResult.Text = "Result"
-        lblNPIResult.TextAlign = ContentAlignment.MiddleCenter
+        lblNpiResult.AutoSize = True
+        lblNpiResult.Font = New Font("Segoe UI", 9.75F)
+        lblNpiResult.Location = New Point(369, 137)
+        lblNpiResult.Name = "lblNpiResult"
+        lblNpiResult.Size = New Size(43, 17)
+        lblNpiResult.TabIndex = 84
+        lblNpiResult.Text = "Result"
+        lblNpiResult.TextAlign = ContentAlignment.MiddleCenter
         ' 
         ' Label9
         ' 
@@ -1262,7 +1262,7 @@ Partial Class Profile
         ' 
         ' Profile
         ' 
-        AutoScaleDimensions = New SizeF(7.0F, 15.0F)
+        AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         AutoScroll = True
         BackColor = SystemColors.HighlightText
@@ -1394,7 +1394,8 @@ Partial Class Profile
     Friend WithEvents Column6 As DataGridViewTextBoxColumn
     Friend WithEvents GroupBox2 As GroupBox
     Friend WithEvents GroupBox1 As GroupBox
-    Friend WithEvents lblNPIResult As Label
+    Friend WithEvents lblNpiResult As Label
     Friend WithEvents Label9 As Label
+    ' Friend WithEvents GroupBox1 As BoldGroupBox
 
 End Class
