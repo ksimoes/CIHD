@@ -265,4 +265,8 @@ Public Class Profile
         Hide()
         yk.Show()
     End Sub
+
+    Private Sub lblTotalDischargesResult_Click(sender As Object, e As EventArgs) Handles lblTotalDischargesResult.Click
+
+    End Sub
 End Class

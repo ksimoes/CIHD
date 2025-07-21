@@ -210,6 +210,25 @@ Public Class Search
                         dt = If(filteredRows.Length > 0, filteredRows.CopyToDataTable(), dt.Clone())
                     End If
 
+                    ' --- Client-side numeric filtering for Number of Beds ---
+                    If (Not String.IsNullOrEmpty(txtMinTotalBedsAll.Text) OrElse Not String.IsNullOrEmpty(txtMaxTotalBedsAll.Text)) AndAlso dt.Columns.Contains("Number of Beds") Then
+                        Dim minBeds As Decimal = 0
+                        Dim maxBeds As Decimal = Decimal.MaxValue
+                        If Not String.IsNullOrEmpty(txtMinTotalBedsAll.Text) Then Decimal.TryParse(txtMinTotalBedsAll.Text, minBeds)
+                        If Not String.IsNullOrEmpty(txtMaxTotalBedsAll.Text) Then Decimal.TryParse(txtMaxTotalBedsAll.Text, maxBeds)
+                        Dim filteredRows = dt.AsEnumerable().Where(
+                            Function(r)
+                                Dim val As Decimal = 0
+                                Dim strVal = r.Field(Of String)("Number of Beds")
+                                If String.IsNullOrWhiteSpace(strVal) OrElse Not Decimal.TryParse(strVal.Replace("$", "").Replace(",", ""), val) Then
+                                    Return False
+                                End If
+                                Return val >= minBeds AndAlso val <= maxBeds
+                            End Function
+                        ).ToArray()
+                        dt = If(filteredRows.Length > 0, filteredRows.CopyToDataTable(), dt.Clone())
+                    End If
+
                     If dt.Rows.Count = 0 Then
                         MessageBox.Show("No results found for your search.")
                         Return
@@ -225,7 +244,12 @@ Public Class Search
             Else
                 MessageBox.Show("API error: " & response.StatusCode.ToString())
             End If
+
+
         End Using
+
+
+
     End Function
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click

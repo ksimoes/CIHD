@@ -1393,9 +1393,9 @@ Partial Class Profile
     Friend WithEvents Column5 As DataGridViewTextBoxColumn
     Friend WithEvents Column6 As DataGridViewTextBoxColumn
     Friend WithEvents GroupBox2 As GroupBox
-    Friend WithEvents GroupBox1 As GroupBox
     Friend WithEvents lblNpiResult As Label
     Friend WithEvents Label9 As Label
+    Friend WithEvents GroupBox1 As BoldGroupBox
     ' Friend WithEvents GroupBox1 As BoldGroupBox
 
 End Class
