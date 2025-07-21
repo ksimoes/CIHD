@@ -39,6 +39,7 @@ Partial Class Inpatient
         Label13 = New Label()
         Button1 = New Button()
         dgvNewApiTable = New DataGridView()
+        lblstatus = New Label()
         gbKeyAttending.SuspendLayout()
         CType(dgvCeo, ComponentModel.ISupportInitialize).BeginInit()
         gbPatientOrigin.SuspendLayout()
@@ -207,11 +208,21 @@ Partial Class Inpatient
         dgvNewApiTable.Size = New Size(809, 364)
         dgvNewApiTable.TabIndex = 25
         ' 
+        ' lblstatus
+        ' 
+        lblstatus.AutoSize = True
+        lblstatus.Location = New Point(765, 68)
+        lblstatus.Name = "lblstatus"
+        lblstatus.Size = New Size(41, 15)
+        lblstatus.TabIndex = 75
+        lblstatus.Text = "Label1"
+        ' 
         ' Inpatient
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(1537, 1061)
+        Controls.Add(lblstatus)
         Controls.Add(dgvNewApiTable)
         Controls.Add(Button1)
         Controls.Add(gbTrendReport)
@@ -234,6 +245,7 @@ Partial Class Inpatient
         gbTrendReport.PerformLayout()
         CType(dgvNewApiTable, ComponentModel.ISupportInitialize).EndInit()
         ResumeLayout(False)
+        PerformLayout()
     End Sub
 
     Friend WithEvents btnOutpatientInpatient As Button
@@ -253,4 +265,5 @@ Partial Class Inpatient
     Friend WithEvents dgvPatientOrigin As DataGridView
     Friend WithEvents dgvCeo As DataGridView
     Friend WithEvents dgvNewApiTable As DataGridView
+    Friend WithEvents lblstatus As Label
 End Class

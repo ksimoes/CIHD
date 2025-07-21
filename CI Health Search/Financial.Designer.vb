@@ -97,6 +97,7 @@ Partial Class Financial
         Button1 = New Button()
         Panel1 = New Panel()
         GroupBox2 = New BoldGroupBox()
+        lblstatus = New Label()
         GroupBox1.SuspendLayout()
         gbIncomeStatement.SuspendLayout()
         GroupBox3.SuspendLayout()
@@ -869,6 +870,7 @@ Partial Class Financial
         ' 
         Panel1.AutoScroll = True
         Panel1.BackColor = Color.LightGray
+        Panel1.Controls.Add(lblstatus)
         Panel1.Controls.Add(GroupBox2)
         Panel1.Controls.Add(gbUncompensatedCare)
         Panel1.Controls.Add(Button1)
@@ -910,6 +912,15 @@ Partial Class Financial
         GroupBox2.TabIndex = 22
         GroupBox2.TabStop = False
         GroupBox2.Text = "."
+        ' 
+        ' lblstatus
+        ' 
+        lblstatus.AutoSize = True
+        lblstatus.Location = New Point(766, 1243)
+        lblstatus.Name = "lblstatus"
+        lblstatus.Size = New Size(41, 15)
+        lblstatus.TabIndex = 75
+        lblstatus.Text = "Label1"
         ' 
         ' Financial
         ' 
@@ -1009,4 +1020,5 @@ Partial Class Financial
     Friend WithEvents gbIncomeStatement As BoldGroupBox
     Friend WithEvents GroupBox3 As BoldGroupBox
     Friend WithEvents GroupBox2 As BoldGroupBox
+    Friend WithEvents lblstatus As Label
 End Class

@@ -184,6 +184,7 @@ Partial Class Search
         lblService = New Label()
         lblMedicare = New Label()
         lblFacility = New Label()
+        lblstatus = New Label()
         TabControl1.SuspendLayout()
         TabPage5.SuspendLayout()
         GroupBox5.SuspendLayout()
@@ -211,6 +212,7 @@ Partial Class Search
         ' 
         ' TabPage5
         ' 
+        TabPage5.Controls.Add(lblstatus)
         TabPage5.Controls.Add(Button1)
         TabPage5.Controls.Add(btnSearchAll)
         TabPage5.Controls.Add(GroupBox5)
@@ -1813,6 +1815,15 @@ Partial Class Search
         lblFacility.TabIndex = 5
         lblFacility.Text = "Type of Facility"
         ' 
+        ' lblstatus
+        ' 
+        lblstatus.AutoSize = True
+        lblstatus.Location = New Point(611, 605)
+        lblstatus.Name = "lblstatus"
+        lblstatus.Size = New Size(41, 15)
+        lblstatus.TabIndex = 74
+        lblstatus.Text = "Label1"
+        ' 
         ' Search
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
@@ -1825,6 +1836,7 @@ Partial Class Search
         Text = "Search"
         TabControl1.ResumeLayout(False)
         TabPage5.ResumeLayout(False)
+        TabPage5.PerformLayout()
         GroupBox5.ResumeLayout(False)
         GroupBox5.PerformLayout()
         GroupBox2.ResumeLayout(False)
@@ -2007,4 +2019,5 @@ Partial Class Search
     Friend WithEvents Button4 As Button
     Friend WithEvents Button5 As Button
     Friend WithEvents txtcountygeoall As TextBox
+    Friend WithEvents lblstatus As Label
 End Class

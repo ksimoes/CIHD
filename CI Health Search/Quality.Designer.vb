@@ -29,6 +29,7 @@ Partial Class Quality
         btnDepartmentsQuality = New Button()
         btnProfileQuality = New Button()
         Button1 = New Button()
+        lblstatus = New Label()
         SuspendLayout()
         ' 
         ' btnOutpatientQuality
@@ -94,11 +95,21 @@ Partial Class Quality
         Button1.Text = "Return to Search"
         Button1.UseVisualStyleBackColor = True
         ' 
+        ' lblstatus
+        ' 
+        lblstatus.AutoSize = True
+        lblstatus.Location = New Point(884, 225)
+        lblstatus.Name = "lblstatus"
+        lblstatus.Size = New Size(41, 15)
+        lblstatus.TabIndex = 75
+        lblstatus.Text = "Label1"
+        ' 
         ' Quality
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(1559, 686)
+        Controls.Add(lblstatus)
         Controls.Add(Button1)
         Controls.Add(btnOutpatientQuality)
         Controls.Add(btnInpatientQuality)
@@ -110,6 +121,7 @@ Partial Class Quality
         StartPosition = FormStartPosition.CenterScreen
         Text = "Quality"
         ResumeLayout(False)
+        PerformLayout()
     End Sub
 
     Friend WithEvents btnOutpatientQuality As Button
@@ -119,4 +131,5 @@ Partial Class Quality
     Friend WithEvents btnDepartmentsQuality As Button
     Friend WithEvents btnProfileQuality As Button
     Friend WithEvents Button1 As Button
+    Friend WithEvents lblstatus As Label
 End Class

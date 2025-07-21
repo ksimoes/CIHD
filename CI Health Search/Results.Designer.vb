@@ -31,6 +31,7 @@ Partial Class Results
         Button7 = New Button()
         CheckedListBox1 = New CheckedListBox()
         Label1 = New Label()
+        lblstatus = New Label()
         SuspendLayout()
         ' 
         ' Button1
@@ -116,11 +117,21 @@ Partial Class Results
         Label1.TabIndex = 16
         Label1.Text = "Hospital Names"
         ' 
+        ' lblstatus
+        ' 
+        lblstatus.AutoSize = True
+        lblstatus.Location = New Point(440, 109)
+        lblstatus.Name = "lblstatus"
+        lblstatus.Size = New Size(41, 15)
+        lblstatus.TabIndex = 75
+        lblstatus.Text = "Label1"
+        ' 
         ' Results
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(1423, 552)
+        Controls.Add(lblstatus)
         Controls.Add(Label1)
         Controls.Add(CheckedListBox1)
         Controls.Add(Button7)
@@ -146,4 +157,5 @@ Partial Class Results
     Friend WithEvents CheckedListBox1 As CheckedListBox
     Friend WithEvents Label1 As Label
     Friend WithEvents VScrollBar1 As VScrollBar
+    Friend WithEvents lblstatus As Label
 End Class

@@ -132,6 +132,7 @@ Partial Class Profile
         Column1 = New DataGridViewTextBoxColumn()
         Column2 = New DataGridViewTextBoxColumn()
         Column3 = New DataGridViewTextBoxColumn()
+        lblstatus = New Label()
         Panel1.SuspendLayout()
         GroupBox2.SuspendLayout()
         GroupBox1.SuspendLayout()
@@ -932,6 +933,7 @@ Partial Class Profile
         ' Panel1
         ' 
         Panel1.AutoScroll = True
+        Panel1.Controls.Add(lblstatus)
         Panel1.Controls.Add(GroupBox2)
         Panel1.Controls.Add(GroupBox1)
         Panel1.Controls.Add(DataGridView4)
@@ -1260,6 +1262,15 @@ Partial Class Profile
         Column3.HeaderText = "Associated NPI's"
         Column3.Name = "Column3"
         ' 
+        ' lblstatus
+        ' 
+        lblstatus.AutoSize = True
+        lblstatus.Location = New Point(859, 151)
+        lblstatus.Name = "lblstatus"
+        lblstatus.Size = New Size(41, 15)
+        lblstatus.TabIndex = 93
+        lblstatus.Text = "Label1"
+        ' 
         ' Profile
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
@@ -1393,9 +1404,10 @@ Partial Class Profile
     Friend WithEvents Column5 As DataGridViewTextBoxColumn
     Friend WithEvents Column6 As DataGridViewTextBoxColumn
     Friend WithEvents GroupBox2 As GroupBox
-    Friend WithEvents GroupBox1 As GroupBox
     Friend WithEvents lblNpiResult As Label
     Friend WithEvents Label9 As Label
+    Friend WithEvents lblstatus As Label
+    Friend WithEvents GroupBox1 As BoldGroupBox
     ' Friend WithEvents GroupBox1 As BoldGroupBox
 
 End Class

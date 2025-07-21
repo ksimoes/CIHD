@@ -35,6 +35,7 @@ Partial Class Departments
         gbSalariesandOther = New GroupBox()
         Label6 = New Label()
         gbStaffing = New GroupBox()
+        lblDietNumResult = New Label()
         lblOPNumResult = New Label()
         lblSWNumResult = New Label()
         lblSPANumResult = New Label()
@@ -66,7 +67,7 @@ Partial Class Departments
         btnFinancialDepartments = New Button()
         btnProfileDepartments = New Button()
         Button1 = New Button()
-        lblDietNumResult = New Label()
+        lblstatus = New Label()
         gbInpatientRoutineCostCenters.SuspendLayout()
         gbAncillaryServiceCost.SuspendLayout()
         gbOtherReimburse.SuspendLayout()
@@ -224,6 +225,15 @@ Partial Class Departments
         gbStaffing.TabStop = False
         gbStaffing.Text = "Staffing"
         ' 
+        ' lblDietNumResult
+        ' 
+        lblDietNumResult.AutoSize = True
+        lblDietNumResult.Location = New Point(263, 94)
+        lblDietNumResult.Name = "lblDietNumResult"
+        lblDietNumResult.Size = New Size(14, 15)
+        lblDietNumResult.TabIndex = 48
+        lblDietNumResult.Text = "#"
+        ' 
         ' lblOPNumResult
         ' 
         lblOPNumResult.AutoSize = True
@@ -326,7 +336,7 @@ Partial Class Departments
         ' Label20
         ' 
         Label20.AutoSize = True
-        Label20.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        Label20.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         Label20.Location = New Point(263, 9)
         Label20.Name = "Label20"
         Label20.Size = New Size(34, 15)
@@ -336,7 +346,7 @@ Partial Class Departments
         ' Label19
         ' 
         Label19.AutoSize = True
-        Label19.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        Label19.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         Label19.Location = New Point(6, 447)
         Label19.Name = "Label19"
         Label19.Size = New Size(98, 15)
@@ -346,7 +356,7 @@ Partial Class Departments
         ' Label18
         ' 
         Label18.AutoSize = True
-        Label18.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        Label18.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         Label18.Location = New Point(6, 411)
         Label18.Name = "Label18"
         Label18.Size = New Size(90, 15)
@@ -356,7 +366,7 @@ Partial Class Departments
         ' Label17
         ' 
         Label17.AutoSize = True
-        Label17.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        Label17.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         Label17.Location = New Point(6, 376)
         Label17.Name = "Label17"
         Label17.Size = New Size(183, 15)
@@ -366,7 +376,7 @@ Partial Class Departments
         ' Label16
         ' 
         Label16.AutoSize = True
-        Label16.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        Label16.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         Label16.Location = New Point(6, 342)
         Label16.Name = "Label16"
         Label16.Size = New Size(32, 15)
@@ -376,7 +386,7 @@ Partial Class Departments
         ' Label15
         ' 
         Label15.AutoSize = True
-        Label15.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        Label15.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         Label15.Location = New Point(6, 304)
         Label15.Name = "Label15"
         Label15.Size = New Size(114, 15)
@@ -386,7 +396,7 @@ Partial Class Departments
         ' Label14
         ' 
         Label14.AutoSize = True
-        Label14.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        Label14.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         Label14.Location = New Point(6, 268)
         Label14.Name = "Label14"
         Label14.Size = New Size(110, 15)
@@ -396,7 +406,7 @@ Partial Class Departments
         ' Label13
         ' 
         Label13.AutoSize = True
-        Label13.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        Label13.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         Label13.Location = New Point(6, 237)
         Label13.Name = "Label13"
         Label13.Size = New Size(73, 15)
@@ -406,7 +416,7 @@ Partial Class Departments
         ' Label12
         ' 
         Label12.AutoSize = True
-        Label12.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        Label12.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         Label12.Location = New Point(6, 202)
         Label12.Name = "Label12"
         Label12.Size = New Size(139, 15)
@@ -416,7 +426,7 @@ Partial Class Departments
         ' Label11
         ' 
         Label11.AutoSize = True
-        Label11.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        Label11.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         Label11.Location = New Point(6, 166)
         Label11.Name = "Label11"
         Label11.Size = New Size(37, 15)
@@ -426,7 +436,7 @@ Partial Class Departments
         ' Label10
         ' 
         Label10.AutoSize = True
-        Label10.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        Label10.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         Label10.Location = New Point(6, 129)
         Label10.Name = "Label10"
         Label10.Size = New Size(122, 15)
@@ -436,7 +446,7 @@ Partial Class Departments
         ' Label9
         ' 
         Label9.AutoSize = True
-        Label9.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        Label9.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         Label9.Location = New Point(6, 94)
         Label9.Name = "Label9"
         Label9.Size = New Size(61, 15)
@@ -446,7 +456,7 @@ Partial Class Departments
         ' Label7
         ' 
         Label7.AutoSize = True
-        Label7.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        Label7.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         Label7.Location = New Point(6, 45)
         Label7.Name = "Label7"
         Label7.Size = New Size(47, 15)
@@ -516,20 +526,21 @@ Partial Class Departments
         Button1.Text = "Return to Search"
         Button1.UseVisualStyleBackColor = True
         ' 
-        ' lblDietNumResult
+        ' lblstatus
         ' 
-        lblDietNumResult.AutoSize = True
-        lblDietNumResult.Location = New Point(263, 94)
-        lblDietNumResult.Name = "lblDietNumResult"
-        lblDietNumResult.Size = New Size(14, 15)
-        lblDietNumResult.TabIndex = 48
-        lblDietNumResult.Text = "#"
+        lblstatus.AutoSize = True
+        lblstatus.Location = New Point(1101, 6)
+        lblstatus.Name = "lblstatus"
+        lblstatus.Size = New Size(41, 15)
+        lblstatus.TabIndex = 75
+        lblstatus.Text = "Label1"
         ' 
         ' Departments
         ' 
-        AutoScaleDimensions = New SizeF(7.0F, 15.0F)
+        AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(1555, 670)
+        Controls.Add(lblstatus)
         Controls.Add(Button1)
         Controls.Add(btnOutpatientDepartments)
         Controls.Add(btnInpatientDepartments)
@@ -562,6 +573,7 @@ Partial Class Departments
         gbStaffing.ResumeLayout(False)
         gbStaffing.PerformLayout()
         ResumeLayout(False)
+        PerformLayout()
     End Sub
 
     Friend WithEvents gbInpatientRoutineCostCenters As GroupBox
@@ -611,4 +623,5 @@ Partial Class Departments
     Friend WithEvents Label13 As Label
     Friend WithEvents Label12 As Label
     Friend WithEvents lblDietNumResult As Label
+    Friend WithEvents lblstatus As Label
 End Class

@@ -1,156 +1,136 @@
 ﻿Imports System.Data.SqlClient
-Imports System.Net.Http
 Imports Newtonsoft.Json.Linq
 
 Public Class Financial
     Private connectionString As String = "Data Source=cihg-sql1.database.windows.net;Initial Catalog=CIHData;User ID=cihgadmin;Password=P!bxbFrHw4-jCvU*;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
     Public strCMSnum As String
-    ' Call this method to load data for the selected hospital
+
+    ' Entry point for showing financial data
     Public Async Function ShowFinancialData(hospitalId As Integer, state As String) As Task
+        lblStatus.Text = "Loading financial data..."
+        lblStatus.Visible = True
+
+        Try
+            If state = "TN" Or state = "TX" Then
+                Await ShowSqlFinancialDataAsync(hospitalId, state)
+            Else
+                Await ShowFinancialDataApi(Results.SelectedHospital.CMSNum)
+            End If
+            lblStatus.Text = ""
+        Catch ex As Exception
+            SetAllFinancialLabels("No result")
+            lblStatus.Text = "Error loading financial data. Please try again."
+        End Try
+
+        lblStatus.Visible = False
+    End Function
+
+    ' SQL financial data loading
+    Private Async Function ShowSqlFinancialDataAsync(hospitalId As Integer, state As String) As Task
         Dim queryFinance As String = ""
         Dim queryCharity As String = ""
 
-        ' Choose the correct table based on state
         Select Case state
             Case "TN"
                 queryFinance = "SELECT * FROM tn.Financials WHERE LicenseNum = @LicenseNum"
             Case "TX"
                 queryFinance = "SELECT * FROM tx.Finance WHERE id = @id"
                 queryCharity = "SELECT * FROM tx.Charity WHERE id = @id"
-            Case Else
-                ' For all other states, use API
-                Await ShowFinancialDataApi(Results.SelectedHospital.CMSNum)
-                Exit Function
         End Select
 
-        ' --- Query 1: Finance Table ---
-        Using conn As New SqlConnection(connectionString)
-            Using cmd As New SqlCommand(queryFinance, conn)
-                If state = "TN" Then
-                    cmd.Parameters.AddWithValue("@LicenseNum", hospitalId)
-                ElseIf state = "TX" Then
-                    cmd.Parameters.AddWithValue("@id", hospitalId)
-                End If
-                conn.Open()
-                Using reader = cmd.ExecuteReader()
-                    If reader.Read() Then
-                        lblInpRevResult.Text = If(Not IsDBNull(reader("Total Gross Inpatient Revenue")), reader("Total Gross Inpatient Revenue").ToString(), "N/A")
-                        lblOutPatResult.Text = If(Not IsDBNull(reader("Total Gross Outpatient Revenue")), reader("Total Gross Outpatient Revenue").ToString(), "N/A")
-                        ' Add more fields as needed for TN/TX
-                    Else
-                        lblPedResult.Text = "No result"
-                        lblNumMonthsPeriodResult.Text = "No result"
+        Try
+            Using conn As New SqlConnection(connectionString)
+                Using cmd As New SqlCommand(queryFinance, conn)
+                    If state = "TN" Then
+                        cmd.Parameters.AddWithValue("@LicenseNum", hospitalId)
+                    ElseIf state = "TX" Then
+                        cmd.Parameters.AddWithValue("@id", hospitalId)
                     End If
-                End Using
-                conn.Close()
-            End Using
-        End Using
-
-        '--- Query 2 Charity Table(TX only) - --
-        If state = "TX" Then
-            Using conn2 As New SqlConnection(connectionString)
-                Using cmd2 As New SqlCommand(queryCharity, conn2)
-                    cmd2.Parameters.AddWithValue("@id", hospitalId)
-                    conn2.Open()
-                    Using reader2 = cmd2.ExecuteReader()
-                        If reader2.Read() Then
-                            lblTotUcResult.Text = If(Not IsDBNull(reader2("Total Uncompensated Care")), reader2("Total Uncompensated Care").ToString(), "N/A")
-                            lblUncompResult.Text = If(Not IsDBNull(reader2("Bad Debt Charges")), reader2("Bad Debt Charges").ToString(), "N/A")
-                            lblCcResult.Text = If(Not IsDBNull(reader2("Charity Charges")), reader2("Charity Charges").ToString(), "N/A")
-                            lblucpctResult.Text = If(Not IsDBNull(reader2("Uncompensated Care as pcnt of GPR")), reader2("Uncompensated Care as pcnt of GPR").ToString(), "N/A")
+                    conn.Open()
+                    Using reader = cmd.ExecuteReader()
+                        If reader.Read() Then
+                            lblInpRevResult.Text = AppHelpers.SafeGet(reader, "Total Gross Inpatient Revenue")
+                            lblOutPatResult.Text = AppHelpers.SafeGet(reader, "Total Gross Outpatient Revenue")
                         Else
-                            lblTotUcResult.Text = "No result"
-                            lblUncompResult.Text = "No result"
-                            lblCcResult.Text = "No result"
-                            lblucpctResult.Text = "No result"
+                            SetAllFinancialLabels("No result")
                         End If
                     End Using
                 End Using
             End Using
-            ShowFinancialDataApi(hospitalId)
+
+            If state = "TX" AndAlso Not String.IsNullOrEmpty(queryCharity) Then
+                Using conn2 As New SqlConnection(connectionString)
+                    Using cmd2 As New SqlCommand(queryCharity, conn2)
+                        cmd2.Parameters.AddWithValue("@id", hospitalId)
+                        conn2.Open()
+                        Using reader2 = cmd2.ExecuteReader()
+                            If reader2.Read() Then
+                                lblTotUcResult.Text = AppHelpers.SafeGet(reader2, "Total Uncompensated Care")
+                                lblUncompResult.Text = AppHelpers.SafeGet(reader2, "Bad Debt Charges")
+                                lblCcResult.Text = AppHelpers.SafeGet(reader2, "Charity Charges")
+                                lblucpctResult.Text = AppHelpers.SafeGet(reader2, "Uncompensated Care as pcnt of GPR")
+                            Else
+                                lblTotUcResult.Text = "No result"
+                                lblUncompResult.Text = "No result"
+                                lblCcResult.Text = "No result"
+                                lblucpctResult.Text = "No result"
+                            End If
+                        End Using
+                    End Using
+                End Using
+            End If
+        Catch
+            SetAllFinancialLabels("No result")
+        End Try
+
+        If state = "TX" Or state = "TN" Then
+            Await ShowFinancialDataApi(Results.SelectedHospital.CMSNum)
         End If
     End Function
-
-
 
     ' API-based financial data for non-TN/TX
     Public Async Function ShowFinancialDataApi(cmsNum As String) As Task
         strCMSnum = cmsNum
-        Dim apiUrl As String = "https://data.cms.gov/data-api/v1/dataset/8015f175-35cc-4cab-a664-b7c87d91a027/data?keyword=" & Uri.EscapeDataString(cmsNum) & "&size=1000"
-        Dim decDollarAmount As Decimal
-        Using client As New HttpClient()
-            Dim response As HttpResponseMessage = Await client.GetAsync(apiUrl)
-            If response.IsSuccessStatusCode Then
-                Dim json As String = Await response.Content.ReadAsStringAsync()
-                Dim data As JArray = JArray.Parse(json)
-                If data.Count > 0 Then
-                    ' Find the exact match for Provider CCN if possible
-                    Dim provider = data.FirstOrDefault(Function(x) x("Provider CCN") IsNot Nothing AndAlso x("Provider CCN").ToString() = cmsNum)
-                    If provider Is Nothing Then provider = data(0)
+        Try
+            Dim apiUrl As String = ApiHelper.ApiUrls("MainProfileApi") & "?keyword=" & Uri.EscapeDataString(cmsNum) & "&size=1000"
+            Dim data As JArray = Await ApiHelper.GetApiDataAsync(apiUrl)
 
-                    lblPedResult.Text = If(provider("Fiscal Year End Date") IsNot Nothing, CDate(provider("Fiscal Year End Date")).ToString("MM/dd/yyyy"), "N/A")
-                    lblCurAssetResult.Text = FinInd.FormatCurrency(Search.CleanMeUp(provider("Total Current Assets")))
-                    lblFixAssetsResult.Text = FinInd.FormatCurrency(Search.CleanMeUp(provider("Total Fixed Assets")))
-                    lblOtherAssetsResult.Text = FinInd.FormatCurrency(Search.CleanMeUp(provider("Total Other Assets")))
-                    lblTotAssetsResult.Text = FinInd.FormatCurrency(Search.CleanMeUp(provider("Total Assets")))
-                    lblNetPatRevResult.Text = FinInd.FormatCurrency(Search.CleanMeUp(provider("Net Patient Revenue")))
-                    lblTotPatRevResult.Text = FinInd.FormatCurrency(Search.CleanMeUp(provider("Total Patient Revenue")))
-                    lblOutPatResult.Text = FinInd.FormatCurrency(Search.CleanMeUp(provider("Outpatient Revenue")))
-                    lblInpRevResult.Text = FinInd.FormatCurrency(Search.CleanMeUp(provider("Inpatient Revenue")))
-                    lblTotOperatingExpenseResult.Text = FinInd.FormatCurrency(If(provider("Less Total Operating Expense") IsNot Nothing, CDec(provider("Less Total Operating Expense")).ToString("N"), "N/A"))
-                    lblContractAllowanceResult.Text = FinInd.FormatCurrency(If(provider("Less Contractual Allowance and Discounts on Patients' Account") IsNot Nothing, CDec(provider("Less Contractual Allowance and Discounts on Patients' Account")).ToString("N"), "N/A"))
-                    lblTotOtherIncomeResult.Text = FinInd.FormatCurrency(Search.CleanMeUp(provider("Total Other Income")))
-                    lblTotOtherExpensesResult.Text = FinInd.FormatCurrency(If(provider("Total Other Expenses") IsNot Nothing, provider("Total Other Expenses").ToString(), "N/A"))
-                    lblNetIncomeResult.Text = FinInd.FormatCurrency(If(provider("Net Income") IsNot Nothing, CDec(provider("Net Income")).ToString("N"), "N/A"))
-                    lblDepreciationExpenseResult.Text = FinInd.FormatCurrency(Search.CleanMeUp(provider("Depreciation Cost")))
-                    lblCcResult.Text = FinInd.FormatCurrency(Search.CleanMeUp(provider("Cost of Charity Care")))
-                    lblUncompResult.Text = FinInd.FormatCurrency(Search.CleanMeUp(provider("Total Bad Debt Expense")))
-                    lblTotUcResult.Text = FinInd.FormatCurrency(Search.CleanMeUp(provider("Cost of Uncompensated Care")))
+            If data.Count > 0 Then
+                Dim provider = data.FirstOrDefault(Function(x) x("Provider CCN") IsNot Nothing AndAlso x("Provider CCN").ToString() = cmsNum)
+                If provider Is Nothing Then provider = data(0)
 
-
-
-
-                    lblCurLiabilitiesRes.Text = FinInd.FormatCurrency(If(provider("Total Current Liabilities") IsNot Nothing, provider("Total Current Liabilities").ToString(), "N/A"))
-                    lblLtResult.Text = FinInd.FormatCurrency(If(provider("Total Long Term Liabilities") IsNot Nothing, CDec(provider("Total Long Term Liabilities")).ToString("N"), "N/A"))
-                    lblTlResult.Text = FinInd.FormatCurrency(If(provider("Total Liabilities") IsNot Nothing, CDec(provider("Total Liabilities")).ToString("N"), "N/A"))
-                    lblTotFbResult.Text = FinInd.FormatCurrency(If(provider("Total Fund Balances") IsNot Nothing, CDec(provider("Total Fund Balances")).ToString("N"), "N/A"))
-                    lblTotLandFbResult.Text = FinInd.FormatCurrency(If(provider("Total Liabilities and Fund Balances") IsNot Nothing, CDec(provider("Total Liabilities and Fund Balances")).ToString(), "N/A"))
-
-                    lblInpRevResult.Text = FinInd.FormatCurrency(If(provider("Inpatient Revenue") IsNot Nothing, CDec(provider("Inpatient Revenue")).ToString("N"), "N/A"))
-                    'lblOutPatResult.Text = If(provider("Outpatient Revenue") IsNot Nothing, CDec(provider("Outpatient Revenue")).ToString("N"), "N/A")
-                    'lblTotPatRevResult.Text = If(provider("Total Patient Revenue") IsNot Nothing, CDec(provider("Total Patient Revenue")).ToString("N"), "N/A")
-                    '''lblCcResult.Text = If(provider("Cost of Charity Care") IsNot Nothing, CDec(provider("Cost of Charity Care")).ToString("N"), "N/A")
-                    '''lblUncompResult.Text = If(provider("Total Bad Debt Expense") IsNot Nothing, CDec(provider("Total Bad Debt Expense")).ToString("N"), "N/A")
-                    '''lblTotUcResult.Text = If(provider("Cost of Uncompensated Care") IsNot Nothing, CDec(provider("Cost of Uncompensated Care")).ToString("N"), "N/A")
-                    'lblucpctResult.Text = If(provider("Uncompensated Care as % of GPR") IsNot Nothing, CDec(provider("Uncompensated Care as % of GPR")).ToString("P"), "N/A")
-
-
-                    'lblNetPatRevResult.Text = If(provider("Net Patient Revenue") IsNot Nothing, CDec(provider("Net Patient Revenue")).ToString("N"), "N/A")
-                    'lblCurLiabilitiesRes.Text = If(provider("Total Current Liabilities") IsNot Nothing, CDec(provider("Total Current Liabilities")).ToString("N"), "N/A")
-                    'lblLtResult.Text = If(provider("Total Long Term Liabilities") IsNot Nothing, CDec(provider("Total Long Term Liabilities")).ToString("N"), "N/A")
-                    'lblTlResult.Text = If(provider("Total Liabilities") IsNot Nothing, CDec(provider("Total Liabilities")).ToString("N"), "N/A")
-                    'lblTotFbResult.Text = If(provider("Total Fund Balances") IsNot Nothing, CDec(provider("Total Fund Balances")).ToString("N"), "N/A")
-                    'lblTotLandFbResult.Text = If(provider("Total Liabilities and Fund Balances") IsNot Nothing, CDec(provider("Total Liabilities and Fund Balances")).ToString("N"), "N/A")
-
-
-                Else
-                    SetAllFinancialLabels("No result")
-                End If
+                lblPedResult.Text = AppHelpers.SafeGetDate(provider, "Fiscal Year End Date")
+                lblCurAssetResult.Text = AppHelpers.FormatCurrency(AppHelpers.SafeGet(provider, "Total Current Assets"))
+                lblFixAssetsResult.Text = AppHelpers.FormatCurrency(AppHelpers.SafeGet(provider, "Total Fixed Assets"))
+                lblOtherAssetsResult.Text = AppHelpers.FormatCurrency(AppHelpers.SafeGet(provider, "Total Other Assets"))
+                lblTotAssetsResult.Text = AppHelpers.FormatCurrency(AppHelpers.SafeGet(provider, "Total Assets"))
+                lblNetPatRevResult.Text = AppHelpers.FormatCurrency(AppHelpers.SafeGet(provider, "Net Patient Revenue"))
+                lblTotPatRevResult.Text = AppHelpers.FormatCurrency(AppHelpers.SafeGet(provider, "Total Patient Revenue"))
+                lblOutPatResult.Text = AppHelpers.FormatCurrency(AppHelpers.SafeGet(provider, "Outpatient Revenue"))
+                lblInpRevResult.Text = AppHelpers.FormatCurrency(AppHelpers.SafeGet(provider, "Inpatient Revenue"))
+                lblTotOperatingExpenseResult.Text = AppHelpers.FormatCurrency(AppHelpers.SafeGet(provider, "Less Total Operating Expense"))
+                lblContractAllowanceResult.Text = AppHelpers.FormatCurrency(AppHelpers.SafeGet(provider, "Less Contractual Allowance and Discounts on Patients' Account"))
+                lblTotOtherIncomeResult.Text = AppHelpers.FormatCurrency(AppHelpers.SafeGet(provider, "Total Other Income"))
+                lblTotOtherExpensesResult.Text = AppHelpers.FormatCurrency(AppHelpers.SafeGet(provider, "Total Other Expenses"))
+                lblNetIncomeResult.Text = AppHelpers.FormatCurrency(AppHelpers.SafeGet(provider, "Net Income"))
+                lblDepreciationExpenseResult.Text = AppHelpers.FormatCurrency(AppHelpers.SafeGet(provider, "Depreciation Cost"))
+                lblCcResult.Text = AppHelpers.FormatCurrency(AppHelpers.SafeGet(provider, "Cost of Charity Care"))
+                lblUncompResult.Text = AppHelpers.FormatCurrency(AppHelpers.SafeGet(provider, "Total Bad Debt Expense"))
+                lblTotUcResult.Text = AppHelpers.FormatCurrency(AppHelpers.SafeGet(provider, "Cost of Uncompensated Care"))
+                lblCurLiabilitiesRes.Text = AppHelpers.FormatCurrency(AppHelpers.SafeGet(provider, "Total Current Liabilities"))
+                lblLtResult.Text = AppHelpers.FormatCurrency(AppHelpers.SafeGet(provider, "Total Long Term Liabilities"))
+                lblTlResult.Text = AppHelpers.FormatCurrency(AppHelpers.SafeGet(provider, "Total Liabilities"))
+                lblTotFbResult.Text = AppHelpers.FormatCurrency(AppHelpers.SafeGet(provider, "Total Fund Balances"))
+                lblTotLandFbResult.Text = AppHelpers.FormatCurrency(AppHelpers.SafeGet(provider, "Total Liabilities and Fund Balances"))
             Else
-                SetAllFinancialLabels("API error")
+                SetAllFinancialLabels("No result")
             End If
-        End Using
-        Using HospGenClient As New HttpClient()
-            Dim response As HttpResponseMessage = Await HospGenClient.GetAsync(apiUrl)
-            If response.IsSuccessStatusCode Then
-                Dim json As String = Await response.Content.ReadAsStringAsync()
-                Dim data As JArray = JArray.Parse(json)
-            End If
-
-        End Using
-
+        Catch
+            SetAllFinancialLabels("No result")
+        End Try
     End Function
 
+    ' Helper: Set all financial labels to a value
     Private Sub SetAllFinancialLabels(val As String)
         lblPedResult.Text = val
         lblCurAssetResult.Text = val
@@ -166,33 +146,32 @@ Public Class Financial
         lblOutPatResult.Text = val
         lblTotPatRevResult.Text = val
         lblNetPatRevResult.Text = val
+        lblTotOperatingExpenseResult.Text = val
+        lblContractAllowanceResult.Text = val
+        lblTotOtherIncomeResult.Text = val
+        lblTotOtherExpensesResult.Text = val
+        lblNetIncomeResult.Text = val
+        lblDepreciationExpenseResult.Text = val
+        lblCcResult.Text = val
+        lblUncompResult.Text = val
+        lblTotUcResult.Text = val
+        lblucpctResult.Text = val
     End Sub
 
     ' Automatically load data when the form loads
     Private Async Sub Financial_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         If Results.SelectedHospital IsNot Nothing Then
             Dim state = Results.SelectedHospital.State
-            If state = "TN" Or state = "TX" Then
-                Await ShowFinancialData(Results.SelectedHospital.HospitalId, state)
-            Else
-                Await ShowFinancialDataApi(Results.SelectedHospital.CMSNum)
-            End If
+            Await ShowFinancialData(Results.SelectedHospital.HospitalId, state)
         End If
     End Sub
 
-
-
-    Private Sub Label11_Click(sender As Object, e As EventArgs) Handles lblTotLandFbResult.Click
-
-    End Sub
-
+    ' Navigation buttons
     Private Sub btnProfileFinancial_Click(sender As Object, e As EventArgs) Handles btnProfileFinancial.Click
         Me.Hide()
         Profile.ShowProfile(Results.SelectedHospital)
         Profile.Show()
     End Sub
-
-
 
     Private Sub btnFInIndFinancial_Click(sender As Object, e As EventArgs) Handles btnFInIndFinancial.Click
         Me.Hide()
@@ -214,7 +193,6 @@ Public Class Financial
 
     Private Sub btnDepartmentsFinancial_Click(sender As Object, e As EventArgs) Handles btnDepartmentsFinancial.Click
         Me.Hide()
-
         Departments.Show()
     End Sub
 
@@ -224,6 +202,7 @@ Public Class Financial
     End Sub
 
     Private Sub btnOutpatientFinancial_Click(sender As Object, e As EventArgs) Handles btnOutpatientFinancial.Click
-
+        Me.Hide()
+        Outpatient.Show()
     End Sub
 End Class

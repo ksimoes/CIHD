@@ -32,6 +32,7 @@ Partial Class Outpatient
         dgvAPC = New DataGridView()
         Panel1 = New Panel()
         Label1 = New Label()
+        lblstatus = New Label()
         CType(dgvAPC, ComponentModel.ISupportInitialize).BeginInit()
         Panel1.SuspendLayout()
         SuspendLayout()
@@ -110,6 +111,7 @@ Partial Class Outpatient
         ' Panel1
         ' 
         Panel1.AutoScroll = True
+        Panel1.Controls.Add(lblstatus)
         Panel1.Controls.Add(Label1)
         Panel1.Controls.Add(dgvAPC)
         Panel1.Controls.Add(Button1)
@@ -133,6 +135,15 @@ Partial Class Outpatient
         Label1.Size = New Size(376, 15)
         Label1.TabIndex = 22
         Label1.Text = "Statistics for the Top 20 Ambulatory Payment Classifications (APCs)"
+        ' 
+        ' lblstatus
+        ' 
+        lblstatus.AutoSize = True
+        lblstatus.Location = New Point(1016, 993)
+        lblstatus.Name = "lblstatus"
+        lblstatus.Size = New Size(41, 15)
+        lblstatus.TabIndex = 75
+        lblstatus.Text = "Label1"
         ' 
         ' Outpatient
         ' 
@@ -158,4 +169,5 @@ Partial Class Outpatient
     Friend WithEvents dgvAPC As DataGridView
     Friend WithEvents Panel1 As Panel
     Friend WithEvents Label1 As Label
+    Friend WithEvents lblstatus As Label
 End Class

@@ -1,66 +1,58 @@
-﻿Imports System.Security.Cryptography.X509Certificates
-Imports Newtonsoft.Json.Linq
+﻿Imports Newtonsoft.Json.Linq
 
 Public Class Departments
-    Public Sub ShowDepartmentsDataApi(cmsNum As String)
-        ' This method can be used to show departments data if needed
-        ' Currently, it does not perform any actions
-        Dim newURL As String = "https://data.cms.gov/data-api/v1/dataset/8ba0f9b4-9493-4aa0-9f82-44ea9468d1b5/data?"
-        Dim filters As New List(Of String)
-        If Not String.IsNullOrEmpty(cmsNum) Then filters.Add("keyword=" & Uri.EscapeDataString(cmsNum))
-        'If Not String.IsNullOrEmpty(npi) Then filters.Add("keyword=" & Uri.EscapeDataString(npi))
-        newURL &= String.Join("&", filters)
-        filters.Add("size=1000")
+    ' Show department data using the centralized API helper
+    Public Async Function ShowDepartmentsDataApi(cmsNum As String) As Task
+        lblstatus.Text = "Loading department data..."
+        lblstatus.Visible = True
 
-        Dim myArray As JArray = Profile.GetAPIArray(newURL)
+        Try
+            Dim url As String = ApiHelper.ApiUrls("DepartmentsApi") & "?keyword=" & Uri.EscapeDataString(cmsNum) & "&size=1000"
+            Dim myArray As JArray = Await ApiHelper.GetApiDataAsync(url)
 
+            If myArray.Count > 0 Then
+                Dim provider = myArray.FirstOrDefault(Function(x) x("PRVDR_NUM") IsNot Nothing AndAlso x("PRVDR_NUM").ToString() = cmsNum)
+                If provider Is Nothing Then provider = myArray(0)
 
-        If myArray.Count > 0 Then
-            ' Find the exact match for Provider CCN if possible
-            Dim provider = myArray.FirstOrDefault(Function(x) x("PRVDR_NUM") IsNot Nothing AndAlso x("PRVDR_NUM").ToString() = cmsNum)
-            If provider Is Nothing Then provider = myArray(0)
+                lblCrnaNumResult.Text = AppHelpers.SafeGet(provider, "CRNA_CNT")
+                lblDietNumResult.Text = AppHelpers.SafeGet(provider, "DIETN_CNT")
+                lblLpnNumResult.Text = AppHelpers.SafeGet(provider, "LPN_CNT")
+                lblInhalationTherapistResult.Text = AppHelpers.SafeGet(provider, "INHLTN_THRPST_CNT")
+                lblRNNumResult.Text = AppHelpers.SafeGet(provider, "RN_CNT")
+                lblSPANumResult.Text = AppHelpers.SafeGet(provider, "SPCH_PTHLGST_AUDLGST_CNT")
+                lblOTNumResult.Text = AppHelpers.SafeGet(provider, "OCPTNL_THRPST_CNT")
+                lblPANumResult.Text = AppHelpers.SafeGet(provider, "PHYSN_ASTNT_CNT")
+                lblPharmacistsNumResult.Text = AppHelpers.SafeGet(provider, "REG_PHRMCST_CNT")
+                lblSWNumResult.Text = AppHelpers.SafeGet(provider, "SCL_WORKR_CNT")
+            Else
+                SetAllDepartmentLabels("No result")
+            End If
 
-            lblCrnaNumResult.Text = If(provider("CRNA_CNT") IsNot Nothing, provider("CRNA_CNT").ToString(), "N/A")
-            lblDietNumResult.Text = If(provider("DIETN_CNT") IsNot Nothing, provider("DIETN_CNT").ToString(), "N/A")
-            lblLpnNumResult.Text = If(provider("LPN_CNT") IsNot Nothing, provider("LPN_CNT").ToString(), "N/A")
-            lblInhalationTherapistResult.Text = If(provider("INHLTN_THRPST_CNT") IsNot Nothing, provider("INHLTN_THRPST_CNT").ToString(), "N/A")
-            lblRNNumResult.Text = If(provider("RN_CNT") IsNot Nothing, provider("RN_CNT").ToString(), "N/A")
-            lblSPANumResult.Text = If(provider("SPCH_PTHLGST_AUDLGST_CNT") IsNot Nothing, provider("SPCH_PTHLGST_AUDLGST_CNT").ToString(), "N/A")
-            lblOTNumResult.Text = If(provider("OCPTNL_THRPST_CNT") IsNot Nothing, provider("OCPTNL_THRPST_CNT").ToString(), "N/A")
-            lblPANumResult.Text = If(provider("PHYSN_ASTNT_CNT") IsNot Nothing, provider("PHYSN_ASTNT_CNT").ToString(), "N/A")
-            lblPharmacistsNumResult.Text = If(provider("REG_PHRMCST_CNT") IsNot Nothing, provider("REG_PHRMCST_CNT").ToString(), "N/A")
-            lblSWNumResult.Text = If(provider("SCL_WORKR_CNT") IsNot Nothing, provider("SCL_WORKR_CNT").ToString(), "N/A")
+            lblStatus.Text = ""
+        Catch ex As Exception
+            SetAllDepartmentLabels("No result")
+            lblStatus.Text = "Error loading department data. Please try again."
+        End Try
 
+        lblStatus.Visible = False
+    End Function
 
-
-
-        Else
-            lblCrnaNumResult.Text = "No result"
-            lblDietNumResult.Text = "No result"
-            lblLpnNumResult.Text = "No result"
-            lblInhalationTherapistResult.Text = "No result"
-            lblRNNumResult.Text = "No result"
-            lblSPANumResult.Text = "No result"
-            lblOTNumResult.Text = "No result"
-            lblPANumResult.Text = "No result"
-            lblPharmacistsNumResult.Text = "No result"
-            lblSWNumResult.Text = "No result"
-
-
-
-
-
-
-
-        End If
+    ' Helper: Set all department labels to a value
+    Private Sub SetAllDepartmentLabels(val As String)
+        lblCrnaNumResult.Text = val
+        lblDietNumResult.Text = val
+        lblLpnNumResult.Text = val
+        lblInhalationTherapistResult.Text = val
+        lblRNNumResult.Text = val
+        lblSPANumResult.Text = val
+        lblOTNumResult.Text = val
+        lblPANumResult.Text = val
+        lblPharmacistsNumResult.Text = val
+        lblSWNumResult.Text = val
     End Sub
 
-    Private Sub Departments_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-
-        ShowDepartmentsDataApi(Results.SelectedHospital.CMSNum)
-
-
-
+    Private Async Sub Departments_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Await ShowDepartmentsDataApi(Results.SelectedHospital.CMSNum)
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles btnProfileDepartments.Click
@@ -91,11 +83,11 @@ Public Class Departments
     Private Sub Button7_Click(sender As Object, e As EventArgs) Handles btnOutpatientDepartments.Click
         Me.Hide()
         Outpatient.Show()
-
     End Sub
 
     Private Sub Button1_Click_1(sender As Object, e As EventArgs) Handles Button1.Click
         Me.Hide()
         Search.Show()
     End Sub
+
 End Class
