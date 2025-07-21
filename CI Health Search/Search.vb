@@ -74,6 +74,7 @@ Public Class Search
             Return strVal
         End If
     End Function
+
     Private Function NormalizeName(name As String) As String
         If String.IsNullOrEmpty(name) Then Return ""
         Dim cleaned = name.ToLower().Trim()
@@ -86,48 +87,36 @@ Public Class Search
         Return cleaned.Trim()
     End Function
 
-    Private Function FindFuzzyMatch(dt As DataTable, npiName As String, npiCity As String, npiState As String) As DataRow
-        If dt Is Nothing OrElse dt.Rows.Count = 0 Then Return Nothing
-        Dim normNpiName = NormalizeName(npiName)
-        Dim normNpiCity = npiCity?.ToLower().Trim()
-        Dim normNpiState = npiState?.ToLower().Trim()
-        Dim npiWords = normNpiName.Split(" "c).Where(Function(w) w.Length > 2).ToList()
+    ' This function uses the same logic as your profile NPI lookup
+    Private Async Function LookupNpiForCmsRow(cmsRow As DataRow) As Task(Of String)
+        If cmsRow Is Nothing Then Return Nothing
 
-        For Each row As DataRow In dt.Rows
-            If dt.Columns.Contains("Facility Name") AndAlso dt.Columns.Contains("City") AndAlso dt.Columns.Contains("State") Then
-                Dim facilityName = NormalizeName(row("Facility Name")?.ToString())
-                Dim city = row("City")?.ToString().ToLower().Trim()
-                Dim state = row("State")?.ToString().ToLower().Trim()
-                Dim facilityWords = facilityName.Split(" "c).Where(Function(w) w.Length > 2).ToList()
-                Dim overlap = npiWords.Intersect(facilityWords).Count()
-                ' Debug output
-                Debug.WriteLine($"NPI: {normNpiName} | CMS: {facilityName} | Overlap: {overlap} | City: {city} | State: {state}")
-                If overlap >= 1 AndAlso city = normNpiCity AndAlso state = normNpiState Then
-                    Return row
+        Dim name As String = cmsRow("Facility Name")?.ToString()
+        Dim city As String = cmsRow("City")?.ToString()
+        Dim state As String = cmsRow("State")?.ToString()
+
+        Dim apiUrl As String = $"https://npiregistry.cms.hhs.gov/api/?version=2.1&organization_name={Uri.EscapeDataString(name)}&city={Uri.EscapeDataString(city)}&state={Uri.EscapeDataString(state)}"
+        Using client As New HttpClient()
+            Dim response = Await client.GetAsync(apiUrl)
+            If response.IsSuccessStatusCode Then
+                Dim json = Await response.Content.ReadAsStringAsync()
+                Dim obj = JObject.Parse(json)
+                If obj("results") IsNot Nothing AndAlso obj("results").HasValues Then
+                    Return obj("results")(0)("number")?.ToString()
                 End If
             End If
-        Next
+        End Using
         Return Nothing
     End Function
 
-    Private Function FindBestCmsMatch(cmsDt As DataTable, npiName As String, npiCity As String, npiState As String, Optional npiZip As String = Nothing) As DataRow
-        ' Try fuzzy match by name/city/state
-        Dim match = FindFuzzyMatch(cmsDt, npiName, npiCity, npiState)
-        If match IsNot Nothing Then Return match
-
-        ' Try by zip code if available
-        If Not String.IsNullOrEmpty(npiZip) AndAlso cmsDt.Columns.Contains("Zip Code") Then
-            For Each row As DataRow In cmsDt.Rows
-                Dim cmsZip = row("Zip Code")?.ToString()
-                If Not String.IsNullOrEmpty(cmsZip) AndAlso cmsZip.StartsWith(npiZip.Substring(0, 5)) Then
-                    Return row
-                End If
-            Next
-        End If
-
-        ' If only one hospital in city/state, return it
-        If cmsDt.Rows.Count = 1 Then Return cmsDt.Rows(0)
-
+    ' This function finds the CMS row whose NPI matches the searched NPI
+    Private Async Function FindCmsRowByNpiAsync(cmsDt As DataTable, searchedNpi As String) As Task(Of DataRow)
+        For Each row As DataRow In cmsDt.Rows
+            Dim npi As String = Await LookupNpiForCmsRow(row)
+            If npi = searchedNpi Then
+                Return row
+            End If
+        Next
         Return Nothing
     End Function
 
@@ -191,6 +180,7 @@ Public Class Search
 
         lblstatus.Visible = False
     End Sub
+
     Private Async Function FetchNpiDataAsync(npi As String) As Task(Of JObject)
         Dim apiUrl As String = $"https://npiregistry.cms.hhs.gov/api/?version=2.1&number={Uri.EscapeDataString(npi)}"
         Using client As New HttpClient()
@@ -205,8 +195,9 @@ Public Class Search
         End Using
         Return Nothing
     End Function
+
     Private Async Function SearchByApiAsync(selectedState As String) As Task
-        ' If NPI is entered, always use NPPES + best CMS match logic
+        ' If NPI is entered, use profile-accurate NPI-to-CMS matching (optimized)
         If Not String.IsNullOrWhiteSpace(txtNpiAll.Text) Then
             Dim npiData = Await FetchNpiDataAsync(txtNpiAll.Text.Trim())
             If npiData IsNot Nothing Then
@@ -214,9 +205,8 @@ Public Class Search
                 Dim npiName = npiData("basic")?("organization_name")?.ToString()
                 Dim npiCity = address?("city")?.ToString()
                 Dim npiState = address?("state")?.ToString()
-                Dim npiZip = address?("postal_code")?.ToString()
 
-                ' Fetch CMS data for the same city/state (broad search)
+                ' Fetch CMS data for the same city/state (narrow search)
                 Dim cmsApiUrl As String = "https://data.cms.gov/data-api/v1/dataset/8015f175-35cc-4cab-a664-b7c87d91a027/data?size=1000"
                 If Not String.IsNullOrEmpty(npiState) Then cmsApiUrl &= "&filter[State Code]=" & Uri.EscapeDataString(npiState)
                 If Not String.IsNullOrEmpty(npiCity) Then cmsApiUrl &= "&filter[City]=" & Uri.EscapeDataString(npiCity)
@@ -237,22 +227,54 @@ Public Class Search
                             cmsDt.Rows.Add(row)
                         Next
 
-                        ' Use the new best-match logic
-                        Dim matchRow As DataRow = FindBestCmsMatch(cmsDt, npiName, npiCity, npiState, npiZip)
-                        If matchRow IsNot Nothing Then
-                            Dim matchedDt = cmsDt.Clone()
-                            matchedDt.ImportRow(matchRow)
-                            Results.SetResults(matchedDt)
-                            Results.SelectedState = selectedState
-                            Hide()
-                            Results.Show()
-                            Return
-                        End If
+                        ' Filter CMS rows by name similarity (at least 1 word overlap)
+                        Dim normNpiName = NormalizeName(npiName)
+                        Dim npiWords = normNpiName.Split(" "c).Where(Function(w) w.Length > 2).ToList()
+                        Dim likelyRows = cmsDt.AsEnumerable().Where(Function(r)
+                                                                        Dim facilityName = NormalizeName(r.Field(Of String)("Facility Name"))
+                                                                        Dim facilityWords = facilityName.Split(" "c).Where(Function(w) w.Length > 2).ToList()
+                                                                        Return npiWords.Intersect(facilityWords).Count() >= 1
+                                                                    End Function).ToList()
+
+                        ' Only check these likely matches
+                        Dim total = likelyRows.Count
+                        Dim idx = 1
+                        For Each row In likelyRows
+                            Try
+                                lblCheckingStatus.Text = $"Checking {idx} of {total}: {row("Facility Name")}"
+                                lblCheckingStatus.Visible = True
+                                lblCheckingStatus.Refresh()
+                                idx += 1
+
+                                Dim npi As String = Await LookupNpiForCmsRow(row)
+                                Debug.WriteLine($"Checking CMS: {row("Facility Name")} | NPI found: {npi}")
+                                If npi = txtNpiAll.Text.Trim() Then
+                                    lblCheckingStatus.Text = ""
+                                    lblCheckingStatus.Visible = False
+                                    Dim matchedDt = cmsDt.Clone()
+                                    matchedDt.ImportRow(row)
+                                    Results.SetResults(matchedDt)
+                                    Results.SelectedState = selectedState
+                                    Hide()
+                                    Results.Show()
+                                    lblstatus.Text = ""
+                                    lblstatus.Visible = False
+                                    Return
+                                End If
+                            Catch ex As Exception
+                                Debug.WriteLine("Error checking CMS row: " & ex.ToString())
+                            End Try
+                        Next
+
+                        lblCheckingStatus.Text = ""
+                        lblCheckingStatus.Visible = False
                     End If
                 End If
             End If
 
             MessageBox.Show("No results found for your search.")
+            lblstatus.Text = ""
+            lblstatus.Visible = False
             Return
         End If
 
@@ -350,6 +372,8 @@ Public Class Search
 
                 If dt Is Nothing OrElse dt.Rows.Count = 0 Then
                     MessageBox.Show("No results found for your search.")
+                    lblstatus.Text = ""
+                    lblstatus.Visible = False
                     Return
                 End If
 
@@ -359,6 +383,8 @@ Public Class Search
                 Results.Show()
             Else
                 MessageBox.Show("API error: " & response.StatusCode.ToString())
+                lblstatus.Text = ""
+                lblstatus.Visible = False
             End If
         End Using
     End Function

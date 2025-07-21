@@ -24,6 +24,7 @@ Partial Class Search
     Private Sub InitializeComponent()
         TabControl1 = New TabControl()
         TabPage5 = New TabPage()
+        lblstatus = New Label()
         Button1 = New Button()
         btnSearchAll = New Button()
         GroupBox5 = New GroupBox()
@@ -184,7 +185,7 @@ Partial Class Search
         lblService = New Label()
         lblMedicare = New Label()
         lblFacility = New Label()
-        lblstatus = New Label()
+        lblCheckingStatus = New Label()
         TabControl1.SuspendLayout()
         TabPage5.SuspendLayout()
         GroupBox5.SuspendLayout()
@@ -212,6 +213,7 @@ Partial Class Search
         ' 
         ' TabPage5
         ' 
+        TabPage5.Controls.Add(lblCheckingStatus)
         TabPage5.Controls.Add(lblstatus)
         TabPage5.Controls.Add(Button1)
         TabPage5.Controls.Add(btnSearchAll)
@@ -225,6 +227,15 @@ Partial Class Search
         TabPage5.TabIndex = 4
         TabPage5.Text = "All"
         TabPage5.UseVisualStyleBackColor = True
+        ' 
+        ' lblstatus
+        ' 
+        lblstatus.AutoSize = True
+        lblstatus.Location = New Point(657, 605)
+        lblstatus.Name = "lblstatus"
+        lblstatus.Size = New Size(41, 15)
+        lblstatus.TabIndex = 74
+        lblstatus.Text = "Label1"
         ' 
         ' Button1
         ' 
@@ -1815,14 +1826,14 @@ Partial Class Search
         lblFacility.TabIndex = 5
         lblFacility.Text = "Type of Facility"
         ' 
-        ' lblstatus
+        ' lblCheckingStatus
         ' 
-        lblstatus.AutoSize = True
-        lblstatus.Location = New Point(657, 605)
-        lblstatus.Name = "lblstatus"
-        lblstatus.Size = New Size(41, 15)
-        lblstatus.TabIndex = 74
-        lblstatus.Text = "Label1"
+        lblCheckingStatus.AutoSize = True
+        lblCheckingStatus.Location = New Point(657, 630)
+        lblCheckingStatus.Name = "lblCheckingStatus"
+        lblCheckingStatus.Size = New Size(41, 15)
+        lblCheckingStatus.TabIndex = 96
+        lblCheckingStatus.Text = "Label1"
         ' 
         ' Search
         ' 
@@ -2020,4 +2031,5 @@ Partial Class Search
     Friend WithEvents Button5 As Button
     Friend WithEvents txtcountygeoall As TextBox
     Friend WithEvents lblstatus As Label
+    Friend WithEvents lblCheckingStatus As Label
 End Class
