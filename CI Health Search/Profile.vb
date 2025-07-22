@@ -36,11 +36,33 @@ Public Class Profile
     Private connectionString As String = "Data Source=cihg-sql1.database.windows.net;Initial Catalog=CIHData;User ID=cihgadmin;Password=P!bxbFrHw4-jCvU*;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
     Public strCMSnum As String
 
+    ' Helper to get hospital name from any context or DataRow
+    Private Function GetHospitalName(row As DataRow) As String
+        If row.Table.Columns.Contains("ORGANIZATION NAME") Then
+            Return row("ORGANIZATION NAME").ToString()
+        ElseIf row.Table.Columns.Contains("organization_name") Then
+            Return row("organization_name").ToString()
+        ElseIf row.Table.Columns.Contains("Facility Name") Then
+            Return row("Facility Name").ToString()
+        ElseIf row.Table.Columns.Contains("Hospital Name") Then
+            Return row("Hospital Name").ToString()
+        End If
+        Return ""
+    End Function
+
+
+
+    Private Function GetHospitalNameFromContext(ctx As HospitalContext) As String
+        If Not String.IsNullOrWhiteSpace(ctx.Name) Then
+            Return ctx.Name
+        End If
+        Return "N/A"
+    End Function
+
     Public Async Sub ShowProfile(foundHospital As HospitalContext)
-        ' Always show the basic info from the context first
-        lblNameAddressResult.Text = If(Not String.IsNullOrWhiteSpace(foundHospital.Name), foundHospital.Name, "N/A")
+        ' Show the basic info from the context first
+        lblNameAddressResult.Text = GetHospitalNameFromContext(foundHospital)
         lbladdy.Text = If(Not String.IsNullOrWhiteSpace(foundHospital.Address), foundHospital.Address, "N/A")
-        ' lblCityResult.Text = If(Not String.IsNullOrWhiteSpace(foundHospital.City), foundHospital.City, "N/A")
         lblZipCodeResult.Text = If(Not String.IsNullOrWhiteSpace(foundHospital.Zip), foundHospital.Zip, "N/A")
         lblCountyFipsResult.Text = If(Not String.IsNullOrWhiteSpace(foundHospital.County), foundHospital.County, "N/A")
         lblCmsCertNumProfileResult.Text = If(Not String.IsNullOrWhiteSpace(foundHospital.CMSNum), foundHospital.CMSNum, "N/A")
@@ -53,14 +75,13 @@ Public Class Profile
         lblCmsUrbRurDesigResult.Text = If(Not String.IsNullOrWhiteSpace(foundHospital.RuralOUrban), foundHospital.RuralOUrban, "N/A")
         lblCbsaResult.Text = If(Not String.IsNullOrWhiteSpace(foundHospital.CBSAnum), foundHospital.CBSAnum, "N/A")
         lblPhoneNumResult.Text = If(Not String.IsNullOrWhiteSpace(foundHospital.Phone), foundHospital.Phone, "N/A")
-        ' Add more label assignments as needed
 
         ' If TN/TX, supplement with SQL data
         Dim useSql As Boolean = (foundHospital.State = "TN" Or foundHospital.State = "TX")
         If useSql Then
             Dim queryProfile As String = If(foundHospital.State = "TN",
-            "SELECT * FROM tn.AdminCon WHERE LicenseNum = @LicenseNum",
-            "SELECT * FROM tx.Utilization WHERE id = @id")
+                "SELECT * FROM tn.AdminCon WHERE LicenseNum = @LicenseNum",
+                "SELECT * FROM tx.Utilization WHERE id = @id")
             Using conn As New SqlConnection(connectionString)
                 Using cmd As New SqlCommand(queryProfile, conn)
                     If foundHospital.State = "TN" Then
@@ -86,7 +107,7 @@ Public Class Profile
         Await ShowApiProfileAsync(foundHospital)
 
         ' Fetch and display NPI from NPPES API (by NPI if available, else by name/state)
-        Dim npiData As JObject = Await FetchNpiDataAsync(foundHospital.NPI, foundHospital.Name, foundHospital.State)
+        Dim npiData As JObject = Await FetchNpiDataAsync(foundHospital.NPI, GetHospitalNameFromContext(foundHospital), foundHospital.State)
         If npiData IsNot Nothing Then
             lblNpiResult.Text = npiData("number")?.ToString()
             foundHospital.NPI = npiData("number")?.ToString()
@@ -130,7 +151,10 @@ Public Class Profile
             If lblCountyFipsResult.Text.Equals("N/A") Then lblCountyFipsResult.Text = If(provider("County") IsNot Nothing, provider("County").ToString(), "N/A")
 
             lblCmsCertNumProfileResult.Text = foundHosp.CMSNum
-            lblNameAddressResult.Text = foundHosp.Name
+            lblNameAddressResult.Text = If(provider("ORGANIZATION NAME") IsNot Nothing, provider("ORGANIZATION NAME").ToString(),
+                If(provider("organization_name") IsNot Nothing, provider("organization_name").ToString(),
+                If(provider("Facility Name") IsNot Nothing, provider("Facility Name").ToString(),
+                If(provider("Hospital Name") IsNot Nothing, provider("Hospital Name").ToString(), foundHosp.Name))))
             lbladdy.Text = foundHosp.Address
             lblCbsaResult.Text = foundHosp.CBSAnum
             lblGeneralMedSurgBedsResult.Text = foundHosp.NumOfBeds.ToString()
@@ -267,6 +291,5 @@ Public Class Profile
     End Sub
 
     Private Sub lblTotalDischargesResult_Click(sender As Object, e As EventArgs) Handles lblTotalDischargesResult.Click
-
     End Sub
 End Class

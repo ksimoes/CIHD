@@ -87,36 +87,30 @@ Public Class Search
         Return cleaned.Trim()
     End Function
 
-    ' This function uses the same logic as your profile NPI lookup
-    Private Async Function LookupNpiForCmsRow(cmsRow As DataRow) As Task(Of String)
-        If cmsRow Is Nothing Then Return Nothing
-
-        Dim name As String = cmsRow("Facility Name")?.ToString()
-        Dim city As String = cmsRow("City")?.ToString()
-        Dim state As String = cmsRow("State")?.ToString()
-
-        Dim apiUrl As String = $"https://npiregistry.cms.hhs.gov/api/?version=2.1&organization_name={Uri.EscapeDataString(name)}&city={Uri.EscapeDataString(city)}&state={Uri.EscapeDataString(state)}"
+    ' --- Direct NPI Search using new CMS API dataset ---
+    Private Async Function SearchByNpiDirectAsync(npi As String) As Task(Of DataTable)
+        Dim apiUrl As String = $"https://data.cms.gov/data-api/v1/dataset/4bcae866-3411-439a-b762-90a6187c194b/data?filter[npi]={Uri.EscapeDataString(npi)}&size=1"
         Using client As New HttpClient()
             Dim response = Await client.GetAsync(apiUrl)
             If response.IsSuccessStatusCode Then
                 Dim json = Await response.Content.ReadAsStringAsync()
-                Dim obj = JObject.Parse(json)
-                If obj("results") IsNot Nothing AndAlso obj("results").HasValues Then
-                    Return obj("results")(0)("number")?.ToString()
+                Dim data = JArray.Parse(json)
+                If data.Count > 0 Then
+                    Dim dt As New DataTable()
+                    For Each col In data(0).ToObject(Of JObject)().Properties()
+                        dt.Columns.Add(col.Name)
+                    Next
+                    ' Only add the first row (NPI is unique)
+                    Dim item = data(0)
+                    Dim row = dt.NewRow()
+                    For Each col In dt.Columns
+                        row(col.ToString()) = item(col.ToString())
+                    Next
+                    dt.Rows.Add(row)
+                    Return dt
                 End If
             End If
         End Using
-        Return Nothing
-    End Function
-
-    ' This function finds the CMS row whose NPI matches the searched NPI
-    Private Async Function FindCmsRowByNpiAsync(cmsDt As DataTable, searchedNpi As String) As Task(Of DataRow)
-        For Each row As DataRow In cmsDt.Rows
-            Dim npi As String = Await LookupNpiForCmsRow(row)
-            If npi = searchedNpi Then
-                Return row
-            End If
-        Next
         Return Nothing
     End Function
 
@@ -181,101 +175,27 @@ Public Class Search
         lblstatus.Visible = False
     End Sub
 
-    Private Async Function FetchNpiDataAsync(npi As String) As Task(Of JObject)
-        Dim apiUrl As String = $"https://npiregistry.cms.hhs.gov/api/?version=2.1&number={Uri.EscapeDataString(npi)}"
-        Using client As New HttpClient()
-            Dim response = Await client.GetAsync(apiUrl)
-            If response.IsSuccessStatusCode Then
-                Dim json = Await response.Content.ReadAsStringAsync()
-                Dim obj = JObject.Parse(json)
-                If obj("results") IsNot Nothing AndAlso obj("results").HasValues Then
-                    Return obj("results")(0)
-                End If
-            End If
-        End Using
-        Return Nothing
-    End Function
-
     Private Async Function SearchByApiAsync(selectedState As String) As Task
-        ' If NPI is entered, use profile-accurate NPI-to-CMS matching (optimized)
+        ' --- Fast NPI search using new CMS API dataset ---
         If Not String.IsNullOrWhiteSpace(txtNpiAll.Text) Then
-            Dim npiData = Await FetchNpiDataAsync(txtNpiAll.Text.Trim())
-            If npiData IsNot Nothing Then
-                Dim address = npiData("addresses")?.First
-                Dim npiName = npiData("basic")?("organization_name")?.ToString()
-                Dim npiCity = address?("city")?.ToString()
-                Dim npiState = address?("state")?.ToString()
+            lblCheckingStatus.Text = "Searching by NPI..."
+            lblCheckingStatus.Visible = True
+            lblCheckingStatus.Refresh()
 
-                ' Fetch CMS data for the same city/state (narrow search)
-                Dim cmsApiUrl As String = "https://data.cms.gov/data-api/v1/dataset/8015f175-35cc-4cab-a664-b7c87d91a027/data?size=1000"
-                If Not String.IsNullOrEmpty(npiState) Then cmsApiUrl &= "&filter[State Code]=" & Uri.EscapeDataString(npiState)
-                If Not String.IsNullOrEmpty(npiCity) Then cmsApiUrl &= "&filter[City]=" & Uri.EscapeDataString(npiCity)
-                Dim cmsResponse = Await (New HttpClient()).GetAsync(cmsApiUrl)
-                If cmsResponse.IsSuccessStatusCode Then
-                    Dim cmsJson = Await cmsResponse.Content.ReadAsStringAsync()
-                    Dim cmsData = JArray.Parse(cmsJson)
-                    If cmsData.Count > 0 Then
-                        Dim cmsDt As New DataTable()
-                        For Each col In cmsData(0).ToObject(Of JObject)().Properties()
-                            cmsDt.Columns.Add(col.Name)
-                        Next
-                        For Each item In cmsData
-                            Dim row = cmsDt.NewRow()
-                            For Each col In cmsDt.Columns
-                                row(col.ToString()) = item(col.ToString())
-                            Next
-                            cmsDt.Rows.Add(row)
-                        Next
+            Dim dt = Await SearchByNpiDirectAsync(txtNpiAll.Text.Trim())
+            lblCheckingStatus.Text = ""
+            lblCheckingStatus.Visible = False
 
-                        ' Filter CMS rows by name similarity (at least 1 word overlap)
-                        Dim normNpiName = NormalizeName(npiName)
-                        Dim npiWords = normNpiName.Split(" "c).Where(Function(w) w.Length > 2).ToList()
-                        Dim likelyRows = cmsDt.AsEnumerable().Where(Function(r)
-                                                                        Dim facilityName = NormalizeName(r.Field(Of String)("Facility Name"))
-                                                                        Dim facilityWords = facilityName.Split(" "c).Where(Function(w) w.Length > 2).ToList()
-                                                                        Return npiWords.Intersect(facilityWords).Count() >= 1
-                                                                    End Function).ToList()
-
-                        ' Only check these likely matches
-                        Dim total = likelyRows.Count
-                        Dim idx = 1
-                        For Each row In likelyRows
-                            Try
-                                lblCheckingStatus.Text = $"Checking {idx} of {total}: {row("Facility Name")}"
-                                lblCheckingStatus.Visible = True
-                                lblCheckingStatus.Refresh()
-                                idx += 1
-
-                                Dim npi As String = Await LookupNpiForCmsRow(row)
-                                Debug.WriteLine($"Checking CMS: {row("Facility Name")} | NPI found: {npi}")
-                                If npi = txtNpiAll.Text.Trim() Then
-                                    lblCheckingStatus.Text = ""
-                                    lblCheckingStatus.Visible = False
-                                    Dim matchedDt = cmsDt.Clone()
-                                    matchedDt.ImportRow(row)
-                                    Results.SetResults(matchedDt)
-                                    Results.SelectedState = selectedState
-                                    Hide()
-                                    Results.Show()
-                                    lblstatus.Text = ""
-                                    lblstatus.Visible = False
-                                    Return
-                                End If
-                            Catch ex As Exception
-                                Debug.WriteLine("Error checking CMS row: " & ex.ToString())
-                            End Try
-                        Next
-
-                        lblCheckingStatus.Text = ""
-                        lblCheckingStatus.Visible = False
-                    End If
-                End If
+            If dt IsNot Nothing AndAlso dt.Rows.Count > 0 Then
+                Results.SetResults(dt)
+                Results.SelectedState = selectedState
+                Hide()
+                Results.Show()
+                Return
+            Else
+                MessageBox.Show("No results found for your NPI search.")
+                Return
             End If
-
-            MessageBox.Show("No results found for your search.")
-            lblstatus.Text = ""
-            lblstatus.Visible = False
-            Return
         End If
 
         ' --- Normal CMS search if NPI is not entered ---
@@ -298,7 +218,6 @@ Public Class Search
                 filters.Add("filter[CCN Facility Type]=" & Uri.EscapeDataString(acronym))
             End If
         End If
-        If Not String.IsNullOrEmpty(txtHospitalNameAll.Text) Then filters.Add("filter[Hospital Name]=" & Uri.EscapeDataString(txtHospitalNameAll.Text.Trim()))
         If cbRUAll.SelectedItem IsNot Nothing AndAlso Not String.IsNullOrEmpty(cbRUAll.SelectedItem.ToString()) Then
             filters.Add("filter[Rural Versus Urban]=" & Uri.EscapeDataString(cbRUAll.SelectedItem.ToString()))
         End If
@@ -331,6 +250,27 @@ Public Class Search
                         dt.Rows.Add(row)
                     Next
 
+                    ' --- In-memory hospital name filtering (partial/case-insensitive) ---
+                    If Not String.IsNullOrEmpty(txtHospitalNameAll.Text) Then
+                        Dim searchName = txtHospitalNameAll.Text.Trim().ToLower()
+                        Dim nameCol As String = ""
+                        If dt.Columns.Contains("ORGANIZATION NAME") Then
+                            nameCol = "ORGANIZATION NAME"
+                        ElseIf dt.Columns.Contains("organization_name") Then
+                            nameCol = "organization_name"
+                        ElseIf dt.Columns.Contains("Facility Name") Then
+                            nameCol = "Facility Name"
+                        ElseIf dt.Columns.Contains("Hospital Name") Then
+                            nameCol = "Hospital Name"
+                        End If
+                        If nameCol <> "" Then
+                            Dim filteredRows = dt.AsEnumerable().Where(
+                                Function(r) r.Field(Of String)(nameCol).ToLower().Contains(searchName)
+                            ).ToArray()
+                            dt = If(filteredRows.Length > 0, filteredRows.CopyToDataTable(), dt.Clone())
+                        End If
+                    End If
+
                     ' --- Client-side numeric filtering for Total Patient Revenue ---
                     If (Not String.IsNullOrEmpty(txtMinTotPatRevAll.Text) OrElse Not String.IsNullOrEmpty(txtMaxTotPatRevAll.Text)) AndAlso dt.Columns.Contains("Total Patient Revenue") Then
                         Dim minVal As Decimal = 0
@@ -338,15 +278,15 @@ Public Class Search
                         If Not String.IsNullOrEmpty(txtMinTotPatRevAll.Text) Then Decimal.TryParse(txtMinTotPatRevAll.Text, minVal)
                         If Not String.IsNullOrEmpty(txtMaxTotPatRevAll.Text) Then Decimal.TryParse(txtMaxTotPatRevAll.Text, maxVal)
                         Dim filteredRows = dt.AsEnumerable().Where(
-                        Function(r)
-                            Dim val As Decimal = 0
-                            Dim strVal = r.Field(Of String)("Total Patient Revenue")
-                            If String.IsNullOrWhiteSpace(strVal) OrElse Not Decimal.TryParse(strVal.Replace("$", "").Replace(",", ""), val) Then
-                                Return False
-                            End If
-                            Return val >= minVal AndAlso val <= maxVal
-                        End Function
-                    ).ToArray()
+                            Function(r)
+                                Dim val As Decimal = 0
+                                Dim strVal = r.Field(Of String)("Total Patient Revenue")
+                                If String.IsNullOrWhiteSpace(strVal) OrElse Not Decimal.TryParse(strVal.Replace("$", "").Replace(",", ""), val) Then
+                                    Return False
+                                End If
+                                Return val >= minVal AndAlso val <= maxVal
+                            End Function
+                        ).ToArray()
                         dt = If(filteredRows.Length > 0, filteredRows.CopyToDataTable(), dt.Clone())
                     End If
 
@@ -357,15 +297,15 @@ Public Class Search
                         If Not String.IsNullOrEmpty(txtMinTotalBedsAll.Text) Then Decimal.TryParse(txtMinTotalBedsAll.Text, minBeds)
                         If Not String.IsNullOrEmpty(txtMaxTotalBedsAll.Text) Then Decimal.TryParse(txtMaxTotalBedsAll.Text, maxBeds)
                         Dim filteredRows = dt.AsEnumerable().Where(
-                        Function(r)
-                            Dim val As Decimal = 0
-                            Dim strVal = r.Field(Of String)("Number of Beds")
-                            If String.IsNullOrWhiteSpace(strVal) OrElse Not Decimal.TryParse(strVal.Replace("$", "").Replace(",", ""), val) Then
-                                Return False
-                            End If
-                            Return val >= minBeds AndAlso val <= maxBeds
-                        End Function
-                    ).ToArray()
+                            Function(r)
+                                Dim val As Decimal = 0
+                                Dim strVal = r.Field(Of String)("Number of Beds")
+                                If String.IsNullOrWhiteSpace(strVal) OrElse Not Decimal.TryParse(strVal.Replace("$", "").Replace(",", ""), val) Then
+                                    Return False
+                                End If
+                                Return val >= minBeds AndAlso val <= maxBeds
+                            End Function
+                        ).ToArray()
                         dt = If(filteredRows.Length > 0, filteredRows.CopyToDataTable(), dt.Clone())
                     End If
                 End If

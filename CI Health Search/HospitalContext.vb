@@ -50,6 +50,8 @@ Public Class HospitalContext
     Public Property MarketSecurities As Decimal
     Public Property Investments As Decimal
 
+
+
     ' Add more fields as needed for new APIs or features
 
     ' Optionally, override ToString for debugging
