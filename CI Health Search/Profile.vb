@@ -228,7 +228,6 @@ Public Class Profile
             Dim response = Await client.GetAsync(apiUrl)
             If response.IsSuccessStatusCode Then
                 Dim json = Await response.Content.ReadAsStringAsync()
-                MessageBox.Show(json)
                 Dim obj = JObject.Parse(json)
                 If obj("results") IsNot Nothing AndAlso obj("results").HasValues Then
                     Return obj("results")(0)
@@ -258,8 +257,8 @@ Public Class Profile
                 If response.IsSuccessStatusCode Then
                     Dim json = Await response.Content.ReadAsStringAsync()
                     Dim obj = JObject.Parse(json)
-                    If obj("data") IsNot Nothing AndAlso obj("data").HasValues Then
-                        Dim data = obj("data")
+                    If obj("results") IsNot Nothing AndAlso obj("results").HasValues Then
+                        Dim data = obj("results")
                         Dim dt As New DataTable()
                         For Each col In data(0).ToObject(Of JObject)().Properties()
                             dt.Columns.Add(col.Name)
@@ -275,9 +274,9 @@ Public Class Profile
                         ' Show only key columns
                         For Each col As DataGridViewColumn In dgvProviders.Columns
                             col.Visible = (col.Name = "npi" OrElse
-                                           col.Name = "provider_first_name" OrElse
-                                           col.Name = "provider_last_name" OrElse
-                                           col.Name = "facility_affiliations_certification_number")
+                                   col.Name = "provider_first_name" OrElse
+                                   col.Name = "provider_last_name" OrElse
+                                   col.Name = "facility_affiliations_certification_number")
                         Next
                     Else
                         dgvProviders.DataSource = Nothing
