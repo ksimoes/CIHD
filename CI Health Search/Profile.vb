@@ -270,13 +270,72 @@ Public Class Profile
                             Next
                             dt.Rows.Add(row)
                         Next
+
+                        ' --- New: Fetch procedure_category for each NPI ---
+                        ' 1. Collect all NPIs from the DataTable
+                        Dim npiList As New List(Of String)
+                        For Each row As DataRow In dt.Rows
+                            Dim npi As String = row("npi").ToString()
+                            If Not String.IsNullOrWhiteSpace(npi) Then npiList.Add(npi)
+                        Next
+
+                        ' 2. Fetch procedure categories from the new API
+                        Dim npiToProcedureCategory As New Dictionary(Of String, String)
+                        If npiList.Count > 0 Then
+                            ' Build the API POST body to filter by NPI
+                            Dim npiConditions As New List(Of String)
+                            For Each npi In npiList.Distinct()
+                                npiConditions.Add("{""property"":""npi"",""value"":""" & npi & """,""operator"":""=""}")
+                            Next
+                            Dim procPostBody As String = "{
+                            ""conditions"": [
+                                {""or"": [" & String.Join(",", npiConditions) & "]}
+                            ],
+                            ""limit"": 1000
+                        }"
+
+                            Dim procApiUrl As String = "https://data.cms.gov/provider-data/api/1/datastore/query/n0yb-util/0"
+                            Using procClient As New HttpClient()
+                                Dim procContent = New StringContent(procPostBody, System.Text.Encoding.UTF8, "application/json")
+                                Dim procResponse = Await procClient.PostAsync(procApiUrl, procContent)
+                                If procResponse.IsSuccessStatusCode Then
+                                    Dim procJson = Await procResponse.Content.ReadAsStringAsync()
+                                    Dim procObj = JObject.Parse(procJson)
+                                    If procObj("results") IsNot Nothing AndAlso procObj("results").HasValues Then
+                                        For Each item In procObj("results")
+                                            Dim npiVal As String = item("npi")?.ToString()
+                                            Dim procCat As String = item("procedure_category")?.ToString()
+                                            If Not String.IsNullOrWhiteSpace(npiVal) AndAlso Not npiToProcedureCategory.ContainsKey(npiVal) Then
+                                                npiToProcedureCategory(npiVal) = procCat
+                                            End If
+                                        Next
+                                    End If
+                                End If
+                            End Using
+                        End If
+
+                        ' 3. Add the column and fill it
+                        If Not dt.Columns.Contains("procedure_category") Then
+                            dt.Columns.Add("procedure_category")
+                        End If
+
+                        For Each row As DataRow In dt.Rows
+                            Dim npi As String = row("npi").ToString()
+                            If npiToProcedureCategory.ContainsKey(npi) Then
+                                row("procedure_category") = npiToProcedureCategory(npi)
+                            Else
+                                row("procedure_category") = ""
+                            End If
+                        Next
+
+                        ' 4. Bind to DataGridView and set column visibility
                         dgvProviders.DataSource = dt
-                        ' Show only key columns
                         For Each col As DataGridViewColumn In dgvProviders.Columns
                             col.Visible = (col.Name = "npi" OrElse
-                                   col.Name = "provider_first_name" OrElse
-                                   col.Name = "provider_last_name" OrElse
-                                   col.Name = "facility_affiliations_certification_number")
+                                       col.Name = "provider_first_name" OrElse
+                                       col.Name = "provider_last_name" OrElse
+                                       col.Name = "facility_affiliations_certification_number" OrElse
+                                       col.Name = "procedure_category")
                         Next
                     Else
                         dgvProviders.DataSource = Nothing
