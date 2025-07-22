@@ -116,7 +116,6 @@ Public Class Profile
                     conn.Open()
                     Using reader = cmd.ExecuteReader()
                         If reader.Read() Then
-                            ' Do NOT overwrite lblNameAddressResult or lbladdy
                             lblPhoneNumResult.Text = SafeGet(reader, "Phone")
                             lblCeoPresResult.Text = SafeGet(reader, "Admin")
                             lblCountyFipsResult.Text = SafeGet(reader, "County")
@@ -138,6 +137,9 @@ Public Class Profile
         ElseIf String.IsNullOrWhiteSpace(lblNpiResult.Text) OrElse lblNpiResult.Text = "N/A" Then
             lblNpiResult.Text = "NPI not found"
         End If
+
+        ' Show affiliated providers for any hospital using its CCN
+        Await LoadAffiliatedProvidersAsync(GetBestCmsNum(foundHospital))
     End Sub
 
     ' Helper function to safely get column value by name
@@ -175,7 +177,6 @@ Public Class Profile
             If lblCountyFipsResult.Text.Equals("N/A") Then lblCountyFipsResult.Text = If(provider("County") IsNot Nothing, provider("County").ToString(), "N/A")
 
             lblCmsCertNumProfileResult.Text = foundHosp.CMSNum
-            ' Do NOT overwrite lblNameAddressResult or lbladdy here
             lblCbsaResult.Text = foundHosp.CBSAnum
             lblGeneralMedSurgBedsResult.Text = foundHosp.NumOfBeds.ToString()
             lblTotalEmployeesResult.Text = foundHosp.NumOfEmployees
@@ -196,7 +197,6 @@ Public Class Profile
             lblTotalPatientDaysResult.Text = If(provider("Hospital Total Days (V + XVIII + XIX + Unknown) For Adults & Peds ") IsNot Nothing, provider("Hospital Total Days (V + XVIII + XIX + Unknown) For Adults & Peds ").ToString(), "N/A")
         Else
             lblCmsCertNumProfileResult.Text = "No result"
-            ' Do NOT overwrite lblNameAddressResult or lbladdy here
             lblCountyFipsResult.Text = "No result"
             lblCbsaResult.Text = "No result"
             lblGeneralMedSurgBedsResult.Text = "No result"
@@ -228,6 +228,7 @@ Public Class Profile
             Dim response = Await client.GetAsync(apiUrl)
             If response.IsSuccessStatusCode Then
                 Dim json = Await response.Content.ReadAsStringAsync()
+                MessageBox.Show(json)
                 Dim obj = JObject.Parse(json)
                 If obj("results") IsNot Nothing AndAlso obj("results").HasValues Then
                     Return obj("results")(0)
@@ -235,6 +236,69 @@ Public Class Profile
             End If
         End Using
         Return Nothing
+    End Function
+
+    Private Async Function LoadAffiliatedProvidersAsync(ccn As String) As Task
+        Dim apiUrl As String = "https://data.cms.gov/provider-data/api/1/datastore/query/27ea-46a8/0"
+        Dim postBody As String = "{
+        ""conditions"": [
+            {
+                ""property"": ""facility_affiliations_certification_number"",
+                ""value"": """ & ccn & """,
+                ""operator"": ""=""
+            }
+        ],
+        ""limit"": 1000
+    }"
+
+        Try
+            Using client As New HttpClient()
+                Dim content = New StringContent(postBody, System.Text.Encoding.UTF8, "application/json")
+                Dim response = Await client.PostAsync(apiUrl, content)
+                If response.IsSuccessStatusCode Then
+                    Dim json = Await response.Content.ReadAsStringAsync()
+                    Dim obj = JObject.Parse(json)
+                    If obj("data") IsNot Nothing AndAlso obj("data").HasValues Then
+                        Dim data = obj("data")
+                        Dim dt As New DataTable()
+                        For Each col In data(0).ToObject(Of JObject)().Properties()
+                            dt.Columns.Add(col.Name)
+                        Next
+                        For Each item In data
+                            Dim row = dt.NewRow()
+                            For Each col In dt.Columns
+                                row(col.ToString()) = item(col.ToString())
+                            Next
+                            dt.Rows.Add(row)
+                        Next
+                        dgvProviders.DataSource = dt
+                        ' Show only key columns
+                        For Each col As DataGridViewColumn In dgvProviders.Columns
+                            col.Visible = (col.Name = "npi" OrElse
+                                           col.Name = "provider_first_name" OrElse
+                                           col.Name = "provider_last_name" OrElse
+                                           col.Name = "facility_affiliations_certification_number")
+                        Next
+                    Else
+                        dgvProviders.DataSource = Nothing
+                        dgvProviders.Columns.Clear()
+                        dgvProviders.Rows.Clear()
+                        dgvProviders.Refresh()
+                    End If
+                Else
+                    dgvProviders.DataSource = Nothing
+                    dgvProviders.Columns.Clear()
+                    dgvProviders.Rows.Clear()
+                    dgvProviders.Refresh()
+                End If
+            End Using
+        Catch ex As Exception
+            dgvProviders.DataSource = Nothing
+            dgvProviders.Columns.Clear()
+            dgvProviders.Rows.Clear()
+            dgvProviders.Refresh()
+            MessageBox.Show("Provider API error: " & ex.Message)
+        End Try
     End Function
 
     Public Function GetAPIArray(strAPIurl As String) As JArray

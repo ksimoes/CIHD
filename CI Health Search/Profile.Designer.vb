@@ -132,6 +132,7 @@ Partial Class Profile
         Column1 = New DataGridViewTextBoxColumn()
         Column2 = New DataGridViewTextBoxColumn()
         Column3 = New DataGridViewTextBoxColumn()
+        dgvProviders = New DataGridView()
         Panel1.SuspendLayout()
         GroupBox2.SuspendLayout()
         GroupBox1.SuspendLayout()
@@ -139,6 +140,7 @@ Partial Class Profile
         CType(DataGridView3, ComponentModel.ISupportInitialize).BeginInit()
         CType(DataGridView2, ComponentModel.ISupportInitialize).BeginInit()
         CType(DataGridView1, ComponentModel.ISupportInitialize).BeginInit()
+        CType(dgvProviders, ComponentModel.ISupportInitialize).BeginInit()
         SuspendLayout()
         ' 
         ' lblZipCodeResult
@@ -932,6 +934,7 @@ Partial Class Profile
         ' Panel1
         ' 
         Panel1.AutoScroll = True
+        Panel1.Controls.Add(dgvProviders)
         Panel1.Controls.Add(GroupBox2)
         Panel1.Controls.Add(GroupBox1)
         Panel1.Controls.Add(DataGridView4)
@@ -951,7 +954,7 @@ Partial Class Profile
         Panel1.Controls.Add(btnDepartmentProfile)
         Panel1.Location = New Point(0, 0)
         Panel1.Name = "Panel1"
-        Panel1.Size = New Size(1065, 2000)
+        Panel1.Size = New Size(1439, 2000)
         Panel1.TabIndex = 81
         ' 
         ' GroupBox2
@@ -1260,13 +1263,21 @@ Partial Class Profile
         Column3.HeaderText = "Associated NPI's"
         Column3.Name = "Column3"
         ' 
+        ' dgvProviders
+        ' 
+        dgvProviders.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        dgvProviders.Location = New Point(685, 145)
+        dgvProviders.Name = "dgvProviders"
+        dgvProviders.Size = New Size(742, 597)
+        dgvProviders.TabIndex = 93
+        ' 
         ' Profile
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         AutoScroll = True
         BackColor = SystemColors.HighlightText
-        ClientSize = New Size(1065, 1017)
+        ClientSize = New Size(1491, 1017)
         Controls.Add(Panel1)
         MaximumSize = New Size(100000, 100000)
         Name = "Profile"
@@ -1282,6 +1293,7 @@ Partial Class Profile
         CType(DataGridView3, ComponentModel.ISupportInitialize).EndInit()
         CType(DataGridView2, ComponentModel.ISupportInitialize).EndInit()
         CType(DataGridView1, ComponentModel.ISupportInitialize).EndInit()
+        CType(dgvProviders, ComponentModel.ISupportInitialize).EndInit()
         ResumeLayout(False)
     End Sub
     Friend WithEvents lblPhoneNum As Label
@@ -1396,6 +1408,7 @@ Partial Class Profile
     Friend WithEvents lblNpiResult As Label
     Friend WithEvents Label9 As Label
     Friend WithEvents GroupBox1 As BoldGroupBox
+    Friend WithEvents dgvProviders As DataGridView
     ' Friend WithEvents GroupBox1 As BoldGroupBox
 
 End Class
