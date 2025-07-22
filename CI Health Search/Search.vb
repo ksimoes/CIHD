@@ -114,6 +114,36 @@ Public Class Search
         Return Nothing
     End Function
 
+    ' --- Fetch FQHCs from the new API ---
+    Private Async Function GetFqhcsAsync() As Task(Of DataTable)
+        Dim apiUrl As String = "https://data.cms.gov/data-api/v1/dataset/8ba0f9b4-9493-4aa0-9f82-44ea9468d1b5/data?size=1000"
+        Using client As New HttpClient()
+            Dim response = Await client.GetAsync(apiUrl)
+            If response.IsSuccessStatusCode Then
+                Dim json = Await response.Content.ReadAsStringAsync()
+                Dim data = JArray.Parse(json)
+                If data.Count > 0 Then
+                    Dim dt As New DataTable()
+                    For Each col In data(0).ToObject(Of JObject)().Properties()
+                        dt.Columns.Add(col.Name)
+                    Next
+                    For Each item In data
+                        ' Only add FQHCs (PRVDR_CTGRY_CD = "21")
+                        If item("PRVDR_CTGRY_CD") IsNot Nothing AndAlso item("PRVDR_CTGRY_CD").ToString() = "21" Then
+                            Dim row = dt.NewRow()
+                            For Each col In dt.Columns
+                                row(col.ToString()) = item(col.ToString())
+                            Next
+                            dt.Rows.Add(row)
+                        End If
+                    Next
+                    Return dt
+                End If
+            End If
+        End Using
+        Return Nothing
+    End Function
+
     Private Async Sub btnSearchAll_Click(sender As Object, e As EventArgs) Handles btnSearchAll.Click
         lblstatus.Text = "Searching..."
         lblstatus.Visible = True
@@ -124,6 +154,25 @@ Public Class Search
             Dim selectedState As String = ""
             If lbStateAll.SelectedItem IsNot Nothing Then
                 selectedState = lbStateAll.SelectedItem.ToString().Trim()
+            End If
+
+            ' --- FQHC Search: Use new API if selected ---
+            If lbTypeFacilityCharAll.SelectedItem IsNot Nothing AndAlso lbTypeFacilityCharAll.SelectedItem.ToString() = "Federally Qualified Health Centers" Then
+                Dim fqhcDt = Await GetFqhcsAsync()
+                If fqhcDt IsNot Nothing AndAlso fqhcDt.Rows.Count > 0 Then
+                    Results.SetResults(fqhcDt)
+                    Results.SelectedState = selectedState
+                    Hide()
+                    Results.Show()
+                    lblstatus.Text = ""
+                    lblstatus.Visible = False
+                    Return
+                Else
+                    MessageBox.Show("No FQHCs found.")
+                    lblstatus.Text = ""
+                    lblstatus.Visible = False
+                    Return
+                End If
             End If
 
             If useSQL(selectedState) Then

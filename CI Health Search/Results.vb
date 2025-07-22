@@ -13,9 +13,10 @@
         CheckedListBox1.Items.Clear()
         ' Determine which column to use for display
         Dim displayCol As String = ""
-        If dt.Columns.Contains("ORGANIZATION NAME") Then
+        If dt.Columns.Contains("FAC_NAME") Then
+            displayCol = "FAC_NAME"
+        ElseIf dt.Columns.Contains("ORGANIZATION NAME") Then
             displayCol = "ORGANIZATION NAME"
-
         ElseIf dt.Columns.Contains("facility_name") Then
             displayCol = "facility_name"
         ElseIf dt.Columns.Contains("provider_name") Then
@@ -70,30 +71,42 @@
         Dim selectedName As String = CheckedListBox1.SelectedItem.ToString().Trim()
         Dim selectedRow As DataRow = Nothing
 
-        ' Try to match on the most likely column names
-        If resultsTable.Columns.Contains("ORGANIZATION NAME") Then
-            selectedRow = resultsTable.Select($"[ORGANIZATION NAME] = '{selectedName.Replace("'", "''")}'").FirstOrDefault()
-        ElseIf resultsTable.Columns.Contains("organization_name") Then
-            selectedRow = resultsTable.Select($"[organization_name] = '{selectedName.Replace("'", "''")}'").FirstOrDefault()
-        ElseIf resultsTable.Columns.Contains("Facility Name") Then
-            selectedRow = resultsTable.Select($"[Facility Name] = '{selectedName.Replace("'", "''")}'").FirstOrDefault()
+        ' Use the same display column logic as SetResults
+        Dim displayCol As String = ""
+        If resultsTable.Columns.Contains("FAC_NAME") Then
+            displayCol = "FAC_NAME"
+        ElseIf resultsTable.Columns.Contains("ORGANIZATION NAME") Then
+            displayCol = "ORGANIZATION NAME"
+        ElseIf resultsTable.Columns.Contains("facility_name") Then
+            displayCol = "facility_name"
+        ElseIf resultsTable.Columns.Contains("provider_name") Then
+            displayCol = "provider_name"
+        ElseIf resultsTable.Columns.Contains("Rndrng_Prvdr_Org_Name") Then
+            displayCol = "Rndrng_Prvdr_Org_Name"
         ElseIf resultsTable.Columns.Contains("Hospital Name") Then
-            selectedRow = resultsTable.Select($"[Hospital Name] = '{selectedName.Replace("'", "''")}'").FirstOrDefault()
+            displayCol = "Hospital Name"
+        ElseIf resultsTable.Columns.Contains("Facility Name") Then
+            displayCol = "Facility Name"
+        ElseIf resultsTable.Columns.Count > 0 Then
+            displayCol = resultsTable.Columns(0).ColumnName ' fallback
         End If
+
+        ' Find the selected row based on the display column
+        selectedRow = resultsTable.Select("[" & displayCol & "] = '" & selectedName.Replace("'", "''") & "'").FirstOrDefault()
 
         If selectedRow IsNot Nothing Then
             Dim hosp As New HospitalContext()
 
             ' Core Identifiers
             hosp.HospitalId = If(resultsTable.Columns.Contains("LicenseNum"), SafeInt(selectedRow("LicenseNum")), 0)
-            hosp.CMSNum = SafeStr(selectedRow, "Provider CCN", "CMSNum")
+            hosp.CMSNum = SafeStr(selectedRow, "Provider CCN", "CMSNum", "PRVDR_NUM")
             hosp.NPI = SafeStr(selectedRow, "NPI", "npi")
-            hosp.Name = SafeStr(selectedRow, "ORGANIZATION NAME", "organization_name", "Facility Name", "Hospital Name", "provider_name")
+            hosp.Name = SafeStr(selectedRow, "FAC_NAME", "PRVDR_NM", "PRVDR_NAME", "ORGANIZATION NAME", "organization_name", "Facility Name", "Hospital Name", "provider_name")
 
             ' Location & Contact
-            hosp.Address = SafeStr(selectedRow, "Address", "Facility Address")
-            hosp.City = SafeStr(selectedRow, "City")
-            hosp.Zip = SafeStr(selectedRow, "Zip Code", "ZIP")
+            hosp.Address = SafeStr(selectedRow, "ADDR_LN_1_TXT", "ADDRESS LINE 1", "address_line_1", "Address", "Facility Address")
+            hosp.City = SafeStr(selectedRow, "CITY_NM", "City")
+            hosp.Zip = SafeStr(selectedRow, "ZIP_CD", "Zip Code", "ZIP")
             hosp.County = SafeStr(selectedRow, "County Name", "County")
             hosp.Phone = SafeStr(selectedRow, "Phone", "Telephone Number")
             hosp.Website = SafeStr(selectedRow, "Website")
@@ -132,7 +145,7 @@
             hosp.Investments = SafeDec(selectedRow, "Investments")
 
             Results.SelectedHospital = hosp
-
+            hosp.LastDataRow = selectedRow
         End If
     End Sub
 

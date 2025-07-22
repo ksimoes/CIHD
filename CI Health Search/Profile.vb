@@ -37,20 +37,44 @@ Public Class Profile
     Public strCMSnum As String
 
     ' Helper to get hospital name from any context or DataRow
-    Private Function GetHospitalName(row As DataRow) As String
-        If row.Table.Columns.Contains("ORGANIZATION NAME") Then
-            Return row("ORGANIZATION NAME").ToString()
-        ElseIf row.Table.Columns.Contains("organization_name") Then
-            Return row("organization_name").ToString()
-        ElseIf row.Table.Columns.Contains("Facility Name") Then
-            Return row("Facility Name").ToString()
-        ElseIf row.Table.Columns.Contains("Hospital Name") Then
-            Return row("Hospital Name").ToString()
+    Private Function GetBestFacilityName(ctx As HospitalContext) As String
+        If ctx.LastDataRow IsNot Nothing Then
+            Dim row = ctx.LastDataRow
+            If row.Table.Columns.Contains("FAC_NAME") Then Return row("FAC_NAME").ToString()
+            If row.Table.Columns.Contains("PRVDR_NAME") Then Return row("PRVDR_NAME").ToString()
+            If row.Table.Columns.Contains("ORGANIZATION NAME") Then Return row("ORGANIZATION NAME").ToString()
+            If row.Table.Columns.Contains("organization_name") Then Return row("organization_name").ToString()
+            If row.Table.Columns.Contains("Facility Name") Then Return row("Facility Name").ToString()
+            If row.Table.Columns.Contains("Hospital Name") Then Return row("Hospital Name").ToString()
         End If
-        Return ""
+        If Not String.IsNullOrWhiteSpace(ctx.Name) Then Return ctx.Name
+        Return "N/A"
     End Function
 
+    Private Function GetBestAddress(ctx As HospitalContext) As String
+        If ctx.LastDataRow IsNot Nothing Then
+            Dim row = ctx.LastDataRow
+            If row.Table.Columns.Contains("ST_ADR") Then Return row("ST_ADR").ToString()
+            If row.Table.Columns.Contains("ADDR_LN_1_TXT") Then Return row("ADDR_LN_1_TXT").ToString()
+            If row.Table.Columns.Contains("ADDRESS LINE 1") Then Return row("ADDRESS LINE 1").ToString()
+            If row.Table.Columns.Contains("address_line_1") Then Return row("address_line_1").ToString()
+            If row.Table.Columns.Contains("Address") Then Return row("Address").ToString()
+            If row.Table.Columns.Contains("Facility Address") Then Return row("Facility Address").ToString()
+        End If
+        If Not String.IsNullOrWhiteSpace(ctx.Address) Then Return ctx.Address
+        Return "N/A"
+    End Function
 
+    Private Function GetBestCmsNum(ctx As HospitalContext) As String
+        If ctx.LastDataRow IsNot Nothing Then
+            Dim row = ctx.LastDataRow
+            If row.Table.Columns.Contains("PRVDR_NUM") Then Return row("PRVDR_NUM").ToString()
+            If row.Table.Columns.Contains("Provider CCN") Then Return row("Provider CCN").ToString()
+            If row.Table.Columns.Contains("CMSNum") Then Return row("CMSNum").ToString()
+        End If
+        If Not String.IsNullOrWhiteSpace(ctx.CMSNum) Then Return ctx.CMSNum
+        Return "N/A"
+    End Function
 
     Private Function GetHospitalNameFromContext(ctx As HospitalContext) As String
         If Not String.IsNullOrWhiteSpace(ctx.Name) Then
@@ -61,11 +85,11 @@ Public Class Profile
 
     Public Async Sub ShowProfile(foundHospital As HospitalContext)
         ' Show the basic info from the context first
-        lblNameAddressResult.Text = GetHospitalNameFromContext(foundHospital)
-        lbladdy.Text = If(Not String.IsNullOrWhiteSpace(foundHospital.Address), foundHospital.Address, "N/A")
+        lblNameAddressResult.Text = GetBestFacilityName(foundHospital)
+        lbladdy.Text = GetBestAddress(foundHospital)
         lblZipCodeResult.Text = If(Not String.IsNullOrWhiteSpace(foundHospital.Zip), foundHospital.Zip, "N/A")
         lblCountyFipsResult.Text = If(Not String.IsNullOrWhiteSpace(foundHospital.County), foundHospital.County, "N/A")
-        lblCmsCertNumProfileResult.Text = If(Not String.IsNullOrWhiteSpace(foundHospital.CMSNum), foundHospital.CMSNum, "N/A")
+        lblCmsCertNumProfileResult.Text = GetBestCmsNum(foundHospital)
         lblNpiResult.Text = If(Not String.IsNullOrWhiteSpace(foundHospital.NPI), foundHospital.NPI, "N/A")
         lblGeneralMedSurgBedsResult.Text = If(foundHospital.NumOfBeds > 0, foundHospital.NumOfBeds.ToString(), "N/A")
         lblTotalEmployeesResult.Text = If(foundHospital.NumOfEmployees > 0, foundHospital.NumOfEmployees.ToString(), "N/A")
@@ -76,7 +100,7 @@ Public Class Profile
         lblCbsaResult.Text = If(Not String.IsNullOrWhiteSpace(foundHospital.CBSAnum), foundHospital.CBSAnum, "N/A")
         lblPhoneNumResult.Text = If(Not String.IsNullOrWhiteSpace(foundHospital.Phone), foundHospital.Phone, "N/A")
 
-        ' If TN/TX, supplement with SQL data
+        ' If TN/TX, supplement with SQL data (but do NOT overwrite name/address)
         Dim useSql As Boolean = (foundHospital.State = "TN" Or foundHospital.State = "TX")
         If useSql Then
             Dim queryProfile As String = If(foundHospital.State = "TN",
@@ -92,7 +116,7 @@ Public Class Profile
                     conn.Open()
                     Using reader = cmd.ExecuteReader()
                         If reader.Read() Then
-                            lblNameAddressResult.Text = SafeGet(reader, "Facility Name")
+                            ' Do NOT overwrite lblNameAddressResult or lbladdy
                             lblPhoneNumResult.Text = SafeGet(reader, "Phone")
                             lblCeoPresResult.Text = SafeGet(reader, "Admin")
                             lblCountyFipsResult.Text = SafeGet(reader, "County")
@@ -103,7 +127,7 @@ Public Class Profile
             End Using
         End If
 
-        ' Always supplement with API data for the most up-to-date info
+        ' Always supplement with API data for the most up-to-date info (but do NOT overwrite name/address)
         Await ShowApiProfileAsync(foundHospital)
 
         ' Fetch and display NPI from NPPES API (by NPI if available, else by name/state)
@@ -151,11 +175,7 @@ Public Class Profile
             If lblCountyFipsResult.Text.Equals("N/A") Then lblCountyFipsResult.Text = If(provider("County") IsNot Nothing, provider("County").ToString(), "N/A")
 
             lblCmsCertNumProfileResult.Text = foundHosp.CMSNum
-            lblNameAddressResult.Text = If(provider("ORGANIZATION NAME") IsNot Nothing, provider("ORGANIZATION NAME").ToString(),
-                If(provider("organization_name") IsNot Nothing, provider("organization_name").ToString(),
-                If(provider("Facility Name") IsNot Nothing, provider("Facility Name").ToString(),
-                If(provider("Hospital Name") IsNot Nothing, provider("Hospital Name").ToString(), foundHosp.Name))))
-            lbladdy.Text = foundHosp.Address
+            ' Do NOT overwrite lblNameAddressResult or lbladdy here
             lblCbsaResult.Text = foundHosp.CBSAnum
             lblGeneralMedSurgBedsResult.Text = foundHosp.NumOfBeds.ToString()
             lblTotalEmployeesResult.Text = foundHosp.NumOfEmployees
@@ -176,8 +196,7 @@ Public Class Profile
             lblTotalPatientDaysResult.Text = If(provider("Hospital Total Days (V + XVIII + XIX + Unknown) For Adults & Peds ") IsNot Nothing, provider("Hospital Total Days (V + XVIII + XIX + Unknown) For Adults & Peds ").ToString(), "N/A")
         Else
             lblCmsCertNumProfileResult.Text = "No result"
-            lblNameAddressResult.Text = "No result"
-            lbladdy.Text = "No result"
+            ' Do NOT overwrite lblNameAddressResult or lbladdy here
             lblCountyFipsResult.Text = "No result"
             lblCbsaResult.Text = "No result"
             lblGeneralMedSurgBedsResult.Text = "No result"

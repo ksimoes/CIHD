@@ -50,7 +50,7 @@ Public Class HospitalContext
     Public Property MarketSecurities As Decimal
     Public Property Investments As Decimal
 
-
+    Public Property LastDataRow As DataRow
 
     ' Add more fields as needed for new APIs or features
 
