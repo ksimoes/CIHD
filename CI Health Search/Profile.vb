@@ -271,18 +271,15 @@ Public Class Profile
                             dt.Rows.Add(row)
                         Next
 
-                        ' --- New: Fetch procedure_category for each NPI ---
-                        ' 1. Collect all NPIs from the DataTable
+                        ' --- Fetch procedure_category for each NPI ---
                         Dim npiList As New List(Of String)
                         For Each row As DataRow In dt.Rows
                             Dim npi As String = row("npi").ToString()
                             If Not String.IsNullOrWhiteSpace(npi) Then npiList.Add(npi)
                         Next
 
-                        ' 2. Fetch procedure categories from the new API
                         Dim npiToProcedureCategory As New Dictionary(Of String, String)
                         If npiList.Count > 0 Then
-                            ' Build the API POST body to filter by NPI
                             Dim npiConditions As New List(Of String)
                             For Each npi In npiList.Distinct()
                                 npiConditions.Add("{""property"":""npi"",""value"":""" & npi & """,""operator"":""=""}")
@@ -314,7 +311,6 @@ Public Class Profile
                             End Using
                         End If
 
-                        ' 3. Add the column and fill it
                         If Not dt.Columns.Contains("procedure_category") Then
                             dt.Columns.Add("procedure_category")
                         End If
@@ -328,14 +324,51 @@ Public Class Profile
                             End If
                         Next
 
-                        ' 4. Bind to DataGridView and set column visibility
+                        ' --- Fetch taxonomy description for each NPI ---
+                        If Not dt.Columns.Contains("Description") Then
+                            dt.Columns.Add("Description")
+                        End If
+
+                        For Each row As DataRow In dt.Rows
+                            Dim npi As String = row("npi").ToString()
+                            Dim taxonomyDescription As String = ""
+                            If Not String.IsNullOrWhiteSpace(npi) Then
+                                Dim npiApiUrl As String = $"https://npiregistry.cms.hhs.gov/api/?number={npi}&version=2.1"
+                                Using npiClient As New HttpClient()
+                                    Dim npiResponse = Await npiClient.GetAsync(npiApiUrl)
+                                    If npiResponse.IsSuccessStatusCode Then
+                                        Dim npiJson = Await npiResponse.Content.ReadAsStringAsync()
+                                        Dim npiObj = JObject.Parse(npiJson)
+                                        If npiObj("results") IsNot Nothing AndAlso npiObj("results").HasValues Then
+                                            Dim result = npiObj("results")(0)
+                                            If result("taxonomies") IsNot Nothing AndAlso result("taxonomies").HasValues Then
+                                                For Each taxonomy In result("taxonomies")
+                                                    If taxonomy("primary") IsNot Nothing AndAlso taxonomy("primary").ToString().ToLower() = "true" Then
+                                                        taxonomyDescription = taxonomy("desc")?.ToString()
+                                                        Exit For
+                                                    End If
+                                                Next
+                                                ' If no primary found, fallback to first taxonomy
+                                                If String.IsNullOrWhiteSpace(taxonomyDescription) Then
+                                                    taxonomyDescription = result("taxonomies")(0)("desc")?.ToString()
+                                                End If
+                                            End If
+                                        End If
+                                    End If
+                                End Using
+                            End If
+                            row("Description") = If(String.IsNullOrWhiteSpace(taxonomyDescription), "N/A", taxonomyDescription)
+                        Next
+
+                        ' --- Bind to DataGridView and set column visibility ---
                         dgvProviders.DataSource = dt
                         For Each col As DataGridViewColumn In dgvProviders.Columns
                             col.Visible = (col.Name = "npi" OrElse
                                        col.Name = "provider_first_name" OrElse
                                        col.Name = "provider_last_name" OrElse
                                        col.Name = "facility_affiliations_certification_number" OrElse
-                                       col.Name = "procedure_category")
+                                       col.Name = "procedure_category" OrElse
+                                       col.Name = "Description")
                         Next
                     Else
                         dgvProviders.DataSource = Nothing
