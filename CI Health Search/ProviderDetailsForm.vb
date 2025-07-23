@@ -26,4 +26,33 @@ Public Class ProviderDetailsForm
 
         Me.Controls.Add(dgvDetails)
     End Sub
+
+    Public Sub SetFriendlyColumnHeaders()
+        ' Map API column names to user-friendly names
+        Dim headerMap As New Dictionary(Of String, String) From {
+            {"Prscrbr_NPI", "NPI"},
+            {"Prscrbr_Last_Org_Name", "Last Name"},
+            {"Prscrbr_First_Name", "First Name"},
+            {"Prscrbr_Cred", "Credentials"},
+            {"Prscrbr_State_Abrvtn", "State"},
+            {"Prscrbr_City", "City"},
+            {"Prscrbr_Zip", "ZIP"},
+            {"Prscrbr_Type", "Provider Type"},
+            {"Prscrbr_Type_Src", "Prescriber Type"},
+            {"Brnd_Name", "Brand Name"},
+            {"Gnrc_Name", "Generic Name"},
+            {"Tot_Clms", "Total Claims"},
+            {"Tot_30day_Fills", "Total 30-Day Fills"},
+            {"Tot_Day_Suply", "Total Day Supply"},
+            {"Tot_Drug_Cst", "Total Drug Cost"}}
+
+        'Add more mappings as needed
+
+
+        For Each col As DataGridViewColumn In dgvDetails.Columns
+            If headerMap.ContainsKey(col.Name) Then
+                col.HeaderText = headerMap(col.Name)
+            End If
+        Next
+    End Sub
 End Class
