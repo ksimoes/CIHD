@@ -324,7 +324,7 @@ Public Class Profile
                             End If
                         Next
 
-                        ' --- Fetch taxonomy description for each NPI ---
+                        ' --- Fetch taxonomy description for each NPI (primary only) ---
                         If Not dt.Columns.Contains("Description") Then
                             dt.Columns.Add("Description")
                         End If
@@ -348,7 +348,6 @@ Public Class Profile
                                                         Exit For
                                                     End If
                                                 Next
-                                                ' If no primary found, fallback to first taxonomy
                                                 If String.IsNullOrWhiteSpace(taxonomyDescription) Then
                                                     taxonomyDescription = result("taxonomies")(0)("desc")?.ToString()
                                                 End If
@@ -362,6 +361,19 @@ Public Class Profile
 
                         ' --- Bind to DataGridView and set column visibility ---
                         dgvProviders.DataSource = dt
+
+                        ' Set custom column headers
+                        If dgvProviders.Columns.Contains("provider_first_name") Then
+                            dgvProviders.Columns("provider_first_name").HeaderText = "First Name"
+                        End If
+                        If dgvProviders.Columns.Contains("provider_last_name") Then
+                            dgvProviders.Columns("provider_last_name").HeaderText = "Last Name"
+                        End If
+                        If dgvProviders.Columns.Contains("Description") Then
+                            dgvProviders.Columns("Description").HeaderText = "Specialty"
+                        End If
+
+                        ' Set column visibility
                         For Each col As DataGridViewColumn In dgvProviders.Columns
                             col.Visible = (col.Name = "npi" OrElse
                                        col.Name = "provider_first_name" OrElse
@@ -370,6 +382,34 @@ Public Class Profile
                                        col.Name = "procedure_category" OrElse
                                        col.Name = "Description")
                         Next
+
+                        ' Move "Specialty" column right after "First Name" and "Last Name"
+                        Dim colOrder As New List(Of String) From {
+                        "provider_first_name",
+                        "provider_last_name",
+                        "Description", ' Specialty
+                        "npi",
+                        "facility_affiliations_certification_number",
+                        "procedure_category"
+                    }
+                        Dim displayIndex As Integer = 0
+                        For Each colName In colOrder
+                            If dgvProviders.Columns.Contains(colName) Then
+                                dgvProviders.Columns(colName).DisplayIndex = displayIndex
+                                displayIndex += 1
+                            End If
+                        Next
+
+                        ' --- Make DataGridView more visually appealing ---
+                        dgvProviders.AlternatingRowsDefaultCellStyle.BackColor = Color.LightGray
+                        dgvProviders.DefaultCellStyle.BackColor = Color.White
+                        dgvProviders.ColumnHeadersDefaultCellStyle.BackColor = Color.SteelBlue
+                        dgvProviders.ColumnHeadersDefaultCellStyle.ForeColor = Color.White
+                        dgvProviders.EnableHeadersVisualStyles = False
+                        dgvProviders.GridColor = Color.LightSteelBlue
+                        dgvProviders.DefaultCellStyle.SelectionBackColor = Color.LightSteelBlue
+                        dgvProviders.DefaultCellStyle.SelectionForeColor = Color.Black
+
                     Else
                         dgvProviders.DataSource = Nothing
                         dgvProviders.Columns.Clear()
