@@ -68,6 +68,18 @@ Public Class ProviderDetailsForm
         dgvDetails.Refresh()
     End Sub
 
+    Private Sub ApplyCustomColors()
+        With dgvDetails
+            .AlternatingRowsDefaultCellStyle.BackColor = Color.LightYellow   ' Alternating rows
+            .DefaultCellStyle.BackColor = Color.White                        ' Main rows
+            .ColumnHeadersDefaultCellStyle.BackColor = Color.DarkSlateBlue   ' Header background
+            .ColumnHeadersDefaultCellStyle.ForeColor = Color.White           ' Header text
+            .DefaultCellStyle.SelectionBackColor = Color.LightSkyBlue        ' Selected row
+            .DefaultCellStyle.SelectionForeColor = Color.Black
+            .EnableHeadersVisualStyles = False
+        End With
+    End Sub
+
     Private Async Function LoadPrescriberDrugsTable() As Task
         lblLoading.Visible = True
         Try
@@ -109,6 +121,7 @@ Public Class ProviderDetailsForm
 
             dgvDetails.DataSource = dt
             SetFriendlyColumnHeaders()
+            ApplyCustomColors()
             dgvDetails.Refresh()
         Catch ex As Exception
             MessageBox.Show("Error loading Prescriber Drugs: " & ex.Message)
@@ -162,6 +175,7 @@ Public Class ProviderDetailsForm
             End Using
             dgvDetails.DataSource = dt
             SetProviderProfileColumnHeaders()
+            ApplyCustomColors()
             dgvDetails.Refresh()
         Catch ex As Exception
             MessageBox.Show("Error loading Provider Profile: " & ex.Message)
@@ -216,6 +230,7 @@ Public Class ProviderDetailsForm
             End Using
             dgvDetails.DataSource = dt
             SetHCPCSColumnHeaders()
+            ApplyCustomColors()
             dgvDetails.Refresh()
         Catch ex As Exception
             MessageBox.Show("Error loading HCPCS table: " & ex.Message)

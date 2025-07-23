@@ -24,9 +24,9 @@ Partial Class ProviderDetailsForm
         ' dgvDetails
         ' 
         dgvDetails.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        dgvDetails.Location = New Point(54, 90)
+        dgvDetails.Location = New Point(40, 98)
         dgvDetails.Name = "dgvDetails"
-        dgvDetails.Size = New Size(711, 366)
+        dgvDetails.Size = New Size(716, 322)
         dgvDetails.TabIndex = 0
         ' 
         ' ProviderDetailsForm
@@ -39,6 +39,7 @@ Partial Class ProviderDetailsForm
         Text = "ProviderDetailsForm"
         CType(dgvDetails, ComponentModel.ISupportInitialize).EndInit()
         ResumeLayout(False)
+        ' ...
     End Sub
 
     Friend WithEvents dgvDetails As DataGridView
