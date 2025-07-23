@@ -443,33 +443,9 @@ Public Class Profile
         End If
     End Function
 
-    Private Async Sub ShowProviderDetailsPopup(npi As String)
-        Dim apiUrl As String = $"https://data.cms.gov/data-api/v1/dataset/9552739e-3d05-4c1b-8eff-ecabf391e2e5/data?filter[Prscrbr_NPI]={Uri.EscapeDataString(npi)}&size=100"
-        Dim dt As New DataTable()
-        Using client As New HttpClient()
-            Dim response = Await client.GetAsync(apiUrl)
-            If response.IsSuccessStatusCode Then
-                Dim json = Await response.Content.ReadAsStringAsync()
-                Dim data = JArray.Parse(json)
-                If data.Count > 0 Then
-                    For Each col In data(0).ToObject(Of JObject)().Properties()
-                        dt.Columns.Add(col.Name)
-                    Next
-                    For Each item In data
-                        Dim row = dt.NewRow()
-                        For Each col In dt.Columns
-                            row(col.ToString()) = item(col.ToString())
-                        Next
-                        dt.Rows.Add(row)
-                    Next
-                End If
-            End If
-        End Using
-
-        ' Show the popup form
-        Dim detailsForm As New ProviderDetailsForm()
-        detailsForm.dgvDetails.DataSource = dt
-        detailsForm.Text = $"Provider Details for NPI: {npi}"
+    Private Sub ShowProviderDetailsPopup(npi As String)
+        Dim detailsForm As New ProviderDetailsForm(npi)
+        detailsForm.Text = $"Provider Details for NPI: {npi} - CMS Medicare Provider Part D Prescribers by Provider and Drug 2023"
         detailsForm.ShowDialog()
     End Sub
 

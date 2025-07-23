@@ -1,9 +1,8 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class ProviderDetailsForm
     Inherits System.Windows.Forms.Form
 
-    'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -14,37 +13,33 @@ Partial Class ProviderDetailsForm
         End Try
     End Sub
 
-    'Required by the Windows Form Designer
     Private components As System.ComponentModel.IContainer
 
-    'NOTE: The following procedure is required by the Windows Form Designer
-    'It can be modified using the Windows Form Designer.  
-    'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        DataGridView1 = New DataGridView()
-        CType(DataGridView1, ComponentModel.ISupportInitialize).BeginInit()
+        dgvDetails = New DataGridView()
+        CType(dgvDetails, ComponentModel.ISupportInitialize).BeginInit()
         SuspendLayout()
         ' 
-        ' DataGridView1
+        ' dgvDetails
         ' 
-        DataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        DataGridView1.Location = New Point(93, 54)
-        DataGridView1.Name = "DataGridView1"
-        DataGridView1.Size = New Size(909, 526)
-        DataGridView1.TabIndex = 0
+        dgvDetails.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        dgvDetails.Location = New Point(54, 90)
+        dgvDetails.Name = "dgvDetails"
+        dgvDetails.Size = New Size(711, 366)
+        dgvDetails.TabIndex = 0
         ' 
         ' ProviderDetailsForm
         ' 
-        AutoScaleDimensions = New SizeF(7F, 15F)
+        AutoScaleDimensions = New SizeF(7.0F, 15.0F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(1088, 633)
-        Controls.Add(DataGridView1)
+        Controls.Add(dgvDetails)
         Name = "ProviderDetailsForm"
         Text = "ProviderDetailsForm"
-        CType(DataGridView1, ComponentModel.ISupportInitialize).EndInit()
+        CType(dgvDetails, ComponentModel.ISupportInitialize).EndInit()
         ResumeLayout(False)
     End Sub
 
-    Friend WithEvents DataGridView1 As DataGridView
+    Friend WithEvents dgvDetails As DataGridView
 End Class
