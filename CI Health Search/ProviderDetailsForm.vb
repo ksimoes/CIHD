@@ -143,38 +143,54 @@ Public Class ProviderDetailsForm
                     Dim obj = JObject.Parse(json)
                     If obj("results") IsNot Nothing AndAlso obj("results").HasValues Then
                         Dim result = obj("results")(0)
-                        Dim resultObj As JObject = CType(result, JObject)
-                        For Each prop In resultObj.Properties()
-                            If dt.Columns.Contains(prop.Name) = False AndAlso prop.Name <> "basic" Then
-                                dt.Columns.Add(prop.Name)
-                            End If
-                        Next
-                        If resultObj("basic") IsNot Nothing Then
-                            Dim basicObj As JObject = CType(resultObj("basic"), JObject)
-                            For Each prop In basicObj.Properties()
-                                If dt.Columns.Contains("basic_" & prop.Name) = False Then
-                                    dt.Columns.Add("basic_" & prop.Name)
-                                End If
-                            Next
-                        End If
+                        ' Only add the most useful columns
+                        dt.Columns.Add("NPI")
+                        dt.Columns.Add("Enumeration Type")
+                        dt.Columns.Add("First Name")
+                        dt.Columns.Add("Last Name")
+                        dt.Columns.Add("Credential")
+                        dt.Columns.Add("Gender")
+                        dt.Columns.Add("Enumeration Date")
+                        dt.Columns.Add("Last Updated")
+                        dt.Columns.Add("Status")
+                        dt.Columns.Add("Primary Taxonomy")
+                        dt.Columns.Add("Primary Taxonomy Desc")
+                        dt.Columns.Add("Primary Taxonomy State")
+                        dt.Columns.Add("Primary Taxonomy License")
+
                         Dim row = dt.NewRow()
-                        For Each col As DataColumn In dt.Columns
-                            If col.ColumnName.StartsWith("basic_") Then
-                                Dim basicName = col.ColumnName.Substring(6)
-                                row(col.ColumnName) = resultObj("basic")?(basicName)?.ToString()
-                            Else
-                                row(col.ColumnName) = resultObj(col.ColumnName)?.ToString()
-                            End If
-                        Next
+                        row("NPI") = result("number")?.ToString()
+                        row("Enumeration Type") = result("enumeration_type")?.ToString()
+                        row("First Name") = result("basic")?("first_name")?.ToString()
+                        row("Last Name") = result("basic")?("last_name")?.ToString()
+                        row("Credential") = result("basic")?("credential")?.ToString()
+                        row("Gender") = result("basic")?("gender")?.ToString()
+                        row("Enumeration Date") = result("basic")?("enumeration_date")?.ToString()
+                        row("Last Updated") = result("basic")?("last_updated")?.ToString()
+                        row("Status") = result("basic")?("status")?.ToString()
+
+                        ' Taxonomy (primary)
+                        Dim primaryTaxonomy = result("taxonomies")?.FirstOrDefault(Function(t) t("primary")?.ToString().ToLower() = "true")
+                        If primaryTaxonomy Is Nothing AndAlso result("taxonomies") IsNot Nothing AndAlso result("taxonomies").HasValues Then
+                            primaryTaxonomy = result("taxonomies")(0)
+                        End If
+                        row("Primary Taxonomy") = primaryTaxonomy?("code")?.ToString()
+                        row("Primary Taxonomy Desc") = primaryTaxonomy?("desc")?.ToString()
+                        row("Primary Taxonomy State") = primaryTaxonomy?("state")?.ToString()
+                        row("Primary Taxonomy License") = primaryTaxonomy?("license")?.ToString()
+
                         dt.Rows.Add(row)
                     Else
-                        dt.Columns.Add("number")
-                        dt.Columns.Add("enumeration_type")
+                        dt.Columns.Add("NPI")
+                        dt.Columns.Add("Status")
+                        Dim row = dt.NewRow()
+                        row("NPI") = currentNpi
+                        row("Status") = "Not found"
+                        dt.Rows.Add(row)
                     End If
                 End If
             End Using
             dgvDetails.DataSource = dt
-            SetProviderProfileColumnHeaders()
             ApplyCustomColors()
             dgvDetails.Refresh()
         Catch ex As Exception

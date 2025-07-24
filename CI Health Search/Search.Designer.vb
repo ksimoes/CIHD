@@ -1018,7 +1018,7 @@ Partial Class Search
         ' 
         ' txtNpiAll
         ' 
-        txtNpiAll.Location = New Point(304, 68)
+        txtNpiAll.Location = New Point(304, 67)
         txtNpiAll.Name = "txtNpiAll"
         txtNpiAll.Size = New Size(100, 23)
         txtNpiAll.TabIndex = 26
