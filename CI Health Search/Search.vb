@@ -144,6 +144,57 @@ Public Class Search
         Return Nothing
     End Function
 
+    ' --- HCPCS Code Search ---
+    Private Async Sub btnSearchHCPCSCode_Click(sender As Object, e As EventArgs) Handles btnSearchHCPCSCode.Click
+        Dim code As String = tbCode.Text.Trim().ToUpper()
+        If String.IsNullOrWhiteSpace(code) Then
+            MessageBox.Show("Please enter an HCPCS code to search.")
+            Return
+        End If
+
+        lblstatus.Text = "Searching by HCPCS code..."
+        lblstatus.Visible = True
+
+        Try
+            Dim apiUrl As String = $"https://data.cms.gov/data-api/v1/dataset/92396110-2aed-4d63-a6a2-5d6207d46a29/data?filter[HCPCS_Cd]={Uri.EscapeDataString(code)}&size=1000"
+            Dim dt As New DataTable()
+            Using client As New HttpClient()
+                Dim response = Await client.GetAsync(apiUrl)
+                If response.IsSuccessStatusCode Then
+                    Dim json = Await response.Content.ReadAsStringAsync()
+                    Dim data = JArray.Parse(json)
+                    If data.Count > 0 Then
+                        For Each col In data(0).ToObject(Of JObject)().Properties()
+                            dt.Columns.Add(col.Name)
+                        Next
+                        For Each item In data
+                            Dim row = dt.NewRow()
+                            For Each col In dt.Columns
+                                row(col.ToString()) = item(col.ToString())
+                            Next
+                            dt.Rows.Add(row)
+                        Next
+                    End If
+                End If
+            End Using
+
+            If dt.Rows.Count = 0 Then
+                MessageBox.Show("No results found for this HCPCS code.")
+                lblstatus.Text = ""
+                lblstatus.Visible = False
+                Return
+            End If
+
+            Dim popup As New HCPCSCodeResultsForm(dt, code)
+            popup.ShowDialog()
+        Catch ex As Exception
+            MessageBox.Show("Error searching by HCPCS code: " & ex.Message)
+        Finally
+            lblstatus.Text = ""
+            lblstatus.Visible = False
+        End Try
+    End Sub
+
     Private Async Sub btnSearchAll_Click(sender As Object, e As EventArgs) Handles btnSearchAll.Click
         lblstatus.Text = "Searching..."
         lblstatus.Visible = True

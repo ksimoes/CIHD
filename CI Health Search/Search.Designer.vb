@@ -24,6 +24,7 @@ Partial Class Search
     Private Sub InitializeComponent()
         TabControl1 = New TabControl()
         TabPage5 = New TabPage()
+        lblCheckingStatus = New Label()
         lblstatus = New Label()
         Button1 = New Button()
         btnSearchAll = New Button()
@@ -54,6 +55,9 @@ Partial Class Search
         lblMaxAnnualDisAll = New Label()
         lblMaxTotalBedsAll = New Label()
         GroupBox2 = New GroupBox()
+        btnSearchHCPCSCode = New Button()
+        tbCode = New TextBox()
+        Label1 = New Label()
         ComboBox17 = New ComboBox()
         lblMedicareAll = New Label()
         ComboBox18 = New ComboBox()
@@ -185,7 +189,6 @@ Partial Class Search
         lblService = New Label()
         lblMedicare = New Label()
         lblFacility = New Label()
-        lblCheckingStatus = New Label()
         TabControl1.SuspendLayout()
         TabPage5.SuspendLayout()
         GroupBox5.SuspendLayout()
@@ -228,10 +231,19 @@ Partial Class Search
         TabPage5.Text = "All"
         TabPage5.UseVisualStyleBackColor = True
         ' 
+        ' lblCheckingStatus
+        ' 
+        lblCheckingStatus.AutoSize = True
+        lblCheckingStatus.Location = New Point(576, 651)
+        lblCheckingStatus.Name = "lblCheckingStatus"
+        lblCheckingStatus.Size = New Size(41, 15)
+        lblCheckingStatus.TabIndex = 96
+        lblCheckingStatus.Text = "Label1"
+        ' 
         ' lblstatus
         ' 
         lblstatus.AutoSize = True
-        lblstatus.Location = New Point(657, 605)
+        lblstatus.Location = New Point(623, 648)
         lblstatus.Name = "lblstatus"
         lblstatus.Size = New Size(41, 15)
         lblstatus.TabIndex = 74
@@ -513,6 +525,9 @@ Partial Class Search
         ' GroupBox2
         ' 
         GroupBox2.BackColor = Color.Green
+        GroupBox2.Controls.Add(btnSearchHCPCSCode)
+        GroupBox2.Controls.Add(tbCode)
+        GroupBox2.Controls.Add(Label1)
         GroupBox2.Controls.Add(ComboBox17)
         GroupBox2.Controls.Add(lblMedicareAll)
         GroupBox2.Controls.Add(ComboBox18)
@@ -537,6 +552,32 @@ Partial Class Search
         GroupBox2.TabIndex = 92
         GroupBox2.TabStop = False
         GroupBox2.Text = "Characteristics"
+        ' 
+        ' btnSearchHCPCSCode
+        ' 
+        btnSearchHCPCSCode.Location = New Point(234, 237)
+        btnSearchHCPCSCode.Name = "btnSearchHCPCSCode"
+        btnSearchHCPCSCode.Size = New Size(90, 68)
+        btnSearchHCPCSCode.TabIndex = 95
+        btnSearchHCPCSCode.Text = "SearchCode!"
+        btnSearchHCPCSCode.UseVisualStyleBackColor = True
+        ' 
+        ' tbCode
+        ' 
+        tbCode.Location = New Point(349, 261)
+        tbCode.Name = "tbCode"
+        tbCode.Size = New Size(187, 23)
+        tbCode.TabIndex = 93
+        ' 
+        ' Label1
+        ' 
+        Label1.AutoSize = True
+        Label1.Font = New Font("Times New Roman", 14.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        Label1.Location = New Point(7, 263)
+        Label1.Name = "Label1"
+        Label1.Size = New Size(117, 21)
+        Label1.TabIndex = 92
+        Label1.Text = "HCPCS Code"
         ' 
         ' ComboBox17
         ' 
@@ -586,7 +627,7 @@ Partial Class Search
         ' 
         lblServiceAll.AutoSize = True
         lblServiceAll.Font = New Font("Times New Roman", 14.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        lblServiceAll.Location = New Point(7, 314)
+        lblServiceAll.Location = New Point(6, 353)
         lblServiceAll.Name = "lblServiceAll"
         lblServiceAll.Size = New Size(85, 21)
         lblServiceAll.TabIndex = 76
@@ -635,7 +676,7 @@ Partial Class Search
         ListBox14.FormattingEnabled = True
         ListBox14.ItemHeight = 15
         ListBox14.Items.AddRange(New Object() {"Arthoscopy", "Burn Intensive Care(BICU)", "Cardiac Cath Lab", "Cardiac Rehab", "Cardiac Surgery", "Carotid Stenting", "Chemotherapy", "Camputed Tomography(CT)", "Computed Tomography-Angiography(CTA)", "Coronary Intensive Care(CCU)", "Coronary Interventions", "Detox Intensive Care", "Digital Mammography", "Electroencephalography(EEG)", "Electrophysiology", "Emergency Department", "Heart Transplant", "Helipad", "Hemodialysis", "Home Health", "Hospice", "Hyperbaric Oxygen", "Inpatient Surgery", "Intensity-Modulated Radiation Therapy (IMRT)", "Intensive Care Unit(ICU)", "Intestinal Transplant", "Joint Replacement", "Kidney Transplant", "Lithotripsy(ESWL)", "Liver Transplant", "Lung Transplant", "Magnetic Resonance Angiography (MRA)", "Magnetic Resonance Imaging (MRI)", "Neonatal Intensive Care", "Nursing Facility(NF)", "Obstetrics", "Pancreas Transplant", "Pediatric Intensive Care", "Pediatric Trauma Center", "Physical Therapy", "Positron Emission Tomography (PET)", "Premature Intensive Care", "Psychiatric", "Psychiatric Intensive Care", "Radiation Therapy", "Radiosurgery", "Rehabilitation", "Robotic Surgery", "Single Photon Emission Computerized Tomography (SPECT)", "Skilled Nursing (SNF)", "Sleep Studies", "Speech Therapy", "Spine Surgery", "Surgical Intensive Care (SICU)", "Swing Beds - NF", "Swing Beds - SNF", "Trauma Center", "Trauma Intensive Care", "Vascular Intervention", "Vascular Surgery", "Wound Care"})
-        ListBox14.Location = New Point(349, 271)
+        ListBox14.Location = New Point(349, 307)
         ListBox14.Name = "ListBox14"
         ListBox14.Size = New Size(187, 94)
         ListBox14.TabIndex = 86
@@ -1826,15 +1867,6 @@ Partial Class Search
         lblFacility.TabIndex = 5
         lblFacility.Text = "Type of Facility"
         ' 
-        ' lblCheckingStatus
-        ' 
-        lblCheckingStatus.AutoSize = True
-        lblCheckingStatus.Location = New Point(657, 630)
-        lblCheckingStatus.Name = "lblCheckingStatus"
-        lblCheckingStatus.Size = New Size(41, 15)
-        lblCheckingStatus.TabIndex = 96
-        lblCheckingStatus.Text = "Label1"
-        ' 
         ' Search
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
@@ -2032,4 +2064,7 @@ Partial Class Search
     Friend WithEvents txtcountygeoall As TextBox
     Friend WithEvents lblstatus As Label
     Friend WithEvents lblCheckingStatus As Label
+    Friend WithEvents tbCode As TextBox
+    Friend WithEvents Label1 As Label
+    Friend WithEvents btnSearchHCPCSCode As Button
 End Class
