@@ -308,7 +308,23 @@ Public Class Search
     End Sub
 
     Private Async Function SearchByApiAsync(selectedState As String) As Task
-        ' ... (unchanged)
+        Dim apiUrl As String = $"https://data.cms.gov/data-api/v1/dataset/8015f175-35cc-4cab-a664-b7c87d91a027/data?filter[State Code]={Uri.EscapeDataString(selectedState)}&size=1000"
+        MessageBox.Show("API URL: " & apiUrl) ' Debug: See the URL being called
+
+        Dim dt As DataTable = Await GetNpiResultsAsync(apiUrl)
+
+        If dt IsNot Nothing Then
+            ' MessageBox.Show("Rows returned: " & dt.Rows.Count.ToString()) ' Debug: See how many rows
+        End If
+
+        If dt IsNot Nothing AndAlso dt.Rows.Count > 0 Then
+            Results.SetResults(dt)
+            Results.SelectedState = selectedState
+            Hide()
+            Results.Show()
+        Else
+            MessageBox.Show("No results found for this state.")
+        End If
     End Function
 
     Private Async Sub btnSearchAll_Click(sender As Object, e As EventArgs) Handles btnSearchAll.Click
@@ -374,22 +390,11 @@ Public Class Search
                     Dim npiState = npiInfo("addresses")?(0)?("state")?.ToString()
                     Dim npiAddress = npiInfo("addresses")?(0)?("address_1")?.ToString()
 
-                    If String.IsNullOrEmpty(npiName) Then
-                        ' MessageBox.Show("NPI Registry did not return an organization name for this NPI.")
-                    End If
-                    If String.IsNullOrEmpty(npiCity) OrElse String.IsNullOrEmpty(npiState) Then
-                        ' MessageBox.Show("NPI Registry did not return a city/state for this NPI.")
-                    End If
-
                     If Not String.IsNullOrEmpty(npiName) AndAlso Not String.IsNullOrEmpty(npiCity) AndAlso Not String.IsNullOrEmpty(npiState) Then
                         Dim apiUrl As String = $"https://data.cms.gov/data-api/v1/dataset/8015f175-35cc-4cab-a664-b7c87d91a027/data?filter[State Code]={Uri.EscapeDataString(npiState)}&filter[City]={Uri.EscapeDataString(npiCity)}&size=1000"
                         Dim dtFacilities As DataTable = Await GetNpiResultsAsync(apiUrl)
 
-                        ' Show all columns for debugging
                         If dtFacilities IsNot Nothing AndAlso dtFacilities.Rows.Count > 0 Then
-                            ' Dim colNames As String = String.Join(", ", dtFacilities.Columns.Cast(Of DataColumn).Select(Function(c) c.ColumnName))
-                            ' MessageBox.Show("Facility columns: " & colNames)
-
                             Dim dtMatches As DataTable = dtFacilities.Clone()
                             For Each row As DataRow In dtFacilities.Rows
                                 Dim facilityName = ""
@@ -404,12 +409,8 @@ Public Class Search
                                     facilityAddress = row("Street Address").ToString()
                                 End If
 
-                                ' Debug: Show what is being compared
-                                ' MessageBox.Show("Comparing NPI Name: " & npiName & vbCrLf & "Facility Name: " & facilityName & vbCrLf &
-                                '  "NPI Address: " & npiAddress & vbCrLf & "Facility Address: " & facilityAddress)
-
                                 If (Not String.IsNullOrEmpty(facilityName) AndAlso IsFuzzyMatch(npiName, facilityName)) OrElse
-                                   (Not String.IsNullOrEmpty(facilityAddress) AndAlso IsFuzzyAddressMatch(npiAddress, facilityAddress)) Then
+                               (Not String.IsNullOrEmpty(facilityAddress) AndAlso IsFuzzyAddressMatch(npiAddress, facilityAddress)) Then
                                     dtMatches.ImportRow(row)
                                 End If
                             Next
@@ -421,11 +422,7 @@ Public Class Search
                                 lblstatus.Text = ""
                                 lblstatus.Visible = False
                                 Return
-                            Else
-                                ' MessageBox.Show("No fuzzy matches found in city/state for NPI name: " & npiName)
                             End If
-                        Else
-                            MessageBox.Show("No facilities found in CMS dataset for city/state: " & npiCity & ", " & npiState)
                         End If
                     End If
                 End If
@@ -455,7 +452,8 @@ Public Class Search
                 End If
             End If
 
-            If useSQL(selectedState) Then
+            ' --- TN/TX use SQL, all others use API ---
+            If selectedState = "TN" OrElse selectedState = "TX" Then
                 If Not String.IsNullOrEmpty(selectedState) Then
                     filters.Add("State = @State")
                     parameters.Add(New SqlParameter("@State", selectedState))
@@ -493,6 +491,7 @@ Public Class Search
                 Results.Show()
                 Await SearchByApiAsync(selectedState)
             Else
+                ' All other states: use API
                 Await SearchByApiAsync(selectedState)
             End If
 

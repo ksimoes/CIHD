@@ -100,7 +100,14 @@ Partial Class Profile
         lblCooResult = New Label()
         lblPurchasingMatResult = New Label()
         Panel1 = New Panel()
+        dgvProviders = New DataGridView()
         GroupBox2 = New GroupBox()
+        lblPN = New Label()
+        lblN = New Label()
+        lblT = New Label()
+        Label12 = New Label()
+        Label11 = New Label()
+        Label10 = New Label()
         Label3 = New Label()
         GroupBox1 = New BoldGroupBox()
         lblNpiResult = New Label()
@@ -132,15 +139,15 @@ Partial Class Profile
         Column1 = New DataGridViewTextBoxColumn()
         Column2 = New DataGridViewTextBoxColumn()
         Column3 = New DataGridViewTextBoxColumn()
-        dgvProviders = New DataGridView()
+        txtDebugJson = New TextBox()
         Panel1.SuspendLayout()
+        CType(dgvProviders, ComponentModel.ISupportInitialize).BeginInit()
         GroupBox2.SuspendLayout()
         GroupBox1.SuspendLayout()
         CType(DataGridView4, ComponentModel.ISupportInitialize).BeginInit()
         CType(DataGridView3, ComponentModel.ISupportInitialize).BeginInit()
         CType(DataGridView2, ComponentModel.ISupportInitialize).BeginInit()
         CType(DataGridView1, ComponentModel.ISupportInitialize).BeginInit()
-        CType(dgvProviders, ComponentModel.ISupportInitialize).BeginInit()
         SuspendLayout()
         ' 
         ' lblZipCodeResult
@@ -795,7 +802,7 @@ Partial Class Profile
         ' 
         lblCeoPres.AutoSize = True
         lblCeoPres.Font = New Font("Times New Roman", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        lblCeoPres.Location = New Point(7, 36)
+        lblCeoPres.Location = New Point(785, 1019)
         lblCeoPres.Name = "lblCeoPres"
         lblCeoPres.Size = New Size(163, 15)
         lblCeoPres.TabIndex = 49
@@ -805,7 +812,7 @@ Partial Class Profile
         ' 
         lblCfo.AutoSize = True
         lblCfo.Font = New Font("Times New Roman", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        lblCfo.Location = New Point(7, 62)
+        lblCfo.Location = New Point(785, 1045)
         lblCfo.Name = "lblCfo"
         lblCfo.Size = New Size(134, 15)
         lblCfo.TabIndex = 49
@@ -815,7 +822,7 @@ Partial Class Profile
         ' 
         lblCio.AutoSize = True
         lblCio.Font = New Font("Times New Roman", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        lblCio.Location = New Point(7, 86)
+        lblCio.Location = New Point(785, 1069)
         lblCio.Name = "lblCio"
         lblCio.Size = New Size(95, 15)
         lblCio.TabIndex = 49
@@ -825,7 +832,7 @@ Partial Class Profile
         ' 
         lblCmo.AutoSize = True
         lblCmo.Font = New Font("Times New Roman", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        lblCmo.Location = New Point(7, 112)
+        lblCmo.Location = New Point(785, 1095)
         lblCmo.Name = "lblCmo"
         lblCmo.Size = New Size(110, 15)
         lblCmo.TabIndex = 49
@@ -835,7 +842,7 @@ Partial Class Profile
         ' 
         lblCno.AutoSize = True
         lblCno.Font = New Font("Times New Roman", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        lblCno.Location = New Point(7, 142)
+        lblCno.Location = New Point(785, 1125)
         lblCno.Name = "lblCno"
         lblCno.Size = New Size(126, 15)
         lblCno.TabIndex = 50
@@ -845,7 +852,7 @@ Partial Class Profile
         ' 
         lblCoo.AutoSize = True
         lblCoo.Font = New Font("Times New Roman", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        lblCoo.Location = New Point(7, 172)
+        lblCoo.Location = New Point(785, 1155)
         lblCoo.Name = "lblCoo"
         lblCoo.Size = New Size(146, 15)
         lblCoo.TabIndex = 51
@@ -855,7 +862,7 @@ Partial Class Profile
         ' 
         lblPurchasingMat.AutoSize = True
         lblPurchasingMat.Font = New Font("Times New Roman", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        lblPurchasingMat.Location = New Point(8, 206)
+        lblPurchasingMat.Location = New Point(786, 1189)
         lblPurchasingMat.Name = "lblPurchasingMat"
         lblPurchasingMat.Size = New Size(172, 15)
         lblPurchasingMat.TabIndex = 52
@@ -864,8 +871,8 @@ Partial Class Profile
         ' lblCeoPresResult
         ' 
         lblCeoPresResult.AutoSize = True
-        lblCeoPresResult.Font = New Font("Segoe UI", 9F)
-        lblCeoPresResult.Location = New Point(375, 36)
+        lblCeoPresResult.Font = New Font("Segoe UI", 9.0F)
+        lblCeoPresResult.Location = New Point(1153, 1019)
         lblCeoPresResult.Name = "lblCeoPresResult"
         lblCeoPresResult.Size = New Size(39, 15)
         lblCeoPresResult.TabIndex = 65
@@ -874,8 +881,8 @@ Partial Class Profile
         ' lblCmoResult
         ' 
         lblCmoResult.AutoSize = True
-        lblCmoResult.Font = New Font("Segoe UI", 9F)
-        lblCmoResult.Location = New Point(375, 112)
+        lblCmoResult.Font = New Font("Segoe UI", 9.0F)
+        lblCmoResult.Location = New Point(1153, 1095)
         lblCmoResult.Name = "lblCmoResult"
         lblCmoResult.Size = New Size(39, 15)
         lblCmoResult.TabIndex = 66
@@ -884,8 +891,8 @@ Partial Class Profile
         ' lblCfoResult
         ' 
         lblCfoResult.AutoSize = True
-        lblCfoResult.Font = New Font("Segoe UI", 9F)
-        lblCfoResult.Location = New Point(375, 62)
+        lblCfoResult.Font = New Font("Segoe UI", 9.0F)
+        lblCfoResult.Location = New Point(1153, 1045)
         lblCfoResult.Name = "lblCfoResult"
         lblCfoResult.Size = New Size(39, 15)
         lblCfoResult.TabIndex = 66
@@ -894,8 +901,8 @@ Partial Class Profile
         ' lblCioResult
         ' 
         lblCioResult.AutoSize = True
-        lblCioResult.Font = New Font("Segoe UI", 9F)
-        lblCioResult.Location = New Point(375, 86)
+        lblCioResult.Font = New Font("Segoe UI", 9.0F)
+        lblCioResult.Location = New Point(1153, 1069)
         lblCioResult.Name = "lblCioResult"
         lblCioResult.Size = New Size(39, 15)
         lblCioResult.TabIndex = 67
@@ -904,8 +911,8 @@ Partial Class Profile
         ' lblCnoResult
         ' 
         lblCnoResult.AutoSize = True
-        lblCnoResult.Font = New Font("Segoe UI", 9F)
-        lblCnoResult.Location = New Point(375, 206)
+        lblCnoResult.Font = New Font("Segoe UI", 9.0F)
+        lblCnoResult.Location = New Point(1153, 1189)
         lblCnoResult.Name = "lblCnoResult"
         lblCnoResult.Size = New Size(39, 15)
         lblCnoResult.TabIndex = 68
@@ -914,8 +921,8 @@ Partial Class Profile
         ' lblCooResult
         ' 
         lblCooResult.AutoSize = True
-        lblCooResult.Font = New Font("Segoe UI", 9F)
-        lblCooResult.Location = New Point(375, 142)
+        lblCooResult.Font = New Font("Segoe UI", 9.0F)
+        lblCooResult.Location = New Point(1153, 1125)
         lblCooResult.Name = "lblCooResult"
         lblCooResult.Size = New Size(39, 15)
         lblCooResult.TabIndex = 69
@@ -924,8 +931,8 @@ Partial Class Profile
         ' lblPurchasingMatResult
         ' 
         lblPurchasingMatResult.AutoSize = True
-        lblPurchasingMatResult.Font = New Font("Segoe UI", 9F)
-        lblPurchasingMatResult.Location = New Point(375, 172)
+        lblPurchasingMatResult.Font = New Font("Segoe UI", 9.0F)
+        lblPurchasingMatResult.Location = New Point(1153, 1155)
         lblPurchasingMatResult.Name = "lblPurchasingMatResult"
         lblPurchasingMatResult.Size = New Size(39, 15)
         lblPurchasingMatResult.TabIndex = 70
@@ -934,19 +941,34 @@ Partial Class Profile
         ' Panel1
         ' 
         Panel1.AutoScroll = True
+        Panel1.Controls.Add(txtDebugJson)
+        Panel1.Controls.Add(lblCfoResult)
         Panel1.Controls.Add(dgvProviders)
+        Panel1.Controls.Add(lblCeoPresResult)
         Panel1.Controls.Add(GroupBox2)
+        Panel1.Controls.Add(lblCmoResult)
         Panel1.Controls.Add(GroupBox1)
+        Panel1.Controls.Add(lblCioResult)
         Panel1.Controls.Add(DataGridView4)
+        Panel1.Controls.Add(lblCnoResult)
         Panel1.Controls.Add(Label8)
+        Panel1.Controls.Add(lblCooResult)
+        Panel1.Controls.Add(lblPurchasingMatResult)
         Panel1.Controls.Add(Label7)
+        Panel1.Controls.Add(lblPurchasingMat)
         Panel1.Controls.Add(DataGridView3)
+        Panel1.Controls.Add(lblCeoPres)
         Panel1.Controls.Add(Label6)
+        Panel1.Controls.Add(lblCfo)
         Panel1.Controls.Add(Label5)
         Panel1.Controls.Add(DataGridView2)
+        Panel1.Controls.Add(lblCio)
         Panel1.Controls.Add(DataGridView1)
+        Panel1.Controls.Add(lblCmo)
         Panel1.Controls.Add(Button1)
+        Panel1.Controls.Add(lblCno)
         Panel1.Controls.Add(btnOutpatientProfile)
+        Panel1.Controls.Add(lblCoo)
         Panel1.Controls.Add(btnInpatientProfile)
         Panel1.Controls.Add(btnQualityProfile)
         Panel1.Controls.Add(btnFinIndProfile)
@@ -957,30 +979,90 @@ Partial Class Profile
         Panel1.Size = New Size(1439, 2000)
         Panel1.TabIndex = 81
         ' 
+        ' dgvProviders
+        ' 
+        dgvProviders.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        dgvProviders.Location = New Point(685, 145)
+        dgvProviders.Name = "dgvProviders"
+        dgvProviders.Size = New Size(742, 597)
+        dgvProviders.TabIndex = 93
+        ' 
         ' GroupBox2
         ' 
         GroupBox2.BackColor = Color.LightGray
-        GroupBox2.Controls.Add(lblCfoResult)
-        GroupBox2.Controls.Add(lblCeoPresResult)
-        GroupBox2.Controls.Add(lblCmoResult)
-        GroupBox2.Controls.Add(lblCioResult)
-        GroupBox2.Controls.Add(lblCnoResult)
-        GroupBox2.Controls.Add(lblCooResult)
-        GroupBox2.Controls.Add(lblPurchasingMatResult)
-        GroupBox2.Controls.Add(lblPurchasingMat)
-        GroupBox2.Controls.Add(lblCeoPres)
-        GroupBox2.Controls.Add(lblCfo)
+        GroupBox2.Controls.Add(lblPN)
+        GroupBox2.Controls.Add(lblN)
+        GroupBox2.Controls.Add(lblT)
+        GroupBox2.Controls.Add(Label12)
+        GroupBox2.Controls.Add(Label11)
+        GroupBox2.Controls.Add(Label10)
         GroupBox2.Controls.Add(Label3)
-        GroupBox2.Controls.Add(lblCio)
-        GroupBox2.Controls.Add(lblCmo)
-        GroupBox2.Controls.Add(lblCno)
-        GroupBox2.Controls.Add(lblCoo)
         GroupBox2.Location = New Point(3, 967)
         GroupBox2.Name = "GroupBox2"
         GroupBox2.Size = New Size(595, 239)
         GroupBox2.TabIndex = 92
         GroupBox2.TabStop = False
         GroupBox2.Text = "."
+        ' 
+        ' lblPN
+        ' 
+        lblPN.AutoSize = True
+        lblPN.Font = New Font("Times New Roman", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        lblPN.Location = New Point(171, 115)
+        lblPN.Name = "lblPN"
+        lblPN.Size = New Size(37, 15)
+        lblPN.TabIndex = 99
+        lblPN.Text = "Name"
+        ' 
+        ' lblN
+        ' 
+        lblN.AutoSize = True
+        lblN.Font = New Font("Times New Roman", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        lblN.Location = New Point(171, 82)
+        lblN.Name = "lblN"
+        lblN.Size = New Size(37, 15)
+        lblN.TabIndex = 98
+        lblN.Text = "Name"
+        ' 
+        ' lblT
+        ' 
+        lblT.AutoSize = True
+        lblT.Font = New Font("Times New Roman", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        lblT.Location = New Point(171, 48)
+        lblT.Name = "lblT"
+        lblT.Size = New Size(37, 15)
+        lblT.TabIndex = 97
+        lblT.Text = "Name"
+        ' 
+        ' Label12
+        ' 
+        Label12.AutoSize = True
+        Label12.Font = New Font("Times New Roman", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        Label12.Location = New Point(9, 115)
+        Label12.Name = "Label12"
+        Label12.Size = New Size(86, 15)
+        Label12.TabIndex = 96
+        Label12.Text = "Phone Number"
+        ' 
+        ' Label11
+        ' 
+        Label11.AutoSize = True
+        Label11.Font = New Font("Times New Roman", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        Label11.Location = New Point(9, 82)
+        Label11.Name = "Label11"
+        Label11.Size = New Size(37, 15)
+        Label11.TabIndex = 95
+        Label11.Text = "Name"
+        ' 
+        ' Label10
+        ' 
+        Label10.AutoSize = True
+        Label10.Font = New Font("Times New Roman", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        Label10.Location = New Point(9, 48)
+        Label10.Name = "Label10"
+        Label10.Size = New Size(31, 15)
+        Label10.TabIndex = 94
+        Label10.Text = "Title"
         ' 
         ' Label3
         ' 
@@ -1263,17 +1345,19 @@ Partial Class Profile
         Column3.HeaderText = "Associated NPI's"
         Column3.Name = "Column3"
         ' 
-        ' dgvProviders
+        ' txtDebugJson
         ' 
-        dgvProviders.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        dgvProviders.Location = New Point(685, 145)
-        dgvProviders.Name = "dgvProviders"
-        dgvProviders.Size = New Size(742, 597)
-        dgvProviders.TabIndex = 93
+        txtDebugJson.Location = New Point(860, 821)
+        txtDebugJson.Multiline = True
+        txtDebugJson.Name = "txtDebugJson"
+        txtDebugJson.ScrollBars = ScrollBars.Both
+        txtDebugJson.Size = New Size(400, 200)
+        txtDebugJson.TabIndex = 94
+        txtDebugJson.Visible = False
         ' 
         ' Profile
         ' 
-        AutoScaleDimensions = New SizeF(7F, 15F)
+        AutoScaleDimensions = New SizeF(7.0F, 15.0F)
         AutoScaleMode = AutoScaleMode.Font
         AutoScroll = True
         BackColor = SystemColors.HighlightText
@@ -1285,6 +1369,7 @@ Partial Class Profile
         Text = "Profile"
         Panel1.ResumeLayout(False)
         Panel1.PerformLayout()
+        CType(dgvProviders, ComponentModel.ISupportInitialize).EndInit()
         GroupBox2.ResumeLayout(False)
         GroupBox2.PerformLayout()
         GroupBox1.ResumeLayout(False)
@@ -1293,7 +1378,6 @@ Partial Class Profile
         CType(DataGridView3, ComponentModel.ISupportInitialize).EndInit()
         CType(DataGridView2, ComponentModel.ISupportInitialize).EndInit()
         CType(DataGridView1, ComponentModel.ISupportInitialize).EndInit()
-        CType(dgvProviders, ComponentModel.ISupportInitialize).EndInit()
         ResumeLayout(False)
     End Sub
     Friend WithEvents lblPhoneNum As Label
@@ -1409,6 +1493,13 @@ Partial Class Profile
     Friend WithEvents Label9 As Label
     Friend WithEvents GroupBox1 As BoldGroupBox
     Friend WithEvents dgvProviders As DataGridView
+    Friend WithEvents lblPN As Label
+    Friend WithEvents lblN As Label
+    Friend WithEvents lblT As Label
+    Friend WithEvents Label12 As Label
+    Friend WithEvents Label11 As Label
+    Friend WithEvents Label10 As Label
+    Friend WithEvents txtDebugJson As TextBox
     ' Friend WithEvents GroupBox1 As BoldGroupBox
 
 End Class

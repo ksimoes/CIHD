@@ -82,7 +82,13 @@ Public Class Profile
         End If
         Return "N/A"
     End Function
+    Public Sub SetAuthorizedOfficialInfo(title As String, name As String, phone As String)
+        lblT.Text = If(String.IsNullOrWhiteSpace(title), "Not Available", title)
+        lblN.Text = If(String.IsNullOrWhiteSpace(name), "Not Available", name)
+        lblPN.Text = If(String.IsNullOrWhiteSpace(phone), "Not Available", phone)
+    End Sub
 
+    ' Update your ShowProfile method like this:
     Public Async Sub ShowProfile(foundHospital As HospitalContext)
         ' Show the basic info from the context first
         lblNameAddressResult.Text = GetBestFacilityName(foundHospital)
@@ -104,8 +110,8 @@ Public Class Profile
         Dim useSql As Boolean = (foundHospital.State = "TN" Or foundHospital.State = "TX")
         If useSql Then
             Dim queryProfile As String = If(foundHospital.State = "TN",
-                "SELECT * FROM tn.AdminCon WHERE LicenseNum = @LicenseNum",
-                "SELECT * FROM tx.Utilization WHERE id = @id")
+        "SELECT * FROM tn.AdminCon WHERE LicenseNum = @LicenseNum",
+        "SELECT * FROM tx.Utilization WHERE id = @id")
             Using conn As New SqlConnection(connectionString)
                 Using cmd As New SqlCommand(queryProfile, conn)
                     If foundHospital.State = "TN" Then
@@ -134,8 +140,24 @@ Public Class Profile
         If npiData IsNot Nothing Then
             lblNpiResult.Text = npiData("number")?.ToString()
             foundHospital.NPI = npiData("number")?.ToString()
-        ElseIf String.IsNullOrWhiteSpace(lblNpiResult.Text) OrElse lblNpiResult.Text = "N/A" Then
-            lblNpiResult.Text = "NPI not found"
+
+            ' Only show AO info for Type 2 (Organization) NPIs
+            If npiData("enumeration_type")?.ToString() = "NPI-2" Then
+                Dim basic = npiData("basic")
+                Dim aoFirst As String = basic?("authorized_official_first_name")?.ToString()
+                Dim aoLast As String = basic?("authorized_official_last_name")?.ToString()
+                Dim aoTitle As String = basic?("authorized_official_title_or_position")?.ToString()
+                Dim aoPhone As String = basic?("authorized_official_telephone_number")?.ToString()
+                Dim aoName As String = (aoFirst & " " & aoLast).Trim()
+                SetAuthorizedOfficialInfo(aoTitle, aoName, aoPhone)
+            Else
+                SetAuthorizedOfficialInfo("", "", "")
+            End If
+        Else
+            If String.IsNullOrWhiteSpace(lblNpiResult.Text) OrElse lblNpiResult.Text = "N/A" Then
+                lblNpiResult.Text = "NPI not found"
+            End If
+            SetAuthorizedOfficialInfo("", "", "")
         End If
 
         ' Show affiliated providers for any hospital using its CCN
