@@ -100,6 +100,7 @@ Partial Class Profile
         lblCooResult = New Label()
         lblPurchasingMatResult = New Label()
         Panel1 = New Panel()
+        txtDebugJson = New TextBox()
         dgvProviders = New DataGridView()
         GroupBox2 = New GroupBox()
         lblPN = New Label()
@@ -139,7 +140,6 @@ Partial Class Profile
         Column1 = New DataGridViewTextBoxColumn()
         Column2 = New DataGridViewTextBoxColumn()
         Column3 = New DataGridViewTextBoxColumn()
-        txtDebugJson = New TextBox()
         Panel1.SuspendLayout()
         CType(dgvProviders, ComponentModel.ISupportInitialize).BeginInit()
         GroupBox2.SuspendLayout()
@@ -802,6 +802,7 @@ Partial Class Profile
         ' 
         lblCeoPres.AutoSize = True
         lblCeoPres.Font = New Font("Times New Roman", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        lblCeoPres.ForeColor = Color.Snow
         lblCeoPres.Location = New Point(785, 1019)
         lblCeoPres.Name = "lblCeoPres"
         lblCeoPres.Size = New Size(163, 15)
@@ -812,6 +813,7 @@ Partial Class Profile
         ' 
         lblCfo.AutoSize = True
         lblCfo.Font = New Font("Times New Roman", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        lblCfo.ForeColor = Color.Snow
         lblCfo.Location = New Point(785, 1045)
         lblCfo.Name = "lblCfo"
         lblCfo.Size = New Size(134, 15)
@@ -822,6 +824,7 @@ Partial Class Profile
         ' 
         lblCio.AutoSize = True
         lblCio.Font = New Font("Times New Roman", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        lblCio.ForeColor = Color.Snow
         lblCio.Location = New Point(785, 1069)
         lblCio.Name = "lblCio"
         lblCio.Size = New Size(95, 15)
@@ -832,6 +835,7 @@ Partial Class Profile
         ' 
         lblCmo.AutoSize = True
         lblCmo.Font = New Font("Times New Roman", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        lblCmo.ForeColor = Color.Snow
         lblCmo.Location = New Point(785, 1095)
         lblCmo.Name = "lblCmo"
         lblCmo.Size = New Size(110, 15)
@@ -842,6 +846,7 @@ Partial Class Profile
         ' 
         lblCno.AutoSize = True
         lblCno.Font = New Font("Times New Roman", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        lblCno.ForeColor = Color.Snow
         lblCno.Location = New Point(785, 1125)
         lblCno.Name = "lblCno"
         lblCno.Size = New Size(126, 15)
@@ -852,6 +857,7 @@ Partial Class Profile
         ' 
         lblCoo.AutoSize = True
         lblCoo.Font = New Font("Times New Roman", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        lblCoo.ForeColor = Color.Snow
         lblCoo.Location = New Point(785, 1155)
         lblCoo.Name = "lblCoo"
         lblCoo.Size = New Size(146, 15)
@@ -862,6 +868,7 @@ Partial Class Profile
         ' 
         lblPurchasingMat.AutoSize = True
         lblPurchasingMat.Font = New Font("Times New Roman", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        lblPurchasingMat.ForeColor = Color.Snow
         lblPurchasingMat.Location = New Point(786, 1189)
         lblPurchasingMat.Name = "lblPurchasingMat"
         lblPurchasingMat.Size = New Size(172, 15)
@@ -871,7 +878,8 @@ Partial Class Profile
         ' lblCeoPresResult
         ' 
         lblCeoPresResult.AutoSize = True
-        lblCeoPresResult.Font = New Font("Segoe UI", 9.0F)
+        lblCeoPresResult.Font = New Font("Segoe UI", 9F)
+        lblCeoPresResult.ForeColor = Color.Snow
         lblCeoPresResult.Location = New Point(1153, 1019)
         lblCeoPresResult.Name = "lblCeoPresResult"
         lblCeoPresResult.Size = New Size(39, 15)
@@ -881,7 +889,8 @@ Partial Class Profile
         ' lblCmoResult
         ' 
         lblCmoResult.AutoSize = True
-        lblCmoResult.Font = New Font("Segoe UI", 9.0F)
+        lblCmoResult.Font = New Font("Segoe UI", 9F)
+        lblCmoResult.ForeColor = Color.Snow
         lblCmoResult.Location = New Point(1153, 1095)
         lblCmoResult.Name = "lblCmoResult"
         lblCmoResult.Size = New Size(39, 15)
@@ -891,7 +900,8 @@ Partial Class Profile
         ' lblCfoResult
         ' 
         lblCfoResult.AutoSize = True
-        lblCfoResult.Font = New Font("Segoe UI", 9.0F)
+        lblCfoResult.Font = New Font("Segoe UI", 9F)
+        lblCfoResult.ForeColor = Color.Snow
         lblCfoResult.Location = New Point(1153, 1045)
         lblCfoResult.Name = "lblCfoResult"
         lblCfoResult.Size = New Size(39, 15)
@@ -901,7 +911,8 @@ Partial Class Profile
         ' lblCioResult
         ' 
         lblCioResult.AutoSize = True
-        lblCioResult.Font = New Font("Segoe UI", 9.0F)
+        lblCioResult.Font = New Font("Segoe UI", 9F)
+        lblCioResult.ForeColor = Color.Snow
         lblCioResult.Location = New Point(1153, 1069)
         lblCioResult.Name = "lblCioResult"
         lblCioResult.Size = New Size(39, 15)
@@ -911,7 +922,8 @@ Partial Class Profile
         ' lblCnoResult
         ' 
         lblCnoResult.AutoSize = True
-        lblCnoResult.Font = New Font("Segoe UI", 9.0F)
+        lblCnoResult.Font = New Font("Segoe UI", 9F)
+        lblCnoResult.ForeColor = Color.Snow
         lblCnoResult.Location = New Point(1153, 1189)
         lblCnoResult.Name = "lblCnoResult"
         lblCnoResult.Size = New Size(39, 15)
@@ -921,7 +933,8 @@ Partial Class Profile
         ' lblCooResult
         ' 
         lblCooResult.AutoSize = True
-        lblCooResult.Font = New Font("Segoe UI", 9.0F)
+        lblCooResult.Font = New Font("Segoe UI", 9F)
+        lblCooResult.ForeColor = Color.Snow
         lblCooResult.Location = New Point(1153, 1125)
         lblCooResult.Name = "lblCooResult"
         lblCooResult.Size = New Size(39, 15)
@@ -931,7 +944,8 @@ Partial Class Profile
         ' lblPurchasingMatResult
         ' 
         lblPurchasingMatResult.AutoSize = True
-        lblPurchasingMatResult.Font = New Font("Segoe UI", 9.0F)
+        lblPurchasingMatResult.Font = New Font("Segoe UI", 9F)
+        lblPurchasingMatResult.ForeColor = Color.Snow
         lblPurchasingMatResult.Location = New Point(1153, 1155)
         lblPurchasingMatResult.Name = "lblPurchasingMatResult"
         lblPurchasingMatResult.Size = New Size(39, 15)
@@ -978,6 +992,16 @@ Partial Class Profile
         Panel1.Name = "Panel1"
         Panel1.Size = New Size(1439, 2000)
         Panel1.TabIndex = 81
+        ' 
+        ' txtDebugJson
+        ' 
+        txtDebugJson.Location = New Point(962, 748)
+        txtDebugJson.Multiline = True
+        txtDebugJson.Name = "txtDebugJson"
+        txtDebugJson.ScrollBars = ScrollBars.Both
+        txtDebugJson.Size = New Size(400, 200)
+        txtDebugJson.TabIndex = 94
+        txtDebugJson.Visible = False
         ' 
         ' dgvProviders
         ' 
@@ -1345,19 +1369,9 @@ Partial Class Profile
         Column3.HeaderText = "Associated NPI's"
         Column3.Name = "Column3"
         ' 
-        ' txtDebugJson
-        ' 
-        txtDebugJson.Location = New Point(860, 821)
-        txtDebugJson.Multiline = True
-        txtDebugJson.Name = "txtDebugJson"
-        txtDebugJson.ScrollBars = ScrollBars.Both
-        txtDebugJson.Size = New Size(400, 200)
-        txtDebugJson.TabIndex = 94
-        txtDebugJson.Visible = False
-        ' 
         ' Profile
         ' 
-        AutoScaleDimensions = New SizeF(7.0F, 15.0F)
+        AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         AutoScroll = True
         BackColor = SystemColors.HighlightText

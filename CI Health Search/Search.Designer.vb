@@ -234,7 +234,7 @@ Partial Class Search
         ' lblCheckingStatus
         ' 
         lblCheckingStatus.AutoSize = True
-        lblCheckingStatus.Location = New Point(576, 651)
+        lblCheckingStatus.Location = New Point(670, 648)
         lblCheckingStatus.Name = "lblCheckingStatus"
         lblCheckingStatus.Size = New Size(41, 15)
         lblCheckingStatus.TabIndex = 96
