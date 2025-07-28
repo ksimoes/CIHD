@@ -308,24 +308,123 @@ Public Class Search
     End Sub
 
     Private Async Function SearchByApiAsync(selectedState As String) As Task
-        Dim apiUrl As String = $"https://data.cms.gov/data-api/v1/dataset/8015f175-35cc-4cab-a664-b7c87d91a027/data?filter[State Code]={Uri.EscapeDataString(selectedState)}&size=1000"
-        MessageBox.Show("API URL: " & apiUrl) ' Debug: See the URL being called
+        MessageBox.Show("Entered SearchByApiAsync")
+        Dim apiUrl As String = "https://data.cms.gov/data-api/v1/dataset/8015f175-35cc-4cab-a664-b7c87d91a027/data?"
+        Dim filters As New List(Of String)
 
-        Dim dt As DataTable = Await GetNpiResultsAsync(apiUrl)
-
-        If dt IsNot Nothing Then
-            ' MessageBox.Show("Rows returned: " & dt.Rows.Count.ToString()) ' Debug: See how many rows
+        ' Use filter parameters for precise, field-specific filtering (using correct column names)
+        If Not String.IsNullOrEmpty(selectedState) Then filters.Add("filter[State Code]=" & Uri.EscapeDataString(selectedState))
+        If Not String.IsNullOrEmpty(txtCityAll.Text) Then filters.Add("filter[City]=" & Uri.EscapeDataString(txtCityAll.Text.Trim()))
+        Dim cmsNum As String = If(Not String.IsNullOrWhiteSpace(txtCmsCertNumDemoAll.Text), txtCmsCertNumDemoAll.Text.Trim(), TextBox39.Text.Trim())
+        If Not String.IsNullOrEmpty(cmsNum) Then
+            filters.Add("filter[Provider CCN]=" & Uri.EscapeDataString(cmsNum))
+        End If
+        If Not String.IsNullOrWhiteSpace(txtcountygeoall.Text) Then
+            filters.Add("filter[County]=" & Uri.EscapeDataString(txtcountygeoall.Text.Trim()))
+        End If
+        If lbTypeFacilityCharAll.SelectedItem IsNot Nothing Then
+            Dim selectedDisplay = lbTypeFacilityCharAll.SelectedItem.ToString()
+            If FacilityTypeMap.ContainsKey(selectedDisplay) Then
+                Dim acronym = FacilityTypeMap(selectedDisplay)
+                filters.Add("filter[CCN Facility Type]=" & Uri.EscapeDataString(acronym))
+            End If
+        End If
+        If Not String.IsNullOrEmpty(txtNpiAll.Text) Then filters.Add("filter[NPI]=" & Uri.EscapeDataString(txtNpiAll.Text.Trim()))
+        If Not String.IsNullOrEmpty(txtHospitalNameAll.Text) Then filters.Add("filter[Hospital Name]=" & Uri.EscapeDataString(txtHospitalNameAll.Text.Trim()))
+        If cbRUAll.SelectedItem IsNot Nothing AndAlso Not String.IsNullOrEmpty(cbRUAll.SelectedItem.ToString()) Then
+            filters.Add("filter[Rural Versus Urban]=" & Uri.EscapeDataString(cbRUAll.SelectedItem.ToString()))
         End If
 
-        If dt IsNot Nothing AndAlso dt.Rows.Count > 0 Then
-            Results.SetResults(dt)
-            Results.SelectedState = selectedState
-            Hide()
-            Results.Show()
-        Else
-            MessageBox.Show("No results found for this state.")
+        ' Client-side numeric filtering for Total Patient Revenue (API-side not reliable)
+        Dim zipCode As String = If(Not String.IsNullOrWhiteSpace(txtZipCodeDemoAll.Text), txtZipCodeDemoAll.Text.Trim(), TextBox40.Text.Trim())
+        If Not String.IsNullOrEmpty(zipCode) Then
+            filters.Add("filter[Zip Code]=" & Uri.EscapeDataString(zipCode))
         End If
+
+        filters.Add("size=1000") ' Increase size as needed
+
+        apiUrl &= String.Join("&", filters)
+        MessageBox.Show("API URL: " & apiUrl)
+
+        Using client As New HttpClient()
+            Dim response As HttpResponseMessage = Await client.GetAsync(apiUrl)
+            If response.IsSuccessStatusCode Then
+                Dim json As String = Await response.Content.ReadAsStringAsync()
+                Dim data As JArray = JArray.Parse(json)
+                If data.Count > 0 Then
+                    Dim dt As New DataTable()
+                    For Each col In data(0).ToObject(Of JObject)().Properties()
+                        dt.Columns.Add(col.Name)
+                    Next
+                    For Each item In data
+                        Dim row = dt.NewRow()
+                        For Each col In dt.Columns
+                            row(col.ToString()) = item(col.ToString())
+                        Next
+                        dt.Rows.Add(row)
+                    Next
+
+                    ' --- Client-side numeric filtering for Total Patient Revenue ---
+                    If (Not String.IsNullOrEmpty(txtMinTotPatRevAll.Text) OrElse Not String.IsNullOrEmpty(txtMaxTotPatRevAll.Text)) AndAlso dt.Columns.Contains("Total Patient Revenue") Then
+                        Dim minVal As Decimal = 0
+                        Dim maxVal As Decimal = Decimal.MaxValue
+                        If Not String.IsNullOrEmpty(txtMinTotPatRevAll.Text) Then Decimal.TryParse(txtMinTotPatRevAll.Text, minVal)
+                        If Not String.IsNullOrEmpty(txtMaxTotPatRevAll.Text) Then Decimal.TryParse(txtMaxTotPatRevAll.Text, maxVal)
+                        Dim filteredRows = dt.AsEnumerable().Where(
+                            Function(r)
+                                Dim val As Decimal = 0
+                                Dim strVal = r.Field(Of String)("Total Patient Revenue")
+                                If String.IsNullOrWhiteSpace(strVal) OrElse Not Decimal.TryParse(strVal.Replace("$", "").Replace(",", ""), val) Then
+                                    Return False ' Exclude rows with missing or non-numeric values
+                                End If
+                                Return val >= minVal AndAlso val <= maxVal
+                            End Function
+                        ).ToArray()
+                        dt = If(filteredRows.Length > 0, filteredRows.CopyToDataTable(), dt.Clone())
+                    End If
+
+                    ' --- Client-side numeric filtering for Number of Beds ---
+                    If (Not String.IsNullOrEmpty(txtMinTotalBedsAll.Text) OrElse Not String.IsNullOrEmpty(txtMaxTotalBedsAll.Text)) AndAlso dt.Columns.Contains("Number of Beds") Then
+                        Dim minBeds As Decimal = 0
+                        Dim maxBeds As Decimal = Decimal.MaxValue
+                        If Not String.IsNullOrEmpty(txtMinTotalBedsAll.Text) Then Decimal.TryParse(txtMinTotalBedsAll.Text, minBeds)
+                        If Not String.IsNullOrEmpty(txtMaxTotalBedsAll.Text) Then Decimal.TryParse(txtMaxTotalBedsAll.Text, maxBeds)
+                        Dim filteredRows = dt.AsEnumerable().Where(
+                            Function(r)
+                                Dim val As Decimal = 0
+                                Dim strVal = r.Field(Of String)("Number of Beds")
+                                If String.IsNullOrWhiteSpace(strVal) OrElse Not Decimal.TryParse(strVal.Replace("$", "").Replace(",", ""), val) Then
+                                    Return False
+                                End If
+                                Return val >= minBeds AndAlso val <= maxBeds
+                            End Function
+                        ).ToArray()
+                        dt = If(filteredRows.Length > 0, filteredRows.CopyToDataTable(), dt.Clone())
+                    End If
+
+                    If dt.Rows.Count = 0 Then
+                        MessageBox.Show("No results found for your search.")
+                        Return
+                    End If
+
+                    Results.SetResults(dt)
+                    Results.SelectedState = selectedState
+                    Hide()
+                    Results.Show()
+                Else
+                    MessageBox.Show("No results found for your search.")
+                End If
+            Else
+                MessageBox.Show("API error: " & response.StatusCode.ToString())
+            End If
+
+
+        End Using
+
+
+
     End Function
+
 
     Private Async Sub btnSearchAll_Click(sender As Object, e As EventArgs) Handles btnSearchAll.Click
         lblstatus.Text = "Searching..."
@@ -338,6 +437,30 @@ Public Class Search
             If lbStateAll.SelectedItem IsNot Nothing Then
                 selectedState = lbStateAll.SelectedItem.ToString().Trim()
             End If
+
+            If Not String.IsNullOrWhiteSpace(txtCmsCertNumDemoAll.Text) Then
+                Dim cmsNum As String = txtCmsCertNumDemoAll.Text.Trim()
+                Dim apiUrl As String = $"https://data.cms.gov/data-api/v1/dataset/8015f175-35cc-4cab-a664-b7c87d91a027/data?filter[Provider CCN]={Uri.EscapeDataString(cmsNum)}&size=1000"
+                Dim dt As DataTable = Await GetNpiResultsAsync(apiUrl)
+                If dt IsNot Nothing AndAlso dt.Rows.Count > 0 Then
+                    Results.SetResults(dt)
+                    Results.SelectedState = selectedState
+                    Hide()
+                    Results.Show()
+                    lblstatus.Text = ""
+                    lblstatus.Visible = False
+                    Return
+                Else
+                    MessageBox.Show("No results found for this CMS number.")
+                    lblstatus.Text = ""
+                    lblstatus.Visible = False
+                    Return
+                End If
+            End If
+
+
+
+
 
             ' --- NPI Search: Try all relevant datasets and fuzzy match ---
             If Not String.IsNullOrWhiteSpace(txtNpiAll.Text) Then
@@ -489,9 +612,11 @@ Public Class Search
                 Results.SelectedState = selectedState
                 Hide()
                 Results.Show()
+                MessageBox.Show("About to call SearchByApiAsync")
                 Await SearchByApiAsync(selectedState)
             Else
-                ' All other states: use API
+
+                MessageBox.Show("About to call SearchByApiAsync")
                 Await SearchByApiAsync(selectedState)
             End If
 
@@ -502,6 +627,24 @@ Public Class Search
 
         lblstatus.Visible = False
     End Sub
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        lbStateAll.ClearSelected()
+        txtCityAll.Clear()
+        txtCmsCertNumDemoAll.Clear()
+        txtNpiAll.Clear()
+        txtHospitalNameAll.Clear()
+        txtAreaCodeAll.Clear()
+        txtZipCodeDemoAll.Clear()
+        txtMaxTotalBedsAll.Clear()
+        txtMinTotalBedsAll.Clear()
+        txtNpiAll.Clear()
+        lbTypeFacilityCharAll.ClearSelected()
+        txtcountygeoall.Clear()
+        txtMinTotPatRevAll.Clear()
+        txtMaxTotPatRevAll.Clear()
+    End Sub
 
-    ' ... (rest of your code unchanged)
+
+
+
 End Class
