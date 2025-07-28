@@ -97,6 +97,7 @@ Partial Class Financial
         Button1 = New Button()
         Panel1 = New Panel()
         GroupBox2 = New BoldGroupBox()
+
         GroupBox1.SuspendLayout()
         gbIncomeStatement.SuspendLayout()
         GroupBox3.SuspendLayout()

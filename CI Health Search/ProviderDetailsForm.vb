@@ -7,6 +7,7 @@ Public Class ProviderDetailsForm
     Private WithEvents btnProviderProfile As New Button With {.Text = "Provider Profile", .Width = 150}
     Private WithEvents btnHCPCSLevel1 As New Button With {.Text = "HCPCS Level I", .Width = 150}
     Private WithEvents btnHCPCSLevel2 As New Button With {.Text = "HCPCS Level II", .Width = 150}
+    Private WithEvents btnAssociatedHospitals As New Button With {.Text = "Associated Hospitals", .Width = 150}
     Private buttonPanel As New FlowLayoutPanel()
 
     Private currentNpi As String
@@ -32,6 +33,7 @@ Public Class ProviderDetailsForm
         buttonPanel.Controls.Add(btnProviderProfile)
         buttonPanel.Controls.Add(btnHCPCSLevel1)
         buttonPanel.Controls.Add(btnHCPCSLevel2)
+        buttonPanel.Controls.Add(btnAssociatedHospitals)
         Me.Controls.Add(buttonPanel)
 
         Me.Controls.Add(lblLoading)
@@ -41,7 +43,7 @@ Public Class ProviderDetailsForm
         AddHandler btnProviderProfile.Click, AddressOf btnProviderProfile_Click
         AddHandler btnHCPCSLevel1.Click, AddressOf btnHCPCSLevel1_Click
         AddHandler btnHCPCSLevel2.Click, AddressOf btnHCPCSLevel2_Click
-
+        AddHandler btnAssociatedHospitals.Click, AddressOf btnAssociatedHospitals_Click
         btnPrescriberDrugs.PerformClick()
     End Sub
 
@@ -254,6 +256,49 @@ Public Class ProviderDetailsForm
             lblLoading.Visible = False
         End Try
     End Function
+    Private Async Sub btnAssociatedHospitals_Click(sender As Object, e As EventArgs)
+        lblLoading.Visible = True
+        Try
+            ClearGrid()
+            Dim dt As New DataTable()
+            ' Query all hospitals with this NPI from the CMS API
+            Dim apiUrl As String = $"https://data.cms.gov/data-api/v1/dataset/8015f175-35cc-4cab-a664-b7c87d91a027/data?filter[NPI]={Uri.EscapeDataString(currentNpi)}&size=1000"
+            Using client As New HttpClient()
+                Dim response = Await client.GetAsync(apiUrl)
+                If response.IsSuccessStatusCode Then
+                    Dim json = Await response.Content.ReadAsStringAsync()
+                    Dim data = JArray.Parse(json)
+                    If data.Count > 0 Then
+                        Dim firstObj As JObject = CType(data(0), JObject)
+                        For Each col In firstObj.Properties()
+                            If dt.Columns.Contains(col.Name) = False Then
+                                dt.Columns.Add(col.Name)
+                            End If
+                        Next
+                        For Each item In data
+                            Dim obj As JObject = CType(item, JObject)
+                            Dim row = dt.NewRow()
+                            For Each col In dt.Columns
+                                row(col.ToString()) = obj(col.ToString())
+                            Next
+                            dt.Rows.Add(row)
+                        Next
+                    End If
+                End If
+            End Using
+
+            If dt.Rows.Count = 0 Then
+                MessageBox.Show("No associated hospitals found for this provider.")
+            Else
+                dgvDetails.DataSource = dt
+                dgvDetails.Refresh()
+            End If
+        Catch ex As Exception
+            MessageBox.Show("Error loading associated hospitals: " & ex.Message)
+        Finally
+            lblLoading.Visible = False
+        End Try
+    End Sub
 
     Public Sub SetFriendlyColumnHeaders()
         Dim headerMap As New Dictionary(Of String, String) From {
@@ -321,5 +366,9 @@ Public Class ProviderDetailsForm
                 col.HeaderText = headerMap(col.Name)
             End If
         Next
+    End Sub
+
+    Private Sub ProviderDetailsForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
     End Sub
 End Class
