@@ -1876,7 +1876,7 @@ Partial Class Search
         MaximumSize = New Size(1000000, 1000000)
         Name = "Search"
         StartPosition = FormStartPosition.CenterScreen
-        Text = "Search"
+        Text = "Search (1.0)"
         TabControl1.ResumeLayout(False)
         TabPage5.ResumeLayout(False)
         TabPage5.PerformLayout()
