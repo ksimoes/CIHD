@@ -308,7 +308,7 @@ Public Class Search
     End Sub
 
     Private Async Function SearchByApiAsync(selectedState As String) As Task
-        MessageBox.Show("Entered SearchByApiAsync")
+        ' MessageBox.Show("Entered SearchByApiAsync")
         Dim apiUrl As String = "https://data.cms.gov/data-api/v1/dataset/8015f175-35cc-4cab-a664-b7c87d91a027/data?"
         Dim filters As New List(Of String)
 
@@ -612,11 +612,11 @@ Public Class Search
                 Results.SelectedState = selectedState
                 Hide()
                 Results.Show()
-                MessageBox.Show("About to call SearchByApiAsync")
+                ' MessageBox.Show("About to call SearchByApiAsync")
                 Await SearchByApiAsync(selectedState)
             Else
 
-                MessageBox.Show("About to call SearchByApiAsync")
+                'MessageBox.Show("About to call SearchByApiAsync")
                 Await SearchByApiAsync(selectedState)
             End If
 
