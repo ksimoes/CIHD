@@ -556,12 +556,36 @@ Public Class Search
                 Return
             End If
 
-            ' --- FQHC Search: Use new API if selected ---
+            'FQHC Search Use New API if selected 
             If lbTypeFacilityCharAll.SelectedItem IsNot Nothing AndAlso lbTypeFacilityCharAll.SelectedItem.ToString() = "Federally Qualified Health Centers" Then
-                Dim fqhcDt = Await GetFqhcsAsync()
+                Dim fqhcApiUrl As String = "https://data.cms.gov/data-api/v1/dataset/4bcae866-3411-439a-b762-90a6187c194b/data?"
+                Dim fqhcFilters As New List(Of String)
+
+                ' State filter
+                If lbStateAll.SelectedItem IsNot Nothing Then
+                    fqhcFilters.Add("filter[STATE]=" & Uri.EscapeDataString(lbStateAll.SelectedItem.ToString().Trim()))
+                End If
+                ' City filter
+                If Not String.IsNullOrWhiteSpace(txtCityAll.Text) Then
+                    fqhcFilters.Add("filter[CITY]=" & Uri.EscapeDataString(txtCityAll.Text.Trim()))
+                End If
+                ' Zip filter
+                If Not String.IsNullOrWhiteSpace(txtZipCodeDemoAll.Text) Then
+                    fqhcFilters.Add("filter[ZIP]=" & Uri.EscapeDataString(txtZipCodeDemoAll.Text.Trim()))
+                End If
+                ' NPI filter
+                If Not String.IsNullOrWhiteSpace(txtNpiAll.Text) Then
+                    fqhcFilters.Add("filter[NPI]=" & Uri.EscapeDataString(txtNpiAll.Text.Trim()))
+                End If
+                ' Add more filters as needed, matching the FQHC dataset's column names
+
+                fqhcFilters.Add("size=10000")
+                fqhcApiUrl &= String.Join("&", fqhcFilters)
+
+                Dim fqhcDt As DataTable = Await GetNpiResultsAsync(fqhcApiUrl)
                 If fqhcDt IsNot Nothing AndAlso fqhcDt.Rows.Count > 0 Then
                     Results.SetResults(fqhcDt)
-                    Results.SelectedState = selectedState
+                    Results.SelectedState = If(lbStateAll.SelectedItem IsNot Nothing, lbStateAll.SelectedItem.ToString().Trim(), "")
                     Hide()
                     Results.Show()
                     lblstatus.Text = ""
@@ -574,6 +598,26 @@ Public Class Search
                     Return
                 End If
             End If
+
+            '' --- FQHC Search: Use new API if selected ---
+            'If lbTypeFacilityCharAll.SelectedItem IsNot Nothing AndAlso lbTypeFacilityCharAll.SelectedItem.ToString() = "Federally Qualified Health Centers" Then
+            '    Dim fqhcDt = Await GetFqhcsAsync()
+            '    If fqhcDt IsNot Nothing AndAlso fqhcDt.Rows.Count > 0 Then
+            '        Results.SetResults(fqhcDt)
+            '        Results.SelectedState = selectedState
+            '        Hide()
+            '        Results.Show()
+            '        lblstatus.Text = ""
+            '        lblstatus.Visible = False
+            '        Return
+            '    Else
+            '        MessageBox.Show("No FQHCs found.")
+            '        lblstatus.Text = ""
+            '        lblstatus.Visible = False
+            '        Return
+            '    End If
+            'End If
+
 
             ' --- TN/TX use SQL, all others use API ---
             If selectedState = "TN" OrElse selectedState = "TX" Then

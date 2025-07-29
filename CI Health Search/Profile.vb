@@ -71,6 +71,7 @@ Public Class Profile
             If row.Table.Columns.Contains("PRVDR_NUM") Then Return row("PRVDR_NUM").ToString()
             If row.Table.Columns.Contains("Provider CCN") Then Return row("Provider CCN").ToString()
             If row.Table.Columns.Contains("CMSNum") Then Return row("CMSNum").ToString()
+            If row.Table.Columns.Contains("CCN") Then Return row("CCN").ToString()
         End If
         If Not String.IsNullOrWhiteSpace(ctx.CMSNum) Then Return ctx.CMSNum
         Return "N/A"
@@ -105,6 +106,18 @@ Public Class Profile
         lblCmsUrbRurDesigResult.Text = If(Not String.IsNullOrWhiteSpace(foundHospital.RuralOUrban), foundHospital.RuralOUrban, "N/A")
         lblCbsaResult.Text = If(Not String.IsNullOrWhiteSpace(foundHospital.CBSAnum), foundHospital.CBSAnum, "N/A")
         lblPhoneNumResult.Text = If(Not String.IsNullOrWhiteSpace(foundHospital.Phone), foundHospital.Phone, "N/A")
+        ' Set Type of Facility: FQHC detection by "MULTIPLE NPI FLAG" column
+        Dim isFqhc As Boolean = False
+        If foundHospital.LastDataRow IsNot Nothing AndAlso
+   foundHospital.LastDataRow.Table.Columns.Contains("MULTIPLE NPI FLAG") Then
+            isFqhc = True
+        End If
+
+        If isFqhc Then
+            lblFacilityResult.Text = "Federally Qualified Health Center"
+        Else
+            lblFacilityResult.Text = If(Not String.IsNullOrWhiteSpace(foundHospital.FacilityType), foundHospital.FacilityType, "N/A")
+        End If
 
         ' If TN/TX, supplement with SQL data (but do NOT overwrite name/address)
         Dim useSql As Boolean = (foundHospital.State = "TN" Or foundHospital.State = "TX")

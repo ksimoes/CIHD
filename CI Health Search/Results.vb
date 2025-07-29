@@ -121,7 +121,7 @@
 
             ' Core Identifiers
             hosp.HospitalId = If(resultsTable.Columns.Contains("LicenseNum"), SafeInt(selectedRow("LicenseNum")), 0)
-            hosp.CMSNum = SafeStr(selectedRow, "Provider CCN", "CMSNum", "PRVDR_NUM")
+            hosp.CMSNum = SafeStr(selectedRow, "Provider CCN", "CMSNum", "PRVDR_NUM", "CCN", "ccn")
             hosp.NPI = SafeStr(selectedRow, "NPI", "npi")
             hosp.Name = SafeStr(selectedRow, "FAC_NAME", "PRVDR_NM", "PRVDR_NAME", "ORGANIZATION NAME", "organization_name", "Facility Name", "Hospital Name", "provider_name")
 
