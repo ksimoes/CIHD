@@ -263,29 +263,44 @@ Public Class ProviderDetailsForm
         Try
             ClearGrid()
             Dim dt As New DataTable()
-            ' Query all hospitals with this NPI from the CMS API
-            Dim apiUrl As String = $"https://data.cms.gov/data-api/v1/dataset/8015f175-35cc-4cab-a664-b7c87d91a027/data?filter[NPI]={Uri.EscapeDataString(currentNpi)}&size=1000"
+            dt.Columns.Add("Provider First Name")
+            dt.Columns.Add("Provider Last Name")
+            dt.Columns.Add("Facility Type")
+            dt.Columns.Add("Facility Affiliation Certification Number")
+
+            Dim apiUrl As String = "https://data.cms.gov/provider-data/api/1/datastore/query/27ea-46a8/0"
+
+            ' Build the POST body with the required "resource": "t"
+            Dim postBody As New JObject(
+            New JProperty("conditions", New JArray(
+                New JObject(
+                    New JProperty("resource", "t"),
+                    New JProperty("property", "npi"),
+                    New JProperty("value", currentNpi),
+                    New JProperty("operator", "=")
+                )
+            )),
+            New JProperty("limit", 1000)
+        )
+
             Using client As New HttpClient()
-                Dim response = Await client.GetAsync(apiUrl)
+                Dim content = New StringContent(postBody.ToString(), System.Text.Encoding.UTF8, "application/json")
+                Dim response = Await client.PostAsync(apiUrl, content)
                 If response.IsSuccessStatusCode Then
                     Dim json = Await response.Content.ReadAsStringAsync()
-                    Dim data = JArray.Parse(json)
-                    If data.Count > 0 Then
-                        Dim firstObj As JObject = CType(data(0), JObject)
-                        For Each col In firstObj.Properties()
-                            If dt.Columns.Contains(col.Name) = False Then
-                                dt.Columns.Add(col.Name)
-                            End If
-                        Next
-                        For Each item In data
-                            Dim obj As JObject = CType(item, JObject)
+                    Dim obj = JObject.Parse(json)
+                    If obj("results") IsNot Nothing AndAlso obj("results").HasValues Then
+                        For Each item In obj("results")
                             Dim row = dt.NewRow()
-                            For Each col In dt.Columns
-                                row(col.ToString()) = obj(col.ToString())
-                            Next
+                            row("Provider First Name") = item("provider_first_name")?.ToString()
+                            row("Provider Last Name") = item("provider_last_name")?.ToString()
+                            row("Facility Type") = item("facility_type")?.ToString()
+                            row("Facility Affiliation Certification Number") = item("facility_affiliations_certification_number")?.ToString()
                             dt.Rows.Add(row)
                         Next
                     End If
+                Else
+                    MessageBox.Show("API error: " & response.StatusCode.ToString() & vbCrLf & Await response.Content.ReadAsStringAsync())
                 End If
             End Using
 
