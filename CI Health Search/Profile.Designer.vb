@@ -140,6 +140,7 @@ Partial Class Profile
         Column1 = New DataGridViewTextBoxColumn()
         Column2 = New DataGridViewTextBoxColumn()
         Column3 = New DataGridViewTextBoxColumn()
+        Label13 = New Label()
         Panel1.SuspendLayout()
         CType(dgvProviders, ComponentModel.ISupportInitialize).BeginInit()
         GroupBox2.SuspendLayout()
@@ -791,7 +792,7 @@ Partial Class Profile
         ' 
         ' Button1
         ' 
-        Button1.Location = New Point(822, 52)
+        Button1.Location = New Point(1274, 12)
         Button1.Name = "Button1"
         Button1.Size = New Size(134, 87)
         Button1.TabIndex = 21
@@ -955,6 +956,7 @@ Partial Class Profile
         ' Panel1
         ' 
         Panel1.AutoScroll = True
+        Panel1.Controls.Add(Label13)
         Panel1.Controls.Add(txtDebugJson)
         Panel1.Controls.Add(lblCfoResult)
         Panel1.Controls.Add(dgvProviders)
@@ -1370,6 +1372,16 @@ Partial Class Profile
         Column3.HeaderText = "Associated NPI's"
         Column3.Name = "Column3"
         ' 
+        ' Label13
+        ' 
+        Label13.AutoSize = True
+        Label13.Font = New Font("Segoe UI", 15.0F, FontStyle.Bold)
+        Label13.Location = New Point(685, 96)
+        Label13.Name = "Label13"
+        Label13.Size = New Size(185, 28)
+        Label13.TabIndex = 95
+        Label13.Text = "Affiliate Providers"
+        ' 
         ' Profile
         ' 
         AutoScaleDimensions = New SizeF(7.0F, 15.0F)
@@ -1515,6 +1527,7 @@ Partial Class Profile
     Friend WithEvents Label11 As Label
     Friend WithEvents Label10 As Label
     Friend WithEvents txtDebugJson As TextBox
+    Friend WithEvents Label13 As Label
     ' Friend WithEvents GroupBox1 As BoldGroupBox
 
 End Class

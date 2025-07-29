@@ -32,7 +32,24 @@
         End If
 
         For Each row As DataRow In dt.Rows
-            CheckedListBox1.Items.Add(row(displayCol).ToString())
+            Dim name As String = row(displayCol).ToString()
+            Dim city As String = If(dt.Columns.Contains("City"), row("City").ToString(), "")
+            ' Try common state column names
+            Dim state As String = ""
+            If dt.Columns.Contains("State") Then
+                state = row("State").ToString()
+            ElseIf dt.Columns.Contains("STATE") Then
+                state = row("STATE").ToString()
+            ElseIf dt.Columns.Contains("State Code") Then
+                state = row("State Code").ToString()
+            End If
+            Dim zip As String = If(dt.Columns.Contains("Zip Code"), row("Zip Code").ToString(),
+                   If(dt.Columns.Contains("ZIP"), row("ZIP").ToString(), ""))
+            Dim display As String = name
+            If city <> "" Or state <> "" Or zip <> "" Then
+                display &= $" ({city}, {state} {zip})"
+            End If
+            CheckedListBox1.Items.Add(display.Trim())
         Next
         Dim items As New List(Of String)
         For Each item In CheckedListBox1.Items
@@ -68,7 +85,12 @@
     End Function
 
     Public Sub retrieveProfile()
-        Dim selectedName As String = CheckedListBox1.SelectedItem.ToString().Trim()
+        Dim selectedDisplay As String = CheckedListBox1.SelectedItem.ToString().Trim()
+        Dim selectedName As String = selectedDisplay
+        Dim idx = selectedDisplay.IndexOf(" (")
+        If idx > 0 Then
+            selectedName = selectedDisplay.Substring(0, idx)
+        End If
         Dim selectedRow As DataRow = Nothing
 
         ' Use the same display column logic as SetResults
@@ -104,7 +126,7 @@
             hosp.Name = SafeStr(selectedRow, "FAC_NAME", "PRVDR_NM", "PRVDR_NAME", "ORGANIZATION NAME", "organization_name", "Facility Name", "Hospital Name", "provider_name")
 
             ' Location & Contact
-            hosp.Address = SafeStr(selectedRow, "ADDR_LN_1_TXT", "ADDRESS LINE 1", "address_line_1", "Address", "Facility Address")
+            hosp.Address = SafeStr(selectedRow, "ADDR_LN_1_TXT", "ADDRESS LINE 1", "address_line_1", "Address", "Facility Address", "Street Address", "STREET", "STREET1", "STREET_ADDRESS")
             hosp.City = SafeStr(selectedRow, "CITY_NM", "City")
             hosp.Zip = SafeStr(selectedRow, "ZIP_CD", "Zip Code", "ZIP")
             hosp.County = SafeStr(selectedRow, "County Name", "County")

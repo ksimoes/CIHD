@@ -644,7 +644,7 @@ Public Class Search
         txtMaxTotPatRevAll.Clear()
     End Sub
 
+    Private Sub Search_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
-
-
+    End Sub
 End Class

@@ -29,8 +29,9 @@ Public Class ProviderDetailsForm
         buttonPanel.Dock = DockStyle.Top
         buttonPanel.Height = 50
         buttonPanel.FlowDirection = FlowDirection.LeftToRight
-        buttonPanel.Controls.Add(btnPrescriberDrugs)
         buttonPanel.Controls.Add(btnProviderProfile)
+        buttonPanel.Controls.Add(btnPrescriberDrugs)
+
         buttonPanel.Controls.Add(btnHCPCSLevel1)
         buttonPanel.Controls.Add(btnHCPCSLevel2)
         buttonPanel.Controls.Add(btnAssociatedHospitals)
@@ -39,8 +40,9 @@ Public Class ProviderDetailsForm
         Me.Controls.Add(lblLoading)
         lblLoading.BringToFront()
 
-        AddHandler btnPrescriberDrugs.Click, AddressOf btnPrescriberDrugs_Click
+
         AddHandler btnProviderProfile.Click, AddressOf btnProviderProfile_Click
+        AddHandler btnPrescriberDrugs.Click, AddressOf btnPrescriberDrugs_Click
         AddHandler btnHCPCSLevel1.Click, AddressOf btnHCPCSLevel1_Click
         AddHandler btnHCPCSLevel2.Click, AddressOf btnHCPCSLevel2_Click
         AddHandler btnAssociatedHospitals.Click, AddressOf btnAssociatedHospitals_Click
