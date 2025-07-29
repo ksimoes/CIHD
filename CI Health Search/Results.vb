@@ -3,14 +3,24 @@
     Public Property SelectedState As String
     Private resultsTable As DataTable
     Public strCMSnum As String
-    ' Shared context for selected hospital
     Public Shared SelectedHospital As New HospitalContext()
 
     ' Call this from Search form to set and display results
     Public Sub SetResults(dt As DataTable)
         resultsTable = dt
 
-        CheckedListBox1.Items.Clear()
+        ' Setup DataGridView columns only once
+        If dgvResults.Columns.Count = 0 Then
+            dgvResults.Columns.Add(New DataGridViewCheckBoxColumn() With {.Name = "Select", .HeaderText = "", .Width = 30})
+            dgvResults.Columns.Add("HospitalName", "Hospital Name")
+            dgvResults.Columns.Add("City", "City")
+            dgvResults.Columns.Add("State", "State")
+            dgvResults.Columns.Add("Zip", "Zip")
+            dgvResults.SelectionMode = DataGridViewSelectionMode.FullRowSelect
+            dgvResults.MultiSelect = False
+        End If
+        dgvResults.Rows.Clear()
+
         ' Determine which column to use for display
         Dim displayCol As String = ""
         If dt.Columns.Contains("FAC_NAME") Then
@@ -34,7 +44,6 @@
         For Each row As DataRow In dt.Rows
             Dim name As String = row(displayCol).ToString()
             Dim city As String = If(dt.Columns.Contains("City"), row("City").ToString(), "")
-            ' Try common state column names
             Dim state As String = ""
             If dt.Columns.Contains("State") Then
                 state = row("State").ToString()
@@ -45,55 +54,36 @@
             End If
             Dim zip As String = If(dt.Columns.Contains("Zip Code"), row("Zip Code").ToString(),
                    If(dt.Columns.Contains("ZIP"), row("ZIP").ToString(), ""))
-            Dim display As String = name
-            If city <> "" Or state <> "" Or zip <> "" Then
-                display &= $" ({city}, {state} {zip})"
-            End If
-            CheckedListBox1.Items.Add(display.Trim())
-        Next
-        Dim items As New List(Of String)
-        For Each item In CheckedListBox1.Items
-            items.Add(item.ToString())
-        Next
 
-        ' Sort the list
-        items.Sort()
-
-        ' Clear the CheckedListBox and re-add sorted items
-        CheckedListBox1.Items.Clear()
-        For Each item In items
-            CheckedListBox1.Items.Add(item)
+            dgvResults.Rows.Add(False, name, city, state, zip)
         Next
+    End Sub
 
+    ' Ensure only one checkbox is checked at a time (single selection)
+    Private Sub dgvResults_CellValueChanged(sender As Object, e As DataGridViewCellEventArgs) Handles dgvResults.CellValueChanged
+        If e.ColumnIndex = dgvResults.Columns("Select").Index AndAlso CBool(dgvResults.Rows(e.RowIndex).Cells("Select").Value) Then
+            For i As Integer = 0 To dgvResults.Rows.Count - 1
+                If i <> e.RowIndex Then
+                    dgvResults.Rows(i).Cells("Select").Value = False
+                End If
+            Next
+        End If
     End Sub
 
     ' Profile button click
     Private Async Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-        If CheckedListBox1.SelectedIndex = -1 Then
+        Dim selectedRow As DataGridViewRow = dgvResults.Rows.Cast(Of DataGridViewRow)().
+            FirstOrDefault(Function(r) CBool(r.Cells("Select").Value))
+        If selectedRow Is Nothing Then
             MessageBox.Show("Select a hospital first.")
             Return
         End If
-        retrieveProfile()
-        Profile.ShowProfile(SelectedHospital)
-        Hide()
-        Profile.Show()
-    End Sub
 
-    Public Function GetSelectedHospital() As HospitalContext
-        retrieveProfile()
-        Return SelectedHospital
-    End Function
+        Dim name As String = selectedRow.Cells("HospitalName").Value.ToString()
+        Dim city As String = selectedRow.Cells("City").Value.ToString()
+        Dim state As String = selectedRow.Cells("State").Value.ToString()
+        Dim zip As String = selectedRow.Cells("Zip").Value.ToString()
 
-    Public Sub retrieveProfile()
-        Dim selectedDisplay As String = CheckedListBox1.SelectedItem.ToString().Trim()
-        Dim selectedName As String = selectedDisplay
-        Dim idx = selectedDisplay.IndexOf(" (")
-        If idx > 0 Then
-            selectedName = selectedDisplay.Substring(0, idx)
-        End If
-        Dim selectedRow As DataRow = Nothing
-
-        ' Use the same display column logic as SetResults
         Dim displayCol As String = ""
         If resultsTable.Columns.Contains("FAC_NAME") Then
             displayCol = "FAC_NAME"
@@ -113,64 +103,168 @@
             displayCol = resultsTable.Columns(0).ColumnName ' fallback
         End If
 
-        ' Find the selected row based on the display column
-        selectedRow = resultsTable.Select("[" & displayCol & "] = '" & selectedName.Replace("'", "''") & "'").FirstOrDefault()
+        Dim selectedDataRow As DataRow = resultsTable.AsEnumerable().FirstOrDefault(
+            Function(r) r.Field(Of String)(displayCol) = name AndAlso
+                        (Not resultsTable.Columns.Contains("City") OrElse r.Field(Of String)("City") = city) AndAlso
+                        (Not resultsTable.Columns.Contains("State") OrElse r.Field(Of String)("State") = state OrElse
+                         resultsTable.Columns.Contains("STATE") AndAlso r.Field(Of String)("STATE") = state OrElse
+                         resultsTable.Columns.Contains("State Code") AndAlso r.Field(Of String)("State Code") = state) AndAlso
+                        (Not resultsTable.Columns.Contains("Zip Code") OrElse r.Field(Of String)("Zip Code") = zip OrElse
+                         resultsTable.Columns.Contains("ZIP") AndAlso r.Field(Of String)("ZIP") = zip)
+        )
 
-        If selectedRow IsNot Nothing Then
+        If selectedDataRow IsNot Nothing Then
             Dim hosp As New HospitalContext()
-
             ' Core Identifiers
-            hosp.HospitalId = If(resultsTable.Columns.Contains("LicenseNum"), SafeInt(selectedRow("LicenseNum")), 0)
-            hosp.CMSNum = SafeStr(selectedRow, "Provider CCN", "CMSNum", "PRVDR_NUM", "CCN", "ccn")
-            hosp.NPI = SafeStr(selectedRow, "NPI", "npi")
-            hosp.Name = SafeStr(selectedRow, "FAC_NAME", "PRVDR_NM", "PRVDR_NAME", "ORGANIZATION NAME", "organization_name", "Facility Name", "Hospital Name", "provider_name")
-
+            hosp.HospitalId = If(resultsTable.Columns.Contains("LicenseNum"), SafeInt(selectedDataRow("LicenseNum")), 0)
+            hosp.CMSNum = SafeStr(selectedDataRow, "Provider CCN", "CMSNum", "PRVDR_NUM", "CCN", "ccn")
+            hosp.NPI = SafeStr(selectedDataRow, "NPI", "npi")
+            hosp.Name = SafeStr(selectedDataRow, "FAC_NAME", "PRVDR_NM", "PRVDR_NAME", "ORGANIZATION NAME", "organization_name", "Facility Name", "Hospital Name", "provider_name")
             ' Location & Contact
-            hosp.Address = SafeStr(selectedRow, "ADDR_LN_1_TXT", "ADDRESS LINE 1", "address_line_1", "Address", "Facility Address", "Street Address", "STREET", "STREET1", "STREET_ADDRESS")
-            hosp.City = SafeStr(selectedRow, "CITY_NM", "City")
-            hosp.Zip = SafeStr(selectedRow, "ZIP_CD", "Zip Code", "ZIP")
-            hosp.County = SafeStr(selectedRow, "County Name", "County")
-            hosp.Phone = SafeStr(selectedRow, "Phone", "Telephone Number")
-            hosp.Website = SafeStr(selectedRow, "Website")
-
+            hosp.Address = SafeStr(selectedDataRow, "ADDR_LN_1_TXT", "ADDRESS LINE 1", "address_line_1", "Address", "Facility Address", "Street Address", "STREET", "STREET1", "STREET_ADDRESS")
+            hosp.City = SafeStr(selectedDataRow, "CITY_NM", "City")
+            hosp.Zip = SafeStr(selectedDataRow, "ZIP_CD", "Zip Code", "ZIP")
+            hosp.County = SafeStr(selectedDataRow, "County Name", "County")
+            hosp.Phone = SafeStr(selectedDataRow, "Phone", "Telephone Number")
+            hosp.Website = SafeStr(selectedDataRow, "Website")
             ' Classification
-            hosp.CBSAnum = SafeStr(selectedRow, "CBSA", "CBSA Code")
-            hosp.FacilityType = SafeStr(selectedRow, "Facility Type")
-            hosp.RuralOUrban = SafeStr(selectedRow, "Rural Versus Urban")
-
+            hosp.CBSAnum = SafeStr(selectedDataRow, "CBSA", "CBSA Code")
+            hosp.FacilityType = SafeStr(selectedDataRow, "Facility Type")
+            hosp.RuralOUrban = SafeStr(selectedDataRow, "Rural Versus Urban")
             ' Capacity & Staffing
-            hosp.NumOfBeds = SafeInt(selectedRow, "Number of Beds", "General Med/Surg Beds")
-            hosp.NumOfEmployees = SafeInt(selectedRow, "Total Employees")
-            hosp.TotalDays = SafeInt(selectedRow, "Total Days", "Inpatient Days")
-            hosp.TotalDischarges = SafeInt(selectedRow, "Total Discharges")
-
+            hosp.NumOfBeds = SafeInt(selectedDataRow, "Number of Beds", "General Med/Surg Beds")
+            hosp.NumOfEmployees = SafeInt(selectedDataRow, "Total Employees")
+            hosp.TotalDays = SafeInt(selectedDataRow, "Total Days", "Inpatient Days")
+            hosp.TotalDischarges = SafeInt(selectedDataRow, "Total Discharges")
             ' Financials
-            hosp.TotalPatientRev = SafeDec(selectedRow, "Total Patient Revenue")
-            hosp.NetPatientRev = SafeDec(selectedRow, "Net Patient Revenue")
-            hosp.CharityCost = SafeDec(selectedRow, "Cost of Charity Care")
-            hosp.UncompensatedCost = SafeDec(selectedRow, "Cost of Uncompensated Care")
-
+            hosp.TotalPatientRev = SafeDec(selectedDataRow, "Total Patient Revenue")
+            hosp.NetPatientRev = SafeDec(selectedDataRow, "Net Patient Revenue")
+            hosp.CharityCost = SafeDec(selectedDataRow, "Cost of Charity Care")
+            hosp.UncompensatedCost = SafeDec(selectedDataRow, "Cost of Uncompensated Care")
             ' Additional/Expandable fields
-            hosp.TotalCurrentAssets = SafeDec(selectedRow, "Total Current Assets")
-            hosp.TotalAssets = SafeDec(selectedRow, "Total Assets")
-            hosp.NetIncome = SafeDec(selectedRow, "Net Income")
-            hosp.TotalOperatingRevenue = SafeDec(selectedRow, "Net Patient Revenue")
-            hosp.TotalOperatingExpense = SafeDec(selectedRow, "Less Total Operating Expense")
-            hosp.TotalLiabilities = SafeDec(selectedRow, "Total Liabilities")
-            hosp.TotalCurrentLiabilities = SafeDec(selectedRow, "Total Current Liabilities")
-            hosp.TotalLongTermLiabilities = SafeDec(selectedRow, "Total Long Term Liabilities")
-            hosp.DepreciationCost = SafeDec(selectedRow, "Depreciation Cost")
-            hosp.LeaseCost = SafeDec(selectedRow, "Leasehold Improvements")
-            hosp.Inventory = SafeDec(selectedRow, "Inventory")
-            hosp.NotesReceivable = SafeDec(selectedRow, "Notes Receivable")
-            hosp.MarketSecurities = SafeDec(selectedRow, "Temporary Investments")
-            hosp.Investments = SafeDec(selectedRow, "Investments")
-
+            hosp.TotalCurrentAssets = SafeDec(selectedDataRow, "Total Current Assets")
+            hosp.TotalAssets = SafeDec(selectedDataRow, "Total Assets")
+            hosp.NetIncome = SafeDec(selectedDataRow, "Net Income")
+            hosp.TotalOperatingRevenue = SafeDec(selectedDataRow, "Net Patient Revenue")
+            hosp.TotalOperatingExpense = SafeDec(selectedDataRow, "Less Total Operating Expense")
+            hosp.TotalLiabilities = SafeDec(selectedDataRow, "Total Liabilities")
+            hosp.TotalCurrentLiabilities = SafeDec(selectedDataRow, "Total Current Liabilities")
+            hosp.TotalLongTermLiabilities = SafeDec(selectedDataRow, "Total Long Term Liabilities")
+            hosp.DepreciationCost = SafeDec(selectedDataRow, "Depreciation Cost")
+            hosp.LeaseCost = SafeDec(selectedDataRow, "Leasehold Improvements")
+            hosp.Inventory = SafeDec(selectedDataRow, "Inventory")
+            hosp.NotesReceivable = SafeDec(selectedDataRow, "Notes Receivable")
+            hosp.MarketSecurities = SafeDec(selectedDataRow, "Temporary Investments")
+            hosp.Investments = SafeDec(selectedDataRow, "Investments")
             Results.SelectedHospital = hosp
-            hosp.LastDataRow = selectedRow
+            hosp.LastDataRow = selectedDataRow
+        Else
+            MessageBox.Show("Could not find the selected hospital in the results.")
+            Return
         End If
+
+        Profile.ShowProfile(SelectedHospital)
+        Hide()
+        Profile.Show()
     End Sub
 
+    ' Repeat the above selection logic for other navigation buttons as needed
+    ' Example for Button3_Click (Financial):
+    Private Async Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
+        Dim selectedRow As DataGridViewRow = dgvResults.Rows.Cast(Of DataGridViewRow)().
+            FirstOrDefault(Function(r) CBool(r.Cells("Select").Value))
+        If selectedRow Is Nothing Then
+            MessageBox.Show("Select a hospital first.")
+            Return
+        End If
+
+        Dim name As String = selectedRow.Cells("HospitalName").Value.ToString()
+        Dim city As String = selectedRow.Cells("City").Value.ToString()
+        Dim state As String = selectedRow.Cells("State").Value.ToString()
+        Dim zip As String = selectedRow.Cells("Zip").Value.ToString()
+
+        Dim displayCol As String = ""
+        If resultsTable.Columns.Contains("FAC_NAME") Then
+            displayCol = "FAC_NAME"
+        ElseIf resultsTable.Columns.Contains("ORGANIZATION NAME") Then
+            displayCol = "ORGANIZATION NAME"
+        ElseIf resultsTable.Columns.Contains("facility_name") Then
+            displayCol = "facility_name"
+        ElseIf resultsTable.Columns.Contains("provider_name") Then
+            displayCol = "provider_name"
+        ElseIf resultsTable.Columns.Contains("Rndrng_Prvdr_Org_Name") Then
+            displayCol = "Rndrng_Prvdr_Org_Name"
+        ElseIf resultsTable.Columns.Contains("Hospital Name") Then
+            displayCol = "Hospital Name"
+        ElseIf resultsTable.Columns.Contains("Facility Name") Then
+            displayCol = "Facility Name"
+        ElseIf resultsTable.Columns.Count > 0 Then
+            displayCol = resultsTable.Columns(0).ColumnName ' fallback
+        End If
+
+        Dim selectedDataRow As DataRow = resultsTable.AsEnumerable().FirstOrDefault(
+            Function(r) r.Field(Of String)(displayCol) = name AndAlso
+                        (Not resultsTable.Columns.Contains("City") OrElse r.Field(Of String)("City") = city) AndAlso
+                        (Not resultsTable.Columns.Contains("State") OrElse r.Field(Of String)("State") = state OrElse
+                         resultsTable.Columns.Contains("STATE") AndAlso r.Field(Of String)("STATE") = state OrElse
+                         resultsTable.Columns.Contains("State Code") AndAlso r.Field(Of String)("State Code") = state) AndAlso
+                        (Not resultsTable.Columns.Contains("Zip Code") OrElse r.Field(Of String)("Zip Code") = zip OrElse
+                         resultsTable.Columns.Contains("ZIP") AndAlso r.Field(Of String)("ZIP") = zip)
+        )
+
+        If selectedDataRow IsNot Nothing Then
+            Dim hosp As New HospitalContext()
+            ' (populate hosp as above)
+            hosp.HospitalId = If(resultsTable.Columns.Contains("LicenseNum"), SafeInt(selectedDataRow("LicenseNum")), 0)
+            hosp.CMSNum = SafeStr(selectedDataRow, "Provider CCN", "CMSNum", "PRVDR_NUM", "CCN", "ccn")
+            hosp.NPI = SafeStr(selectedDataRow, "NPI", "npi")
+            hosp.Name = SafeStr(selectedDataRow, "FAC_NAME", "PRVDR_NM", "PRVDR_NAME", "ORGANIZATION NAME", "organization_name", "Facility Name", "Hospital Name", "provider_name")
+            hosp.Address = SafeStr(selectedDataRow, "ADDR_LN_1_TXT", "ADDRESS LINE 1", "address_line_1", "Address", "Facility Address", "Street Address", "STREET", "STREET1", "STREET_ADDRESS")
+            hosp.City = SafeStr(selectedDataRow, "CITY_NM", "City")
+            hosp.Zip = SafeStr(selectedDataRow, "ZIP_CD", "Zip Code", "ZIP")
+            hosp.County = SafeStr(selectedDataRow, "County Name", "County")
+            hosp.Phone = SafeStr(selectedDataRow, "Phone", "Telephone Number")
+            hosp.Website = SafeStr(selectedDataRow, "Website")
+            hosp.CBSAnum = SafeStr(selectedDataRow, "CBSA", "CBSA Code")
+            hosp.FacilityType = SafeStr(selectedDataRow, "Facility Type")
+            hosp.RuralOUrban = SafeStr(selectedDataRow, "Rural Versus Urban")
+            hosp.NumOfBeds = SafeInt(selectedDataRow, "Number of Beds", "General Med/Surg Beds")
+            hosp.NumOfEmployees = SafeInt(selectedDataRow, "Total Employees")
+            hosp.TotalDays = SafeInt(selectedDataRow, "Total Days", "Inpatient Days")
+            hosp.TotalDischarges = SafeInt(selectedDataRow, "Total Discharges")
+            hosp.TotalPatientRev = SafeDec(selectedDataRow, "Total Patient Revenue")
+            hosp.NetPatientRev = SafeDec(selectedDataRow, "Net Patient Revenue")
+            hosp.CharityCost = SafeDec(selectedDataRow, "Cost of Charity Care")
+            hosp.UncompensatedCost = SafeDec(selectedDataRow, "Cost of Uncompensated Care")
+            hosp.TotalCurrentAssets = SafeDec(selectedDataRow, "Total Current Assets")
+            hosp.TotalAssets = SafeDec(selectedDataRow, "Total Assets")
+            hosp.NetIncome = SafeDec(selectedDataRow, "Net Income")
+            hosp.TotalOperatingRevenue = SafeDec(selectedDataRow, "Net Patient Revenue")
+            hosp.TotalOperatingExpense = SafeDec(selectedDataRow, "Less Total Operating Expense")
+            hosp.TotalLiabilities = SafeDec(selectedDataRow, "Total Liabilities")
+            hosp.TotalCurrentLiabilities = SafeDec(selectedDataRow, "Total Current Liabilities")
+            hosp.TotalLongTermLiabilities = SafeDec(selectedDataRow, "Total Long Term Liabilities")
+            hosp.DepreciationCost = SafeDec(selectedDataRow, "Depreciation Cost")
+            hosp.LeaseCost = SafeDec(selectedDataRow, "Leasehold Improvements")
+            hosp.Inventory = SafeDec(selectedDataRow, "Inventory")
+            hosp.NotesReceivable = SafeDec(selectedDataRow, "Notes Receivable")
+            hosp.MarketSecurities = SafeDec(selectedDataRow, "Temporary Investments")
+            hosp.Investments = SafeDec(selectedDataRow, "Investments")
+            Results.SelectedHospital = hosp
+            hosp.LastDataRow = selectedDataRow
+        Else
+            MessageBox.Show("Could not find the selected hospital in the results.")
+            Return
+        End If
+
+        Hide()
+        Financial.Show()
+        Await Financial.ShowFinancialData(Results.SelectedHospital.HospitalId, Results.SelectedHospital.State)
+    End Sub
+
+    ' Repeat similar logic for other navigation buttons as needed...
+
+    ' Helper functions
     Private Function SafeStr(row As DataRow, ParamArray names() As String) As String
         For Each n In names
             If row.Table.Columns.Contains(n) AndAlso Not IsDBNull(row(n)) Then
@@ -199,44 +293,20 @@
         Next
         Return 0D
     End Function
+
     Private Sub Results_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-
-    End Sub
-
-    'Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click
-    '    Me.Hide()
-    '    Inpatient.Show()
-    'End Sub
-    Private Async Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click
-        If CheckedListBox1.SelectedIndex = -1 Then
-            MessageBox.Show("Select a hospital first.")
-            Return
-        End If
-        retrieveProfile()
-        Hide()
-        Inpatient.Show()
-        Await Inpatient.LoadPatientOriginDataAsync(Results.SelectedHospital)
-        Await Inpatient.LoadCeoDataAsync(Results.SelectedHospital)
+        dgvResults.AllowUserToAddRows = False
+        dgvResults.AllowUserToDeleteRows = False
+        dgvResults.ReadOnly = False
+        dgvResults.Columns("Select").ReadOnly = False
+        For Each col As DataGridViewColumn In dgvResults.Columns
+            If col.Name <> "Select" Then col.ReadOnly = True
+        Next
     End Sub
 
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
         Me.Hide()
         Departments.Show()
-    End Sub
-
-    'Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
-    '    Me.Hide()
-    '    Financial.Show()
-    'End Sub
-    Private Async Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
-        If CheckedListBox1.SelectedIndex = -1 Then
-            MessageBox.Show("Select a hospital first.")
-            Return
-        End If
-        retrieveProfile()
-        Hide()
-        Financial.Show()
-        Await Financial.ShowFinancialData(Results.SelectedHospital.HospitalId, Results.SelectedHospital.State)
     End Sub
 
     Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
@@ -253,4 +323,7 @@
         Me.Hide()
         Outpatient.Show()
     End Sub
+
+    ' Add similar selection logic to Button6_Click (Inpatient) if needed
+
 End Class

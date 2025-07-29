@@ -100,6 +100,7 @@ Partial Class Profile
         lblCooResult = New Label()
         lblPurchasingMatResult = New Label()
         Panel1 = New Panel()
+        Label13 = New Label()
         txtDebugJson = New TextBox()
         dgvProviders = New DataGridView()
         GroupBox2 = New GroupBox()
@@ -140,7 +141,8 @@ Partial Class Profile
         Column1 = New DataGridViewTextBoxColumn()
         Column2 = New DataGridViewTextBoxColumn()
         Column3 = New DataGridViewTextBoxColumn()
-        Label13 = New Label()
+        Label14 = New Label()
+        lblDBA = New Label()
         Panel1.SuspendLayout()
         CType(dgvProviders, ComponentModel.ISupportInitialize).BeginInit()
         GroupBox2.SuspendLayout()
@@ -439,7 +441,7 @@ Partial Class Profile
         ' 
         lblNameAddressResult.AutoSize = True
         lblNameAddressResult.Font = New Font("Segoe UI", 9.75F)
-        lblNameAddressResult.Location = New Point(370, 53)
+        lblNameAddressResult.Location = New Point(370, 34)
         lblNameAddressResult.Name = "lblNameAddressResult"
         lblNameAddressResult.Size = New Size(43, 17)
         lblNameAddressResult.TabIndex = 56
@@ -724,7 +726,7 @@ Partial Class Profile
         ' 
         lblNameAddress.AutoSize = True
         lblNameAddress.Font = New Font("Segoe UI", 9.75F, FontStyle.Bold Or FontStyle.Underline)
-        lblNameAddress.Location = New Point(3, 53)
+        lblNameAddress.Location = New Point(4, 30)
         lblNameAddress.Name = "lblNameAddress"
         lblNameAddress.Size = New Size(92, 17)
         lblNameAddress.TabIndex = 28
@@ -995,6 +997,16 @@ Partial Class Profile
         Panel1.Size = New Size(1439, 2000)
         Panel1.TabIndex = 81
         ' 
+        ' Label13
+        ' 
+        Label13.AutoSize = True
+        Label13.Font = New Font("Segoe UI", 15F, FontStyle.Bold)
+        Label13.Location = New Point(685, 96)
+        Label13.Name = "Label13"
+        Label13.Size = New Size(185, 28)
+        Label13.TabIndex = 95
+        Label13.Text = "Affiliate Providers"
+        ' 
         ' txtDebugJson
         ' 
         txtDebugJson.Location = New Point(962, 748)
@@ -1103,6 +1115,8 @@ Partial Class Profile
         ' GroupBox1
         ' 
         GroupBox1.BackColor = Color.LightSkyBlue
+        GroupBox1.Controls.Add(lblDBA)
+        GroupBox1.Controls.Add(Label14)
         GroupBox1.Controls.Add(lblNpiResult)
         GroupBox1.Controls.Add(Label9)
         GroupBox1.Controls.Add(Label4)
@@ -1195,7 +1209,7 @@ Partial Class Profile
         Label4.AutoSize = True
         Label4.Font = New Font("Segoe UI", 11.25F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
         Label4.ForeColor = Color.Blue
-        Label4.Location = New Point(0, 19)
+        Label4.Location = New Point(0, 10)
         Label4.Name = "Label4"
         Label4.Size = New Size(243, 20)
         Label4.TabIndex = 82
@@ -1372,19 +1386,30 @@ Partial Class Profile
         Column3.HeaderText = "Associated NPI's"
         Column3.Name = "Column3"
         ' 
-        ' Label13
+        ' Label14
         ' 
-        Label13.AutoSize = True
-        Label13.Font = New Font("Segoe UI", 15.0F, FontStyle.Bold)
-        Label13.Location = New Point(685, 96)
-        Label13.Name = "Label13"
-        Label13.Size = New Size(185, 28)
-        Label13.TabIndex = 95
-        Label13.Text = "Affiliate Providers"
+        Label14.AutoSize = True
+        Label14.Font = New Font("Segoe UI", 9.75F, FontStyle.Bold Or FontStyle.Underline)
+        Label14.Location = New Point(4, 51)
+        Label14.Name = "Label14"
+        Label14.Size = New Size(180, 17)
+        Label14.TabIndex = 85
+        Label14.Text = "Doing Business As (FQHC's)"
+        ' 
+        ' lblDBA
+        ' 
+        lblDBA.AutoSize = True
+        lblDBA.Font = New Font("Segoe UI", 9.75F)
+        lblDBA.Location = New Point(370, 56)
+        lblDBA.Name = "lblDBA"
+        lblDBA.Size = New Size(43, 17)
+        lblDBA.TabIndex = 86
+        lblDBA.Text = "Result"
+        lblDBA.TextAlign = ContentAlignment.MiddleCenter
         ' 
         ' Profile
         ' 
-        AutoScaleDimensions = New SizeF(7.0F, 15.0F)
+        AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         AutoScroll = True
         BackColor = SystemColors.HighlightText
@@ -1528,6 +1553,8 @@ Partial Class Profile
     Friend WithEvents Label10 As Label
     Friend WithEvents txtDebugJson As TextBox
     Friend WithEvents Label13 As Label
+    Friend WithEvents lblDBA As Label
+    Friend WithEvents Label14 As Label
     ' Friend WithEvents GroupBox1 As BoldGroupBox
 
 End Class

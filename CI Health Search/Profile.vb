@@ -93,6 +93,19 @@ Public Class Profile
     Public Async Sub ShowProfile(foundHospital As HospitalContext)
         ' Show the basic info from the context first
         lblNameAddressResult.Text = GetBestFacilityName(foundHospital)
+        ' Set facility name to ORGANIZATION NAME if present (for FQHCs)
+        If foundHospital.LastDataRow IsNot Nothing AndAlso foundHospital.LastDataRow.Table.Columns.Contains("ORGANIZATION NAME") Then
+            lblNameAddressResult.Text = foundHospital.LastDataRow("ORGANIZATION NAME").ToString()
+        Else
+            lblNameAddressResult.Text = GetBestFacilityName(foundHospital)
+        End If
+
+        ' Set DBA label for FQHCs
+        If foundHospital.LastDataRow IsNot Nothing AndAlso foundHospital.LastDataRow.Table.Columns.Contains("DOING BUSINESS AS NAME") Then
+            lblDBA.Text = foundHospital.LastDataRow("DOING BUSINESS AS NAME").ToString()
+        Else
+            lblDBA.Text = "N/A"
+        End If
         lbladdy.Text = GetBestAddress(foundHospital)
         lblZipCodeResult.Text = If(Not String.IsNullOrWhiteSpace(foundHospital.Zip), foundHospital.Zip, "N/A")
         lblCountyFipsResult.Text = If(Not String.IsNullOrWhiteSpace(foundHospital.County), foundHospital.County, "N/A")

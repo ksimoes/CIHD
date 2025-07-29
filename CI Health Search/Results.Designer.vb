@@ -31,6 +31,8 @@ Partial Class Results
         Button7 = New Button()
         CheckedListBox1 = New CheckedListBox()
         Label1 = New Label()
+        dgvResults = New DataGridView()
+        CType(dgvResults, ComponentModel.ISupportInitialize).BeginInit()
         SuspendLayout()
         ' 
         ' Button1
@@ -101,26 +103,35 @@ Partial Class Results
         ' 
         CheckedListBox1.FormattingEnabled = True
         CheckedListBox1.Items.AddRange(New Object() {"1", "2", "3", "4"})
-        CheckedListBox1.Location = New Point(221, 129)
+        CheckedListBox1.Location = New Point(2, 108)
         CheckedListBox1.Name = "CheckedListBox1"
-        CheckedListBox1.Size = New Size(771, 400)
+        CheckedListBox1.Size = New Size(162, 112)
         CheckedListBox1.TabIndex = 15
         ' 
         ' Label1
         ' 
         Label1.AutoSize = True
         Label1.Font = New Font("Segoe UI", 15F, FontStyle.Bold)
-        Label1.Location = New Point(221, 98)
+        Label1.Location = New Point(260, 92)
         Label1.Name = "Label1"
         Label1.Size = New Size(162, 28)
         Label1.TabIndex = 16
         Label1.Text = "Hospital Names"
+        ' 
+        ' dgvResults
+        ' 
+        dgvResults.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        dgvResults.Location = New Point(261, 132)
+        dgvResults.Name = "dgvResults"
+        dgvResults.Size = New Size(673, 343)
+        dgvResults.TabIndex = 17
         ' 
         ' Results
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(1423, 552)
+        Controls.Add(dgvResults)
         Controls.Add(Label1)
         Controls.Add(CheckedListBox1)
         Controls.Add(Button7)
@@ -133,6 +144,7 @@ Partial Class Results
         Name = "Results"
         StartPosition = FormStartPosition.CenterScreen
         Text = "Results"
+        CType(dgvResults, ComponentModel.ISupportInitialize).EndInit()
         ResumeLayout(False)
         PerformLayout()
     End Sub
@@ -146,4 +158,5 @@ Partial Class Results
     Friend WithEvents CheckedListBox1 As CheckedListBox
     Friend WithEvents Label1 As Label
     Friend WithEvents VScrollBar1 As VScrollBar
+    Friend WithEvents dgvResults As DataGridView
 End Class
