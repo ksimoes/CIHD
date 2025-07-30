@@ -1785,11 +1785,11 @@ Partial Class FinInd
         ' btnOutpatientFinInd
         ' 
         btnOutpatientFinInd.BackColor = SystemColors.ButtonHighlight
-        btnOutpatientFinInd.Location = New Point(1085, 4)
+        btnOutpatientFinInd.Location = New Point(1141, 4)
         btnOutpatientFinInd.Name = "btnOutpatientFinInd"
-        btnOutpatientFinInd.Size = New Size(62, 29)
+        btnOutpatientFinInd.Size = New Size(95, 29)
         btnOutpatientFinInd.TabIndex = 195
-        btnOutpatientFinInd.Text = "Outp"
+        btnOutpatientFinInd.Text = "Outpatient"
         btnOutpatientFinInd.UseVisualStyleBackColor = False
         ' 
         ' GroupBox2
@@ -1874,16 +1874,16 @@ Partial Class FinInd
         ' btnInpatientFinInd
         ' 
         btnInpatientFinInd.BackColor = SystemColors.ButtonHighlight
-        btnInpatientFinInd.Location = New Point(984, 4)
+        btnInpatientFinInd.Location = New Point(1040, 4)
         btnInpatientFinInd.Name = "btnInpatientFinInd"
         btnInpatientFinInd.Size = New Size(95, 29)
         btnInpatientFinInd.TabIndex = 194
-        btnInpatientFinInd.Text = "Inp"
+        btnInpatientFinInd.Text = "Inpatient"
         btnInpatientFinInd.UseVisualStyleBackColor = False
         ' 
         ' btnQualityFinInd
         ' 
-        btnQualityFinInd.Location = New Point(883, 4)
+        btnQualityFinInd.Location = New Point(939, 3)
         btnQualityFinInd.Name = "btnQualityFinInd"
         btnQualityFinInd.Size = New Size(95, 29)
         btnQualityFinInd.TabIndex = 193
@@ -1893,7 +1893,7 @@ Partial Class FinInd
         ' btnFinancialFinInd
         ' 
         btnFinancialFinInd.BackColor = SystemColors.ButtonHighlight
-        btnFinancialFinInd.Location = New Point(782, 4)
+        btnFinancialFinInd.Location = New Point(838, 4)
         btnFinancialFinInd.Name = "btnFinancialFinInd"
         btnFinancialFinInd.Size = New Size(95, 29)
         btnFinancialFinInd.TabIndex = 192
@@ -1903,7 +1903,7 @@ Partial Class FinInd
         ' btnDepartmentsFinInd
         ' 
         btnDepartmentsFinInd.BackColor = SystemColors.ButtonHighlight
-        btnDepartmentsFinInd.Location = New Point(681, 4)
+        btnDepartmentsFinInd.Location = New Point(737, 4)
         btnDepartmentsFinInd.Name = "btnDepartmentsFinInd"
         btnDepartmentsFinInd.Size = New Size(95, 29)
         btnDepartmentsFinInd.TabIndex = 191
@@ -1915,7 +1915,7 @@ Partial Class FinInd
         btnProfileFinInd.BackColor = SystemColors.ButtonHighlight
         btnProfileFinInd.Location = New Point(636, 4)
         btnProfileFinInd.Name = "btnProfileFinInd"
-        btnProfileFinInd.Size = New Size(39, 29)
+        btnProfileFinInd.Size = New Size(95, 29)
         btnProfileFinInd.TabIndex = 190
         btnProfileFinInd.Text = "Profile"
         btnProfileFinInd.UseVisualStyleBackColor = False

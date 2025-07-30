@@ -806,25 +806,25 @@ Partial Class Financial
         ' 
         ' btnOutpatientFinancial
         ' 
-        btnOutpatientFinancial.Location = New Point(982, 0)
+        btnOutpatientFinancial.Location = New Point(1344, 1)
         btnOutpatientFinancial.Name = "btnOutpatientFinancial"
         btnOutpatientFinancial.Size = New Size(88, 29)
         btnOutpatientFinancial.TabIndex = 20
-        btnOutpatientFinancial.Text = "Outp"
+        btnOutpatientFinancial.Text = "Outpatient"
         btnOutpatientFinancial.UseVisualStyleBackColor = True
         ' 
         ' btnInpatientFinancial
         ' 
-        btnInpatientFinancial.Location = New Point(888, 0)
+        btnInpatientFinancial.Location = New Point(1250, 1)
         btnInpatientFinancial.Name = "btnInpatientFinancial"
         btnInpatientFinancial.Size = New Size(88, 29)
         btnInpatientFinancial.TabIndex = 19
-        btnInpatientFinancial.Text = "Inp"
+        btnInpatientFinancial.Text = "Inpatient"
         btnInpatientFinancial.UseVisualStyleBackColor = True
         ' 
         ' btnQualityFinancial
         ' 
-        btnQualityFinancial.Location = New Point(794, 0)
+        btnQualityFinancial.Location = New Point(1156, 1)
         btnQualityFinancial.Name = "btnQualityFinancial"
         btnQualityFinancial.Size = New Size(88, 29)
         btnQualityFinancial.TabIndex = 18
@@ -833,7 +833,7 @@ Partial Class Financial
         ' 
         ' btnFInIndFinancial
         ' 
-        btnFInIndFinancial.Location = New Point(700, 0)
+        btnFInIndFinancial.Location = New Point(1062, 1)
         btnFInIndFinancial.Name = "btnFInIndFinancial"
         btnFInIndFinancial.Size = New Size(88, 29)
         btnFInIndFinancial.TabIndex = 17
@@ -842,7 +842,7 @@ Partial Class Financial
         ' 
         ' btnDepartmentsFinancial
         ' 
-        btnDepartmentsFinancial.Location = New Point(606, 0)
+        btnDepartmentsFinancial.Location = New Point(968, 1)
         btnDepartmentsFinancial.Name = "btnDepartmentsFinancial"
         btnDepartmentsFinancial.Size = New Size(88, 29)
         btnDepartmentsFinancial.TabIndex = 15
@@ -851,7 +851,7 @@ Partial Class Financial
         ' 
         ' btnProfileFinancial
         ' 
-        btnProfileFinancial.Location = New Point(512, 0)
+        btnProfileFinancial.Location = New Point(874, 1)
         btnProfileFinancial.Name = "btnProfileFinancial"
         btnProfileFinancial.Size = New Size(88, 29)
         btnProfileFinancial.TabIndex = 14

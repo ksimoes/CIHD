@@ -735,9 +735,9 @@ Partial Class Profile
         ' btnOutpatientProfile
         ' 
         btnOutpatientProfile.BackColor = Color.GhostWhite
-        btnOutpatientProfile.Location = New Point(994, 7)
+        btnOutpatientProfile.Location = New Point(956, 3)
         btnOutpatientProfile.Name = "btnOutpatientProfile"
-        btnOutpatientProfile.Size = New Size(55, 24)
+        btnOutpatientProfile.Size = New Size(53, 24)
         btnOutpatientProfile.TabIndex = 20
         btnOutpatientProfile.Text = "Outp"
         btnOutpatientProfile.UseVisualStyleBackColor = False
@@ -745,9 +745,9 @@ Partial Class Profile
         ' btnInpatientProfile
         ' 
         btnInpatientProfile.BackColor = Color.GhostWhite
-        btnInpatientProfile.Location = New Point(924, 8)
+        btnInpatientProfile.Location = New Point(897, 3)
         btnInpatientProfile.Name = "btnInpatientProfile"
-        btnInpatientProfile.Size = New Size(66, 24)
+        btnInpatientProfile.Size = New Size(53, 24)
         btnInpatientProfile.TabIndex = 19
         btnInpatientProfile.Text = "Inp"
         btnInpatientProfile.UseVisualStyleBackColor = False
@@ -755,9 +755,9 @@ Partial Class Profile
         ' btnQualityProfile
         ' 
         btnQualityProfile.BackColor = Color.GhostWhite
-        btnQualityProfile.Location = New Point(868, 8)
+        btnQualityProfile.Location = New Point(838, 3)
         btnQualityProfile.Name = "btnQualityProfile"
-        btnQualityProfile.Size = New Size(50, 23)
+        btnQualityProfile.Size = New Size(53, 23)
         btnQualityProfile.TabIndex = 18
         btnQualityProfile.Text = "Quality"
         btnQualityProfile.UseVisualStyleBackColor = False
@@ -765,9 +765,9 @@ Partial Class Profile
         ' btnFinIndProfile
         ' 
         btnFinIndProfile.BackColor = Color.GhostWhite
-        btnFinIndProfile.Location = New Point(805, 8)
+        btnFinIndProfile.Location = New Point(779, 3)
         btnFinIndProfile.Name = "btnFinIndProfile"
-        btnFinIndProfile.Size = New Size(57, 23)
+        btnFinIndProfile.Size = New Size(53, 23)
         btnFinIndProfile.TabIndex = 17
         btnFinIndProfile.Text = "Fin Ind"
         btnFinIndProfile.UseVisualStyleBackColor = False
@@ -775,7 +775,7 @@ Partial Class Profile
         ' btnFinancialProfile
         ' 
         btnFinancialProfile.BackColor = Color.GhostWhite
-        btnFinancialProfile.Location = New Point(746, 8)
+        btnFinancialProfile.Location = New Point(720, 3)
         btnFinancialProfile.Name = "btnFinancialProfile"
         btnFinancialProfile.Size = New Size(53, 24)
         btnFinancialProfile.TabIndex = 16
@@ -785,9 +785,9 @@ Partial Class Profile
         ' btnDepartmentProfile
         ' 
         btnDepartmentProfile.BackColor = Color.GhostWhite
-        btnDepartmentProfile.Location = New Point(661, 8)
+        btnDepartmentProfile.Location = New Point(661, 3)
         btnDepartmentProfile.Name = "btnDepartmentProfile"
-        btnDepartmentProfile.Size = New Size(79, 24)
+        btnDepartmentProfile.Size = New Size(53, 24)
         btnDepartmentProfile.TabIndex = 15
         btnDepartmentProfile.Text = "Departments"
         btnDepartmentProfile.UseVisualStyleBackColor = False
