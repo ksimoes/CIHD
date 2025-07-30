@@ -218,6 +218,7 @@ Public Class Inpatient
     End Sub
 
     Private Async Sub Inpatient_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        lblHN.Text = Results.SelectedHospital.Name
         Await LoadPatientOriginDataAsync(Results.SelectedHospital)
         Await LoadCeoDataAsync(Results.SelectedHospital)
         Dim apiUrl As String = strUrlNewApi & "?filter[Rndrng_Prvdr_CCN]=" & Results.SelectedHospital.CMSNum

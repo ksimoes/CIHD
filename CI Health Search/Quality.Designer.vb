@@ -87,9 +87,9 @@ Partial Class Quality
         ' 
         ' Button1
         ' 
-        Button1.Location = New Point(1291, 526)
+        Button1.Location = New Point(1434, 37)
         Button1.Name = "Button1"
-        Button1.Size = New Size(150, 69)
+        Button1.Size = New Size(122, 30)
         Button1.TabIndex = 21
         Button1.Text = "Return to Search"
         Button1.UseVisualStyleBackColor = True

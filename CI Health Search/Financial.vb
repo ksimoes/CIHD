@@ -182,11 +182,23 @@ Public Class Financial
     ' Automatically load data when the form loads
     Private Async Sub Financial_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         If Results.SelectedHospital IsNot Nothing Then
+            lblHN.Text = Results.SelectedHospital.Name
             Dim state = Results.SelectedHospital.State
             If state = "TN" Or state = "TX" Then
                 Await ShowFinancialData(Results.SelectedHospital.HospitalId, state)
             Else
                 Await ShowFinancialDataApi(Results.SelectedHospital.CMSNum)
+            End If
+        End If
+    End Sub
+    Private Sub Financial_Activated(sender As Object, e As EventArgs) Handles Me.Activated
+        If Results.SelectedHospital IsNot Nothing Then
+            lblHN.Text = Results.SelectedHospital.Name
+            Dim state = Results.SelectedHospital.State
+            If state = "TN" Or state = "TX" Then
+                ShowFinancialData(Results.SelectedHospital.HospitalId, state)
+            Else
+                ShowFinancialDataApi(Results.SelectedHospital.CMSNum)
             End If
         End If
     End Sub
@@ -235,6 +247,10 @@ Public Class Financial
     End Sub
 
     Private Sub btnOutpatientFinancial_Click(sender As Object, e As EventArgs) Handles btnOutpatientFinancial.Click
+
+    End Sub
+
+    Private Sub lblNumMonthsPeriodResult_Click(sender As Object, e As EventArgs) Handles lblNumMonthsPeriodResult.Click
 
     End Sub
 End Class

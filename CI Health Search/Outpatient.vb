@@ -80,6 +80,7 @@ Public Class Outpatient
 
     ' Call this in your form load event
     Private Async Sub Outpatient_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        lblHN.Text = Results.SelectedHospital.Name
         Await LoadApcDataAsync(Results.SelectedHospital)
     End Sub
 

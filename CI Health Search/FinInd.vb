@@ -184,6 +184,7 @@ Public Class FinInd
     Private Sub finind_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         ' Me.Size = New Size(900, 1500) ' or whatever you want
         '  Me.MaximumSize = New Size(0, 0) ' unlimited
+        lblHN.Text = Results.SelectedHospital.Name
 
 
         ' Create a new BoldGroupBox

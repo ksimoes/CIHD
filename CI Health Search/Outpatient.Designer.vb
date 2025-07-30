@@ -31,6 +31,7 @@ Partial Class Outpatient
         Button1 = New Button()
         dgvAPC = New DataGridView()
         Panel1 = New Panel()
+        lblHN = New Label()
         Label1 = New Label()
         CType(dgvAPC, ComponentModel.ISupportInitialize).BeginInit()
         Panel1.SuspendLayout()
@@ -92,9 +93,9 @@ Partial Class Outpatient
         ' 
         ' Button1
         ' 
-        Button1.Location = New Point(1263, 581)
+        Button1.Location = New Point(1401, 6)
         Button1.Name = "Button1"
-        Button1.Size = New Size(144, 81)
+        Button1.Size = New Size(122, 30)
         Button1.TabIndex = 20
         Button1.Text = "Return to Search"
         Button1.UseVisualStyleBackColor = True
@@ -110,6 +111,7 @@ Partial Class Outpatient
         ' Panel1
         ' 
         Panel1.AutoScroll = True
+        Panel1.Controls.Add(lblHN)
         Panel1.Controls.Add(Label1)
         Panel1.Controls.Add(dgvAPC)
         Panel1.Controls.Add(Button1)
@@ -123,6 +125,15 @@ Partial Class Outpatient
         Panel1.Name = "Panel1"
         Panel1.Size = New Size(2072, 2000)
         Panel1.TabIndex = 22
+        ' 
+        ' lblHN
+        ' 
+        lblHN.AutoSize = True
+        lblHN.Location = New Point(525, 20)
+        lblHN.Name = "lblHN"
+        lblHN.Size = New Size(41, 15)
+        lblHN.TabIndex = 23
+        lblHN.Text = "Label2"
         ' 
         ' Label1
         ' 
@@ -158,4 +169,5 @@ Partial Class Outpatient
     Friend WithEvents dgvAPC As DataGridView
     Friend WithEvents Panel1 As Panel
     Friend WithEvents Label1 As Label
+    Friend WithEvents lblHN As Label
 End Class

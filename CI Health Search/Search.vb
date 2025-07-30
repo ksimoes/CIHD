@@ -344,7 +344,7 @@ Public Class Search
         filters.Add("size=1000") ' Increase size as needed
 
         apiUrl &= String.Join("&", filters)
-        MessageBox.Show("API URL: " & apiUrl)
+        'MessageBox.Show("API URL: " & apiUrl)
 
         Using client As New HttpClient()
             Dim response As HttpResponseMessage = Await client.GetAsync(apiUrl)

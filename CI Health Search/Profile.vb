@@ -90,7 +90,7 @@ Public Class Profile
     End Sub
 
     ' Update your ShowProfile method like this:
-    Public Async Sub ShowProfile(foundHospital As HospitalContext)
+    Public Async Function ShowProfile(foundHospital As HospitalContext) As Task
         ' Show the basic info from the context first
         lblNameAddressResult.Text = GetBestFacilityName(foundHospital)
         ' Set facility name to ORGANIZATION NAME if present (for FQHCs)
@@ -188,6 +188,46 @@ Public Class Profile
 
         ' Show affiliated providers for any hospital using its CCN
         Await LoadAffiliatedProvidersAsync(GetBestCmsNum(foundHospital))
+
+    End Function
+
+    ' In Profile.vb
+    Public Async Sub ShowFacilityByCCN(ccn As String)
+        ' Query the CMS Hospital General Information API for this CCN
+
+        Dim apiUrl As String = $"https://data.cms.gov/data-api/v1/dataset/8015f175-35cc-4cab-a664-b7c87d91a027/data?filter[Provider CCN]={Uri.EscapeDataString(ccn)}&size=1"
+        Using client As New HttpClient()
+            Dim response = Await client.GetAsync(apiUrl)
+            If response.IsSuccessStatusCode Then
+                Dim json = Await response.Content.ReadAsStringAsync()
+                Dim arr = JArray.Parse(json)
+                If arr.Count > 0 Then
+                    ' Build a HospitalContext from the API result
+                    Dim row = arr(0)
+                    Dim ctx As New HospitalContext()
+                    ctx.CMSNum = row("Provider CCN")?.ToString()
+                    ctx.Name = row("Hospital Name")?.ToString()
+                    ctx.Address = row("Address")?.ToString()
+                    ctx.City = row("City")?.ToString()
+                    ctx.State = row("State Code")?.ToString()
+                    ctx.Zip = row("ZIP Code")?.ToString()
+                    ctx.County = row("County Name")?.ToString()
+                    ctx.Phone = row("Phone Number")?.ToString()
+                    ctx.FacilityType = row("Type of Facility")?.ToString()
+                    ctx.RuralOUrban = row("Rural Urban Designation")?.ToString()
+                    ctx.NumOfBeds = If(Integer.TryParse(row("Number of Beds")?.ToString(), 0), Integer.Parse(row("Number of Beds")?.ToString()), 0)
+                    ctx.LastDataRow = Nothing ' Not from DataTable, but you can extend if needed
+                    Results.SelectedHospital = ctx
+
+                    ' Show the profile using your existing logic
+                    Await Me.ShowProfile(ctx)
+                    Me.Show()
+                    Me.BringToFront()
+                    Exit Sub
+                End If
+            End If
+        End Using
+        MessageBox.Show("Facility not found for CCN: " & ccn)
     End Sub
 
     ' Helper function to safely get column value by name
@@ -264,6 +304,8 @@ Public Class Profile
         End If
     End Function
 
+
+
     ' Fetch NPI from NPPES API (by NPI if available, else by name/state)
     Public Async Function FetchNpiDataAsync(npi As String, hospitalName As String, state As String) As Task(Of JObject)
         Dim apiUrl As String
@@ -311,15 +353,43 @@ Public Class Profile
                         For Each col In data(0).ToObject(Of JObject)().Properties()
                             dt.Columns.Add(col.Name)
                         Next
+                        ' Add Credential column if not present
+                        If Not dt.Columns.Contains("Credential") Then
+                            dt.Columns.Add("Credential")
+                        End If
+
                         For Each item In data
                             Dim row = dt.NewRow()
                             For Each col In dt.Columns
-                                row(col.ToString()) = item(col.ToString())
+                                If item(col.ToString()) IsNot Nothing Then
+                                    row(col.ToString()) = item(col.ToString())
+                                End If
                             Next
+                            ' Fetch credential for each NPI
+                            Dim npi As String = item("npi")?.ToString()
+                            Dim credential As String = ""
+                            If Not String.IsNullOrWhiteSpace(npi) Then
+                                Try
+                                    Dim npiApiUrl As String = $"https://npiregistry.cms.hhs.gov/api/?number={npi}&version=2.1"
+                                    Using npiClient As New HttpClient()
+                                        Dim npiResp = Await npiClient.GetAsync(npiApiUrl)
+                                        If npiResp.IsSuccessStatusCode Then
+                                            Dim npiJson = Await npiResp.Content.ReadAsStringAsync()
+                                            Dim npiObj = JObject.Parse(npiJson)
+                                            If npiObj("results") IsNot Nothing AndAlso npiObj("results").HasValues Then
+                                                credential = npiObj("results")(0)?("basic")?("credential")?.ToString()
+                                            End If
+                                        End If
+                                    End Using
+                                Catch ex3 As Exception
+                                    ' Ignore errors, leave credential blank
+                                End Try
+                            End If
+                            row("Credential") = credential
                             dt.Rows.Add(row)
                         Next
 
-                        ' --- Fetch procedure_category for each NPI ---
+                        ' --- Fetch procedure_category for each NPI (existing logic) ---
                         Dim npiList As New List(Of String)
                         For Each row As DataRow In dt.Rows
                             Dim npi As String = row("npi").ToString()
@@ -420,21 +490,26 @@ Public Class Profile
                         If dgvProviders.Columns.Contains("Description") Then
                             dgvProviders.Columns("Description").HeaderText = "Specialty"
                         End If
+                        If dgvProviders.Columns.Contains("Credential") Then
+                            dgvProviders.Columns("Credential").HeaderText = "Credential"
+                        End If
 
                         ' Set column visibility
                         For Each col As DataGridViewColumn In dgvProviders.Columns
                             col.Visible = (col.Name = "npi" OrElse
                                        col.Name = "provider_first_name" OrElse
                                        col.Name = "provider_last_name" OrElse
+                                       col.Name = "Credential" OrElse
                                        col.Name = "facility_affiliations_certification_number" OrElse
                                        col.Name = "procedure_category" OrElse
                                        col.Name = "Description")
                         Next
 
-                        ' Move "Specialty" column right after "First Name" and "Last Name"
+                        ' Move columns to desired order
                         Dim colOrder As New List(Of String) From {
                         "provider_first_name",
                         "provider_last_name",
+                        "Credential",
                         "Description", ' Specialty
                         "npi",
                         "facility_affiliations_certification_number",
@@ -507,6 +582,7 @@ Public Class Profile
         Me.Hide()
         Financial.Show()
         Financial.ShowFinancialData(Results.SelectedHospital.HospitalId, Results.SelectedHospital.State)
+
     End Sub
 
     Private Sub Button4_Click(sender As Object, e As EventArgs) Handles btnFinIndProfile.Click

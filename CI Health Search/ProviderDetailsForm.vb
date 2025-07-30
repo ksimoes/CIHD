@@ -21,6 +21,7 @@ Public Class ProviderDetailsForm
     ' Main constructor
     Public Sub New(npi As String)
         InitializeComponent()
+        AddHandler dgvDetails.CellContentClick, AddressOf dgvDetails_CellContentClick
         Me.Text = $"Provider Details for NPI: {npi}"
         Me.Size = New Size(1000, 600)
         Me.StartPosition = FormStartPosition.CenterParent
@@ -267,21 +268,22 @@ Public Class ProviderDetailsForm
             dt.Columns.Add("Provider Last Name")
             dt.Columns.Add("Facility Type")
             dt.Columns.Add("Facility Affiliation Certification Number")
+            dt.Columns.Add("Facility Name")
+            dt.Columns.Add("City")
+            dt.Columns.Add("State")
 
             Dim apiUrl As String = "https://data.cms.gov/provider-data/api/1/datastore/query/27ea-46a8/0"
-
-            ' Build the POST body with the required "resource": "t"
             Dim postBody As New JObject(
-            New JProperty("conditions", New JArray(
-                New JObject(
-                    New JProperty("resource", "t"),
-                    New JProperty("property", "npi"),
-                    New JProperty("value", currentNpi),
-                    New JProperty("operator", "=")
-                )
-            )),
-            New JProperty("limit", 1000)
-        )
+                New JProperty("conditions", New JArray(
+                    New JObject(
+                        New JProperty("resource", "t"),
+                        New JProperty("property", "npi"),
+                        New JProperty("value", currentNpi),
+                        New JProperty("operator", "=")
+                    )
+                )),
+                New JProperty("limit", 1000)
+            )
 
             Using client As New HttpClient()
                 Dim content = New StringContent(postBody.ToString(), System.Text.Encoding.UTF8, "application/json")
@@ -295,7 +297,34 @@ Public Class ProviderDetailsForm
                             row("Provider First Name") = item("provider_first_name")?.ToString()
                             row("Provider Last Name") = item("provider_last_name")?.ToString()
                             row("Facility Type") = item("facility_type")?.ToString()
-                            row("Facility Affiliation Certification Number") = item("facility_affiliations_certification_number")?.ToString()
+                            Dim ccn = item("facility_affiliations_certification_number")?.ToString()
+                            row("Facility Affiliation Certification Number") = ccn
+
+                            ' Lookup City and State by CCN
+                            If Not String.IsNullOrWhiteSpace(ccn) Then
+                                Dim city As String = ""
+                                Dim state As String = ""
+                                Dim facilityName As String = ""
+                                Try
+                                    Dim lookupUrl = $"https://data.cms.gov/data-api/v1/dataset/8015f175-35cc-4cab-a664-b7c87d91a027/data?filter[Provider CCN]={Uri.EscapeDataString(ccn)}&size=1"
+                                    Dim lookupResp = Await client.GetAsync(lookupUrl)
+                                    If lookupResp.IsSuccessStatusCode Then
+                                        Dim lookupJson = Await lookupResp.Content.ReadAsStringAsync()
+                                        Dim lookupArr = JArray.Parse(lookupJson)
+                                        If lookupArr.Count > 0 Then
+                                            city = lookupArr(0)?("City")?.ToString()
+                                            state = lookupArr(0)?("State Code")?.ToString()
+                                            facilityName = lookupArr(0)?("Hospital Name")?.ToString()
+                                        End If
+                                    End If
+                                Catch ex2 As Exception
+                                    ' Ignore lookup errors, leave city/state blank
+                                End Try
+                                row("City") = city
+                                row("State") = state
+                                row("Facility Name") = facilityName
+                            End If
+
                             dt.Rows.Add(row)
                         Next
                     End If
@@ -308,6 +337,22 @@ Public Class ProviderDetailsForm
                 MessageBox.Show("No associated hospitals found for this provider.")
             Else
                 dgvDetails.DataSource = dt
+
+                ' Make CCN column a link
+                If dgvDetails.Columns.Contains("Facility Affiliation Certification Number") Then
+                    Dim idx = dgvDetails.Columns("Facility Affiliation Certification Number").Index
+                    Dim linkCol As New DataGridViewLinkColumn()
+                    linkCol.Name = "Facility Affiliation Certification Number"
+                    linkCol.HeaderText = "Facility Affiliation Certification Number"
+                    linkCol.DataPropertyName = "Facility Affiliation Certification Number"
+                    linkCol.LinkColor = Color.Blue
+                    linkCol.ActiveLinkColor = Color.Red
+                    linkCol.VisitedLinkColor = Color.Purple
+                    linkCol.TrackVisitedState = False
+                    dgvDetails.Columns.RemoveAt(idx)
+                    dgvDetails.Columns.Insert(idx, linkCol)
+                End If
+
                 dgvDetails.Refresh()
             End If
         Catch ex As Exception
@@ -316,6 +361,22 @@ Public Class ProviderDetailsForm
             lblLoading.Visible = False
         End Try
     End Sub
+
+    ' Handle CCN link click
+    Private Sub dgvDetails_CellContentClick(sender As Object, e As DataGridViewCellEventArgs)
+
+        If e.RowIndex >= 0 AndAlso dgvDetails.Columns(e.ColumnIndex).Name = "Facility Affiliation Certification Number" Then
+            Dim ccn As String = dgvDetails.Rows(e.RowIndex).Cells("Facility Affiliation Certification Number").Value?.ToString()
+            If Not String.IsNullOrWhiteSpace(ccn) Then
+                ' Open the facility profile form for this CCN
+                Dim profileForm As New Profile()
+                ' You must implement this method in your Profile form:
+                profileForm.ShowFacilityByCCN(ccn)
+                profileForm.Show()
+            End If
+        End If
+    End Sub
+
 
     Public Sub SetFriendlyColumnHeaders()
         Dim headerMap As New Dictionary(Of String, String) From {

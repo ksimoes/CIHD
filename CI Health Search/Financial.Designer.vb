@@ -96,8 +96,9 @@ Partial Class Financial
         btnProfileFinancial = New Button()
         Button1 = New Button()
         Panel1 = New Panel()
+        lblHN = New Label()
+        Label29 = New Label()
         GroupBox2 = New BoldGroupBox()
-
         GroupBox1.SuspendLayout()
         gbIncomeStatement.SuspendLayout()
         GroupBox3.SuspendLayout()
@@ -329,7 +330,7 @@ Partial Class Financial
         ' lblPedResult
         ' 
         lblPedResult.AutoSize = True
-        lblPedResult.Location = New Point(180, 10)
+        lblPedResult.Location = New Point(180, 0)
         lblPedResult.Name = "lblPedResult"
         lblPedResult.Size = New Size(39, 15)
         lblPedResult.TabIndex = 3
@@ -338,7 +339,7 @@ Partial Class Financial
         ' lblNumMonthsPeriodResult
         ' 
         lblNumMonthsPeriodResult.AutoSize = True
-        lblNumMonthsPeriodResult.Location = New Point(180, 37)
+        lblNumMonthsPeriodResult.Location = New Point(180, 15)
         lblNumMonthsPeriodResult.Name = "lblNumMonthsPeriodResult"
         lblNumMonthsPeriodResult.Size = New Size(39, 15)
         lblNumMonthsPeriodResult.TabIndex = 2
@@ -347,7 +348,7 @@ Partial Class Financial
         ' lblNumMonthsFin
         ' 
         lblNumMonthsFin.AutoSize = True
-        lblNumMonthsFin.Location = New Point(11, 37)
+        lblNumMonthsFin.Location = New Point(10, 15)
         lblNumMonthsFin.Name = "lblNumMonthsFin"
         lblNumMonthsFin.Size = New Size(145, 15)
         lblNumMonthsFin.TabIndex = 1
@@ -356,7 +357,7 @@ Partial Class Financial
         ' lbligr
         ' 
         lbligr.AutoSize = True
-        lbligr.Location = New Point(11, 10)
+        lbligr.Location = New Point(10, 0)
         lbligr.Name = "lbligr"
         lbligr.Size = New Size(91, 15)
         lbligr.TabIndex = 0
@@ -859,9 +860,9 @@ Partial Class Financial
         ' 
         ' Button1
         ' 
-        Button1.Location = New Point(606, 37)
+        Button1.Location = New Point(1438, 0)
         Button1.Name = "Button1"
-        Button1.Size = New Size(108, 56)
+        Button1.Size = New Size(122, 30)
         Button1.TabIndex = 21
         Button1.Text = "Return to Search"
         Button1.UseVisualStyleBackColor = True
@@ -870,6 +871,8 @@ Partial Class Financial
         ' 
         Panel1.AutoScroll = True
         Panel1.BackColor = Color.LightGray
+        Panel1.Controls.Add(lblHN)
+        Panel1.Controls.Add(Label29)
         Panel1.Controls.Add(GroupBox2)
         Panel1.Controls.Add(gbUncompensatedCare)
         Panel1.Controls.Add(Button1)
@@ -890,6 +893,24 @@ Partial Class Financial
         Panel1.Name = "Panel1"
         Panel1.Size = New Size(1572, 2500)
         Panel1.TabIndex = 22
+        ' 
+        ' lblHN
+        ' 
+        lblHN.AutoSize = True
+        lblHN.Location = New Point(180, 30)
+        lblHN.Name = "lblHN"
+        lblHN.Size = New Size(39, 15)
+        lblHN.TabIndex = 24
+        lblHN.Text = "Result"
+        ' 
+        ' Label29
+        ' 
+        Label29.AutoSize = True
+        Label29.Location = New Point(11, 30)
+        Label29.Name = "Label29"
+        Label29.Size = New Size(79, 15)
+        Label29.TabIndex = 23
+        Label29.Text = "Facility Name"
         ' 
         ' GroupBox2
         ' 
@@ -1010,4 +1031,6 @@ Partial Class Financial
     Friend WithEvents gbIncomeStatement As BoldGroupBox
     Friend WithEvents GroupBox3 As BoldGroupBox
     Friend WithEvents GroupBox2 As BoldGroupBox
+    Friend WithEvents lblHN As Label
+    Friend WithEvents Label29 As Label
 End Class

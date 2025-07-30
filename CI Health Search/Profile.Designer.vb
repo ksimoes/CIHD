@@ -112,6 +112,8 @@ Partial Class Profile
         Label10 = New Label()
         Label3 = New Label()
         GroupBox1 = New BoldGroupBox()
+        lblDBA = New Label()
+        Label14 = New Label()
         lblNpiResult = New Label()
         Label9 = New Label()
         Label4 = New Label()
@@ -141,8 +143,6 @@ Partial Class Profile
         Column1 = New DataGridViewTextBoxColumn()
         Column2 = New DataGridViewTextBoxColumn()
         Column3 = New DataGridViewTextBoxColumn()
-        Label14 = New Label()
-        lblDBA = New Label()
         Panel1.SuspendLayout()
         CType(dgvProviders, ComponentModel.ISupportInitialize).BeginInit()
         GroupBox2.SuspendLayout()
@@ -794,9 +794,9 @@ Partial Class Profile
         ' 
         ' Button1
         ' 
-        Button1.Location = New Point(1274, 12)
+        Button1.Location = New Point(1305, 12)
         Button1.Name = "Button1"
-        Button1.Size = New Size(134, 87)
+        Button1.Size = New Size(122, 30)
         Button1.TabIndex = 21
         Button1.Text = "Return to Search"
         Button1.UseVisualStyleBackColor = True
@@ -1183,6 +1183,27 @@ Partial Class Profile
         GroupBox1.TabStop = False
         GroupBox1.Text = "GroupBox1"
         ' 
+        ' lblDBA
+        ' 
+        lblDBA.AutoSize = True
+        lblDBA.Font = New Font("Segoe UI", 9.75F)
+        lblDBA.Location = New Point(370, 56)
+        lblDBA.Name = "lblDBA"
+        lblDBA.Size = New Size(43, 17)
+        lblDBA.TabIndex = 86
+        lblDBA.Text = "Result"
+        lblDBA.TextAlign = ContentAlignment.MiddleCenter
+        ' 
+        ' Label14
+        ' 
+        Label14.AutoSize = True
+        Label14.Font = New Font("Segoe UI", 9.75F, FontStyle.Bold Or FontStyle.Underline)
+        Label14.Location = New Point(4, 51)
+        Label14.Name = "Label14"
+        Label14.Size = New Size(180, 17)
+        Label14.TabIndex = 85
+        Label14.Text = "Doing Business As (FQHC's)"
+        ' 
         ' lblNpiResult
         ' 
         lblNpiResult.AutoSize = True
@@ -1385,27 +1406,6 @@ Partial Class Profile
         ' 
         Column3.HeaderText = "Associated NPI's"
         Column3.Name = "Column3"
-        ' 
-        ' Label14
-        ' 
-        Label14.AutoSize = True
-        Label14.Font = New Font("Segoe UI", 9.75F, FontStyle.Bold Or FontStyle.Underline)
-        Label14.Location = New Point(4, 51)
-        Label14.Name = "Label14"
-        Label14.Size = New Size(180, 17)
-        Label14.TabIndex = 85
-        Label14.Text = "Doing Business As (FQHC's)"
-        ' 
-        ' lblDBA
-        ' 
-        lblDBA.AutoSize = True
-        lblDBA.Font = New Font("Segoe UI", 9.75F)
-        lblDBA.Location = New Point(370, 56)
-        lblDBA.Name = "lblDBA"
-        lblDBA.Size = New Size(43, 17)
-        lblDBA.TabIndex = 86
-        lblDBA.Text = "Result"
-        lblDBA.TextAlign = ContentAlignment.MiddleCenter
         ' 
         ' Profile
         ' 
