@@ -29,7 +29,6 @@ Partial Class Results
         Button5 = New Button()
         Button6 = New Button()
         Button7 = New Button()
-        CheckedListBox1 = New CheckedListBox()
         Label1 = New Label()
         dgvResults = New DataGridView()
         CType(dgvResults, ComponentModel.ISupportInitialize).BeginInit()
@@ -99,15 +98,6 @@ Partial Class Results
         Button7.Text = "Outp"
         Button7.UseVisualStyleBackColor = True
         ' 
-        ' CheckedListBox1
-        ' 
-        CheckedListBox1.FormattingEnabled = True
-        CheckedListBox1.Items.AddRange(New Object() {"1", "2", "3", "4"})
-        CheckedListBox1.Location = New Point(2, 108)
-        CheckedListBox1.Name = "CheckedListBox1"
-        CheckedListBox1.Size = New Size(162, 112)
-        CheckedListBox1.TabIndex = 15
-        ' 
         ' Label1
         ' 
         Label1.AutoSize = True
@@ -133,7 +123,6 @@ Partial Class Results
         ClientSize = New Size(1423, 552)
         Controls.Add(dgvResults)
         Controls.Add(Label1)
-        Controls.Add(CheckedListBox1)
         Controls.Add(Button7)
         Controls.Add(Button6)
         Controls.Add(Button5)
@@ -155,7 +144,6 @@ Partial Class Results
     Friend WithEvents Button5 As Button
     Friend WithEvents Button6 As Button
     Friend WithEvents Button7 As Button
-    Friend WithEvents CheckedListBox1 As CheckedListBox
     Friend WithEvents Label1 As Label
     Friend WithEvents VScrollBar1 As VScrollBar
     Friend WithEvents dgvResults As DataGridView

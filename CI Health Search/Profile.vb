@@ -36,6 +36,18 @@ Public Class Profile
     Private connectionString As String = "Data Source=cihg-sql1.database.windows.net;Initial Catalog=CIHData;User ID=cihgadmin;Password=P!bxbFrHw4-jCvU*;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
     Public strCMSnum As String
 
+    Private currentHospital As HospitalContext
+
+    ' New constructor to accept a HospitalContext
+    Public Sub New(hosp As HospitalContext)
+        InitializeComponent()
+        currentHospital = hosp
+    End Sub
+
+    ' Default constructor for designer compatibility
+    Public Sub New()
+        InitializeComponent()
+    End Sub
     ' Helper to get hospital name from any context or DataRow
     Private Function GetBestFacilityName(ctx As HospitalContext) As String
         If ctx.LastDataRow IsNot Nothing Then
@@ -573,39 +585,41 @@ Public Class Profile
     End Sub
 
     ' Navigation buttons
-    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles btnDepartmentProfile.Click
+    Private Sub btnDepartmentProfile_Click(sender As Object, e As EventArgs) Handles btnDepartmentProfile.Click
         Me.Hide()
-        Departments.Show()
+        Dim deptForm As New Departments(currentHospital)
+        deptForm.Show()
     End Sub
 
-    Private Sub Button3_Click(sender As Object, e As EventArgs) Handles btnFinancialProfile.Click
+    Private Sub btnFinancialProfile_Click(sender As Object, e As EventArgs) Handles btnFinancialProfile.Click
         Me.Hide()
-        Financial.Show()
-        Financial.ShowFinancialData(Results.SelectedHospital.HospitalId, Results.SelectedHospital.State)
-
+        Dim finForm As New Financial(currentHospital)
+        finForm.Show()
     End Sub
 
-    Private Sub Button4_Click(sender As Object, e As EventArgs) Handles btnFinIndProfile.Click
+    Private Sub btnFinIndProfile_Click(sender As Object, e As EventArgs) Handles btnFinIndProfile.Click
         Me.Hide()
-        FinInd.Show()
-        FinInd.ShowFinancialDataApi(lblCmsCertNumProfileResult.Text)
+        Dim finIndForm As New FinInd(currentHospital)
+        finIndForm.Show()
     End Sub
 
-    Private Sub Button5_Click(sender As Object, e As EventArgs) Handles btnQualityProfile.Click
+
+    Private Sub btnQualityProfile_Click(sender As Object, e As EventArgs) Handles btnQualityProfile.Click
         Me.Hide()
-        Quality.Show()
+        Dim qualForm As New Quality(currentHospital)
+        qualForm.Show()
     End Sub
 
-    Private Sub Button6_Click(sender As Object, e As EventArgs) Handles btnInpatientProfile.Click
+    Private Sub btnInpatientProfile_Click(sender As Object, e As EventArgs) Handles btnInpatientProfile.Click
         Me.Hide()
-        Inpatient.Show()
-        Inpatient.LoadPatientOriginDataAsync(Results.SelectedHospital)
-        Inpatient.LoadCeoDataAsync(Results.SelectedHospital)
+        Dim inpForm As New Inpatient(currentHospital)
+        inpForm.Show()
     End Sub
 
-    Private Sub Button7_Click(sender As Object, e As EventArgs) Handles btnOutpatientProfile.Click
+    Private Sub btnOutpatientProfile_Click(sender As Object, e As EventArgs) Handles btnOutpatientProfile.Click
         Me.Hide()
-        Outpatient.Show()
+        Dim outpForm As New Outpatient(currentHospital)
+        outpForm.Show()
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
@@ -613,9 +627,16 @@ Public Class Profile
         Search.Show()
     End Sub
 
-    ' Empty event handlers for designer compatibility
-    Private Sub Profile_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    ' Default load event: show profile for currentHospital if set
+    Private Async Sub Profile_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Dim hosp = If(currentHospital, Results.SelectedHospital)
+        If hosp IsNot Nothing Then
+            Await ShowProfile(hosp)
+        End If
     End Sub
+
+    ' Empty event handlers for designer compatibility
+
 
     Private Sub lblPhoneNum_Click(sender As Object, e As EventArgs) Handles lblPhoneNum.Click
     End Sub

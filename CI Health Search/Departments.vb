@@ -2,6 +2,17 @@
 Imports Newtonsoft.Json.Linq
 
 Public Class Departments
+
+    Private currentHospital As HospitalContext
+
+    Public Sub New(hosp As HospitalContext)
+        InitializeComponent()
+        currentHospital = hosp
+    End Sub
+
+    Public Sub New()
+        InitializeComponent()
+    End Sub
     Public Sub ShowDepartmentsDataApi(cmsNum As String)
         ' This method can be used to show departments data if needed
         ' Currently, it does not perform any actions

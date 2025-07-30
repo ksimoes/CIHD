@@ -7,6 +7,17 @@ Public Class Outpatient
     ' Replace with your actual API URL
     Dim strUrlApcApi As String = "https://data.cms.gov/data-api/v1/dataset/ccbc9a44-40d4-46b4-a709-5caa59212e50/data"
 
+    Private currentHospital As HospitalContext
+
+    Public Sub New(hosp As HospitalContext)
+        InitializeComponent()
+        currentHospital = hosp
+    End Sub
+
+    Public Sub New()
+        InitializeComponent()
+    End Sub
+
     ' Async function to get a DataTable from the API
     Public Async Function GetTablefromAPI(strAPI As String) As Task(Of DataTable)
         Dim dt As New DataTable()

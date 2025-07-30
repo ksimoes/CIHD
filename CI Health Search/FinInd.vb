@@ -3,6 +3,19 @@ Imports Newtonsoft.Json.Linq
 
 Public Class FinInd
 
+    Private currentHospital As HospitalContext
+
+    ' New constructor to accept a HospitalContext
+    Public Sub New(hosp As HospitalContext)
+        InitializeComponent()
+        currentHospital = hosp
+    End Sub
+
+    ' Default constructor for designer compatibility
+    Public Sub New()
+        InitializeComponent()
+    End Sub
+
     Public Function FormatCurrency(val As Object) As String
         Dim dec As Decimal
         If Decimal.TryParse(val.ToString().Replace("$", "").Replace(",", ""), dec) Then
@@ -19,7 +32,8 @@ Public Class FinInd
     Dim foundFinHosp As HospitalContext
     Public Async Function ShowFinancialDataApi(cmsNum As String) As Task
         ' Step 1: Populate from Results.SelectedHospital
-        Dim hosp = Results.SelectedHospital
+        Dim hosp = If(currentHospital, Results.SelectedHospital)
+        lblHN.Text = hosp.Name
 
         lblPedFinIndResult.Text = If(hosp.TotalDays > 0, hosp.TotalDays.ToString(), "N/A")
         lblTotCurrentAssetsResult.Text = If(hosp.TotalCurrentAssets > 0, hosp.TotalCurrentAssets.ToString("N0"), "N/A")
@@ -273,7 +287,8 @@ Public Class FinInd
 
     Private Sub btnFinancialFinInd_Click(sender As Object, e As EventArgs) Handles btnFinancialFinInd.Click
         Hide()
-        Financial.Show()
+        Dim finForm As New Financial(currentHospital)
+        finForm.Show()
     End Sub
 
     Private Sub btnQualityFinInd_Click(sender As Object, e As EventArgs) Handles btnQualityFinInd.Click

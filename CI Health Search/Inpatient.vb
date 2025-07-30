@@ -3,6 +3,17 @@ Imports Newtonsoft.Json.Linq
 Imports System.Data
 
 Public Class Inpatient
+
+    Private currentHospital As HospitalContext
+
+    Public Sub New(hosp As HospitalContext)
+        InitializeComponent()
+        currentHospital = hosp
+    End Sub
+
+    Public Sub New()
+        InitializeComponent()
+    End Sub
     ' NOTE MEDICARE_PROV_NUM = CCN Number
     Dim strURLPatientOrigin As String = "https://data.cms.gov/data-api/v1/dataset/8708ca8b-8636-44ed-8303-724cbfaf78ad/data"
     Dim strURLPatientOrigin2019 As String = "https://data.cms.gov/data-api/v1/dataset/2713ba99-c59e-4b25-9a3d-3661d35988da/data"

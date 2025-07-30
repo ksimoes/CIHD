@@ -5,10 +5,26 @@ Imports Newtonsoft.Json.Linq
 Public Class Financial
     Private connectionString As String = "Data Source=cihg-sql1.database.windows.net;Initial Catalog=CIHData;User ID=cihgadmin;Password=P!bxbFrHw4-jCvU*;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
     Public strCMSnum As String
+
+    ' Store the context for this instance
+    Private currentHospital As HospitalContext
+
+    ' New constructor to accept a HospitalContext
+    Public Sub New(hosp As HospitalContext)
+        InitializeComponent()
+        currentHospital = hosp
+    End Sub
+
+    ' Default constructor for designer compatibility
+    Public Sub New()
+        InitializeComponent()
+    End Sub
+
     ' Call this method to load data for the selected hospital
     Public Async Function ShowFinancialData(hospitalId As Integer, state As String) As Task
-        ' Step 1: Populate from Results.SelectedHospital
-        Dim hosp = Results.SelectedHospital
+        Dim hosp = If(currentHospital, Results.SelectedHospital)
+
+        lblHN.Text = hosp.Name ' Always set the hospital name label
 
         lblPedResult.Text = If(hosp.TotalDays > 0, hosp.TotalDays.ToString(), "N/A")
         lblCurAssetResult.Text = If(hosp.TotalCurrentAssets > 0, hosp.TotalCurrentAssets.ToString("N0"), "N/A")
@@ -181,6 +197,16 @@ Public Class Financial
 
     ' Automatically load data when the form loads
     Private Async Sub Financial_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Dim hosp = If(currentHospital, Results.SelectedHospital)
+        lblHN.Text = hosp.Name
+        Dim state = hosp.State
+        If state = "TN" Or state = "TX" Then
+            Await ShowFinancialData(hosp.HospitalId, state)
+        Else
+            Await ShowFinancialDataApi(hosp.CMSNum)
+        End If
+    End Sub
+    Private Async Sub Financial_Activated(sender As Object, e As EventArgs) Handles Me.Activated
         If Results.SelectedHospital IsNot Nothing Then
             lblHN.Text = Results.SelectedHospital.Name
             Dim state = Results.SelectedHospital.State
@@ -188,17 +214,6 @@ Public Class Financial
                 Await ShowFinancialData(Results.SelectedHospital.HospitalId, state)
             Else
                 Await ShowFinancialDataApi(Results.SelectedHospital.CMSNum)
-            End If
-        End If
-    End Sub
-    Private Sub Financial_Activated(sender As Object, e As EventArgs) Handles Me.Activated
-        If Results.SelectedHospital IsNot Nothing Then
-            lblHN.Text = Results.SelectedHospital.Name
-            Dim state = Results.SelectedHospital.State
-            If state = "TN" Or state = "TX" Then
-                ShowFinancialData(Results.SelectedHospital.HospitalId, state)
-            Else
-                ShowFinancialDataApi(Results.SelectedHospital.CMSNum)
             End If
         End If
     End Sub

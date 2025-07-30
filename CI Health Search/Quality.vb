@@ -1,4 +1,15 @@
 ﻿Public Class Quality
+
+    Private currentHospital As HospitalContext
+
+    Public Sub New(hosp As HospitalContext)
+        InitializeComponent()
+        currentHospital = hosp
+    End Sub
+
+    Public Sub New()
+        InitializeComponent()
+    End Sub
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles btnProfileQuality.Click
         Me.Hide()
         Profile.Show()

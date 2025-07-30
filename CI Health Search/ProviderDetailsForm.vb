@@ -364,13 +364,11 @@ Public Class ProviderDetailsForm
 
     ' Handle CCN link click
     Private Sub dgvDetails_CellContentClick(sender As Object, e As DataGridViewCellEventArgs)
-
         If e.RowIndex >= 0 AndAlso dgvDetails.Columns(e.ColumnIndex).Name = "Facility Affiliation Certification Number" Then
             Dim ccn As String = dgvDetails.Rows(e.RowIndex).Cells("Facility Affiliation Certification Number").Value?.ToString()
             If Not String.IsNullOrWhiteSpace(ccn) Then
-                ' Open the facility profile form for this CCN
+                ' Open a new Profile window for this CCN
                 Dim profileForm As New Profile()
-                ' You must implement this method in your Profile form:
                 profileForm.ShowFacilityByCCN(ccn)
                 profileForm.Show()
             End If
