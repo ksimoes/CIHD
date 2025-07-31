@@ -603,8 +603,8 @@ Public Class Profile
 
     Private Sub btnFinIndProfile_Click(sender As Object, e As EventArgs) Handles btnFinIndProfile.Click
         Me.Hide()
-        Dim finIndForm As New FinInd(currentHospital)
-        finIndForm.Show()
+       Dim finIndForm As New FinInd(Results.SelectedHospital)
+finIndForm.Show()
     End Sub
 
 

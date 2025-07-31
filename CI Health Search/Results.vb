@@ -72,13 +72,12 @@ Public Class Results
         End If
     End Sub
 
-    ' Profile button click
-    Private Async Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+    Private Function GetSelectedHospitalContext() As HospitalContext
         Dim selectedRow As DataGridViewRow = dgvResults.Rows.Cast(Of DataGridViewRow)().
-            FirstOrDefault(Function(r) CBool(r.Cells("Select").Value))
+        FirstOrDefault(Function(r) CBool(r.Cells("Select").Value))
         If selectedRow Is Nothing Then
             MessageBox.Show("Select a hospital first.")
-            Return
+            Return Nothing
         End If
 
         Dim name As String = selectedRow.Cells("HospitalName").Value.ToString()
@@ -106,69 +105,71 @@ Public Class Results
         End If
 
         Dim selectedDataRow As DataRow = resultsTable.AsEnumerable().FirstOrDefault(
-            Function(r) r.Field(Of String)(displayCol) = name AndAlso
-                        (Not resultsTable.Columns.Contains("City") OrElse r.Field(Of String)("City") = city) AndAlso
-                        (Not resultsTable.Columns.Contains("State") OrElse r.Field(Of String)("State") = state OrElse
-                         resultsTable.Columns.Contains("STATE") AndAlso r.Field(Of String)("STATE") = state OrElse
-                         resultsTable.Columns.Contains("State Code") AndAlso r.Field(Of String)("State Code") = state) AndAlso
-                        (Not resultsTable.Columns.Contains("Zip Code") OrElse r.Field(Of String)("Zip Code") = zip OrElse
-                         resultsTable.Columns.Contains("ZIP") AndAlso r.Field(Of String)("ZIP") = zip)
-        )
+        Function(r) r.Field(Of String)(displayCol) = name AndAlso
+                    (Not resultsTable.Columns.Contains("City") OrElse r.Field(Of String)("City") = city) AndAlso
+                    (Not resultsTable.Columns.Contains("State") OrElse r.Field(Of String)("State") = state OrElse
+                     resultsTable.Columns.Contains("STATE") AndAlso r.Field(Of String)("STATE") = state OrElse
+                     resultsTable.Columns.Contains("State Code") AndAlso r.Field(Of String)("State Code") = state) AndAlso
+                    (Not resultsTable.Columns.Contains("Zip Code") OrElse r.Field(Of String)("Zip Code") = zip OrElse
+                     resultsTable.Columns.Contains("ZIP") AndAlso r.Field(Of String)("ZIP") = zip)
+    )
 
-        If selectedDataRow IsNot Nothing Then
-            Dim hosp As New HospitalContext()
-            ' Core Identifiers
-            hosp.HospitalId = If(resultsTable.Columns.Contains("LicenseNum"), SafeInt(selectedDataRow("LicenseNum")), 0)
-            hosp.CMSNum = SafeStr(selectedDataRow, "Provider CCN", "CMSNum", "PRVDR_NUM", "CCN", "ccn")
-            hosp.NPI = SafeStr(selectedDataRow, "NPI", "npi")
-            hosp.Name = SafeStr(selectedDataRow, "FAC_NAME", "PRVDR_NM", "PRVDR_NAME", "ORGANIZATION NAME", "organization_name", "Facility Name", "Hospital Name", "provider_name")
-            ' Location & Contact
-            hosp.Address = SafeStr(selectedDataRow, "ADDR_LN_1_TXT", "ADDRESS LINE 1", "address_line_1", "Address", "Facility Address", "Street Address", "STREET", "STREET1", "STREET_ADDRESS")
-            hosp.City = SafeStr(selectedDataRow, "CITY_NM", "City")
-            hosp.Zip = SafeStr(selectedDataRow, "ZIP_CD", "Zip Code", "ZIP")
-            hosp.County = SafeStr(selectedDataRow, "County Name", "County")
-            hosp.Phone = SafeStr(selectedDataRow, "Phone", "Telephone Number")
-            hosp.Website = SafeStr(selectedDataRow, "Website")
-            hosp.State = SafeStr(selectedDataRow, state)
-            ' Classification
-            hosp.CBSAnum = SafeStr(selectedDataRow, "CBSA", "CBSA Code")
-            hosp.FacilityType = SafeStr(selectedDataRow, "Facility Type")
-            hosp.RuralOUrban = SafeStr(selectedDataRow, "Rural Versus Urban")
-            ' Capacity & Staffing
-            hosp.NumOfBeds = SafeInt(selectedDataRow, "Number of Beds", "General Med/Surg Beds")
-            hosp.NumOfEmployees = SafeInt(selectedDataRow, "Total Employees")
-            hosp.TotalDays = SafeInt(selectedDataRow, "Total Days", "Inpatient Days")
-            hosp.TotalDischarges = SafeInt(selectedDataRow, "Total Discharges")
-            ' Financials
-            hosp.TotalPatientRev = SafeDec(selectedDataRow, "Total Patient Revenue")
-            hosp.NetPatientRev = SafeDec(selectedDataRow, "Net Patient Revenue")
-            hosp.CharityCost = SafeDec(selectedDataRow, "Cost of Charity Care")
-            hosp.UncompensatedCost = SafeDec(selectedDataRow, "Cost of Uncompensated Care")
-            ' Additional/Expandable fields
-            hosp.TotalCurrentAssets = SafeDec(selectedDataRow, "Total Current Assets")
-            hosp.TotalAssets = SafeDec(selectedDataRow, "Total Assets")
-            hosp.NetIncome = SafeDec(selectedDataRow, "Net Income")
-            hosp.TotalOperatingRevenue = SafeDec(selectedDataRow, "Net Patient Revenue")
-            hosp.TotalOperatingExpense = SafeDec(selectedDataRow, "Less Total Operating Expense")
-            hosp.TotalLiabilities = SafeDec(selectedDataRow, "Total Liabilities")
-            hosp.TotalCurrentLiabilities = SafeDec(selectedDataRow, "Total Current Liabilities")
-            hosp.TotalLongTermLiabilities = SafeDec(selectedDataRow, "Total Long Term Liabilities")
-            hosp.DepreciationCost = SafeDec(selectedDataRow, "Depreciation Cost")
-            hosp.LeaseCost = SafeDec(selectedDataRow, "Leasehold Improvements")
-            hosp.Inventory = SafeDec(selectedDataRow, "Inventory")
-            hosp.NotesReceivable = SafeDec(selectedDataRow, "Notes Receivable")
-            hosp.MarketSecurities = SafeDec(selectedDataRow, "Temporary Investments")
-            hosp.Investments = SafeDec(selectedDataRow, "Investments")
-            Results.SelectedHospital = hosp
-            hosp.LastDataRow = selectedDataRow
-        Else
+        If selectedDataRow Is Nothing Then
             MessageBox.Show("Could not find the selected hospital in the results.")
-            Return
+            Return Nothing
         End If
 
-        Profile.ShowProfile(SelectedHospital)
-        Hide()
-        Profile.Show()
+        Dim hosp As New HospitalContext()
+        ' (populate hosp as before)
+        hosp.HospitalId = If(resultsTable.Columns.Contains("LicenseNum"), SafeInt(selectedDataRow("LicenseNum")), 0)
+        hosp.CMSNum = SafeStr(selectedDataRow, "Provider CCN", "CMSNum", "PRVDR_NUM", "CCN", "ccn")
+        hosp.NPI = SafeStr(selectedDataRow, "NPI", "npi")
+        hosp.Name = SafeStr(selectedDataRow, "FAC_NAME", "PRVDR_NM", "PRVDR_NAME", "ORGANIZATION NAME", "organization_name", "Facility Name", "Hospital Name", "provider_name")
+        hosp.Address = SafeStr(selectedDataRow, "ADDR_LN_1_TXT", "ADDRESS LINE 1", "address_line_1", "Address", "Facility Address", "Street Address", "STREET", "STREET1", "STREET_ADDRESS")
+        hosp.City = SafeStr(selectedDataRow, "CITY_NM", "City")
+        hosp.Zip = SafeStr(selectedDataRow, "ZIP_CD", "Zip Code", "ZIP")
+        hosp.County = SafeStr(selectedDataRow, "County Name", "County")
+        hosp.Phone = SafeStr(selectedDataRow, "Phone", "Telephone Number")
+        hosp.Website = SafeStr(selectedDataRow, "Website")
+        hosp.State = SafeStr(selectedDataRow, state)
+        hosp.CBSAnum = SafeStr(selectedDataRow, "CBSA", "CBSA Code")
+        hosp.FacilityType = SafeStr(selectedDataRow, "Facility Type")
+        hosp.RuralOUrban = SafeStr(selectedDataRow, "Rural Versus Urban")
+        hosp.NumOfBeds = SafeInt(selectedDataRow, "Number of Beds", "General Med/Surg Beds")
+        hosp.NumOfEmployees = SafeInt(selectedDataRow, "Total Employees")
+        hosp.TotalDays = SafeInt(selectedDataRow, "Total Days", "Inpatient Days")
+        hosp.TotalDischarges = SafeInt(selectedDataRow, "Total Discharges")
+        hosp.TotalPatientRev = SafeDec(selectedDataRow, "Total Patient Revenue")
+        hosp.NetPatientRev = SafeDec(selectedDataRow, "Net Patient Revenue")
+        hosp.CharityCost = SafeDec(selectedDataRow, "Cost of Charity Care")
+        hosp.UncompensatedCost = SafeDec(selectedDataRow, "Cost of Uncompensated Care")
+        hosp.TotalCurrentAssets = SafeDec(selectedDataRow, "Total Current Assets")
+        hosp.TotalAssets = SafeDec(selectedDataRow, "Total Assets")
+        hosp.NetIncome = SafeDec(selectedDataRow, "Net Income")
+        hosp.TotalOperatingRevenue = SafeDec(selectedDataRow, "Net Patient Revenue")
+        hosp.TotalOperatingExpense = SafeDec(selectedDataRow, "Less Total Operating Expense")
+        hosp.TotalLiabilities = SafeDec(selectedDataRow, "Total Liabilities")
+        hosp.TotalCurrentLiabilities = SafeDec(selectedDataRow, "Total Current Liabilities")
+        hosp.TotalLongTermLiabilities = SafeDec(selectedDataRow, "Total Long Term Liabilities")
+        hosp.DepreciationCost = SafeDec(selectedDataRow, "Depreciation Cost")
+        hosp.LeaseCost = SafeDec(selectedDataRow, "Leasehold Improvements")
+        hosp.Inventory = SafeDec(selectedDataRow, "Inventory")
+        hosp.NotesReceivable = SafeDec(selectedDataRow, "Notes Receivable")
+        hosp.MarketSecurities = SafeDec(selectedDataRow, "Temporary Investments")
+        hosp.Investments = SafeDec(selectedDataRow, "Investments")
+        hosp.LastDataRow = selectedDataRow
+
+        Results.SelectedHospital = hosp
+        Return hosp
+    End Function
+
+    ' Profile button click
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        Dim hosp = GetSelectedHospitalContext()
+        If hosp Is Nothing Then Return
+        Me.Hide()
+        Dim profileForm As New Profile(hosp)
+        profileForm.Show()
     End Sub
 
     ' Repeat the above selection logic for other navigation buttons as needed
@@ -308,23 +309,35 @@ Public Class Results
     End Sub
 
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+        Dim hosp = GetSelectedHospitalContext()
+        If hosp Is Nothing Then Return
         Me.Hide()
-        Departments.Show()
+        Dim deptForm As New Departments(hosp)
+        deptForm.Show()
     End Sub
 
     Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
+        Dim hosp = GetSelectedHospitalContext()
+        If hosp Is Nothing Then Return
         Me.Hide()
-        FinInd.Show()
+        Dim finIndForm As New FinInd(hosp)
+        finIndForm.Show()
     End Sub
 
     Private Sub Button5_Click(sender As Object, e As EventArgs) Handles Button5.Click
+        Dim hosp = GetSelectedHospitalContext()
+        If hosp Is Nothing Then Return
         Me.Hide()
-        Quality.Show()
+        Dim qualityForm As New Quality(hosp)
+        qualityForm.Show()
     End Sub
 
     Private Sub Button7_Click(sender As Object, e As EventArgs) Handles Button7.Click
+        Dim hosp = GetSelectedHospitalContext()
+        If hosp Is Nothing Then Return
         Me.Hide()
-        Outpatient.Show()
+        Dim outpatientForm As New Outpatient(hosp)
+        outpatientForm.Show()
     End Sub
 
     ' Add similar selection logic to Button6_Click (Inpatient) if needed
