@@ -3,6 +3,7 @@ Imports System.Data.SqlClient
 Imports System.Net.Http
 
 Public Class Profile
+    Dim curHospCMS, currState As String
     Private ReadOnly FacilityTypeMap As New Dictionary(Of String, String) From {
         {"STH", "Short-term"},
         {"FQHC", "Federally Qualified Health Center"},
@@ -131,6 +132,7 @@ Public Class Profile
         lblCmsUrbRurDesigResult.Text = If(Not String.IsNullOrWhiteSpace(foundHospital.RuralOUrban), foundHospital.RuralOUrban, "N/A")
         lblCbsaResult.Text = If(Not String.IsNullOrWhiteSpace(foundHospital.CBSAnum), foundHospital.CBSAnum, "N/A")
         lblPhoneNumResult.Text = If(Not String.IsNullOrWhiteSpace(foundHospital.Phone), foundHospital.Phone, "N/A")
+        currState = foundHospital.State
         ' Set Type of Facility: FQHC detection by "MULTIPLE NPI FLAG" column
         Dim isFqhc As Boolean = False
         If foundHospital.LastDataRow IsNot Nothing AndAlso
@@ -172,6 +174,7 @@ Public Class Profile
 
         ' Always supplement with API data for the most up-to-date info (but do NOT overwrite name/address)
         Await ShowApiProfileAsync(foundHospital)
+        curHospCMS = foundHospital.CMSNum
 
         ' Fetch and display NPI from NPPES API (by NPI if available, else by name/state)
         Dim npiData As JObject = Await FetchNpiDataAsync(foundHospital.NPI, GetHospitalNameFromContext(foundHospital), foundHospital.State)
@@ -595,6 +598,7 @@ Public Class Profile
         Me.Hide()
         Dim finForm As New Financial(currentHospital)
         finForm.Show()
+        'finForm.ShowFinancialData(lblCmsCertNumProfileResult.Text)
     End Sub
 
     Private Sub btnFinIndProfile_Click(sender As Object, e As EventArgs) Handles btnFinIndProfile.Click

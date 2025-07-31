@@ -1,4 +1,6 @@
-﻿Public Class Results
+﻿Imports System.Runtime.CompilerServices
+
+Public Class Results
 
     Public Property SelectedState As String
     Private resultsTable As DataTable
@@ -127,6 +129,7 @@
             hosp.County = SafeStr(selectedDataRow, "County Name", "County")
             hosp.Phone = SafeStr(selectedDataRow, "Phone", "Telephone Number")
             hosp.Website = SafeStr(selectedDataRow, "Website")
+            hosp.State = SafeStr(selectedDataRow, state)
             ' Classification
             hosp.CBSAnum = SafeStr(selectedDataRow, "CBSA", "CBSA Code")
             hosp.FacilityType = SafeStr(selectedDataRow, "Facility Type")

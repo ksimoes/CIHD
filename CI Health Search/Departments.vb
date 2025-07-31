@@ -5,11 +5,28 @@ Public Class Departments
 
     Private currentHospital As HospitalContext
 
+    Private Function GetBestFacilityName(ctx As HospitalContext) As String
+        If ctx Is Nothing Then Return "N/A"
+        If ctx.LastDataRow IsNot Nothing Then
+            Dim row = ctx.LastDataRow
+            If row.Table.Columns.Contains("FAC_NAME") Then Return row("FAC_NAME").ToString()
+            If row.Table.Columns.Contains("PRVDR_NAME") Then Return row("PRVDR_NAME").ToString()
+            If row.Table.Columns.Contains("ORGANIZATION NAME") Then Return row("ORGANIZATION NAME").ToString()
+            If row.Table.Columns.Contains("organization_name") Then Return row("organization_name").ToString()
+            If row.Table.Columns.Contains("Facility Name") Then Return row("Facility Name").ToString()
+            If row.Table.Columns.Contains("Hospital Name") Then Return row("Hospital Name").ToString()
+        End If
+        If Not String.IsNullOrWhiteSpace(ctx.Name) Then Return ctx.Name
+        Return "N/A"
+    End Function
+
+    ' New constructor to accept a HospitalContext
     Public Sub New(hosp As HospitalContext)
         InitializeComponent()
         currentHospital = hosp
     End Sub
 
+    ' Default constructor for designer compatibility
     Public Sub New()
         InitializeComponent()
     End Sub
@@ -67,42 +84,48 @@ Public Class Departments
     End Sub
 
     Private Sub Departments_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-
-        ShowDepartmentsDataApi(Results.SelectedHospital.CMSNum)
-
-
-
+        If currentHospital IsNot Nothing Then
+            ShowDepartmentsDataApi(currentHospital.CMSNum)
+        Else
+            ' Optionally clear labels or show a message
+            ShowDepartmentsDataApi("")
+        End If
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles btnProfileDepartments.Click
         Me.Hide()
-        Profile.Show()
+        Dim profileForm As New Profile(currentHospital)
+        profileForm.Show()
     End Sub
 
     Private Sub Button3_Click(sender As Object, e As EventArgs) Handles btnFinancialDepartments.Click
         Me.Hide()
-        Financial.Show()
+        Dim financialForm As New Financial(currentHospital)
+        financialForm.Show()
     End Sub
 
     Private Sub Button4_Click(sender As Object, e As EventArgs) Handles btnFinIndDepartments.Click
         Me.Hide()
-        FinInd.Show()
+        Dim finIndForm As New FinInd(currentHospital)
+        finIndForm.Show()
     End Sub
 
     Private Sub Button5_Click(sender As Object, e As EventArgs) Handles btnQualityDepartments.Click
         Me.Hide()
-        Quality.Show()
+        Dim qualityForm As New Quality(currentHospital)
+        qualityForm.Show()
     End Sub
 
     Private Sub Button6_Click(sender As Object, e As EventArgs) Handles btnInpatientDepartments.Click
         Me.Hide()
-        Inpatient.Show()
+        Dim inpatientForm As New Inpatient(currentHospital)
+        inpatientForm.Show()
     End Sub
 
     Private Sub Button7_Click(sender As Object, e As EventArgs) Handles btnOutpatientDepartments.Click
         Me.Hide()
-        Outpatient.Show()
-
+        Dim outpatientForm As New Outpatient(currentHospital)
+        outpatientForm.Show()
     End Sub
 
     Private Sub Button1_Click_1(sender As Object, e As EventArgs) Handles Button1.Click

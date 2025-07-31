@@ -5,6 +5,21 @@ Public Class FinInd
 
     Private currentHospital As HospitalContext
 
+    Private Function GetBestFacilityName(ctx As HospitalContext) As String
+        If ctx Is Nothing Then Return "N/A"
+        If ctx.LastDataRow IsNot Nothing Then
+            Dim row = ctx.LastDataRow
+            If row.Table.Columns.Contains("FAC_NAME") Then Return row("FAC_NAME").ToString()
+            If row.Table.Columns.Contains("PRVDR_NAME") Then Return row("PRVDR_NAME").ToString()
+            If row.Table.Columns.Contains("ORGANIZATION NAME") Then Return row("ORGANIZATION NAME").ToString()
+            If row.Table.Columns.Contains("organization_name") Then Return row("organization_name").ToString()
+            If row.Table.Columns.Contains("Facility Name") Then Return row("Facility Name").ToString()
+            If row.Table.Columns.Contains("Hospital Name") Then Return row("Hospital Name").ToString()
+        End If
+        If Not String.IsNullOrWhiteSpace(ctx.Name) Then Return ctx.Name
+        Return "N/A"
+    End Function
+
     ' New constructor to accept a HospitalContext
     Public Sub New(hosp As HospitalContext)
         InitializeComponent()
@@ -15,6 +30,9 @@ Public Class FinInd
     Public Sub New()
         InitializeComponent()
     End Sub
+
+    ' Default constructor for designer compatibility
+
 
     Public Function FormatCurrency(val As Object) As String
         Dim dec As Decimal
@@ -31,9 +49,10 @@ Public Class FinInd
     Public strCMSnum As String
     Dim foundFinHosp As HospitalContext
     Public Async Function ShowFinancialDataApi(cmsNum As String) As Task
+        MessageBox.Show("ShowFinancialDataApi called with: " & cmsNum)
         ' Step 1: Populate from Results.SelectedHospital
-        Dim hosp = If(currentHospital, Results.SelectedHospital)
-        lblHN.Text = hosp.Name
+        Dim hosp = currentHospital
+        lblHN.Text = GetBestFacilityName(hosp)
 
         lblPedFinIndResult.Text = If(hosp.TotalDays > 0, hosp.TotalDays.ToString(), "N/A")
         lblTotCurrentAssetsResult.Text = If(hosp.TotalCurrentAssets > 0, hosp.TotalCurrentAssets.ToString("N0"), "N/A")
@@ -195,10 +214,13 @@ Public Class FinInd
 
 
 
-    Private Sub finind_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        ' Me.Size = New Size(900, 1500) ' or whatever you want
-        '  Me.MaximumSize = New Size(0, 0) ' unlimited
-        lblHN.Text = Results.SelectedHospital.Name
+    Private Async Sub FinInd_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        If currentHospital IsNot Nothing Then
+            lblHN.Text = GetBestFacilityName(currentHospital)
+            Await ShowFinancialDataApi(currentHospital.CMSNum)
+        Else
+            lblHN.Text = "No hospital context"
+        End If
 
 
         ' Create a new BoldGroupBox
@@ -234,55 +256,50 @@ Public Class FinInd
 
     Private Sub Button1_Click(sender As Object, e As EventArgs)
         Hide()
-        Profile.Show()
+        Dim profileForm As New Profile(currentHospital)
+        profileForm.Show()
     End Sub
 
     Private Sub Button2_Click(sender As Object, e As EventArgs)
         Hide()
-        Departments.Show()
+        Dim departmentsForm As New Departments(currentHospital)
+        departmentsForm.Show()
     End Sub
 
     Private Sub Button3_Click(sender As Object, e As EventArgs)
         Hide()
-        Financial.Show()
+        Dim financialForm As New Financial(currentHospital)
+        financialForm.Show()
     End Sub
 
     Private Sub Button5_Click(sender As Object, e As EventArgs)
         Hide()
-        Quality.Show()
+        Dim qualityForm As New Quality(currentHospital)
+        qualityForm.Show()
     End Sub
 
     Private Sub Button6_Click(sender As Object, e As EventArgs)
         Hide()
-        Inpatient.Show()
+        Dim inpatientForm As New Inpatient(currentHospital)
+        inpatientForm.Show()
     End Sub
 
     Private Sub Button7_Click(sender As Object, e As EventArgs)
         Hide()
-        Outpatient.Show()
-    End Sub
-
-    Private Sub Label113_Click(sender As Object, e As EventArgs)
-
-    End Sub
-
-    Private Sub Button1_Click_1(sender As Object, e As EventArgs)
-        Hide()
-        Search.Show()
-    End Sub
-
-    Private Sub GroupBox2_Enter(sender As Object, e As EventArgs) Handles GroupBox2.Enter
-
+        Dim outpatientForm As New Outpatient(currentHospital)
+        outpatientForm.Show()
     End Sub
 
     Private Sub btnProfileFinInd_Click(sender As Object, e As EventArgs) Handles btnProfileFinInd.Click
         Hide()
-        Profile.Show()
+        Dim profileForm As New Profile(currentHospital)
+        profileForm.Show()
     End Sub
 
     Private Sub btnDepartmentsFinInd_Click(sender As Object, e As EventArgs) Handles btnDepartmentsFinInd.Click
         Hide()
-        Departments.Show()
+        Dim departmentsForm As New Departments(currentHospital)
+        departmentsForm.Show()
     End Sub
 
     Private Sub btnFinancialFinInd_Click(sender As Object, e As EventArgs) Handles btnFinancialFinInd.Click
@@ -293,19 +310,20 @@ Public Class FinInd
 
     Private Sub btnQualityFinInd_Click(sender As Object, e As EventArgs) Handles btnQualityFinInd.Click
         Hide()
-        Quality.Show()
+        Dim qualityForm As New Quality(currentHospital)
+        qualityForm.Show()
     End Sub
 
     Private Sub btnInpatientFinInd_Click(sender As Object, e As EventArgs) Handles btnInpatientFinInd.Click
         Hide()
-        Inpatient.Show()
-        Inpatient.LoadPatientOriginDataAsync(Results.SelectedHospital)
-        Inpatient.LoadCeoDataAsync(Results.SelectedHospital)
+        Dim inpatientForm As New Inpatient(currentHospital)
+        inpatientForm.Show()
     End Sub
 
     Private Sub btnOutpatientFinInd_Click(sender As Object, e As EventArgs) Handles btnOutpatientFinInd.Click
         Hide()
-        Outpatient.Show()
+        Dim outpatientForm As New Outpatient(currentHospital)
+        outpatientForm.Show()
     End Sub
 
     Private Sub Button1_Click_2(sender As Object, e As EventArgs) Handles Button1.Click

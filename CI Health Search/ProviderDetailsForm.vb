@@ -363,14 +363,45 @@ Public Class ProviderDetailsForm
     End Sub
 
     ' Handle CCN link click
-    Private Sub dgvDetails_CellContentClick(sender As Object, e As DataGridViewCellEventArgs)
+    Private Async Sub dgvDetails_CellContentClick(sender As Object, e As DataGridViewCellEventArgs)
         If e.RowIndex >= 0 AndAlso dgvDetails.Columns(e.ColumnIndex).Name = "Facility Affiliation Certification Number" Then
             Dim ccn As String = dgvDetails.Rows(e.RowIndex).Cells("Facility Affiliation Certification Number").Value?.ToString()
             If Not String.IsNullOrWhiteSpace(ccn) Then
-                ' Open a new Profile window for this CCN
-                Dim profileForm As New Profile()
-                profileForm.ShowFacilityByCCN(ccn)
-                profileForm.Show()
+                ' Fetch hospital data for this CCN from the API
+                Dim apiUrl As String = $"https://data.cms.gov/data-api/v1/dataset/8015f175-35cc-4cab-a664-b7c87d91a027/data?filter[Provider CCN]={Uri.EscapeDataString(ccn)}&size=1"
+                Using client As New HttpClient()
+                    Dim response = Await client.GetAsync(apiUrl)
+                    If response.IsSuccessStatusCode Then
+                        Dim json = Await response.Content.ReadAsStringAsync()
+                        Dim arr = JArray.Parse(json)
+                        If arr.Count > 0 Then
+                            Dim row = arr(0)
+                            Dim ctx As New HospitalContext()
+                            ctx.CMSNum = row("Provider CCN")?.ToString()
+                            ctx.Name = row("Hospital Name")?.ToString()
+                            ctx.Address = row("Address")?.ToString()
+                            ctx.City = row("City")?.ToString()
+                            ctx.State = row("State Code")?.ToString()
+                            ctx.Zip = row("ZIP Code")?.ToString()
+                            ctx.County = row("County Name")?.ToString()
+                            ctx.Phone = row("Phone Number")?.ToString()
+                            ctx.FacilityType = row("Type of Facility")?.ToString()
+                            ctx.RuralOUrban = row("Rural Urban Designation")?.ToString()
+                            ctx.NumOfBeds = If(Integer.TryParse(row("Number of Beds")?.ToString(), 0), Integer.Parse(row("Number of Beds")?.ToString()), 0)
+                            ctx.LastDataRow = Nothing
+
+                            ' Open a new Profile window for this hospital context
+                            Dim profileForm As New Profile(ctx)
+                            profileForm.StartPosition = FormStartPosition.Manual
+                            profileForm.Location = New Point(Me.Location.X + 30, Me.Location.Y + 30)
+                            profileForm.Show()
+                        Else
+                            MessageBox.Show("No data found for this CCN.")
+                        End If
+                    Else
+                        MessageBox.Show("API error: " & response.StatusCode.ToString())
+                    End If
+                End Using
             End If
         End If
     End Sub

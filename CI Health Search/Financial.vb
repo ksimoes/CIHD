@@ -9,6 +9,21 @@ Public Class Financial
     ' Store the context for this instance
     Private currentHospital As HospitalContext
 
+    Private Function GetBestFacilityName(ctx As HospitalContext) As String
+        If ctx Is Nothing Then Return "N/A"
+        If ctx.LastDataRow IsNot Nothing Then
+            Dim row = ctx.LastDataRow
+            If row.Table.Columns.Contains("FAC_NAME") Then Return row("FAC_NAME").ToString()
+            If row.Table.Columns.Contains("PRVDR_NAME") Then Return row("PRVDR_NAME").ToString()
+            If row.Table.Columns.Contains("ORGANIZATION NAME") Then Return row("ORGANIZATION NAME").ToString()
+            If row.Table.Columns.Contains("organization_name") Then Return row("organization_name").ToString()
+            If row.Table.Columns.Contains("Facility Name") Then Return row("Facility Name").ToString()
+            If row.Table.Columns.Contains("Hospital Name") Then Return row("Hospital Name").ToString()
+        End If
+        If Not String.IsNullOrWhiteSpace(ctx.Name) Then Return ctx.Name
+        Return "N/A"
+    End Function
+
     ' New constructor to accept a HospitalContext
     Public Sub New(hosp As HospitalContext)
         InitializeComponent()
@@ -20,11 +35,10 @@ Public Class Financial
         InitializeComponent()
     End Sub
 
-    ' Call this method to load data for the selected hospital
-    Public Async Function ShowFinancialData(hospitalId As Integer, state As String) As Task
-        Dim hosp = If(currentHospital, Results.SelectedHospital)
-
-        lblHN.Text = hosp.Name ' Always set the hospital name label
+    ' Call this method to load data for the                           
+    Public Async Function ShowFinancialData(hospitalId As Integer, Optional ByVal state As String = "") As Task
+        Dim hosp = currentHospital
+        lblHN.Text = GetBestFacilityName(hosp)
 
         lblPedResult.Text = If(hosp.TotalDays > 0, hosp.TotalDays.ToString(), "N/A")
         lblCurAssetResult.Text = If(hosp.TotalCurrentAssets > 0, hosp.TotalCurrentAssets.ToString("N0"), "N/A")
@@ -197,24 +211,29 @@ Public Class Financial
 
     ' Automatically load data when the form loads
     Private Async Sub Financial_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        Dim hosp = If(currentHospital, Results.SelectedHospital)
-        lblHN.Text = hosp.Name
-        Dim state = hosp.State
-        If state = "TN" Or state = "TX" Then
-            Await ShowFinancialData(hosp.HospitalId, state)
+        If currentHospital IsNot Nothing Then
+            lblHN.Text = GetBestFacilityName(currentHospital)
+            Dim state = currentHospital.State
+            If state = "TN" Or state = "TX" Then
+                Await ShowFinancialData(currentHospital.HospitalId, state)
+            Else
+                Await ShowFinancialDataApi(currentHospital.CMSNum)
+            End If
         Else
-            Await ShowFinancialDataApi(hosp.CMSNum)
+            lblHN.Text = "No hospital context"
         End If
     End Sub
     Private Async Sub Financial_Activated(sender As Object, e As EventArgs) Handles Me.Activated
-        If Results.SelectedHospital IsNot Nothing Then
-            lblHN.Text = Results.SelectedHospital.Name
-            Dim state = Results.SelectedHospital.State
+        If currentHospital IsNot Nothing Then
+            lblHN.Text = GetBestFacilityName(currentHospital)
+            Dim state = currentHospital.State
             If state = "TN" Or state = "TX" Then
-                Await ShowFinancialData(Results.SelectedHospital.HospitalId, state)
+                Await ShowFinancialData(currentHospital.HospitalId, state)
             Else
-                Await ShowFinancialDataApi(Results.SelectedHospital.CMSNum)
+                Await ShowFinancialDataApi(currentHospital.CMSNum)
             End If
+        Else
+            lblHN.Text = "No hospital context"
         End If
     End Sub
 
@@ -226,28 +245,26 @@ Public Class Financial
 
     Private Sub btnProfileFinancial_Click(sender As Object, e As EventArgs) Handles btnProfileFinancial.Click
         Me.Hide()
-        Profile.ShowProfile(Results.SelectedHospital)
-        Profile.Show()
+        Dim profileForm As New Profile(currentHospital)
+        profileForm.Show()
     End Sub
-
-
 
     Private Sub btnFInIndFinancial_Click(sender As Object, e As EventArgs) Handles btnFInIndFinancial.Click
         Me.Hide()
-        FinInd.Show()
-        FinInd.ShowFinancialDataApi(strCMSnum)
+        Dim finIndForm As New FinInd(currentHospital)
+        finIndForm.Show()
     End Sub
 
     Private Sub btnQualityFinancial_Click(sender As Object, e As EventArgs) Handles btnQualityFinancial.Click
         Me.Hide()
-        Quality.Show()
+        Dim qualityForm As New Quality(currentHospital)
+        qualityForm.Show()
     End Sub
 
     Private Sub btnInpatientFinancial_Click(sender As Object, e As EventArgs) Handles btnInpatientFinancial.Click
         Me.Hide()
-        Inpatient.Show()
-        Inpatient.LoadPatientOriginDataAsync(Results.SelectedHospital)
-        Inpatient.LoadCeoDataAsync(Results.SelectedHospital)
+        Dim inpatientForm As New Inpatient(currentHospital)
+        inpatientForm.Show()
     End Sub
 
     Private Sub btnDepartmentsFinancial_Click(sender As Object, e As EventArgs) Handles btnDepartmentsFinancial.Click
