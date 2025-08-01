@@ -343,174 +343,177 @@ Public Class Profile
     End Function
 
     Private Async Function LoadAffiliatedProvidersAsync(ccn As String) As Task
-        ' Show loading spinner and hide the DataGridView
+        ' Center and show the loading spinner, hide the grid
+        picLoading.Left = dgvProviders.Left + (dgvProviders.Width - picLoading.Width) \ 2
+        picLoading.Top = dgvProviders.Top + (dgvProviders.Height - picLoading.Height) \ 2
         picLoading.Visible = True
+        picLoading.BringToFront()
         dgvProviders.Visible = False
+
         Try
             Dim apiUrl As String = "https://data.cms.gov/provider-data/api/1/datastore/query/27ea-46a8/0"
             Dim postBody As String = "{
-        ""conditions"": [
-            {
-                ""property"": ""facility_affiliations_certification_number"",
-                ""value"": """ & ccn & """,
-                ""operator"": ""=""
-            }
-        ],
-        ""limit"": 1000
-    }"
+            ""conditions"": [
+                {
+                    ""property"": ""facility_affiliations_certification_number"",
+                    ""value"": """ & ccn & """,
+                    ""operator"": ""=""
+                }
+            ],
+            ""limit"": 1000
+        }"
 
-            Try
-                Using client As New HttpClient()
-                    Dim content = New StringContent(postBody, System.Text.Encoding.UTF8, "application/json")
-                    Dim response = Await client.PostAsync(apiUrl, content)
-                    If response.IsSuccessStatusCode Then
-                        Dim json = Await response.Content.ReadAsStringAsync()
-                        Dim obj = JObject.Parse(json)
-                        If obj("results") IsNot Nothing AndAlso obj("results").HasValues Then
-                            Dim data = obj("results")
-                            Dim dt As New DataTable()
-                            For Each col In data(0).ToObject(Of JObject)().Properties()
-                                dt.Columns.Add(col.Name)
+            Using client As New HttpClient()
+                Dim content = New StringContent(postBody, System.Text.Encoding.UTF8, "application/json")
+                Dim response = Await client.PostAsync(apiUrl, content)
+                If response.IsSuccessStatusCode Then
+                    Dim json = Await response.Content.ReadAsStringAsync()
+                    Dim obj = JObject.Parse(json)
+                    If obj("results") IsNot Nothing AndAlso obj("results").HasValues Then
+                        Dim data = obj("results")
+                        Dim dt As New DataTable()
+                        For Each col In data(0).ToObject(Of JObject)().Properties()
+                            dt.Columns.Add(col.Name)
+                        Next
+                        If Not dt.Columns.Contains("Credential") Then dt.Columns.Add("Credential")
+                        If Not dt.Columns.Contains("Description") Then dt.Columns.Add("Description")
+
+                        ' Fill DataTable
+                        For Each item In data
+                            Dim row = dt.NewRow()
+                            For Each col In dt.Columns
+                                If item(col.ToString()) IsNot Nothing Then
+                                    row(col.ToString()) = item(col.ToString())
+                                End If
                             Next
-                            If Not dt.Columns.Contains("Credential") Then dt.Columns.Add("Credential")
-                            If Not dt.Columns.Contains("Description") Then dt.Columns.Add("Description")
+                            dt.Rows.Add(row)
+                        Next
 
-                            ' Fill DataTable
-                            For Each item In data
-                                Dim row = dt.NewRow()
-                                For Each col In dt.Columns
-                                    If item(col.ToString()) IsNot Nothing Then
-                                        row(col.ToString()) = item(col.ToString())
-                                    End If
-                                Next
-                                dt.Rows.Add(row)
-                            Next
+                        ' --- Batch NPI lookups for Credential and Description ---
+                        Dim npiList As New List(Of String)
+                        For Each row As DataRow In dt.Rows
+                            Dim npi As String = row("npi").ToString()
+                            If Not String.IsNullOrWhiteSpace(npi) Then npiList.Add(npi)
+                        Next
 
-                            ' --- Batch NPI lookups for Credential and Description ---
-                            Dim npiList As New List(Of String)
-                            For Each row As DataRow In dt.Rows
-                                Dim npi As String = row("npi").ToString()
-                                If Not String.IsNullOrWhiteSpace(npi) Then npiList.Add(npi)
-                            Next
-
-                            Dim npiToCredential As New Dictionary(Of String, String)
-                            Dim npiToTaxonomy As New Dictionary(Of String, String)
-                            For i = 0 To npiList.Count - 1 Step 100
-                                Dim batch = npiList.Skip(i).Take(100)
-                                Dim npiApiUrl = $"https://npiregistry.cms.hhs.gov/api/?number={String.Join(",", batch)}&version=2.1"
-                                Using npiClient As New HttpClient()
-                                    Dim npiResp = Await npiClient.GetAsync(npiApiUrl)
-                                    If npiResp.IsSuccessStatusCode Then
-                                        Dim npiJson = Await npiResp.Content.ReadAsStringAsync()
-                                        Dim npiObj = JObject.Parse(npiJson)
-                                        If npiObj("results") IsNot Nothing AndAlso npiObj("results").HasValues Then
-                                            For Each result In npiObj("results")
-                                                Dim npiVal = result("number")?.ToString()
-                                                Dim credential = result("basic")?("credential")?.ToString()
-                                                npiToCredential(npiVal) = credential
-                                                ' Taxonomy
-                                                Dim taxonomyDescription As String = "N/A"
-                                                If result("taxonomies") IsNot Nothing AndAlso result("taxonomies").HasValues Then
-                                                    For Each taxonomy In result("taxonomies")
-                                                        If taxonomy("primary")?.ToString().ToLower() = "true" Then
-                                                            taxonomyDescription = taxonomy("desc")?.ToString()
-                                                            Exit For
-                                                        End If
-                                                    Next
-                                                    If taxonomyDescription = "N/A" Then
-                                                        taxonomyDescription = result("taxonomies")(0)("desc")?.ToString()
+                        Dim npiToCredential As New Dictionary(Of String, String)
+                        Dim npiToTaxonomy As New Dictionary(Of String, String)
+                        For i = 0 To npiList.Count - 1 Step 100
+                            Dim batch = npiList.Skip(i).Take(100)
+                            Dim npiApiUrl = $"https://npiregistry.cms.hhs.gov/api/?number={String.Join(",", batch)}&version=2.1"
+                            Using npiClient As New HttpClient()
+                                Dim npiResp = Await npiClient.GetAsync(npiApiUrl)
+                                If npiResp.IsSuccessStatusCode Then
+                                    Dim npiJson = Await npiResp.Content.ReadAsStringAsync()
+                                    Dim npiObj = JObject.Parse(npiJson)
+                                    If npiObj("results") IsNot Nothing AndAlso npiObj("results").HasValues Then
+                                        For Each result In npiObj("results")
+                                            Dim npiVal = result("number")?.ToString()
+                                            Dim credential = result("basic")?("credential")?.ToString()
+                                            npiToCredential(npiVal) = credential
+                                            ' Taxonomy
+                                            Dim taxonomyDescription As String = "N/A"
+                                            If result("taxonomies") IsNot Nothing AndAlso result("taxonomies").HasValues Then
+                                                For Each taxonomy In result("taxonomies")
+                                                    If taxonomy("primary")?.ToString().ToLower() = "true" Then
+                                                        taxonomyDescription = taxonomy("desc")?.ToString()
+                                                        Exit For
                                                     End If
+                                                Next
+                                                If taxonomyDescription = "N/A" Then
+                                                    taxonomyDescription = result("taxonomies")(0)("desc")?.ToString()
                                                 End If
-                                                npiToTaxonomy(npiVal) = taxonomyDescription
-                                            Next
-                                        End If
+                                            End If
+                                            npiToTaxonomy(npiVal) = taxonomyDescription
+                                        Next
                                     End If
-                                End Using
-                            Next
+                                End If
+                            End Using
+                        Next
 
-                            For Each row As DataRow In dt.Rows
-                                Dim npi = row("npi").ToString()
-                                row("Credential") = If(npiToCredential.ContainsKey(npi), npiToCredential(npi), "")
-                                row("Description") = If(npiToTaxonomy.ContainsKey(npi), npiToTaxonomy(npi), "N/A")
-                            Next
+                        For Each row As DataRow In dt.Rows
+                            Dim npi = row("npi").ToString()
+                            row("Credential") = If(npiToCredential.ContainsKey(npi), npiToCredential(npi), "")
+                            row("Description") = If(npiToTaxonomy.ContainsKey(npi), npiToTaxonomy(npi), "N/A")
+                        Next
 
-                            ' --- Fetch procedure_category for each NPI (existing logic, can be optimized similarly if needed) ---
-                            Dim npiToProcedureCategory As New Dictionary(Of String, String)
-                            If npiList.Count > 0 Then
-                                Dim npiConditions As New List(Of String)
-                                For Each npi In npiList.Distinct()
-                                    npiConditions.Add("{""property"":""npi"",""value"":""" & npi & """,""operator"":""=""}")
-                                Next
-                                Dim procPostBody As String = "{
+                        ' --- Fetch procedure_category for each NPI (existing logic) ---
+                        Dim npiToProcedureCategory As New Dictionary(Of String, String)
+                        If npiList.Count > 0 Then
+                            Dim npiConditions As New List(Of String)
+                            For Each npi In npiList.Distinct()
+                                npiConditions.Add("{""property"":""npi"",""value"":""" & npi & """,""operator"":""=""}")
+                            Next
+                            Dim procPostBody As String = "{
                             ""conditions"": [
                                 {""or"": [" & String.Join(",", npiConditions) & "]}
                             ],
                             ""limit"": 1000
                         }"
 
-                                Dim procApiUrl As String = "https://data.cms.gov/provider-data/api/1/datastore/query/n0yb-util/0"
-                                Using procClient As New HttpClient()
-                                    Dim procContent = New StringContent(procPostBody, System.Text.Encoding.UTF8, "application/json")
-                                    Dim procResponse = Await procClient.PostAsync(procApiUrl, procContent)
-                                    If procResponse.IsSuccessStatusCode Then
-                                        Dim procJson = Await procResponse.Content.ReadAsStringAsync()
-                                        Dim procObj = JObject.Parse(procJson)
-                                        If procObj("results") IsNot Nothing AndAlso procObj("results").HasValues Then
-                                            For Each item In procObj("results")
-                                                Dim npiVal As String = item("npi")?.ToString()
-                                                Dim procCat As String = item("procedure_category")?.ToString()
-                                                If Not String.IsNullOrWhiteSpace(npiVal) AndAlso Not npiToProcedureCategory.ContainsKey(npiVal) Then
-                                                    npiToProcedureCategory(npiVal) = procCat
-                                                End If
-                                            Next
-                                        End If
+                            Dim procApiUrl As String = "https://data.cms.gov/provider-data/api/1/datastore/query/n0yb-util/0"
+                            Using procClient As New HttpClient()
+                                Dim procContent = New StringContent(procPostBody, System.Text.Encoding.UTF8, "application/json")
+                                Dim procResponse = Await procClient.PostAsync(procApiUrl, procContent)
+                                If procResponse.IsSuccessStatusCode Then
+                                    Dim procJson = Await procResponse.Content.ReadAsStringAsync()
+                                    Dim procObj = JObject.Parse(procJson)
+                                    If procObj("results") IsNot Nothing AndAlso procObj("results").HasValues Then
+                                        For Each item In procObj("results")
+                                            Dim npiVal As String = item("npi")?.ToString()
+                                            Dim procCat As String = item("procedure_category")?.ToString()
+                                            If Not String.IsNullOrWhiteSpace(npiVal) AndAlso Not npiToProcedureCategory.ContainsKey(npiVal) Then
+                                                npiToProcedureCategory(npiVal) = procCat
+                                            End If
+                                        Next
                                     End If
-                                End Using
-                            End If
-
-                            If Not dt.Columns.Contains("procedure_category") Then
-                                dt.Columns.Add("procedure_category")
-                            End If
-
-                            For Each row As DataRow In dt.Rows
-                                Dim npi As String = row("npi").ToString()
-                                If npiToProcedureCategory.ContainsKey(npi) Then
-                                    row("procedure_category") = npiToProcedureCategory(npi)
-                                Else
-                                    row("procedure_category") = ""
                                 End If
-                            Next
+                            End Using
+                        End If
 
-                            ' --- Bind to DataGridView and set column visibility ---
-                            dgvProviders.DataSource = dt
+                        If Not dt.Columns.Contains("procedure_category") Then
+                            dt.Columns.Add("procedure_category")
+                        End If
 
-                            ' Set custom column headers
-                            If dgvProviders.Columns.Contains("provider_first_name") Then
-                                dgvProviders.Columns("provider_first_name").HeaderText = "First Name"
+                        For Each row As DataRow In dt.Rows
+                            Dim npi As String = row("npi").ToString()
+                            If npiToProcedureCategory.ContainsKey(npi) Then
+                                row("procedure_category") = npiToProcedureCategory(npi)
+                            Else
+                                row("procedure_category") = ""
                             End If
-                            If dgvProviders.Columns.Contains("provider_last_name") Then
-                                dgvProviders.Columns("provider_last_name").HeaderText = "Last Name"
-                            End If
-                            If dgvProviders.Columns.Contains("Description") Then
-                                dgvProviders.Columns("Description").HeaderText = "Specialty"
-                            End If
-                            If dgvProviders.Columns.Contains("Credential") Then
-                                dgvProviders.Columns("Credential").HeaderText = "Credential"
-                            End If
+                        Next
 
-                            ' Set column visibility
-                            For Each col As DataGridViewColumn In dgvProviders.Columns
-                                col.Visible = (col.Name = "npi" OrElse
+                        ' --- Bind to DataGridView and set column visibility ---
+                        dgvProviders.DataSource = dt
+
+                        ' Set custom column headers
+                        If dgvProviders.Columns.Contains("provider_first_name") Then
+                            dgvProviders.Columns("provider_first_name").HeaderText = "First Name"
+                        End If
+                        If dgvProviders.Columns.Contains("provider_last_name") Then
+                            dgvProviders.Columns("provider_last_name").HeaderText = "Last Name"
+                        End If
+                        If dgvProviders.Columns.Contains("Description") Then
+                            dgvProviders.Columns("Description").HeaderText = "Specialty"
+                        End If
+                        If dgvProviders.Columns.Contains("Credential") Then
+                            dgvProviders.Columns("Credential").HeaderText = "Credential"
+                        End If
+
+                        ' Set column visibility
+                        For Each col As DataGridViewColumn In dgvProviders.Columns
+                            col.Visible = (col.Name = "npi" OrElse
                                    col.Name = "provider_first_name" OrElse
                                    col.Name = "provider_last_name" OrElse
                                    col.Name = "Credential" OrElse
                                    col.Name = "facility_affiliations_certification_number" OrElse
                                    col.Name = "procedure_category" OrElse
                                    col.Name = "Description")
-                            Next
+                        Next
 
-                            ' Move columns to desired order
-                            Dim colOrder As New List(Of String) From {
+                        ' Move columns to desired order
+                        Dim colOrder As New List(Of String) From {
                         "provider_first_name",
                         "provider_last_name",
                         "Credential",
@@ -519,46 +522,45 @@ Public Class Profile
                         "facility_affiliations_certification_number",
                         "procedure_category"
                     }
-                            Dim displayIndex As Integer = 0
-                            For Each colName In colOrder
-                                If dgvProviders.Columns.Contains(colName) Then
-                                    dgvProviders.Columns(colName).DisplayIndex = displayIndex
-                                    displayIndex += 1
-                                End If
-                            Next
+                        Dim displayIndex As Integer = 0
+                        For Each colName In colOrder
+                            If dgvProviders.Columns.Contains(colName) Then
+                                dgvProviders.Columns(colName).DisplayIndex = displayIndex
+                                displayIndex += 1
+                            End If
+                        Next
 
-                            ' --- Make DataGridView more visually appealing ---
-                            dgvProviders.AlternatingRowsDefaultCellStyle.BackColor = Color.LightGray
-                            dgvProviders.DefaultCellStyle.BackColor = Color.White
-                            dgvProviders.ColumnHeadersDefaultCellStyle.BackColor = Color.SteelBlue
-                            dgvProviders.ColumnHeadersDefaultCellStyle.ForeColor = Color.White
-                            dgvProviders.EnableHeadersVisualStyles = False
-                            dgvProviders.GridColor = Color.LightSteelBlue
-                            dgvProviders.DefaultCellStyle.SelectionBackColor = Color.LightSteelBlue
-                            dgvProviders.DefaultCellStyle.SelectionForeColor = Color.Black
+                        ' --- Make DataGridView more visually appealing ---
+                        dgvProviders.AlternatingRowsDefaultCellStyle.BackColor = Color.LightGray
+                        dgvProviders.DefaultCellStyle.BackColor = Color.White
+                        dgvProviders.ColumnHeadersDefaultCellStyle.BackColor = Color.SteelBlue
+                        dgvProviders.ColumnHeadersDefaultCellStyle.ForeColor = Color.White
+                        dgvProviders.EnableHeadersVisualStyles = False
+                        dgvProviders.GridColor = Color.LightSteelBlue
+                        dgvProviders.DefaultCellStyle.SelectionBackColor = Color.LightSteelBlue
+                        dgvProviders.DefaultCellStyle.SelectionForeColor = Color.Black
 
-                        Else
-                            dgvProviders.DataSource = Nothing
-                            dgvProviders.Columns.Clear()
-                            dgvProviders.Rows.Clear()
-                            dgvProviders.Refresh()
-                        End If
                     Else
                         dgvProviders.DataSource = Nothing
                         dgvProviders.Columns.Clear()
                         dgvProviders.Rows.Clear()
                         dgvProviders.Refresh()
                     End If
-                End Using
-            Catch ex As Exception
-                dgvProviders.DataSource = Nothing
-                dgvProviders.Columns.Clear()
-                dgvProviders.Rows.Clear()
-                dgvProviders.Refresh()
-                MessageBox.Show("Provider API error: " & ex.Message)
-            End Try
+                Else
+                    dgvProviders.DataSource = Nothing
+                    dgvProviders.Columns.Clear()
+                    dgvProviders.Rows.Clear()
+                    dgvProviders.Refresh()
+                End If
+            End Using
+        Catch ex As Exception
+            dgvProviders.DataSource = Nothing
+            dgvProviders.Columns.Clear()
+            dgvProviders.Rows.Clear()
+            dgvProviders.Refresh()
+            MessageBox.Show("Provider API error: " & ex.Message)
         Finally
-            ' Hide loading spinner and show the DataGridView
+            ' Hide spinner and show grid
             picLoading.Visible = False
             dgvProviders.Visible = True
         End Try

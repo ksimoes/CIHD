@@ -22,6 +22,7 @@ Partial Class Profile
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Profile))
         lblZipCodeResult = New Label()
         Label2 = New Label()
         lbladdy = New Label()
@@ -100,6 +101,7 @@ Partial Class Profile
         lblCooResult = New Label()
         lblPurchasingMatResult = New Label()
         Panel1 = New Panel()
+        picLoading = New PictureBox()
         Label13 = New Label()
         txtDebugJson = New TextBox()
         dgvProviders = New DataGridView()
@@ -143,8 +145,8 @@ Partial Class Profile
         Column1 = New DataGridViewTextBoxColumn()
         Column2 = New DataGridViewTextBoxColumn()
         Column3 = New DataGridViewTextBoxColumn()
-        picLoading = New PictureBox()
         Panel1.SuspendLayout()
+        CType(picLoading, ComponentModel.ISupportInitialize).BeginInit()
         CType(dgvProviders, ComponentModel.ISupportInitialize).BeginInit()
         GroupBox2.SuspendLayout()
         GroupBox1.SuspendLayout()
@@ -152,7 +154,6 @@ Partial Class Profile
         CType(DataGridView3, ComponentModel.ISupportInitialize).BeginInit()
         CType(DataGridView2, ComponentModel.ISupportInitialize).BeginInit()
         CType(DataGridView1, ComponentModel.ISupportInitialize).BeginInit()
-        CType(picLoading, ComponentModel.ISupportInitialize).BeginInit()
         SuspendLayout()
         ' 
         ' lblZipCodeResult
@@ -1000,6 +1001,16 @@ Partial Class Profile
         Panel1.Size = New Size(1439, 2000)
         Panel1.TabIndex = 81
         ' 
+        ' picLoading
+        ' 
+        picLoading.Image = CType(resources.GetObject("picLoading.Image"), Image)
+        picLoading.Location = New Point(956, 357)
+        picLoading.Name = "picLoading"
+        picLoading.Size = New Size(207, 195)
+        picLoading.TabIndex = 96
+        picLoading.TabStop = False
+        picLoading.Visible = False
+        ' 
         ' Label13
         ' 
         Label13.AutoSize = True
@@ -1410,16 +1421,6 @@ Partial Class Profile
         Column3.HeaderText = "Associated NPI's"
         Column3.Name = "Column3"
         ' 
-        ' picLoading
-        ' 
-        picLoading.Image = My.Resources.Resources.loading_circle_icon_loading_gif_loading_screen_gif_loading_spinner_gif_loading_animation_loading_free_video
-        picLoading.Location = New Point(956, 381)
-        picLoading.Name = "picLoading"
-        picLoading.Size = New Size(151, 83)
-        picLoading.TabIndex = 96
-        picLoading.TabStop = False
-        picLoading.Visible = False
-        ' 
         ' Profile
         ' 
         AutoScaleDimensions = New SizeF(7.0F, 15.0F)
@@ -1434,6 +1435,7 @@ Partial Class Profile
         Text = "Profile"
         Panel1.ResumeLayout(False)
         Panel1.PerformLayout()
+        CType(picLoading, ComponentModel.ISupportInitialize).EndInit()
         CType(dgvProviders, ComponentModel.ISupportInitialize).EndInit()
         GroupBox2.ResumeLayout(False)
         GroupBox2.PerformLayout()
@@ -1443,7 +1445,6 @@ Partial Class Profile
         CType(DataGridView3, ComponentModel.ISupportInitialize).EndInit()
         CType(DataGridView2, ComponentModel.ISupportInitialize).EndInit()
         CType(DataGridView1, ComponentModel.ISupportInitialize).EndInit()
-        CType(picLoading, ComponentModel.ISupportInitialize).EndInit()
         ResumeLayout(False)
     End Sub
     Friend WithEvents lblPhoneNum As Label
