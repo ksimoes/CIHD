@@ -308,6 +308,14 @@ Public Class Results
         Next
     End Sub
 
+    Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click
+        Dim hosp = GetSelectedHospitalContext()
+        If hosp Is Nothing Then Return
+        Me.Hide()
+        Dim inpatientForm As New Inpatient(hosp)
+        inpatientForm.Show()
+    End Sub
+
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
         Dim hosp = GetSelectedHospitalContext()
         If hosp Is Nothing Then Return
