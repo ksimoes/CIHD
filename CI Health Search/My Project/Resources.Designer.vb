@@ -59,5 +59,16 @@ Namespace My.Resources
                 resourceCulture = value
             End Set
         End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property loading_circle_icon_loading_gif_loading_screen_gif_loading_spinner_gif_loading_animation_loading_free_video() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("loading-circle-icon-loading-gif-loading-screen-gif-loading-spinner-gif-loading-an"& _ 
+                        "imation-loading-free-video", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
     End Module
 End Namespace

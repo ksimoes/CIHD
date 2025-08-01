@@ -143,6 +143,7 @@ Partial Class Profile
         Column1 = New DataGridViewTextBoxColumn()
         Column2 = New DataGridViewTextBoxColumn()
         Column3 = New DataGridViewTextBoxColumn()
+        picLoading = New PictureBox()
         Panel1.SuspendLayout()
         CType(dgvProviders, ComponentModel.ISupportInitialize).BeginInit()
         GroupBox2.SuspendLayout()
@@ -151,6 +152,7 @@ Partial Class Profile
         CType(DataGridView3, ComponentModel.ISupportInitialize).BeginInit()
         CType(DataGridView2, ComponentModel.ISupportInitialize).BeginInit()
         CType(DataGridView1, ComponentModel.ISupportInitialize).BeginInit()
+        CType(picLoading, ComponentModel.ISupportInitialize).BeginInit()
         SuspendLayout()
         ' 
         ' lblZipCodeResult
@@ -881,7 +883,7 @@ Partial Class Profile
         ' lblCeoPresResult
         ' 
         lblCeoPresResult.AutoSize = True
-        lblCeoPresResult.Font = New Font("Segoe UI", 9F)
+        lblCeoPresResult.Font = New Font("Segoe UI", 9.0F)
         lblCeoPresResult.ForeColor = Color.Snow
         lblCeoPresResult.Location = New Point(1153, 1019)
         lblCeoPresResult.Name = "lblCeoPresResult"
@@ -892,7 +894,7 @@ Partial Class Profile
         ' lblCmoResult
         ' 
         lblCmoResult.AutoSize = True
-        lblCmoResult.Font = New Font("Segoe UI", 9F)
+        lblCmoResult.Font = New Font("Segoe UI", 9.0F)
         lblCmoResult.ForeColor = Color.Snow
         lblCmoResult.Location = New Point(1153, 1095)
         lblCmoResult.Name = "lblCmoResult"
@@ -903,7 +905,7 @@ Partial Class Profile
         ' lblCfoResult
         ' 
         lblCfoResult.AutoSize = True
-        lblCfoResult.Font = New Font("Segoe UI", 9F)
+        lblCfoResult.Font = New Font("Segoe UI", 9.0F)
         lblCfoResult.ForeColor = Color.Snow
         lblCfoResult.Location = New Point(1153, 1045)
         lblCfoResult.Name = "lblCfoResult"
@@ -914,7 +916,7 @@ Partial Class Profile
         ' lblCioResult
         ' 
         lblCioResult.AutoSize = True
-        lblCioResult.Font = New Font("Segoe UI", 9F)
+        lblCioResult.Font = New Font("Segoe UI", 9.0F)
         lblCioResult.ForeColor = Color.Snow
         lblCioResult.Location = New Point(1153, 1069)
         lblCioResult.Name = "lblCioResult"
@@ -925,7 +927,7 @@ Partial Class Profile
         ' lblCnoResult
         ' 
         lblCnoResult.AutoSize = True
-        lblCnoResult.Font = New Font("Segoe UI", 9F)
+        lblCnoResult.Font = New Font("Segoe UI", 9.0F)
         lblCnoResult.ForeColor = Color.Snow
         lblCnoResult.Location = New Point(1153, 1189)
         lblCnoResult.Name = "lblCnoResult"
@@ -936,7 +938,7 @@ Partial Class Profile
         ' lblCooResult
         ' 
         lblCooResult.AutoSize = True
-        lblCooResult.Font = New Font("Segoe UI", 9F)
+        lblCooResult.Font = New Font("Segoe UI", 9.0F)
         lblCooResult.ForeColor = Color.Snow
         lblCooResult.Location = New Point(1153, 1125)
         lblCooResult.Name = "lblCooResult"
@@ -947,7 +949,7 @@ Partial Class Profile
         ' lblPurchasingMatResult
         ' 
         lblPurchasingMatResult.AutoSize = True
-        lblPurchasingMatResult.Font = New Font("Segoe UI", 9F)
+        lblPurchasingMatResult.Font = New Font("Segoe UI", 9.0F)
         lblPurchasingMatResult.ForeColor = Color.Snow
         lblPurchasingMatResult.Location = New Point(1153, 1155)
         lblPurchasingMatResult.Name = "lblPurchasingMatResult"
@@ -958,6 +960,7 @@ Partial Class Profile
         ' Panel1
         ' 
         Panel1.AutoScroll = True
+        Panel1.Controls.Add(picLoading)
         Panel1.Controls.Add(Label13)
         Panel1.Controls.Add(txtDebugJson)
         Panel1.Controls.Add(lblCfoResult)
@@ -1000,7 +1003,7 @@ Partial Class Profile
         ' Label13
         ' 
         Label13.AutoSize = True
-        Label13.Font = New Font("Segoe UI", 15F, FontStyle.Bold)
+        Label13.Font = New Font("Segoe UI", 15.0F, FontStyle.Bold)
         Label13.Location = New Point(685, 96)
         Label13.Name = "Label13"
         Label13.Size = New Size(185, 28)
@@ -1407,9 +1410,19 @@ Partial Class Profile
         Column3.HeaderText = "Associated NPI's"
         Column3.Name = "Column3"
         ' 
+        ' picLoading
+        ' 
+        picLoading.Image = My.Resources.Resources.loading_circle_icon_loading_gif_loading_screen_gif_loading_spinner_gif_loading_animation_loading_free_video
+        picLoading.Location = New Point(956, 381)
+        picLoading.Name = "picLoading"
+        picLoading.Size = New Size(151, 83)
+        picLoading.TabIndex = 96
+        picLoading.TabStop = False
+        picLoading.Visible = False
+        ' 
         ' Profile
         ' 
-        AutoScaleDimensions = New SizeF(7F, 15F)
+        AutoScaleDimensions = New SizeF(7.0F, 15.0F)
         AutoScaleMode = AutoScaleMode.Font
         AutoScroll = True
         BackColor = SystemColors.HighlightText
@@ -1430,6 +1443,7 @@ Partial Class Profile
         CType(DataGridView3, ComponentModel.ISupportInitialize).EndInit()
         CType(DataGridView2, ComponentModel.ISupportInitialize).EndInit()
         CType(DataGridView1, ComponentModel.ISupportInitialize).EndInit()
+        CType(picLoading, ComponentModel.ISupportInitialize).EndInit()
         ResumeLayout(False)
     End Sub
     Friend WithEvents lblPhoneNum As Label
@@ -1555,6 +1569,8 @@ Partial Class Profile
     Friend WithEvents Label13 As Label
     Friend WithEvents lblDBA As Label
     Friend WithEvents Label14 As Label
+    Friend WithEvents picLoading As PictureBox
     ' Friend WithEvents GroupBox1 As BoldGroupBox
+
 
 End Class
