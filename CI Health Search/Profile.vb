@@ -460,6 +460,8 @@ Public Class Profile
                                 End If
                             End Using
 
+
+
                             ' Fallback: If batch failed, do single lookups for each NPI in the batch
                             If Not batchWorked Then
                                 For Each npi In batch
@@ -548,6 +550,8 @@ Public Class Profile
                             End If
                         Next
 
+
+
                         ' --- Bind to DataGridView and set column visibility ---
                         dgvProviders.DataSource = dt
 
@@ -629,6 +633,10 @@ Public Class Profile
             dgvProviders.Visible = True
         End Try
     End Function
+
+
+
+
 
     Private Sub ShowProviderDetailsPopup(npi As String)
         Dim detailsForm As New ProviderDetailsForm(npi)

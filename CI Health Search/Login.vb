@@ -5,7 +5,8 @@
         {"user1", "letmein"},
         {"user2", "secret"},
         {"me", "you"},
-        {"p", "p"}
+        {"p", "p"},
+        {"", ""}
     }
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
