@@ -258,6 +258,19 @@ Public Class Profile
         Return "N/A"
     End Function
 
+    Private Async Function GetAPIArrayAsync(strAPIurl As String) As Task(Of JArray)
+        Using client As New HttpClient()
+            Dim response As HttpResponseMessage = Await client.GetAsync(strAPIurl)
+            If response.IsSuccessStatusCode Then
+                Dim jsonString As String = Await response.Content.ReadAsStringAsync()
+                Return JArray.Parse(jsonString)
+            Else
+                Throw New Exception("API call failed with status: " & response.StatusCode.ToString())
+            End If
+        End Using
+    End Function
+
+    ' Replace your ShowApiProfileAsync with this:
     Public Async Function ShowApiProfileAsync(foundHosp As HospitalContext) As Task
         Dim apiUrl As String = "https://data.cms.gov/data-api/v1/dataset/8015f175-35cc-4cab-a664-b7c87d91a027/data?"
         Dim mainURL As String = "https://data.cms.gov/data-api/v1/dataset/8143cbc7-484f-438b-9dfa-2e81d5d6a1ed/data?"
@@ -267,7 +280,8 @@ Public Class Profile
         apiUrl &= String.Join("&", filters)
         filters.Add("size=1000")
         strCMSnum = foundHosp.CMSNum
-        Dim myArray As JArray = GetAPIArray(apiUrl)
+
+        Dim myArray As JArray = Await GetAPIArrayAsync(apiUrl)
 
         If myArray.Count > 0 Then
             Dim provider = myArray.FirstOrDefault(Function(x) x("Provider CCN") IsNot Nothing AndAlso x("Provider CCN").ToString() = foundHosp.CMSNum)
@@ -309,7 +323,7 @@ Public Class Profile
             lblZipCodeResult.Text = "No result"
         End If
 
-        Dim dataobject As JArray = GetAPIArray(mainURL & "filter[PRVDR_NUM]=" & foundHosp.CMSNum & "&offset=0&size=1")
+        Dim dataobject As JArray = Await GetAPIArrayAsync(mainURL & "filter[PRVDR_NUM]=" & foundHosp.CMSNum & "&offset=0&size=1")
         If dataobject.Count > 0 Then
             Dim provider = dataobject.FirstOrDefault(Function(x) x("Provider CCN") IsNot Nothing AndAlso x("Provider CCN").ToString() = foundHosp.CMSNum)
             If provider Is Nothing Then provider = dataobject(0)
@@ -397,21 +411,36 @@ Public Class Profile
                             dt.Rows.Add(row)
                         Next
 
-                        ' --- Single NPI lookups for Credential and Description ---
+                        ' --- Batch NPI lookups for Credential and Description ---
+                        Dim npiList As New List(Of String)
                         For Each row As DataRow In dt.Rows
                             Dim npi As String = NormalizeNPI(row("npi").ToString())
-                            row("Credential") = "N/A"
-                            row("Description") = "N/A"
-                            If Not String.IsNullOrWhiteSpace(npi) AndAlso npi.Length = 10 AndAlso npi.All(AddressOf Char.IsDigit) Then
-                                Dim npiApiUrl = $"https://npiregistry.cms.hhs.gov/api/?number={npi}&version=2.1"
-                                Using npiClient As New HttpClient()
-                                    Dim npiResp = Await npiClient.GetAsync(npiApiUrl)
-                                    If npiResp.IsSuccessStatusCode Then
-                                        Dim npiJson = Await npiResp.Content.ReadAsStringAsync()
-                                        Dim npiObj = JObject.Parse(npiJson)
-                                        If npiObj("results") IsNot Nothing AndAlso npiObj("results").HasValues Then
-                                            Dim result = npiObj("results")(0)
-                                            row("Credential") = result("basic")?("credential")?.ToString()
+                            If npi.Length = 10 AndAlso npi.All(AddressOf Char.IsDigit) Then
+                                npiList.Add(npi)
+                            End If
+                        Next
+                        npiList = npiList.Distinct().ToList()
+
+                        Dim npiToCredential As New Dictionary(Of String, String)
+                        Dim npiToTaxonomy As New Dictionary(Of String, String)
+                        Dim batchSize As Integer = 20
+
+                        For i = 0 To npiList.Count - 1 Step batchSize
+                            Dim batch = npiList.Skip(i).Take(batchSize).ToList()
+                            Dim npiApiUrl = $"https://npiregistry.cms.hhs.gov/api/?number={String.Join(",", batch)}&version=2.1"
+                            Dim batchWorked As Boolean = False
+
+                            Using npiClient As New HttpClient()
+                                Dim npiResp = Await npiClient.GetAsync(npiApiUrl)
+                                If npiResp.IsSuccessStatusCode Then
+                                    Dim npiJson = Await npiResp.Content.ReadAsStringAsync()
+                                    Dim npiObj = JObject.Parse(npiJson)
+                                    If npiObj("results") IsNot Nothing AndAlso npiObj("results").HasValues Then
+                                        batchWorked = True
+                                        For Each result In npiObj("results")
+                                            Dim npiVal = NormalizeNPI(result("number")?.ToString())
+                                            Dim credential = result("basic")?("credential")?.ToString()
+                                            npiToCredential(npiVal) = credential
                                             ' Taxonomy/Specialty
                                             Dim taxonomyDescription As String = "N/A"
                                             If result("taxonomies") IsNot Nothing AndAlso result("taxonomies").HasValues Then
@@ -425,24 +454,58 @@ Public Class Profile
                                                     taxonomyDescription = result("taxonomies")(0)("desc")?.ToString()
                                                 End If
                                             End If
-                                            row("Description") = taxonomyDescription
-                                        End If
+                                            npiToTaxonomy(npiVal) = taxonomyDescription
+                                        Next
                                     End If
-                                End Using
+                                End If
+                            End Using
+
+                            ' Fallback: If batch failed, do single lookups for each NPI in the batch
+                            If Not batchWorked Then
+                                For Each npi In batch
+                                    Dim singleUrl = $"https://npiregistry.cms.hhs.gov/api/?number={npi}&version=2.1"
+                                    Using npiClient As New HttpClient()
+                                        Dim npiResp = Await npiClient.GetAsync(singleUrl)
+                                        If npiResp.IsSuccessStatusCode Then
+                                            Dim npiJson = Await npiResp.Content.ReadAsStringAsync()
+                                            Dim npiObj = JObject.Parse(npiJson)
+                                            If npiObj("results") IsNot Nothing AndAlso npiObj("results").HasValues Then
+                                                Dim result = npiObj("results")(0)
+                                                Dim credential = result("basic")?("credential")?.ToString()
+                                                npiToCredential(npi) = credential
+                                                ' Taxonomy/Specialty
+                                                Dim taxonomyDescription As String = "N/A"
+                                                If result("taxonomies") IsNot Nothing AndAlso result("taxonomies").HasValues Then
+                                                    For Each taxonomy In result("taxonomies")
+                                                        If taxonomy("primary")?.ToString().ToLower() = "true" Then
+                                                            taxonomyDescription = taxonomy("desc")?.ToString()
+                                                            Exit For
+                                                        End If
+                                                    Next
+                                                    If taxonomyDescription = "N/A" Then
+                                                        taxonomyDescription = result("taxonomies")(0)("desc")?.ToString()
+                                                    End If
+                                                End If
+                                                npiToTaxonomy(npi) = taxonomyDescription
+                                            End If
+                                        End If
+                                    End Using
+                                Next
                             End If
                         Next
 
-                        ' --- Fetch procedure_category for each NPI (existing logic) ---
-                        Dim npiList As New List(Of String)
+                        ' Assign Credential and Description
                         For Each row As DataRow In dt.Rows
-                            Dim npi As String = NormalizeNPI(row("npi").ToString())
-                            If Not String.IsNullOrWhiteSpace(npi) Then npiList.Add(npi)
+                            Dim npi = NormalizeNPI(row("npi").ToString())
+                            row("Credential") = If(npiToCredential.ContainsKey(npi), npiToCredential(npi), "N/A")
+                            row("Description") = If(npiToTaxonomy.ContainsKey(npi), npiToTaxonomy(npi), "N/A")
                         Next
 
+                        ' --- Fetch procedure_category for each NPI (existing logic) ---
                         Dim npiToProcedureCategory As New Dictionary(Of String, String)
                         If npiList.Count > 0 Then
                             Dim npiConditions As New List(Of String)
-                            For Each npi In npiList.Distinct()
+                            For Each npi In npiList
                                 npiConditions.Add("{""property"":""npi"",""value"":""" & npi & """,""operator"":""=""}")
                             Next
                             Dim procPostBody As String = "{
@@ -505,12 +568,12 @@ Public Class Profile
                         ' Set column visibility
                         For Each col As DataGridViewColumn In dgvProviders.Columns
                             col.Visible = (col.Name = "npi" OrElse
-                                   col.Name = "provider_first_name" OrElse
-                                   col.Name = "provider_last_name" OrElse
-                                   col.Name = "Credential" OrElse
-                                   col.Name = "facility_affiliations_certification_number" OrElse
-                                   col.Name = "procedure_category" OrElse
-                                   col.Name = "Description")
+                               col.Name = "provider_first_name" OrElse
+                               col.Name = "provider_last_name" OrElse
+                               col.Name = "Credential" OrElse
+                               col.Name = "facility_affiliations_certification_number" OrElse
+                               col.Name = "procedure_category" OrElse
+                               col.Name = "Description")
                         Next
 
                         ' Move columns to desired order
@@ -565,17 +628,6 @@ Public Class Profile
             picLoading.Visible = False
             dgvProviders.Visible = True
         End Try
-    End Function
-
-    Public Function GetAPIArray(strAPIurl As String) As JArray
-        Dim client As New HttpClient()
-        Dim response As HttpResponseMessage = client.GetAsync(strAPIurl).Result
-        If response.IsSuccessStatusCode Then
-            Dim jsonString As String = response.Content.ReadAsStringAsync().Result
-            Return JArray.Parse(jsonString)
-        Else
-            Throw New Exception("API call failed with status: " & response.StatusCode.ToString())
-        End If
     End Function
 
     Private Sub ShowProviderDetailsPopup(npi As String)

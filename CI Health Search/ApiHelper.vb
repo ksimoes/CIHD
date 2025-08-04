@@ -52,3 +52,17 @@ Public Module ApiHelper
         Return dt
     End Function
 End Module
+
+Module ApiHelpers
+    Public Async Function GetAPIArrayAsync(strAPIurl As String) As Task(Of JArray)
+        Using client As New HttpClient()
+            Dim response As HttpResponseMessage = Await client.GetAsync(strAPIurl)
+            If response.IsSuccessStatusCode Then
+                Dim jsonString As String = Await response.Content.ReadAsStringAsync()
+                Return JArray.Parse(jsonString)
+            Else
+                Throw New Exception("API call failed with status: " & response.StatusCode.ToString())
+            End If
+        End Using
+    End Function
+End Module

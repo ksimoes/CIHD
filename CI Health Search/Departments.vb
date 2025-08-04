@@ -30,7 +30,7 @@ Public Class Departments
     Public Sub New()
         InitializeComponent()
     End Sub
-    Public Sub ShowDepartmentsDataApi(cmsNum As String)
+    Public Async Sub ShowDepartmentsDataApi(cmsNum As String)
         ' This method can be used to show departments data if needed
         ' Currently, it does not perform any actions
         Dim newURL As String = "https://data.cms.gov/data-api/v1/dataset/8ba0f9b4-9493-4aa0-9f82-44ea9468d1b5/data?"
@@ -40,7 +40,7 @@ Public Class Departments
         newURL &= String.Join("&", filters)
         filters.Add("size=1000")
 
-        Dim myArray As JArray = Profile.GetAPIArray(newURL)
+        Dim myArray As JArray = Await GetAPIArrayAsync(newURL)
 
 
         If myArray.Count > 0 Then
