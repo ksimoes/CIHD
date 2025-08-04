@@ -884,7 +884,7 @@ Partial Class Profile
         ' lblCeoPresResult
         ' 
         lblCeoPresResult.AutoSize = True
-        lblCeoPresResult.Font = New Font("Segoe UI", 9.0F)
+        lblCeoPresResult.Font = New Font("Segoe UI", 9F)
         lblCeoPresResult.ForeColor = Color.Snow
         lblCeoPresResult.Location = New Point(1153, 1019)
         lblCeoPresResult.Name = "lblCeoPresResult"
@@ -895,7 +895,7 @@ Partial Class Profile
         ' lblCmoResult
         ' 
         lblCmoResult.AutoSize = True
-        lblCmoResult.Font = New Font("Segoe UI", 9.0F)
+        lblCmoResult.Font = New Font("Segoe UI", 9F)
         lblCmoResult.ForeColor = Color.Snow
         lblCmoResult.Location = New Point(1153, 1095)
         lblCmoResult.Name = "lblCmoResult"
@@ -906,7 +906,7 @@ Partial Class Profile
         ' lblCfoResult
         ' 
         lblCfoResult.AutoSize = True
-        lblCfoResult.Font = New Font("Segoe UI", 9.0F)
+        lblCfoResult.Font = New Font("Segoe UI", 9F)
         lblCfoResult.ForeColor = Color.Snow
         lblCfoResult.Location = New Point(1153, 1045)
         lblCfoResult.Name = "lblCfoResult"
@@ -917,7 +917,7 @@ Partial Class Profile
         ' lblCioResult
         ' 
         lblCioResult.AutoSize = True
-        lblCioResult.Font = New Font("Segoe UI", 9.0F)
+        lblCioResult.Font = New Font("Segoe UI", 9F)
         lblCioResult.ForeColor = Color.Snow
         lblCioResult.Location = New Point(1153, 1069)
         lblCioResult.Name = "lblCioResult"
@@ -928,7 +928,7 @@ Partial Class Profile
         ' lblCnoResult
         ' 
         lblCnoResult.AutoSize = True
-        lblCnoResult.Font = New Font("Segoe UI", 9.0F)
+        lblCnoResult.Font = New Font("Segoe UI", 9F)
         lblCnoResult.ForeColor = Color.Snow
         lblCnoResult.Location = New Point(1153, 1189)
         lblCnoResult.Name = "lblCnoResult"
@@ -939,7 +939,7 @@ Partial Class Profile
         ' lblCooResult
         ' 
         lblCooResult.AutoSize = True
-        lblCooResult.Font = New Font("Segoe UI", 9.0F)
+        lblCooResult.Font = New Font("Segoe UI", 9F)
         lblCooResult.ForeColor = Color.Snow
         lblCooResult.Location = New Point(1153, 1125)
         lblCooResult.Name = "lblCooResult"
@@ -950,7 +950,7 @@ Partial Class Profile
         ' lblPurchasingMatResult
         ' 
         lblPurchasingMatResult.AutoSize = True
-        lblPurchasingMatResult.Font = New Font("Segoe UI", 9.0F)
+        lblPurchasingMatResult.Font = New Font("Segoe UI", 9F)
         lblPurchasingMatResult.ForeColor = Color.Snow
         lblPurchasingMatResult.Location = New Point(1153, 1155)
         lblPurchasingMatResult.Name = "lblPurchasingMatResult"
@@ -1014,7 +1014,7 @@ Partial Class Profile
         ' Label13
         ' 
         Label13.AutoSize = True
-        Label13.Font = New Font("Segoe UI", 15.0F, FontStyle.Bold)
+        Label13.Font = New Font("Segoe UI", 15F, FontStyle.Bold)
         Label13.Location = New Point(685, 96)
         Label13.Name = "Label13"
         Label13.Size = New Size(185, 28)
@@ -1423,7 +1423,7 @@ Partial Class Profile
         ' 
         ' Profile
         ' 
-        AutoScaleDimensions = New SizeF(7.0F, 15.0F)
+        AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         AutoScroll = True
         BackColor = SystemColors.HighlightText

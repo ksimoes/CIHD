@@ -860,9 +860,9 @@ Partial Class Financial
         ' 
         ' Button1
         ' 
-        Button1.Location = New Point(1438, 0)
+        Button1.Location = New Point(1438, 3)
         Button1.Name = "Button1"
-        Button1.Size = New Size(122, 30)
+        Button1.Size = New Size(120, 27)
         Button1.TabIndex = 21
         Button1.Text = "Return to Search"
         Button1.UseVisualStyleBackColor = True

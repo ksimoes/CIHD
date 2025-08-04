@@ -23,17 +23,11 @@ Partial Class Departments
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         gbInpatientRoutineCostCenters = New GroupBox()
-        Label2 = New Label()
         gbAncillaryServiceCost = New GroupBox()
-        Label1 = New Label()
         gbOtherReimburse = New GroupBox()
-        Label4 = New Label()
         gbOutpatientServiceCost = New GroupBox()
-        Label3 = New Label()
         gbOverallCosttoCharge = New GroupBox()
-        Label5 = New Label()
         gbSalariesandOther = New GroupBox()
-        Label6 = New Label()
         gbStaffing = New GroupBox()
         lblDietNumResult = New Label()
         lblOPNumResult = New Label()
@@ -67,18 +61,11 @@ Partial Class Departments
         btnFinancialDepartments = New Button()
         btnProfileDepartments = New Button()
         Button1 = New Button()
-        gbInpatientRoutineCostCenters.SuspendLayout()
-        gbAncillaryServiceCost.SuspendLayout()
-        gbOtherReimburse.SuspendLayout()
-        gbOutpatientServiceCost.SuspendLayout()
-        gbOverallCosttoCharge.SuspendLayout()
-        gbSalariesandOther.SuspendLayout()
         gbStaffing.SuspendLayout()
         SuspendLayout()
         ' 
         ' gbInpatientRoutineCostCenters
         ' 
-        gbInpatientRoutineCostCenters.Controls.Add(Label2)
         gbInpatientRoutineCostCenters.Location = New Point(12, 12)
         gbInpatientRoutineCostCenters.Name = "gbInpatientRoutineCostCenters"
         gbInpatientRoutineCostCenters.Size = New Size(396, 281)
@@ -86,18 +73,8 @@ Partial Class Departments
         gbInpatientRoutineCostCenters.TabStop = False
         gbInpatientRoutineCostCenters.Text = "Inpatient Routine Cost Centers"
         ' 
-        ' Label2
-        ' 
-        Label2.AutoSize = True
-        Label2.Location = New Point(84, 84)
-        Label2.Name = "Label2"
-        Label2.Size = New Size(165, 15)
-        Label2.TabIndex = 0
-        Label2.Text = "Probobaly Needs to be a table"
-        ' 
         ' gbAncillaryServiceCost
         ' 
-        gbAncillaryServiceCost.Controls.Add(Label1)
         gbAncillaryServiceCost.Location = New Point(12, 299)
         gbAncillaryServiceCost.Name = "gbAncillaryServiceCost"
         gbAncillaryServiceCost.Size = New Size(396, 291)
@@ -105,18 +82,8 @@ Partial Class Departments
         gbAncillaryServiceCost.TabStop = False
         gbAncillaryServiceCost.Text = "Ancillary Service Cost Centers"
         ' 
-        ' Label1
-        ' 
-        Label1.AutoSize = True
-        Label1.Location = New Point(86, 118)
-        Label1.Name = "Label1"
-        Label1.Size = New Size(163, 15)
-        Label1.TabIndex = 0
-        Label1.Text = "Probobaly needs to be a table"
-        ' 
         ' gbOtherReimburse
         ' 
-        gbOtherReimburse.Controls.Add(Label4)
         gbOtherReimburse.Location = New Point(424, 299)
         gbOtherReimburse.Name = "gbOtherReimburse"
         gbOtherReimburse.Size = New Size(410, 291)
@@ -124,18 +91,8 @@ Partial Class Departments
         gbOtherReimburse.TabStop = False
         gbOtherReimburse.Text = "Other Reimbursable Cost Centers"
         ' 
-        ' Label4
-        ' 
-        Label4.AutoSize = True
-        Label4.Location = New Point(123, 138)
-        Label4.Name = "Label4"
-        Label4.Size = New Size(165, 15)
-        Label4.TabIndex = 1
-        Label4.Text = "Probobaly Needs to be a table"
-        ' 
         ' gbOutpatientServiceCost
         ' 
-        gbOutpatientServiceCost.Controls.Add(Label3)
         gbOutpatientServiceCost.Location = New Point(424, 12)
         gbOutpatientServiceCost.Name = "gbOutpatientServiceCost"
         gbOutpatientServiceCost.Size = New Size(410, 281)
@@ -143,18 +100,8 @@ Partial Class Departments
         gbOutpatientServiceCost.TabStop = False
         gbOutpatientServiceCost.Text = "Outpatient Service Cost Centers"
         ' 
-        ' Label3
-        ' 
-        Label3.AutoSize = True
-        Label3.Location = New Point(123, 133)
-        Label3.Name = "Label3"
-        Label3.Size = New Size(165, 15)
-        Label3.TabIndex = 1
-        Label3.Text = "Probobaly Needs to be a table"
-        ' 
         ' gbOverallCosttoCharge
         ' 
-        gbOverallCosttoCharge.Controls.Add(Label5)
         gbOverallCosttoCharge.Location = New Point(854, 24)
         gbOverallCosttoCharge.Name = "gbOverallCosttoCharge"
         gbOverallCosttoCharge.Size = New Size(375, 269)
@@ -162,33 +109,14 @@ Partial Class Departments
         gbOverallCosttoCharge.TabStop = False
         gbOverallCosttoCharge.Text = "Overall Cost to Charge Ratio"
         ' 
-        ' Label5
-        ' 
-        Label5.AutoSize = True
-        Label5.Location = New Point(123, 133)
-        Label5.Name = "Label5"
-        Label5.Size = New Size(165, 15)
-        Label5.TabIndex = 1
-        Label5.Text = "Probobaly Needs to be a table"
-        ' 
         ' gbSalariesandOther
         ' 
-        gbSalariesandOther.Controls.Add(Label6)
         gbSalariesandOther.Location = New Point(854, 299)
         gbSalariesandOther.Name = "gbSalariesandOther"
         gbSalariesandOther.Size = New Size(375, 281)
         gbSalariesandOther.TabIndex = 3
         gbSalariesandOther.TabStop = False
         gbSalariesandOther.Text = "Salaries and Other Costs"
-        ' 
-        ' Label6
-        ' 
-        Label6.AutoSize = True
-        Label6.Location = New Point(123, 133)
-        Label6.Name = "Label6"
-        Label6.Size = New Size(165, 15)
-        Label6.TabIndex = 1
-        Label6.Text = "Probobaly Needs to be a table"
         ' 
         ' gbStaffing
         ' 
@@ -547,35 +475,17 @@ Partial Class Departments
         Name = "Departments"
         StartPosition = FormStartPosition.CenterScreen
         Text = "Departments"
-        gbInpatientRoutineCostCenters.ResumeLayout(False)
-        gbInpatientRoutineCostCenters.PerformLayout()
-        gbAncillaryServiceCost.ResumeLayout(False)
-        gbAncillaryServiceCost.PerformLayout()
-        gbOtherReimburse.ResumeLayout(False)
-        gbOtherReimburse.PerformLayout()
-        gbOutpatientServiceCost.ResumeLayout(False)
-        gbOutpatientServiceCost.PerformLayout()
-        gbOverallCosttoCharge.ResumeLayout(False)
-        gbOverallCosttoCharge.PerformLayout()
-        gbSalariesandOther.ResumeLayout(False)
-        gbSalariesandOther.PerformLayout()
         gbStaffing.ResumeLayout(False)
         gbStaffing.PerformLayout()
         ResumeLayout(False)
     End Sub
 
     Friend WithEvents gbInpatientRoutineCostCenters As GroupBox
-    Friend WithEvents Label2 As Label
     Friend WithEvents gbAncillaryServiceCost As GroupBox
-    Friend WithEvents Label1 As Label
     Friend WithEvents gbOtherReimburse As GroupBox
     Friend WithEvents gbOutpatientServiceCost As GroupBox
     Friend WithEvents gbOverallCosttoCharge As GroupBox
-    Friend WithEvents Label4 As Label
-    Friend WithEvents Label3 As Label
-    Friend WithEvents Label5 As Label
     Friend WithEvents gbSalariesandOther As GroupBox
-    Friend WithEvents Label6 As Label
     Friend WithEvents gbStaffing As GroupBox
     Friend WithEvents btnOutpatientDepartments As Button
     Friend WithEvents btnInpatientDepartments As Button

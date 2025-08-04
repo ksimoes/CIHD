@@ -51,18 +51,31 @@ Public Class ProviderDetailsForm
     End Sub
 
     Private Async Sub btnPrescriberDrugs_Click(sender As Object, e As EventArgs)
+        lblHCPCSDescription.Visible = False
+        linkMoreInfo.Visible = False
         Await LoadPrescriberDrugsTable()
     End Sub
 
     Private Async Sub btnProviderProfile_Click(sender As Object, e As EventArgs)
+        lblHCPCSDescription.Visible = False
+        linkMoreInfo.Visible = False
         Await LoadProviderProfileTable()
     End Sub
 
+    Private Const Level1Desc As String = "HCPCS Code Level 1 - Physician and other qualified healthcare professional services, codes for procedures like surgeries, office visits, and diagnostic tests."
+    Private Const Level2Desc As String = "HCPCS Code Level 2 - Non-physician services, supplies, and durable medical equipment,codes for procedures like surgeries, office visits, and diagnostic tests."
+
     Private Async Sub btnHCPCSLevel1_Click(sender As Object, e As EventArgs)
+        lblHCPCSDescription.Text = Level1Desc
+        lblHCPCSDescription.Visible = True
+        linkMoreInfo.Visible = True
         Await LoadHCPCSTable(level:=1)
     End Sub
 
     Private Async Sub btnHCPCSLevel2_Click(sender As Object, e As EventArgs)
+        lblHCPCSDescription.Text = Level2Desc
+        lblHCPCSDescription.Visible = True
+        linkMoreInfo.Visible = True
         Await LoadHCPCSTable(level:=2)
     End Sub
 
@@ -83,6 +96,17 @@ Public Class ProviderDetailsForm
             .DefaultCellStyle.SelectionForeColor = Color.Black
             .EnableHeadersVisualStyles = False
         End With
+    End Sub
+    Private Sub linkMoreInfo_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles linkMoreInfo.LinkClicked
+        Try
+            Dim psi As New ProcessStartInfo With {
+            .FileName = "https://www.cms.gov/medicare/coding-billing/healthcare-common-procedure-system/alpha-numeric",
+            .UseShellExecute = True
+        }
+            Process.Start(psi)
+        Catch ex As Exception
+            MessageBox.Show("Unable to open link: " & ex.Message)
+        End Try
     End Sub
 
     Private Async Function LoadPrescriberDrugsTable() As Task
@@ -260,6 +284,8 @@ Public Class ProviderDetailsForm
         End Try
     End Function
     Private Async Sub btnAssociatedHospitals_Click(sender As Object, e As EventArgs)
+        lblHCPCSDescription.Visible = False
+        linkMoreInfo.Visible = False
         lblLoading.Visible = True
         Try
             ClearGrid()

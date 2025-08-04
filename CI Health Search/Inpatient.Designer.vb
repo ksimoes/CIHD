@@ -146,7 +146,7 @@ Partial Class Inpatient
         gbTrendReport.Controls.Add(Label13)
         gbTrendReport.Location = New Point(12, 444)
         gbTrendReport.Name = "gbTrendReport"
-        gbTrendReport.Size = New Size(503, 195)
+        gbTrendReport.Size = New Size(462, 128)
         gbTrendReport.TabIndex = 22
         gbTrendReport.TabStop = False
         gbTrendReport.Text = "Trend Report"
@@ -203,7 +203,7 @@ Partial Class Inpatient
         ' dgvNewApiTable
         ' 
         dgvNewApiTable.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        dgvNewApiTable.Location = New Point(12, 685)
+        dgvNewApiTable.Location = New Point(12, 578)
         dgvNewApiTable.Name = "dgvNewApiTable"
         dgvNewApiTable.Size = New Size(809, 364)
         dgvNewApiTable.TabIndex = 25
