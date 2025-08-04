@@ -343,7 +343,6 @@ Public Class Profile
     End Function
 
     Private Async Function LoadAffiliatedProvidersAsync(ccn As String) As Task
-        MessageBox.Show("Affiliated Providers API CCN: [" & ccn & "]")
         ' Helper to normalize NPI to 10 digits
         Dim NormalizeNPI As Func(Of String, String) = Function(npi As String)
                                                           If String.IsNullOrWhiteSpace(npi) Then Return ""
@@ -398,34 +397,22 @@ Public Class Profile
                             dt.Rows.Add(row)
                         Next
 
-                        ' --- Batch NPI lookups for Credential and Description ---
-                        Dim npiList As New List(Of String)
+                        ' --- Single NPI lookups for Credential and Description ---
                         For Each row As DataRow In dt.Rows
                             Dim npi As String = NormalizeNPI(row("npi").ToString())
-                            If Not String.IsNullOrWhiteSpace(npi) Then npiList.Add(npi)
-                        Next
-
-                        Debug.WriteLine("NPI List: " & String.Join(",", npiList))
-
-                        Dim npiToCredential As New Dictionary(Of String, String)
-                        Dim npiToTaxonomy As New Dictionary(Of String, String)
-                        For i = 0 To npiList.Count - 1 Step 100
-                            Dim batch = npiList.Skip(i).Take(100).ToList()
-                            If batch.Count = 0 Then Continue For
-                            Dim npiApiUrl = $"https://npiregistry.cms.hhs.gov/api/?number={String.Join(",", batch)}&version=2.1"
-                            Using npiClient As New HttpClient()
-                                Dim npiResp = Await npiClient.GetAsync(npiApiUrl)
-                                If npiResp.IsSuccessStatusCode Then
-                                    Dim npiJson = Await npiResp.Content.ReadAsStringAsync()
-                                    Dim npiObj = JObject.Parse(npiJson)
-                                    If npiObj("results") IsNot Nothing AndAlso npiObj("results").HasValues Then
-                                        Debug.WriteLine("NPI API returned " & npiObj("results").Count().ToString() & " results for batch: " & String.Join(",", batch))
-                                        For Each result In npiObj("results")
-                                            Dim npiVal = NormalizeNPI(result("number")?.ToString())
-                                            Debug.WriteLine("API NPI: " & npiVal)
-                                            Dim credential = result("basic")?("credential")?.ToString()
-                                            npiToCredential(npiVal) = credential
-                                            ' Taxonomy
+                            row("Credential") = "N/A"
+                            row("Description") = "N/A"
+                            If Not String.IsNullOrWhiteSpace(npi) AndAlso npi.Length = 10 AndAlso npi.All(AddressOf Char.IsDigit) Then
+                                Dim npiApiUrl = $"https://npiregistry.cms.hhs.gov/api/?number={npi}&version=2.1"
+                                Using npiClient As New HttpClient()
+                                    Dim npiResp = Await npiClient.GetAsync(npiApiUrl)
+                                    If npiResp.IsSuccessStatusCode Then
+                                        Dim npiJson = Await npiResp.Content.ReadAsStringAsync()
+                                        Dim npiObj = JObject.Parse(npiJson)
+                                        If npiObj("results") IsNot Nothing AndAlso npiObj("results").HasValues Then
+                                            Dim result = npiObj("results")(0)
+                                            row("Credential") = result("basic")?("credential")?.ToString()
+                                            ' Taxonomy/Specialty
                                             Dim taxonomyDescription As String = "N/A"
                                             If result("taxonomies") IsNot Nothing AndAlso result("taxonomies").HasValues Then
                                                 For Each taxonomy In result("taxonomies")
@@ -438,26 +425,20 @@ Public Class Profile
                                                     taxonomyDescription = result("taxonomies")(0)("desc")?.ToString()
                                                 End If
                                             End If
-                                            npiToTaxonomy(npiVal) = taxonomyDescription
-                                        Next
-                                    Else
-                                        Debug.WriteLine("NPI API returned 0 results for batch: " & String.Join(",", batch))
+                                            row("Description") = taxonomyDescription
+                                        End If
                                     End If
-                                End If
-                            End Using
-                        Next
-
-                        ' Assign Credential and Description, with debug output
-                        For Each row As DataRow In dt.Rows
-                            Dim npi = NormalizeNPI(row("npi").ToString())
-                            Dim cred As String = If(npiToCredential.ContainsKey(npi), npiToCredential(npi), "N/A")
-                            Dim spec As String = If(npiToTaxonomy.ContainsKey(npi), npiToTaxonomy(npi), "N/A")
-                            row("Credential") = cred
-                            row("Description") = spec
-                            Debug.WriteLine($"Row NPI: {npi}, Credential: {cred}, Specialty: {spec}")
+                                End Using
+                            End If
                         Next
 
                         ' --- Fetch procedure_category for each NPI (existing logic) ---
+                        Dim npiList As New List(Of String)
+                        For Each row As DataRow In dt.Rows
+                            Dim npi As String = NormalizeNPI(row("npi").ToString())
+                            If Not String.IsNullOrWhiteSpace(npi) Then npiList.Add(npi)
+                        Next
+
                         Dim npiToProcedureCategory As New Dictionary(Of String, String)
                         If npiList.Count > 0 Then
                             Dim npiConditions As New List(Of String)
