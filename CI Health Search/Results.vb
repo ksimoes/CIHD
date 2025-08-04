@@ -8,7 +8,7 @@ Public Class Results
     Public Shared SelectedHospital As New HospitalContext()
 
     ' Call this from Search form to set and display results
-    Public Sub SetResults(dt As DataTable)
+    Public Sub SetResults(dt As DataTable, Optional filterSummary As String = "")
         resultsTable = dt
 
         ' Setup DataGridView columns only once
@@ -18,6 +18,8 @@ Public Class Results
             dgvResults.Columns.Add("City", "City")
             dgvResults.Columns.Add("State", "State")
             dgvResults.Columns.Add("Zip", "Zip")
+            dgvResults.Columns.Add("BedCount", "Bed Count")
+            dgvResults.Columns.Add("CMSCCN", "CMS/CCN")
             dgvResults.SelectionMode = DataGridViewSelectionMode.FullRowSelect
             dgvResults.MultiSelect = False
         End If
@@ -43,6 +45,27 @@ Public Class Results
             displayCol = dt.Columns(0).ColumnName ' fallback
         End If
 
+        ' Find bed count and CMS/CCN columns
+        Dim bedCountCol As String = ""
+        If dt.Columns.Contains("Number of Beds") Then
+            bedCountCol = "Number of Beds"
+        ElseIf dt.Columns.Contains("General Med/Surg Beds") Then
+            bedCountCol = "General Med/Surg Beds"
+        End If
+
+        Dim cmsCol As String = ""
+        If dt.Columns.Contains("Provider CCN") Then
+            cmsCol = "Provider CCN"
+        ElseIf dt.Columns.Contains("CMSNum") Then
+            cmsCol = "CMSNum"
+        ElseIf dt.Columns.Contains("PRVDR_NUM") Then
+            cmsCol = "PRVDR_NUM"
+        ElseIf dt.Columns.Contains("CCN") Then
+            cmsCol = "CCN"
+        ElseIf dt.Columns.Contains("ccn") Then
+            cmsCol = "ccn"
+        End If
+
         For Each row As DataRow In dt.Rows
             Dim name As String = row(displayCol).ToString()
             Dim city As String = If(dt.Columns.Contains("City"), row("City").ToString(), "")
@@ -55,10 +78,19 @@ Public Class Results
                 state = row("State Code").ToString()
             End If
             Dim zip As String = If(dt.Columns.Contains("Zip Code"), row("Zip Code").ToString(),
-                   If(dt.Columns.Contains("ZIP"), row("ZIP").ToString(), ""))
+               If(dt.Columns.Contains("ZIP"), row("ZIP").ToString(), ""))
 
-            dgvResults.Rows.Add(False, name, city, state, zip)
+            Dim bedCount As String = If(bedCountCol <> "" AndAlso Not IsDBNull(row(bedCountCol)), row(bedCountCol).ToString(), "")
+            Dim cmsccn As String = If(cmsCol <> "" AndAlso Not IsDBNull(row(cmsCol)), row(cmsCol).ToString(), "")
+
+            dgvResults.Rows.Add(False, name, city, state, zip, bedCount, cmsccn)
         Next
+
+        ' Show result count
+        lblMatches.Text = $"{dt.Rows.Count} result(s) found"
+
+        ' Show filter summary if provided
+        lblFilters.Text = If(String.IsNullOrWhiteSpace(filterSummary), "", $"Filters: {filterSummary}")
     End Sub
 
     ' Ensure only one checkbox is checked at a time (single selection)
@@ -71,6 +103,7 @@ Public Class Results
             Next
         End If
     End Sub
+
 
     Private Function GetSelectedHospitalContext() As HospitalContext
         Dim selectedRow As DataGridViewRow = dgvResults.Rows.Cast(Of DataGridViewRow)().
@@ -167,7 +200,7 @@ Public Class Results
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         Dim hosp = GetSelectedHospitalContext()
         If hosp Is Nothing Then Return
-        Me.Hide()
+        Hide()
         Dim profileForm As New Profile(hosp)
         profileForm.Show()
     End Sub
@@ -306,6 +339,10 @@ Public Class Results
         For Each col As DataGridViewColumn In dgvResults.Columns
             If col.Name <> "Select" Then col.ReadOnly = True
         Next
+
+
+
+
     End Sub
 
     Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click
@@ -346,6 +383,11 @@ Public Class Results
         Me.Hide()
         Dim outpatientForm As New Outpatient(hosp)
         outpatientForm.Show()
+    End Sub
+
+    Private Sub Button8_Click(sender As Object, e As EventArgs) Handles Button8.Click
+        Me.Hide()
+        Search.Show()
     End Sub
 
     ' Add similar selection logic to Button6_Click (Inpatient) if needed

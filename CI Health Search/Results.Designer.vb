@@ -31,6 +31,11 @@ Partial Class Results
         Button7 = New Button()
         Label1 = New Label()
         dgvResults = New DataGridView()
+        Button8 = New Button()
+        Label2 = New Label()
+        lblMatches = New Label()
+        lblyuh = New Label()
+        lblFilters = New Label()
         CType(dgvResults, ComponentModel.ISupportInitialize).BeginInit()
         SuspendLayout()
         ' 
@@ -116,11 +121,62 @@ Partial Class Results
         dgvResults.Size = New Size(805, 392)
         dgvResults.TabIndex = 17
         ' 
+        ' Button8
+        ' 
+        Button8.BackColor = SystemColors.ButtonHighlight
+        Button8.Location = New Point(1238, 35)
+        Button8.Name = "Button8"
+        Button8.Size = New Size(173, 78)
+        Button8.TabIndex = 18
+        Button8.Text = "Back to Search"
+        Button8.UseVisualStyleBackColor = False
+        ' 
+        ' Label2
+        ' 
+        Label2.AutoSize = True
+        Label2.Location = New Point(129, 14)
+        Label2.Name = "Label2"
+        Label2.Size = New Size(184, 15)
+        Label2.TabIndex = 19
+        Label2.Text = "Total Facilities Matching Search - "
+        ' 
+        ' lblMatches
+        ' 
+        lblMatches.AutoSize = True
+        lblMatches.Location = New Point(310, 14)
+        lblMatches.Name = "lblMatches"
+        lblMatches.Size = New Size(10, 15)
+        lblMatches.TabIndex = 20
+        lblMatches.Text = "."
+        ' 
+        ' lblyuh
+        ' 
+        lblyuh.AutoSize = True
+        lblyuh.Location = New Point(129, 48)
+        lblyuh.Name = "lblyuh"
+        lblyuh.Size = New Size(78, 15)
+        lblyuh.TabIndex = 21
+        lblyuh.Text = "Filters Used - "
+        ' 
+        ' lblFilters
+        ' 
+        lblFilters.AutoSize = True
+        lblFilters.Location = New Point(213, 48)
+        lblFilters.Name = "lblFilters"
+        lblFilters.Size = New Size(10, 15)
+        lblFilters.TabIndex = 22
+        lblFilters.Text = "."
+        ' 
         ' Results
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(1423, 552)
+        Controls.Add(lblFilters)
+        Controls.Add(lblyuh)
+        Controls.Add(lblMatches)
+        Controls.Add(Label2)
+        Controls.Add(Button8)
         Controls.Add(dgvResults)
         Controls.Add(Label1)
         Controls.Add(Button7)
@@ -147,4 +203,9 @@ Partial Class Results
     Friend WithEvents Label1 As Label
     Friend WithEvents VScrollBar1 As VScrollBar
     Friend WithEvents dgvResults As DataGridView
+    Friend WithEvents Button8 As Button
+    Friend WithEvents Label2 As Label
+    Friend WithEvents lblMatches As Label
+    Friend WithEvents lblyuh As Label
+    Friend WithEvents lblFilters As Label
 End Class
