@@ -102,7 +102,7 @@ Partial Class Results
         ' 
         Label1.AutoSize = True
         Label1.Font = New Font("Segoe UI", 15F, FontStyle.Bold)
-        Label1.Location = New Point(260, 92)
+        Label1.Location = New Point(129, 73)
         Label1.Name = "Label1"
         Label1.Size = New Size(162, 28)
         Label1.TabIndex = 16
@@ -111,9 +111,9 @@ Partial Class Results
         ' dgvResults
         ' 
         dgvResults.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        dgvResults.Location = New Point(261, 132)
+        dgvResults.Location = New Point(129, 104)
         dgvResults.Name = "dgvResults"
-        dgvResults.Size = New Size(673, 343)
+        dgvResults.Size = New Size(805, 392)
         dgvResults.TabIndex = 17
         ' 
         ' Results
