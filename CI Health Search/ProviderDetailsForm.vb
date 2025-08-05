@@ -554,11 +554,60 @@ Public Class ProviderDetailsForm
         Try
             ClearGrid()
             Dim dt As New DataTable()
-            ' TODO: Replace with your real API/data call for research payments
-            dt.Columns.Add("NPI")
-            dt.Columns.Add("Research Amount")
-            dt.Columns.Add("Project")
-            dt.Rows.Add(currentNpi, "$5,000", "Cancer Study")
+            Dim apiUrl As String = "https://openpaymentsdata.cms.gov/api/1/datastore/query/2f15cb85-8887-4dcc-a318-1f8ec1d815b3/0"
+
+            ' Build the request body using JObject/JArray
+            Dim conditions As New JArray(
+            New JObject(
+                New JProperty("resource", "t"),
+                New JProperty("property", "record_number"),
+                New JProperty("value", 1),
+                New JProperty("operator", ">")
+            ),
+            New JObject(
+                New JProperty("resource", "t"),
+                New JProperty("property", "Covered_Recipient_NPI"),
+                New JProperty("value", currentNpi),
+                New JProperty("operator", "=")
+            )
+        )
+            Dim postBody As New JObject(
+            New JProperty("conditions", conditions),
+            New JProperty("limit", 3)
+        )
+
+            Using client As New HttpClient()
+                Dim content = New StringContent(postBody.ToString(), System.Text.Encoding.UTF8, "application/json")
+                Dim response = Await client.PostAsync(apiUrl, content)
+                If response.IsSuccessStatusCode Then
+                    Dim json = Await response.Content.ReadAsStringAsync()
+                    Dim obj = JObject.Parse(json)
+                    If obj("results") IsNot Nothing AndAlso obj("results").HasValues Then
+                        Dim data = obj("results")
+                        ' Dynamically add columns based on the first result
+                        For Each col In data(0).ToObject(Of JObject)().Properties()
+                            If Not dt.Columns.Contains(col.Name) Then
+                                dt.Columns.Add(col.Name)
+                            End If
+                        Next
+                        ' Add rows
+                        For Each item In data
+                            Dim row = dt.NewRow()
+                            For Each col In dt.Columns
+                                row(col.ToString()) = item(col.ToString())
+                            Next
+                            dt.Rows.Add(row)
+                        Next
+                    End If
+                Else
+                    MessageBox.Show("Research Payment API error: " & response.StatusCode.ToString() & vbCrLf & Await response.Content.ReadAsStringAsync())
+                End If
+            End Using
+
+            If dt.Rows.Count = 0 Then
+                MessageBox.Show("No research payment data found.")
+            End If
+
             dgvDetails.DataSource = dt
             ApplyCustomColors()
             dgvDetails.Refresh()
