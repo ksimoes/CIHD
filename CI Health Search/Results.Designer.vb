@@ -118,7 +118,7 @@ Partial Class Results
         dgvResults.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
         dgvResults.Location = New Point(129, 104)
         dgvResults.Name = "dgvResults"
-        dgvResults.Size = New Size(805, 392)
+        dgvResults.Size = New Size(1103, 392)
         dgvResults.TabIndex = 17
         ' 
         ' Button8
