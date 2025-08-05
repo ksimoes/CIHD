@@ -265,8 +265,15 @@ Public Class FinInd
 
     Private Sub btnProfileFinInd_Click(sender As Object, e As EventArgs) Handles btnProfileFinInd.Click
         Hide()
-        Dim profileForm As New Profile(currentHospital)
-        profileForm.Show()
+        Me.Hide()
+        Dim cmsNum As String = currentHospital.CMSNum
+        Dim fullContext As HospitalContext = Results.GetHospitalContextByCMSNum(cmsNum)
+        If fullContext IsNot Nothing Then
+            Dim profileForm As New Profile(fullContext)
+            profileForm.Show()
+        Else
+            MessageBox.Show("Could not reload full hospital context.")
+        End If
     End Sub
 
     Private Sub btnDepartmentsFinInd_Click(sender As Object, e As EventArgs) Handles btnDepartmentsFinInd.Click

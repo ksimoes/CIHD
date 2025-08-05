@@ -94,8 +94,14 @@ Public Class Departments
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles btnProfileDepartments.Click
         Me.Hide()
-        Dim profileForm As New Profile(currentHospital)
-        profileForm.Show()
+        Dim cmsNum As String = currentHospital.CMSNum
+        Dim fullContext As HospitalContext = Results.GetHospitalContextByCMSNum(cmsNum)
+        If fullContext IsNot Nothing Then
+            Dim profileForm As New Profile(fullContext)
+            profileForm.Show()
+        Else
+            MessageBox.Show("Could not reload full hospital context.")
+        End If
     End Sub
 
     Private Sub Button3_Click(sender As Object, e As EventArgs) Handles btnFinancialDepartments.Click

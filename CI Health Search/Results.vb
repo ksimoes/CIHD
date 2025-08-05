@@ -3,7 +3,7 @@
 Public Class Results
 
     Public Property SelectedState As String
-    Private resultsTable As DataTable
+    Public Shared resultsTable As DataTable
     Public strCMSnum As String
     Public Shared SelectedHospital As New HospitalContext()
 
@@ -105,6 +105,7 @@ Public Class Results
     End Sub
 
 
+
     Private Function GetSelectedHospitalContext() As HospitalContext
         Dim selectedRow As DataGridViewRow = dgvResults.Rows.Cast(Of DataGridViewRow)().
         FirstOrDefault(Function(r) CBool(r.Cells("Select").Value))
@@ -204,6 +205,7 @@ Public Class Results
         Dim profileForm As New Profile(hosp)
         profileForm.Show()
     End Sub
+
 
     ' Repeat the above selection logic for other navigation buttons as needed
     ' Example for Button3_Click (Financial):
@@ -391,5 +393,27 @@ Public Class Results
     End Sub
 
     ' Add similar selection logic to Button6_Click (Inpatient) if needed
+
+    Public Shared Function GetHospitalContextByCMSNum(cmsNum As String) As HospitalContext
+        Dim cmsCols = New String() {"Provider CCN", "CMSNum", "PRVDR_NUM", "CCN", "ccn"}
+        For Each row As DataRow In resultsTable.Rows
+            For Each col In cmsCols
+                If row.Table.Columns.Contains(col) AndAlso row(col).ToString() = cmsNum Then
+                    Dim ctx As New HospitalContext()
+                    ctx.CMSNum = row(col).ToString()
+                    ctx.Name = If(row.Table.Columns.Contains("FAC_NAME"), row("FAC_NAME").ToString(), "")
+                    ctx.Address = If(row.Table.Columns.Contains("ST_ADR"), row("ST_ADR").ToString(), "")
+                    ctx.Zip = If(row.Table.Columns.Contains("ZIP"), row("ZIP").ToString(), "")
+                    ctx.County = If(row.Table.Columns.Contains("COUNTY"), row("COUNTY").ToString(), "")
+                    ctx.State = If(row.Table.Columns.Contains("STATE"), row("STATE").ToString(), "")
+                    ctx.LastDataRow = row
+                    ' ...populate other fields as needed...
+                    Return ctx
+                End If
+            Next
+        Next
+        Return Nothing
+    End Function
+
 
 End Class
