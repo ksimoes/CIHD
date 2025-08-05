@@ -16,6 +16,16 @@ Public Class ProviderDetailsForm
     Private currentNpi As String
     Private lblLoading As New Label With {.Text = "Loading...", .Dock = DockStyle.Top, .ForeColor = Color.Red, .Font = New Font("Segoe UI", 12, FontStyle.Bold), .Visible = False}
 
+    ' Description constants
+    Private Const Level1Desc As String = "HCPCS Code Level 1 - Physician and other qualified healthcare professional services, codes for procedures like surgeries, office visits, and diagnostic tests."
+    Private Const Level2Desc As String = "HCPCS Code Level 2 - Non-physician services, supplies, and durable medical equipment, codes for procedures like surgeries, office visits, and diagnostic tests."
+    Private Const PrescriberDrugsDesc As String = "This table shows drugs prescribed by the provider, including brand and generic names, total claims, and drug costs."
+    Private Const ProviderProfileDesc As String = "This table displays the provider's NPI profile, including name, credentials, taxonomy, and status."
+    Private Const AssociatedHospitalsDesc As String = "This table lists hospitals and facilities where the provider is affiliated, including facility type and location."
+    Private Const GeneralPaymentDesc As String = "This table shows general payments made to the provider, such as consulting fees, honoraria, and gifts."
+    Private Const OwnershipDataDesc As String = "This table displays ownership or investment interests held by the provider in healthcare entities."
+    Private Const ResearchPaymentDesc As String = "This table shows research payments made to the provider, including associated research studies and sponsors."
+
     ' Default constructor for designer compatibility
     Public Sub New()
         Me.New("")
@@ -59,19 +69,18 @@ Public Class ProviderDetailsForm
     End Sub
 
     Private Async Sub btnPrescriberDrugs_Click(sender As Object, e As EventArgs)
-        lblHCPCSDescription.Visible = False
+        lblHCPCSDescription.Text = PrescriberDrugsDesc
+        lblHCPCSDescription.Visible = True
         linkMoreInfo.Visible = False
         Await LoadPrescriberDrugsTable()
     End Sub
 
     Private Async Sub btnProviderProfile_Click(sender As Object, e As EventArgs)
-        lblHCPCSDescription.Visible = False
+        lblHCPCSDescription.Text = ProviderProfileDesc
+        lblHCPCSDescription.Visible = True
         linkMoreInfo.Visible = False
         Await LoadProviderProfileTable()
     End Sub
-
-    Private Const Level1Desc As String = "HCPCS Code Level 1 - Physician and other qualified healthcare professional services, codes for procedures like surgeries, office visits, and diagnostic tests."
-    Private Const Level2Desc As String = "HCPCS Code Level 2 - Non-physician services, supplies, and durable medical equipment,codes for procedures like surgeries, office visits, and diagnostic tests."
 
     Private Async Sub btnHCPCSLevel1_Click(sender As Object, e As EventArgs)
         lblHCPCSDescription.Text = Level1Desc
@@ -87,20 +96,126 @@ Public Class ProviderDetailsForm
         Await LoadHCPCSTable(level:=2)
     End Sub
 
+    Private Async Sub btnAssociatedHospitals_Click(sender As Object, e As EventArgs)
+        lblHCPCSDescription.Text = AssociatedHospitalsDesc
+        lblHCPCSDescription.Visible = True
+        linkMoreInfo.Visible = False
+        lblLoading.Visible = True
+        Try
+            ClearGrid()
+            Dim dt As New DataTable()
+            dt.Columns.Add("Provider First Name")
+            dt.Columns.Add("Provider Last Name")
+            dt.Columns.Add("Facility Type")
+            dt.Columns.Add("Facility Affiliation Certification Number")
+            dt.Columns.Add("Facility Name")
+            dt.Columns.Add("City")
+            dt.Columns.Add("State")
+
+            Dim apiUrl As String = "https://data.cms.gov/provider-data/api/1/datastore/query/27ea-46a8/0"
+            Dim postBody As New JObject(
+                New JProperty("conditions", New JArray(
+                    New JObject(
+                        New JProperty("resource", "t"),
+                        New JProperty("property", "npi"),
+                        New JProperty("value", currentNpi),
+                        New JProperty("operator", "=")
+                    )
+                )),
+                New JProperty("limit", 1000)
+            )
+
+            Using client As New HttpClient()
+                Dim content = New StringContent(postBody.ToString(), System.Text.Encoding.UTF8, "application/json")
+                Dim response = Await client.PostAsync(apiUrl, content)
+                If response.IsSuccessStatusCode Then
+                    Dim json = Await response.Content.ReadAsStringAsync()
+                    Dim obj = JObject.Parse(json)
+                    If obj("results") IsNot Nothing AndAlso obj("results").HasValues Then
+                        For Each item In obj("results")
+                            Dim row = dt.NewRow()
+                            row("Provider First Name") = item("provider_first_name")?.ToString()
+                            row("Provider Last Name") = item("provider_last_name")?.ToString()
+                            row("Facility Type") = item("facility_type")?.ToString()
+                            Dim ccn = item("facility_affiliations_certification_number")?.ToString()
+                            row("Facility Affiliation Certification Number") = ccn
+
+                            If Not String.IsNullOrWhiteSpace(ccn) Then
+                                Dim city As String = ""
+                                Dim state As String = ""
+                                Dim facilityName As String = ""
+                                Try
+                                    Dim lookupUrl = $"https://data.cms.gov/data-api/v1/dataset/8015f175-35cc-4cab-a664-b7c87d91a027/data?filter[Provider CCN]={Uri.EscapeDataString(ccn)}&size=1"
+                                    Dim lookupResp = Await client.GetAsync(lookupUrl)
+                                    If lookupResp.IsSuccessStatusCode Then
+                                        Dim lookupJson = Await lookupResp.Content.ReadAsStringAsync()
+                                        Dim lookupArr = JArray.Parse(lookupJson)
+                                        If lookupArr.Count > 0 Then
+                                            city = lookupArr(0)?("City")?.ToString()
+                                            state = lookupArr(0)?("State Code")?.ToString()
+                                            facilityName = lookupArr(0)?("Hospital Name")?.ToString()
+                                        End If
+                                    End If
+                                Catch ex2 As Exception
+                                End Try
+                                row("City") = city
+                                row("State") = state
+                                row("Facility Name") = facilityName
+                            End If
+
+                            dt.Rows.Add(row)
+                        Next
+                    End If
+                Else
+                    MessageBox.Show("API error: " & response.StatusCode.ToString() & vbCrLf & Await response.Content.ReadAsStringAsync())
+                End If
+            End Using
+
+            If dt.Rows.Count = 0 Then
+                MessageBox.Show("No associated hospitals found for this provider.")
+            Else
+                dgvDetails.DataSource = dt
+
+                If dgvDetails.Columns.Contains("Facility Affiliation Certification Number") Then
+                    Dim idx = dgvDetails.Columns("Facility Affiliation Certification Number").Index
+                    Dim linkCol As New DataGridViewLinkColumn()
+                    linkCol.Name = "Facility Affiliation Certification Number"
+                    linkCol.HeaderText = "Facility Affiliation Certification Number"
+                    linkCol.DataPropertyName = "Facility Affiliation Certification Number"
+                    linkCol.LinkColor = Color.Blue
+                    linkCol.ActiveLinkColor = Color.Red
+                    linkCol.VisitedLinkColor = Color.Purple
+                    linkCol.TrackVisitedState = False
+                    dgvDetails.Columns.RemoveAt(idx)
+                    dgvDetails.Columns.Insert(idx, linkCol)
+                End If
+
+                dgvDetails.Refresh()
+            End If
+        Catch ex As Exception
+            MessageBox.Show("Error loading associated hospitals: " & ex.Message)
+        Finally
+            lblLoading.Visible = False
+        End Try
+    End Sub
+
     Private Async Sub btnGeneralPayment_Click(sender As Object, e As EventArgs)
-        lblHCPCSDescription.Visible = False
+        lblHCPCSDescription.Text = GeneralPaymentDesc
+        lblHCPCSDescription.Visible = True
         linkMoreInfo.Visible = False
         Await LoadGeneralPaymentTable()
     End Sub
 
     Private Async Sub btnOwnershipData_Click(sender As Object, e As EventArgs)
-        lblHCPCSDescription.Visible = False
+        lblHCPCSDescription.Text = OwnershipDataDesc
+        lblHCPCSDescription.Visible = True
         linkMoreInfo.Visible = False
         Await LoadOwnershipDataTable()
     End Sub
 
     Private Async Sub btnResearchPayment_Click(sender As Object, e As EventArgs)
-        lblHCPCSDescription.Visible = False
+        lblHCPCSDescription.Text = ResearchPaymentDesc
+        lblHCPCSDescription.Visible = True
         linkMoreInfo.Visible = False
         Await LoadResearchPaymentTable()
     End Sub
@@ -309,107 +424,7 @@ Public Class ProviderDetailsForm
         End Try
     End Function
 
-    Private Async Sub btnAssociatedHospitals_Click(sender As Object, e As EventArgs)
-        lblHCPCSDescription.Visible = False
-        linkMoreInfo.Visible = False
-        lblLoading.Visible = True
-        Try
-            ClearGrid()
-            Dim dt As New DataTable()
-            dt.Columns.Add("Provider First Name")
-            dt.Columns.Add("Provider Last Name")
-            dt.Columns.Add("Facility Type")
-            dt.Columns.Add("Facility Affiliation Certification Number")
-            dt.Columns.Add("Facility Name")
-            dt.Columns.Add("City")
-            dt.Columns.Add("State")
 
-            Dim apiUrl As String = "https://data.cms.gov/provider-data/api/1/datastore/query/27ea-46a8/0"
-            Dim postBody As New JObject(
-                New JProperty("conditions", New JArray(
-                    New JObject(
-                        New JProperty("resource", "t"),
-                        New JProperty("property", "npi"),
-                        New JProperty("value", currentNpi),
-                        New JProperty("operator", "=")
-                    )
-                )),
-                New JProperty("limit", 1000)
-            )
-
-            Using client As New HttpClient()
-                Dim content = New StringContent(postBody.ToString(), System.Text.Encoding.UTF8, "application/json")
-                Dim response = Await client.PostAsync(apiUrl, content)
-                If response.IsSuccessStatusCode Then
-                    Dim json = Await response.Content.ReadAsStringAsync()
-                    Dim obj = JObject.Parse(json)
-                    If obj("results") IsNot Nothing AndAlso obj("results").HasValues Then
-                        For Each item In obj("results")
-                            Dim row = dt.NewRow()
-                            row("Provider First Name") = item("provider_first_name")?.ToString()
-                            row("Provider Last Name") = item("provider_last_name")?.ToString()
-                            row("Facility Type") = item("facility_type")?.ToString()
-                            Dim ccn = item("facility_affiliations_certification_number")?.ToString()
-                            row("Facility Affiliation Certification Number") = ccn
-
-                            If Not String.IsNullOrWhiteSpace(ccn) Then
-                                Dim city As String = ""
-                                Dim state As String = ""
-                                Dim facilityName As String = ""
-                                Try
-                                    Dim lookupUrl = $"https://data.cms.gov/data-api/v1/dataset/8015f175-35cc-4cab-a664-b7c87d91a027/data?filter[Provider CCN]={Uri.EscapeDataString(ccn)}&size=1"
-                                    Dim lookupResp = Await client.GetAsync(lookupUrl)
-                                    If lookupResp.IsSuccessStatusCode Then
-                                        Dim lookupJson = Await lookupResp.Content.ReadAsStringAsync()
-                                        Dim lookupArr = JArray.Parse(lookupJson)
-                                        If lookupArr.Count > 0 Then
-                                            city = lookupArr(0)?("City")?.ToString()
-                                            state = lookupArr(0)?("State Code")?.ToString()
-                                            facilityName = lookupArr(0)?("Hospital Name")?.ToString()
-                                        End If
-                                    End If
-                                Catch ex2 As Exception
-                                End Try
-                                row("City") = city
-                                row("State") = state
-                                row("Facility Name") = facilityName
-                            End If
-
-                            dt.Rows.Add(row)
-                        Next
-                    End If
-                Else
-                    MessageBox.Show("API error: " & response.StatusCode.ToString() & vbCrLf & Await response.Content.ReadAsStringAsync())
-                End If
-            End Using
-
-            If dt.Rows.Count = 0 Then
-                MessageBox.Show("No associated hospitals found for this provider.")
-            Else
-                dgvDetails.DataSource = dt
-
-                If dgvDetails.Columns.Contains("Facility Affiliation Certification Number") Then
-                    Dim idx = dgvDetails.Columns("Facility Affiliation Certification Number").Index
-                    Dim linkCol As New DataGridViewLinkColumn()
-                    linkCol.Name = "Facility Affiliation Certification Number"
-                    linkCol.HeaderText = "Facility Affiliation Certification Number"
-                    linkCol.DataPropertyName = "Facility Affiliation Certification Number"
-                    linkCol.LinkColor = Color.Blue
-                    linkCol.ActiveLinkColor = Color.Red
-                    linkCol.VisitedLinkColor = Color.Purple
-                    linkCol.TrackVisitedState = False
-                    dgvDetails.Columns.RemoveAt(idx)
-                    dgvDetails.Columns.Insert(idx, linkCol)
-                End If
-
-                dgvDetails.Refresh()
-            End If
-        Catch ex As Exception
-            MessageBox.Show("Error loading associated hospitals: " & ex.Message)
-        Finally
-            lblLoading.Visible = False
-        End Try
-    End Sub
 
     ' --- NEW: General Payment, Ownership Data, Research Payment Table Loaders ---
 

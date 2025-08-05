@@ -671,7 +671,7 @@ Public Class Profile
 
     Private Sub ShowProviderDetailsPopup(npi As String)
         Dim detailsForm As New ProviderDetailsForm(npi)
-        detailsForm.Text = $"Provider Details for NPI: {npi} - CMS Medicare Provider Part D Prescribers by Provider and Drug 2023"
+        detailsForm.Text = $"Provider Details for NPI: {npi} - CMS Data"
         detailsForm.ShowDialog()
     End Sub
 
