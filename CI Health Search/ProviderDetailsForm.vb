@@ -3,11 +3,14 @@ Imports Newtonsoft.Json.Linq
 Imports System.Net.Http
 
 Public Class ProviderDetailsForm
-    Private WithEvents btnPrescriberDrugs As New Button With {.Text = "Prescriber Drugs", .Width = 150}
-    Private WithEvents btnProviderProfile As New Button With {.Text = "Provider Profile", .Width = 150}
-    Private WithEvents btnHCPCSLevel1 As New Button With {.Text = "HCPCS Level I", .Width = 150}
-    Private WithEvents btnHCPCSLevel2 As New Button With {.Text = "HCPCS Level II", .Width = 150}
-    Private WithEvents btnAssociatedHospitals As New Button With {.Text = "Associated Hospitals", .Width = 150}
+    Private WithEvents btnPrescriberDrugs As New Button With {.Text = "Prescriber Drugs", .Width = 110, .Height = 28}
+    Private WithEvents btnProviderProfile As New Button With {.Text = "Provider Profile", .Width = 110, .Height = 28}
+    Private WithEvents btnHCPCSLevel1 As New Button With {.Text = "HCPCS Level I", .Width = 110, .Height = 28}
+    Private WithEvents btnHCPCSLevel2 As New Button With {.Text = "HCPCS Level II", .Width = 110, .Height = 28}
+    Private WithEvents btnAssociatedHospitals As New Button With {.Text = "Associated Hospitals", .Width = 110, .Height = 28}
+    Private WithEvents btnGeneralPayment As New Button With {.Text = "General Payment", .Width = 110, .Height = 28}
+    Private WithEvents btnOwnershipData As New Button With {.Text = "Ownership Data", .Width = 110, .Height = 28}
+    Private WithEvents btnResearchPayment As New Button With {.Text = "Research Payment", .Width = 110, .Height = 28}
     Private buttonPanel As New FlowLayoutPanel()
 
     Private currentNpi As String
@@ -32,21 +35,26 @@ Public Class ProviderDetailsForm
         buttonPanel.FlowDirection = FlowDirection.LeftToRight
         buttonPanel.Controls.Add(btnProviderProfile)
         buttonPanel.Controls.Add(btnPrescriberDrugs)
-
         buttonPanel.Controls.Add(btnHCPCSLevel1)
         buttonPanel.Controls.Add(btnHCPCSLevel2)
         buttonPanel.Controls.Add(btnAssociatedHospitals)
+        buttonPanel.Controls.Add(btnGeneralPayment)
+        buttonPanel.Controls.Add(btnOwnershipData)
+        buttonPanel.Controls.Add(btnResearchPayment)
         Me.Controls.Add(buttonPanel)
 
         Me.Controls.Add(lblLoading)
         lblLoading.BringToFront()
-
 
         AddHandler btnProviderProfile.Click, AddressOf btnProviderProfile_Click
         AddHandler btnPrescriberDrugs.Click, AddressOf btnPrescriberDrugs_Click
         AddHandler btnHCPCSLevel1.Click, AddressOf btnHCPCSLevel1_Click
         AddHandler btnHCPCSLevel2.Click, AddressOf btnHCPCSLevel2_Click
         AddHandler btnAssociatedHospitals.Click, AddressOf btnAssociatedHospitals_Click
+        AddHandler btnGeneralPayment.Click, AddressOf btnGeneralPayment_Click
+        AddHandler btnOwnershipData.Click, AddressOf btnOwnershipData_Click
+        AddHandler btnResearchPayment.Click, AddressOf btnResearchPayment_Click
+
         btnPrescriberDrugs.PerformClick()
     End Sub
 
@@ -79,6 +87,24 @@ Public Class ProviderDetailsForm
         Await LoadHCPCSTable(level:=2)
     End Sub
 
+    Private Async Sub btnGeneralPayment_Click(sender As Object, e As EventArgs)
+        lblHCPCSDescription.Visible = False
+        linkMoreInfo.Visible = False
+        Await LoadGeneralPaymentTable()
+    End Sub
+
+    Private Async Sub btnOwnershipData_Click(sender As Object, e As EventArgs)
+        lblHCPCSDescription.Visible = False
+        linkMoreInfo.Visible = False
+        Await LoadOwnershipDataTable()
+    End Sub
+
+    Private Async Sub btnResearchPayment_Click(sender As Object, e As EventArgs)
+        lblHCPCSDescription.Visible = False
+        linkMoreInfo.Visible = False
+        Await LoadResearchPaymentTable()
+    End Sub
+
     Private Sub ClearGrid()
         dgvDetails.DataSource = Nothing
         dgvDetails.Columns.Clear()
@@ -97,6 +123,7 @@ Public Class ProviderDetailsForm
             .EnableHeadersVisualStyles = False
         End With
     End Sub
+
     Private Sub linkMoreInfo_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles linkMoreInfo.LinkClicked
         Try
             Dim psi As New ProcessStartInfo With {
@@ -172,7 +199,6 @@ Public Class ProviderDetailsForm
                     Dim obj = JObject.Parse(json)
                     If obj("results") IsNot Nothing AndAlso obj("results").HasValues Then
                         Dim result = obj("results")(0)
-                        ' Only add the most useful columns
                         dt.Columns.Add("NPI")
                         dt.Columns.Add("Enumeration Type")
                         dt.Columns.Add("First Name")
@@ -198,7 +224,6 @@ Public Class ProviderDetailsForm
                         row("Last Updated") = result("basic")?("last_updated")?.ToString()
                         row("Status") = result("basic")?("status")?.ToString()
 
-                        ' Taxonomy (primary)
                         Dim primaryTaxonomy = result("taxonomies")?.FirstOrDefault(Function(t) t("primary")?.ToString().ToLower() = "true")
                         If primaryTaxonomy Is Nothing AndAlso result("taxonomies") IsNot Nothing AndAlso result("taxonomies").HasValues Then
                             primaryTaxonomy = result("taxonomies")(0)
@@ -283,6 +308,7 @@ Public Class ProviderDetailsForm
             lblLoading.Visible = False
         End Try
     End Function
+
     Private Async Sub btnAssociatedHospitals_Click(sender As Object, e As EventArgs)
         lblHCPCSDescription.Visible = False
         linkMoreInfo.Visible = False
@@ -326,7 +352,6 @@ Public Class ProviderDetailsForm
                             Dim ccn = item("facility_affiliations_certification_number")?.ToString()
                             row("Facility Affiliation Certification Number") = ccn
 
-                            ' Lookup City and State by CCN
                             If Not String.IsNullOrWhiteSpace(ccn) Then
                                 Dim city As String = ""
                                 Dim state As String = ""
@@ -344,7 +369,6 @@ Public Class ProviderDetailsForm
                                         End If
                                     End If
                                 Catch ex2 As Exception
-                                    ' Ignore lookup errors, leave city/state blank
                                 End Try
                                 row("City") = city
                                 row("State") = state
@@ -364,7 +388,6 @@ Public Class ProviderDetailsForm
             Else
                 dgvDetails.DataSource = dt
 
-                ' Make CCN column a link
                 If dgvDetails.Columns.Contains("Facility Affiliation Certification Number") Then
                     Dim idx = dgvDetails.Columns("Facility Affiliation Certification Number").Index
                     Dim linkCol As New DataGridViewLinkColumn()
@@ -388,12 +411,171 @@ Public Class ProviderDetailsForm
         End Try
     End Sub
 
+    ' --- NEW: General Payment, Ownership Data, Research Payment Table Loaders ---
+
+    Private Async Function LoadGeneralPaymentTable() As Task
+        lblLoading.Visible = True
+        Try
+            ClearGrid()
+            Dim dt As New DataTable()
+            Dim apiUrl As String = "https://openpaymentsdata.cms.gov/api/1/datastore/query/e6b17c6a-2534-4207-a4a1-6746a14911ff/0"
+
+            ' Build the request body using JObject/JArray
+            Dim conditions As New JArray(
+            New JObject(
+                New JProperty("resource", "t"),
+                New JProperty("property", "record_number"),
+                New JProperty("value", 1),
+                New JProperty("operator", ">")
+            ),
+            New JObject(
+                New JProperty("resource", "t"),
+                New JProperty("property", "Covered_Recipient_NPI"),
+                New JProperty("value", currentNpi),
+                New JProperty("operator", "=")
+            )
+        )
+            Dim postBody As New JObject(
+            New JProperty("conditions", conditions),
+            New JProperty("limit", 3)
+        )
+
+            Using client As New HttpClient()
+                Dim content = New StringContent(postBody.ToString(), System.Text.Encoding.UTF8, "application/json")
+                Dim response = Await client.PostAsync(apiUrl, content)
+                If response.IsSuccessStatusCode Then
+                    Dim json = Await response.Content.ReadAsStringAsync()
+                    Dim obj = JObject.Parse(json)
+                    If obj("results") IsNot Nothing AndAlso obj("results").HasValues Then
+                        Dim data = obj("results")
+                        ' Dynamically add columns based on the first result
+                        For Each col In data(0).ToObject(Of JObject)().Properties()
+                            If Not dt.Columns.Contains(col.Name) Then
+                                dt.Columns.Add(col.Name)
+                            End If
+                        Next
+                        ' Add rows
+                        For Each item In data
+                            Dim row = dt.NewRow()
+                            For Each col In dt.Columns
+                                row(col.ToString()) = item(col.ToString())
+                            Next
+                            dt.Rows.Add(row)
+                        Next
+                    End If
+                Else
+                    MessageBox.Show("General Payment API error: " & response.StatusCode.ToString() & vbCrLf & Await response.Content.ReadAsStringAsync())
+                End If
+            End Using
+
+            If dt.Rows.Count = 0 Then
+                MessageBox.Show("No general payment data found.")
+            End If
+
+            dgvDetails.DataSource = dt
+            ApplyCustomColors()
+            dgvDetails.Refresh()
+        Catch ex As Exception
+            MessageBox.Show("Error loading General Payment: " & ex.Message)
+        Finally
+            lblLoading.Visible = False
+        End Try
+    End Function
+
+    Private Async Function LoadOwnershipDataTable() As Task
+        lblLoading.Visible = True
+        Try
+            ClearGrid()
+            Dim dt As New DataTable()
+            Dim apiUrl As String = "https://openpaymentsdata.cms.gov/api/1/datastore/query/9ac4f7f8-b6e4-4d80-8410-4aba7e71dd02/0"
+
+            ' Use the correct NPI property: Physician_NPI
+            Dim conditions As New JArray(
+            New JObject(
+                New JProperty("resource", "t"),
+                New JProperty("property", "record_number"),
+                New JProperty("value", 1),
+                New JProperty("operator", ">")
+            ),
+            New JObject(
+                New JProperty("resource", "t"),
+                New JProperty("property", "physician_NPI"),
+                New JProperty("value", currentNpi),
+                New JProperty("operator", "=")
+            )
+        )
+            Dim postBody As New JObject(
+            New JProperty("conditions", conditions),
+            New JProperty("limit", 3)
+        )
+
+            Using client As New HttpClient()
+                Dim content = New StringContent(postBody.ToString(), System.Text.Encoding.UTF8, "application/json")
+                Dim response = Await client.PostAsync(apiUrl, content)
+                If response.IsSuccessStatusCode Then
+                    Dim json = Await response.Content.ReadAsStringAsync()
+                    Dim obj = JObject.Parse(json)
+                    If obj("results") IsNot Nothing AndAlso obj("results").HasValues Then
+                        Dim data = obj("results")
+                        For Each col In data(0).ToObject(Of JObject)().Properties()
+                            If Not dt.Columns.Contains(col.Name) Then
+                                dt.Columns.Add(col.Name)
+                            End If
+                        Next
+                        For Each item In data
+                            Dim row = dt.NewRow()
+                            For Each col In dt.Columns
+                                row(col.ToString()) = item(col.ToString())
+                            Next
+                            dt.Rows.Add(row)
+                        Next
+                    End If
+                Else
+                    MessageBox.Show("Ownership Data API error: " & response.StatusCode.ToString() & vbCrLf & Await response.Content.ReadAsStringAsync())
+                End If
+            End Using
+
+            If dt.Rows.Count = 0 Then
+                MessageBox.Show("No ownership data found.")
+            End If
+
+            dgvDetails.DataSource = dt
+            ApplyCustomColors()
+            dgvDetails.Refresh()
+        Catch ex As Exception
+            MessageBox.Show("Error loading Ownership Data: " & ex.Message)
+        Finally
+            lblLoading.Visible = False
+        End Try
+    End Function
+
+    Private Async Function LoadResearchPaymentTable() As Task
+        lblLoading.Visible = True
+        Try
+            ClearGrid()
+            Dim dt As New DataTable()
+            ' TODO: Replace with your real API/data call for research payments
+            dt.Columns.Add("NPI")
+            dt.Columns.Add("Research Amount")
+            dt.Columns.Add("Project")
+            dt.Rows.Add(currentNpi, "$5,000", "Cancer Study")
+            dgvDetails.DataSource = dt
+            ApplyCustomColors()
+            dgvDetails.Refresh()
+        Catch ex As Exception
+            MessageBox.Show("Error loading Research Payment: " & ex.Message)
+        Finally
+            lblLoading.Visible = False
+        End Try
+    End Function
+
+    ' --- END NEW TABLE LOADERS ---
+
     ' Handle CCN link click
     Private Async Sub dgvDetails_CellContentClick(sender As Object, e As DataGridViewCellEventArgs)
         If e.RowIndex >= 0 AndAlso dgvDetails.Columns(e.ColumnIndex).Name = "Facility Affiliation Certification Number" Then
             Dim ccn As String = dgvDetails.Rows(e.RowIndex).Cells("Facility Affiliation Certification Number").Value?.ToString()
             If Not String.IsNullOrWhiteSpace(ccn) Then
-                ' Fetch hospital data for this CCN from the API
                 Dim apiUrl As String = $"https://data.cms.gov/data-api/v1/dataset/8015f175-35cc-4cab-a664-b7c87d91a027/data?filter[Provider CCN]={Uri.EscapeDataString(ccn)}&size=1"
                 Using client As New HttpClient()
                     Dim response = Await client.GetAsync(apiUrl)
@@ -416,7 +598,6 @@ Public Class ProviderDetailsForm
                             ctx.NumOfBeds = If(Integer.TryParse(row("Number of Beds")?.ToString(), 0), Integer.Parse(row("Number of Beds")?.ToString()), 0)
                             ctx.LastDataRow = Nothing
 
-                            ' Open a new Profile window for this hospital context
                             Dim profileForm As New Profile(ctx)
                             profileForm.StartPosition = FormStartPosition.Manual
                             profileForm.Location = New Point(Me.Location.X + 30, Me.Location.Y + 30)
@@ -431,7 +612,6 @@ Public Class ProviderDetailsForm
             End If
         End If
     End Sub
-
 
     Public Sub SetFriendlyColumnHeaders()
         Dim headerMap As New Dictionary(Of String, String) From {
