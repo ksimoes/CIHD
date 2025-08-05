@@ -324,7 +324,15 @@ Public Class Profile
             End If
             lblZipCodeResult.Text = foundHosp.Zip
 
-            lblTotalPatientRevenueResult.Text = If(provider("Total Patient Revenue") IsNot Nothing, provider("Total Patient Revenue").ToString(), "N/A")
+            Dim revenueRaw = If(provider("Total Patient Revenue") IsNot Nothing, provider("Total Patient Revenue").ToString(), Nothing)
+            Dim revenueVal As Decimal
+            If Decimal.TryParse(revenueRaw, Globalization.NumberStyles.Any, Globalization.CultureInfo.InvariantCulture, revenueVal) Then
+                lblTotalPatientRevenueResult.Text = revenueVal.ToString("C0")
+            ElseIf Not String.IsNullOrWhiteSpace(revenueRaw) Then
+                lblTotalPatientRevenueResult.Text = "$" & revenueRaw
+            Else
+                lblTotalPatientRevenueResult.Text = "N/A"
+            End If
             Dim typeOfControlCode As String = If(provider("Type of Control") IsNot Nothing, provider("Type of Control").ToString(), "")
             If Not String.IsNullOrWhiteSpace(typeOfControlCode) AndAlso TypeOfControlMap.ContainsKey(typeOfControlCode) Then
                 lblTypeControlResult.Text = TypeOfControlMap(typeOfControlCode)
@@ -334,7 +342,7 @@ Public Class Profile
                 lblTypeControlResult.Text = "N/A"
             End If
             lblZipCodeResult.Text = If(provider("Zip Code") IsNot Nothing, provider("Zip Code").ToString(), "N/A")
-            lblTotalPatientDaysResult.Text = If(provider("Hospital Total Days (V + XVIII + XIX + Unknown) For Adults & Peds ") IsNot Nothing, provider("Hospital Total Days (V + XVIII + XIX + Unknown) For Adults & Peds ").ToString(), "N/A")
+            lblTotalPatientDaysResult.Text = If(provider("Hospital Total Days (V + XVIII + XIX + Unknown) For Adults & Peds") IsNot Nothing, provider("Hospital Total Days (V + XVIII + XIX + Unknown) For Adults & Peds").ToString(), "N/A")
         Else
             lblCmsCertNumProfileResult.Text = "No result"
             lblCountyFipsResult.Text = "No result"

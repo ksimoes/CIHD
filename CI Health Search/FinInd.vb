@@ -31,104 +31,101 @@ Public Class FinInd
         InitializeComponent()
     End Sub
 
-    ' Default constructor for designer compatibility
-
-
-    Public Function FormatCurrency(val As Object) As String
+    ' Format currency with dollar sign and commas, fallback to N/A
+    Public Shared Function FormatCurrency(val As Object) As String
         Dim dec As Decimal
-        If Decimal.TryParse(val.ToString().Replace("$", "").Replace(",", ""), dec) Then
-            Return dec.ToString("N0") ' 1,234 (no decimals)
+        If Decimal.TryParse(val?.ToString().Replace("$", "").Replace(",", ""), dec) Then
+            Return dec.ToString("C0")
+        End If
+        If val IsNot Nothing AndAlso Not String.IsNullOrWhiteSpace(val.ToString()) Then
+            Return "$" & val.ToString()
         End If
         Return "N/A"
     End Function
 
-
-
-
-
     Public strCMSnum As String
     Dim foundFinHosp As HospitalContext
+
     Public Async Function ShowFinancialDataApi(cmsNum As String) As Task
-        MessageBox.Show("ShowFinancialDataApi called with: " & cmsNum)
         ' Step 1: Populate from Results.SelectedHospital
         Dim hosp = currentHospital
         lblHN.Text = GetBestFacilityName(hosp)
 
         lblPedFinIndResult.Text = If(hosp.TotalDays > 0, hosp.TotalDays.ToString(), "N/A")
-        lblTotCurrentAssetsResult.Text = If(hosp.TotalCurrentAssets > 0, hosp.TotalCurrentAssets.ToString("N0"), "N/A")
+        lblTotCurrentAssetsResult.Text = FormatCurrency(hosp.TotalCurrentAssets)
         lblTotCurrentAssetsResult2.Text = lblTotCurrentAssetsResult.Text
         lblTotCurrentAssets10.Text = lblTotCurrentAssetsResult.Text
 
-        lblTotAssetsResult.Text = If(hosp.TotalAssets > 0, hosp.TotalAssets.ToString("N0"), "N/A")
+        lblTotAssetsResult.Text = FormatCurrency(hosp.TotalAssets)
         lblTotAssetsResult2.Text = lblTotAssetsResult.Text
         lblTotAssetsResult3.Text = lblTotAssetsResult.Text
         lblTotAssetsResult4.Text = lblTotAssetsResult.Text
         lblTotAssetsResult5.Text = lblTotAssetsResult.Text
 
-        lblTotOperatingRevFinIndResult.Text = If(hosp.NetPatientRev > 0, hosp.NetPatientRev.ToString("N0"), "N/A")
+        lblTotOperatingRevFinIndResult.Text = FormatCurrency(hosp.NetPatientRev)
         lblTotOperatingRevenueFinInd2.Text = lblTotOperatingRevFinIndResult.Text
         lblTotOperatingRevResult3.Text = lblTotOperatingRevFinIndResult.Text
         lblTotOperatingRevResult4.Text = lblTotOperatingRevFinIndResult.Text
         lblTotOperatingRevResult5.Text = lblTotOperatingRevFinIndResult.Text
         lblTotOperatingRevResult6.Text = lblTotOperatingRevFinIndResult.Text
 
-        lblInventoryResult.Text = If(hosp.Inventory > 0, hosp.Inventory.ToString("N0"), "N/A")
+        lblInventoryResult.Text = FormatCurrency(hosp.Inventory)
         lblInventoryResult2.Text = lblInventoryResult.Text
 
-        lblAccountsRecievableResult.Text = "N/A" ' Add to HospitalContext if needed
+        lblAccountsRecievableResult.Text = "N/A"
         lblAccountsRecievableResult2.Text = lblAccountsRecievableResult.Text
 
-        lblOtherExpenseResultFindInd.Text = "N/A" ' Add to HospitalContext if needed
+        lblOtherExpenseResultFindInd.Text = "N/A"
 
-        lblTotLongTermLiabilitiesResult.Text = If(hosp.TotalLongTermLiabilities > 0, hosp.TotalLongTermLiabilities.ToString("N0"), "N/A")
-        lblLeaseCostResult.Text = If(hosp.LeaseCost > 0, hosp.LeaseCost.ToString("N0"), "N/A")
-        lblNotesReceivableRes.Text = If(hosp.NotesReceivable > 0, hosp.NotesReceivable.ToString("N0"), "N/A")
+        lblTotLongTermLiabilitiesResult.Text = FormatCurrency(hosp.TotalLongTermLiabilities)
+        lblLeaseCostResult.Text = FormatCurrency(hosp.LeaseCost)
+        lblNotesReceivableRes.Text = FormatCurrency(hosp.NotesReceivable)
 
-        lblTotLiabilitiesResult.Text = If(hosp.TotalLiabilities > 0, hosp.TotalLiabilities.ToString("N0"), "N/A")
+        lblTotLiabilitiesResult.Text = FormatCurrency(hosp.TotalLiabilities)
         lblTotLiabilitiesResult2.Text = lblTotLiabilitiesResult.Text
         lblTotLiabilitiesResult3.Text = lblTotLiabilitiesResult.Text
 
-        lblCashonHandResult.Text = "N/A" ' Add to HospitalContext if needed
+        lblCashonHandResult.Text = "N/A"
         lblCashonHandResult2.Text = lblCashonHandResult.Text
 
-        lblTotCurrentLiabilitiesResult.Text = If(hosp.TotalCurrentLiabilities > 0, hosp.TotalCurrentLiabilities.ToString("N0"), "N/A")
+        lblTotCurrentLiabilitiesResult.Text = FormatCurrency(hosp.TotalCurrentLiabilities)
         lblTotCurrentLiabilitesResult2.Text = lblTotCurrentLiabilitiesResult.Text
         lblTotCurrentLiabilitesResult3.Text = lblTotCurrentLiabilitiesResult.Text
         lblTotCurrentLiabilities10.Text = lblTotCurrentLiabilitiesResult.Text
 
-        lblTotOperatingExpenseFinIndResult.Text = If(hosp.TotalOperatingExpense > 0, hosp.TotalOperatingExpense.ToString("N0"), "N/A")
+        lblTotOperatingExpenseFinIndResult.Text = FormatCurrency(hosp.TotalOperatingExpense)
         lblTotOperatingExpenseFinInd2.Text = lblTotOperatingExpenseFinIndResult.Text
         lblTotOperatingExpenseFinInd3.Text = lblTotOperatingExpenseFinIndResult.Text
         lblTotOperatingExpenseFinInd4.Text = lblTotOperatingExpenseFinIndResult.Text
         lblTotOperatingExpenseFinInd5.Text = lblTotOperatingExpenseFinIndResult.Text
 
-        lblNetIncomeResult.Text = If(hosp.NetIncome > 0, hosp.NetIncome.ToString("N0"), "N/A")
+        lblNetIncomeResult.Text = FormatCurrency(hosp.NetIncome)
         lblNetIncomeFinIndResult.Text = lblNetIncomeResult.Text
         lblNetIncomeResult2.Text = lblNetIncomeResult.Text
 
-        lblInterestExpenseFinIndResult.Text = "N/A" ' Add to HospitalContext if needed
-        lblDepAmortExpenseResult.Text = "N/A" ' Add to HospitalContext if needed
+        lblInterestExpenseFinIndResult.Text = "N/A"
+        lblDepAmortExpenseResult.Text = "N/A"
 
-        lblEbitResult.Text = "N/A" ' You can calculate if all components are present in HospitalContext
-        lblOperatingMarginFinIndResult.Text = "N/A" ' You can calculate if all components are present
+        lblEbitResult.Text = "N/A"
+        lblOperatingMarginFinIndResult.Text = "N/A"
 
-        lblDepreciationExpenseResultFinInd.Text = If(hosp.DepreciationCost > 0, hosp.DepreciationCost.ToString("N0"), "N/A")
+        lblDepreciationExpenseResultFinInd.Text = FormatCurrency(hosp.DepreciationCost)
         lblDepreciationExpenseResultFinInd2.Text = lblDepreciationExpenseResultFinInd.Text
         lblDepreciationExpenseResultFinInd3.Text = lblDepreciationExpenseResultFinInd.Text
         lblDepreciationExpenseResultFinInd4.Text = lblDepreciationExpenseResultFinInd.Text
 
-        lblSalaryExpenseResult.Text = "N/A" ' Add to HospitalContext if needed
-        lblContractLaborResult.Text = "N/A" ' Add to HospitalContext if needed
+        lblSalaryExpenseResult.Text = "N/A"
+        lblContractLaborResult.Text = "N/A"
 
-        lblAllowforUncollectRes.Text = "N/A" ' Add to HospitalContext if needed
+        lblAllowforUncollectRes.Text = "N/A"
         lblAllowforUncollectRes2.Text = lblAllowforUncollectRes.Text
 
-        lblMarketSecuritiesResult.Text = If(hosp.MarketSecurities > 0, hosp.MarketSecurities.ToString("N0"), "N/A")
+        lblMarketSecuritiesResult.Text = FormatCurrency(hosp.MarketSecurities)
         lblMarketSecuritiesResult2.Text = lblMarketSecuritiesResult.Text
 
-        lblInvestmentsResultFinInd.Text = If(hosp.Investments > 0, hosp.Investments.ToString("N0"), "N/A")
+        lblInvestmentsResultFinInd.Text = FormatCurrency(hosp.Investments)
 
-        lblDepAmortExpenseResult.Text = "N/A" ' Add to HospitalContext if needed
+        lblDepAmortExpenseResult.Text = "N/A"
 
         ' Step 2: Supplement with API for the most up-to-date info
         Dim apiUrl As String = "https://data.cms.gov/data-api/v1/dataset/8015f175-35cc-4cab-a664-b7c87d91a027/data?keyword=" & Uri.EscapeDataString(cmsNum) & "&size=1000"
@@ -144,56 +141,55 @@ Public Class FinInd
                 Dim provider = data.FirstOrDefault(Function(x) x("Provider CCN") IsNot Nothing AndAlso x("Provider CCN").ToString() = cmsNum)
                 If provider Is Nothing Then provider = data(0)
 
-                ' Now update labels with API data (as in your original code)
                 lblPedFinIndResult.Text = If(provider("Fiscal Year End Date") IsNot Nothing, CDate(provider("Fiscal Year End Date")).ToString("MM/dd/yyyy"), lblPedFinIndResult.Text)
-                lblTotCurrentAssetsResult.Text = Me.FormatCurrency(Search.CleanMeUp(provider("Total Current Assets")))
+                lblTotCurrentAssetsResult.Text = FormatCurrency(Search.CleanMeUp(provider("Total Current Assets")))
                 lblTotCurrentAssetsResult2.Text = lblTotCurrentAssetsResult.Text
                 lblTotCurrentAssets10.Text = lblTotCurrentAssetsResult.Text
 
-                lblTotAssetsResult.Text = Me.FormatCurrency(Search.CleanMeUp(provider("Total Assets")))
+                lblTotAssetsResult.Text = FormatCurrency(Search.CleanMeUp(provider("Total Assets")))
                 lblTotAssetsResult2.Text = lblTotAssetsResult.Text
                 lblTotAssetsResult3.Text = lblTotAssetsResult.Text
                 lblTotAssetsResult4.Text = lblTotAssetsResult.Text
                 lblTotAssetsResult5.Text = lblTotAssetsResult.Text
 
-                lblTotOperatingRevFinIndResult.Text = Me.FormatCurrency(Search.CleanMeUp(provider("Net Patient Revenue")))
+                lblTotOperatingRevFinIndResult.Text = FormatCurrency(Search.CleanMeUp(provider("Net Patient Revenue")))
                 lblTotOperatingRevenueFinInd2.Text = lblTotOperatingRevFinIndResult.Text
                 lblTotOperatingRevResult3.Text = lblTotOperatingRevFinIndResult.Text
                 lblTotOperatingRevResult4.Text = lblTotOperatingRevFinIndResult.Text
                 lblTotOperatingRevResult5.Text = lblTotOperatingRevFinIndResult.Text
                 lblTotOperatingRevResult6.Text = lblTotOperatingRevFinIndResult.Text
 
-                lblInventoryResult.Text = Me.FormatCurrency(Search.CleanMeUp(provider("Inventory")))
+                lblInventoryResult.Text = FormatCurrency(Search.CleanMeUp(provider("Inventory")))
                 lblInventoryResult2.Text = lblInventoryResult.Text
 
-                lblAccountsRecievableResult.Text = Me.FormatCurrency(Search.CleanMeUp(provider("Accounts Receivable")))
+                lblAccountsRecievableResult.Text = FormatCurrency(Search.CleanMeUp(provider("Accounts Receivable")))
                 lblAccountsRecievableResult2.Text = lblAccountsRecievableResult.Text
 
-                lblOtherExpenseResultFindInd.Text = Me.FormatCurrency(Search.CleanMeUp(provider("Total Other Expenses")))
+                lblOtherExpenseResultFindInd.Text = FormatCurrency(Search.CleanMeUp(provider("Total Other Expenses")))
 
-                lblTotLongTermLiabilitiesResult.Text = Me.FormatCurrency(Search.CleanMeUp(provider("Total Long Term Liabilities")))
-                lblLeaseCostResult.Text = Me.FormatCurrency(Search.CleanMeUp(provider("Leasehold Improvements")))
-                lblNotesReceivableRes.Text = Me.FormatCurrency(Search.CleanMeUp(provider("Notes Receivable")))
+                lblTotLongTermLiabilitiesResult.Text = FormatCurrency(Search.CleanMeUp(provider("Total Long Term Liabilities")))
+                lblLeaseCostResult.Text = FormatCurrency(Search.CleanMeUp(provider("Leasehold Improvements")))
+                lblNotesReceivableRes.Text = FormatCurrency(Search.CleanMeUp(provider("Notes Receivable")))
 
-                lblTotLiabilitiesResult.Text = Me.FormatCurrency(Search.CleanMeUp(provider("Total Liabilities")))
+                lblTotLiabilitiesResult.Text = FormatCurrency(Search.CleanMeUp(provider("Total Liabilities")))
                 lblTotLiabilitiesResult2.Text = lblTotLiabilitiesResult.Text
                 lblTotLiabilitiesResult3.Text = lblTotLiabilitiesResult.Text
 
-                lblCashonHandResult.Text = Me.FormatCurrency(provider("Cash on Hand and in Banks"))
+                lblCashonHandResult.Text = FormatCurrency(provider("Cash on Hand and in Banks"))
                 lblCashonHandResult2.Text = lblCashonHandResult.Text
 
-                lblTotCurrentLiabilitiesResult.Text = Me.FormatCurrency(Search.CleanMeUp(provider("Total Current Liabilities")))
+                lblTotCurrentLiabilitiesResult.Text = FormatCurrency(Search.CleanMeUp(provider("Total Current Liabilities")))
                 lblTotCurrentLiabilitesResult2.Text = lblTotCurrentLiabilitiesResult.Text
                 lblTotCurrentLiabilitesResult3.Text = lblTotCurrentLiabilitiesResult.Text
                 lblTotCurrentLiabilities10.Text = lblTotCurrentLiabilitiesResult.Text
 
-                lblTotOperatingExpenseFinIndResult.Text = Me.FormatCurrency(Search.CleanMeUp(provider("Less Total Operating Expense")))
+                lblTotOperatingExpenseFinIndResult.Text = FormatCurrency(Search.CleanMeUp(provider("Less Total Operating Expense")))
                 lblTotOperatingExpenseFinInd2.Text = lblTotOperatingExpenseFinIndResult.Text
                 lblTotOperatingExpenseFinInd3.Text = lblTotOperatingExpenseFinIndResult.Text
                 lblTotOperatingExpenseFinInd4.Text = lblTotOperatingExpenseFinIndResult.Text
                 lblTotOperatingExpenseFinInd5.Text = lblTotOperatingExpenseFinIndResult.Text
 
-                lblNetIncomeResult.Text = Me.FormatCurrency(Search.CleanMeUp(provider("Net Income")))
+                lblNetIncomeResult.Text = FormatCurrency(Search.CleanMeUp(provider("Net Income")))
                 lblNetIncomeFinIndResult.Text = lblNetIncomeResult.Text
                 lblNetIncomeResult2.Text = lblNetIncomeResult.Text
 
@@ -201,18 +197,6 @@ Public Class FinInd
             End If
         End Using
     End Function
-
-
-
-
-
-    '
-
-
-
-
-
-
 
     Private Async Sub FinInd_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         If currentHospital IsNot Nothing Then
@@ -222,37 +206,26 @@ Public Class FinInd
             lblHN.Text = "No hospital context"
         End If
 
-
         ' Create a new BoldGroupBox
         Dim boldGb As New BoldGroupBox With {
             .Text = ".",
-            .Location = New Point(4, 108),    ' Use the same location as GroupBox3
-            .Size = New Size(626, 153),       ' Use the same size as GroupBox3
+            .Location = New Point(4, 108),
+            .Size = New Size(626, 153),
             .BackColor = Color.LightGray
         }
 
-        ' Add the relevant controls to the new BoldGroupBox
-        boldGb.Controls.Add(Label4)   ' "EBITDAR - (Earnings before Interest, Taxes, Depreciation, Amortization, and Rent)"
-        boldGb.Controls.Add(Label5)   ' "Net Income (Before Taxes)"
-        boldGb.Controls.Add(Label6)   ' "Interest Expense"
-        boldGb.Controls.Add(Label7)   ' "Depreciation and Amortization Expense"
-        boldGb.Controls.Add(Label8)   ' "Lease Cost"
+        boldGb.Controls.Add(Label4)
+        boldGb.Controls.Add(Label5)
+        boldGb.Controls.Add(Label6)
+        boldGb.Controls.Add(Label7)
+        boldGb.Controls.Add(Label8)
         boldGb.Controls.Add(lblEbitResult)
         boldGb.Controls.Add(lblNetIncomeFinIndResult)
         boldGb.Controls.Add(lblInterestExpenseFinIndResult)
         boldGb.Controls.Add(lblDepAmortExpenseResult)
         boldGb.Controls.Add(lblLeaseCostResult)
-        ' Add other labels as needed
-
-        ' Add the new BoldGroupBox to the form
         Panel1.Controls.Add(boldGb)
-
-
-        ' Test Financial Summary Grid
-
-
     End Sub
-
 
     Private Sub Button1_Click(sender As Object, e As EventArgs)
         Hide()

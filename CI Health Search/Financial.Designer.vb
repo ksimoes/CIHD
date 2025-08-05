@@ -99,6 +99,8 @@ Partial Class Financial
         lblHN = New Label()
         Label29 = New Label()
         GroupBox2 = New BoldGroupBox()
+        Label83 = New Label()
+        Label30 = New Label()
         GroupBox1.SuspendLayout()
         gbIncomeStatement.SuspendLayout()
         GroupBox3.SuspendLayout()
@@ -871,6 +873,8 @@ Partial Class Financial
         ' 
         Panel1.AutoScroll = True
         Panel1.BackColor = Color.LightGray
+        Panel1.Controls.Add(Label30)
+        Panel1.Controls.Add(Label83)
         Panel1.Controls.Add(lblHN)
         Panel1.Controls.Add(Label29)
         Panel1.Controls.Add(GroupBox2)
@@ -932,6 +936,26 @@ Partial Class Financial
         GroupBox2.TabIndex = 22
         GroupBox2.TabStop = False
         GroupBox2.Text = "."
+        ' 
+        ' Label83
+        ' 
+        Label83.AutoSize = True
+        Label83.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
+        Label83.Location = New Point(668, 1243)
+        Label83.Name = "Label83"
+        Label83.Size = New Size(236, 15)
+        Label83.TabIndex = 295
+        Label83.Text = "FYI >> in parenthesis ( ) means negative -"
+        ' 
+        ' Label30
+        ' 
+        Label30.AutoSize = True
+        Label30.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
+        Label30.Location = New Point(648, 8)
+        Label30.Name = "Label30"
+        Label30.Size = New Size(220, 15)
+        Label30.TabIndex = 296
+        Label30.Text = "FYI in parenthesis ( ) means negative - "
         ' 
         ' Financial
         ' 
@@ -1033,4 +1057,6 @@ Partial Class Financial
     Friend WithEvents GroupBox2 As BoldGroupBox
     Friend WithEvents lblHN As Label
     Friend WithEvents Label29 As Label
+    Friend WithEvents Label30 As Label
+    Friend WithEvents Label83 As Label
 End Class
