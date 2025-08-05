@@ -34,6 +34,22 @@ Public Class Profile
         {"TC", "Transplant Center"},
         {"RFU", "Reserved for Future Use"}
     }
+
+    Private ReadOnly TypeOfControlMap As New Dictionary(Of String, String) From {
+    {"1", "Voluntary Non‐Profit Church"},
+    {"2", "Voluntary Non‐Profit Other"},
+    {"3", "Proprietary Individual"},
+    {"4", "Proprietary Corporation"},
+    {"5", "Proprietary Partnership"},
+    {"6", "Proprietary Other"},
+    {"7", "Governmental Federal"},
+    {"8", "Governmental City-County"},
+    {"9", "Governmental County"},
+    {"10", "Governmental State"},
+    {"11", "Governmental Hospital District"},
+    {"12", "Governmental City"},
+    {"13", "Governmental Other"}
+}
     Private connectionString As String = "Data Source=cihg-sql1.database.windows.net;Initial Catalog=CIHData;User ID=cihgadmin;Password=P!bxbFrHw4-jCvU*;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
     Public strCMSnum As String
 
@@ -296,8 +312,8 @@ Public Class Profile
             lblCmsCertNumProfileResult.Text = foundHosp.CMSNum
             lblCbsaResult.Text = foundHosp.CBSAnum
             lblGeneralMedSurgBedsResult.Text = foundHosp.NumOfBeds.ToString()
-            lblTotalEmployeesResult.Text = foundHosp.NumOfEmployees
-            lblTotalDischargesResult.Text = foundHosp.TotalDischarges.ToString()
+            lblTotalEmployeesResult.Text = If(provider("FTE - Employees on Payroll") IsNot Nothing, provider("FTE - Employees on Payroll").ToString(), "N/A")
+            lblTotalDischargesResult.Text = If(provider("Hospital Total Discharges (V + XVIII + XIX + Unknown) For Adults & Peds") IsNot Nothing, provider("Hospital Total Discharges (V + XVIII + XIX + Unknown) For Adults & Peds").ToString(), "N/A")
             lblCmsUrbRurDesigResult.Text = foundHosp.RuralOUrban
             If lblCmsUrbRurDesigResult.Text = "R" Then
                 lblRuralReferralResult.Text = "Y"
@@ -309,7 +325,14 @@ Public Class Profile
             lblZipCodeResult.Text = foundHosp.Zip
 
             lblTotalPatientRevenueResult.Text = If(provider("Total Patient Revenue") IsNot Nothing, provider("Total Patient Revenue").ToString(), "N/A")
-            lblTypeControlResult.Text = If(provider("Type of Control") IsNot Nothing, provider("Type of Control").ToString(), "N/A")
+            Dim typeOfControlCode As String = If(provider("Type of Control") IsNot Nothing, provider("Type of Control").ToString(), "")
+            If Not String.IsNullOrWhiteSpace(typeOfControlCode) AndAlso TypeOfControlMap.ContainsKey(typeOfControlCode) Then
+                lblTypeControlResult.Text = TypeOfControlMap(typeOfControlCode)
+            ElseIf Not String.IsNullOrWhiteSpace(typeOfControlCode) Then
+                lblTypeControlResult.Text = $"Unknown ({typeOfControlCode})"
+            Else
+                lblTypeControlResult.Text = "N/A"
+            End If
             lblZipCodeResult.Text = If(provider("Zip Code") IsNot Nothing, provider("Zip Code").ToString(), "N/A")
             lblTotalPatientDaysResult.Text = If(provider("Hospital Total Days (V + XVIII + XIX + Unknown) For Adults & Peds ") IsNot Nothing, provider("Hospital Total Days (V + XVIII + XIX + Unknown) For Adults & Peds ").ToString(), "N/A")
         Else
