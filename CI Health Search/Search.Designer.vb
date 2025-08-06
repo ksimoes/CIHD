@@ -109,35 +109,36 @@ Partial Class Search
         lblStateAll = New Label()
         lblZipCodeDemoAll = New Label()
         TabPage1 = New TabPage()
-        Button2 = New Button()
-        TextBox7 = New TextBox()
-        TextBox6 = New TextBox()
-        TextBox5 = New TextBox()
-        TextBox4 = New TextBox()
+        grpDemographicsTab = New GroupBox()
+        lbStateDemo = New ListBox()
+        lblCmsCertNumDemo = New Label()
+        txtAreaCodeDemo = New TextBox()
+        txtCmsCertNumDemo = New TextBox()
+        txtZipCodeDemo = New TextBox()
+        lblNpiDemo = New Label()
+        txtCityDemo = New TextBox()
+        lblTaxDemo = New Label()
+        txtHospitalNameDemo = New TextBox()
+        lblCityDemo = New Label()
         TextBox3 = New TextBox()
-        TextBox2 = New TextBox()
+        lblHospitalNameDemo = New Label()
+        txtNpiDemo = New TextBox()
+        lblStateDemo = New Label()
         lblPhoneAreaCodeDemo = New Label()
         lblZipDemo = New Label()
-        lblStateDemo = New Label()
-        lblHospitalNameDemo = New Label()
-        lblCityDemo = New Label()
-        lblTaxDemo = New Label()
-        lblNpiDemo = New Label()
-        lbStateDemo = New ListBox()
-        TextBox1 = New TextBox()
-        lblCmsCertNumDemo = New Label()
+        Button2 = New Button()
         TabPage2 = New TabPage()
         Button3 = New Button()
-        TextBox17 = New TextBox()
-        TextBox16 = New TextBox()
-        TextBox15 = New TextBox()
-        TextBox14 = New TextBox()
-        TextBox13 = New TextBox()
-        TextBox12 = New TextBox()
-        TextBox11 = New TextBox()
-        TextBox10 = New TextBox()
-        TextBox9 = New TextBox()
-        TextBox8 = New TextBox()
+        txtMaxTotPatRevUtil = New TextBox()
+        txtMaxTotalBedsUtil = New TextBox()
+        txtMaxAnnualDisUtil = New TextBox()
+        txtMaxSpecialBedsUtil = New TextBox()
+        txtMaxRoutineBedsUtil = New TextBox()
+        txtMinTotPatRevUtil = New TextBox()
+        txtMinTotalBedsUtil = New TextBox()
+        txtMinAnnualDisUtil = New TextBox()
+        txtMinSpecialBedsUtil = New TextBox()
+        txtMinRoutineBedsUtil = New TextBox()
         lblMaxRoutine = New Label()
         lblMaxSpecial = New Label()
         lblMaxTotalBeds = New Label()
@@ -196,6 +197,7 @@ Partial Class Search
         GroupBox3.SuspendLayout()
         GroupBox1.SuspendLayout()
         TabPage1.SuspendLayout()
+        grpDemographicsTab.SuspendLayout()
         TabPage2.SuspendLayout()
         TabPage3.SuspendLayout()
         TabPage4.SuspendLayout()
@@ -1066,29 +1068,178 @@ Partial Class Search
         ' TabPage1
         ' 
         TabPage1.BackColor = Color.DeepSkyBlue
+        TabPage1.Controls.Add(grpDemographicsTab)
         TabPage1.Controls.Add(Button2)
-        TabPage1.Controls.Add(TextBox7)
-        TabPage1.Controls.Add(TextBox6)
-        TabPage1.Controls.Add(TextBox5)
-        TabPage1.Controls.Add(TextBox4)
-        TabPage1.Controls.Add(TextBox3)
-        TabPage1.Controls.Add(TextBox2)
-        TabPage1.Controls.Add(lblPhoneAreaCodeDemo)
-        TabPage1.Controls.Add(lblZipDemo)
-        TabPage1.Controls.Add(lblStateDemo)
-        TabPage1.Controls.Add(lblHospitalNameDemo)
-        TabPage1.Controls.Add(lblCityDemo)
-        TabPage1.Controls.Add(lblTaxDemo)
-        TabPage1.Controls.Add(lblNpiDemo)
-        TabPage1.Controls.Add(lbStateDemo)
-        TabPage1.Controls.Add(TextBox1)
-        TabPage1.Controls.Add(lblCmsCertNumDemo)
         TabPage1.Location = New Point(4, 24)
         TabPage1.Name = "TabPage1"
         TabPage1.Padding = New Padding(3)
         TabPage1.Size = New Size(1560, 681)
         TabPage1.TabIndex = 0
         TabPage1.Text = "Demographics"
+        ' 
+        ' grpDemographicsTab
+        ' 
+        grpDemographicsTab.Controls.Add(lbStateDemo)
+        grpDemographicsTab.Controls.Add(lblCmsCertNumDemo)
+        grpDemographicsTab.Controls.Add(txtAreaCodeDemo)
+        grpDemographicsTab.Controls.Add(txtCmsCertNumDemo)
+        grpDemographicsTab.Controls.Add(txtZipCodeDemo)
+        grpDemographicsTab.Controls.Add(lblNpiDemo)
+        grpDemographicsTab.Controls.Add(txtCityDemo)
+        grpDemographicsTab.Controls.Add(lblTaxDemo)
+        grpDemographicsTab.Controls.Add(txtHospitalNameDemo)
+        grpDemographicsTab.Controls.Add(lblCityDemo)
+        grpDemographicsTab.Controls.Add(TextBox3)
+        grpDemographicsTab.Controls.Add(lblHospitalNameDemo)
+        grpDemographicsTab.Controls.Add(txtNpiDemo)
+        grpDemographicsTab.Controls.Add(lblStateDemo)
+        grpDemographicsTab.Controls.Add(lblPhoneAreaCodeDemo)
+        grpDemographicsTab.Controls.Add(lblZipDemo)
+        grpDemographicsTab.Location = New Point(5, -14)
+        grpDemographicsTab.Name = "grpDemographicsTab"
+        grpDemographicsTab.Size = New Size(988, 699)
+        grpDemographicsTab.TabIndex = 96
+        grpDemographicsTab.TabStop = False
+        grpDemographicsTab.Text = "."
+        ' 
+        ' lbStateDemo
+        ' 
+        lbStateDemo.FormattingEnabled = True
+        lbStateDemo.ItemHeight = 15
+        lbStateDemo.Items.AddRange(New Object() {"Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Lousiana", "Maine", "Maryland", "Massachussetts", "Michigan", "Minnesota", "Mississippi ", "Missouri", "Montana", "Nerbraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "TN", "TX", "Utah", "Vermont", "Virginia", "Washington", "West Virginia ", "Wisconsin", "Wyoming"})
+        lbStateDemo.Location = New Point(223, 285)
+        lbStateDemo.Name = "lbStateDemo"
+        lbStateDemo.Size = New Size(100, 94)
+        lbStateDemo.TabIndex = 2
+        ' 
+        ' lblCmsCertNumDemo
+        ' 
+        lblCmsCertNumDemo.AutoSize = True
+        lblCmsCertNumDemo.Font = New Font("Times New Roman", 14.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        lblCmsCertNumDemo.Location = New Point(6, 19)
+        lblCmsCertNumDemo.Name = "lblCmsCertNumDemo"
+        lblCmsCertNumDemo.Size = New Size(211, 21)
+        lblCmsCertNumDemo.TabIndex = 0
+        lblCmsCertNumDemo.Text = "CMS Certification Number"
+        ' 
+        ' txtAreaCodeDemo
+        ' 
+        txtAreaCodeDemo.Location = New Point(223, 537)
+        txtAreaCodeDemo.Name = "txtAreaCodeDemo"
+        txtAreaCodeDemo.Size = New Size(100, 23)
+        txtAreaCodeDemo.TabIndex = 15
+        ' 
+        ' txtCmsCertNumDemo
+        ' 
+        txtCmsCertNumDemo.Location = New Point(223, 20)
+        txtCmsCertNumDemo.Name = "txtCmsCertNumDemo"
+        txtCmsCertNumDemo.Size = New Size(100, 23)
+        txtCmsCertNumDemo.TabIndex = 1
+        ' 
+        ' txtZipCodeDemo
+        ' 
+        txtZipCodeDemo.Location = New Point(223, 429)
+        txtZipCodeDemo.Name = "txtZipCodeDemo"
+        txtZipCodeDemo.Size = New Size(100, 23)
+        txtZipCodeDemo.TabIndex = 14
+        ' 
+        ' lblNpiDemo
+        ' 
+        lblNpiDemo.AutoSize = True
+        lblNpiDemo.Font = New Font("Times New Roman", 14.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        lblNpiDemo.Location = New Point(9, 66)
+        lblNpiDemo.Name = "lblNpiDemo"
+        lblNpiDemo.Size = New Size(40, 21)
+        lblNpiDemo.TabIndex = 3
+        lblNpiDemo.Text = "NPI"
+        ' 
+        ' txtCityDemo
+        ' 
+        txtCityDemo.Location = New Point(223, 223)
+        txtCityDemo.Name = "txtCityDemo"
+        txtCityDemo.Size = New Size(100, 23)
+        txtCityDemo.TabIndex = 13
+        ' 
+        ' lblTaxDemo
+        ' 
+        lblTaxDemo.AutoSize = True
+        lblTaxDemo.Font = New Font("Times New Roman", 14.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        lblTaxDemo.Location = New Point(9, 117)
+        lblTaxDemo.Name = "lblTaxDemo"
+        lblTaxDemo.Size = New Size(97, 21)
+        lblTaxDemo.TabIndex = 4
+        lblTaxDemo.Text = "Tax ID/EIN"
+        ' 
+        ' txtHospitalNameDemo
+        ' 
+        txtHospitalNameDemo.Location = New Point(223, 166)
+        txtHospitalNameDemo.Name = "txtHospitalNameDemo"
+        txtHospitalNameDemo.Size = New Size(100, 23)
+        txtHospitalNameDemo.TabIndex = 12
+        ' 
+        ' lblCityDemo
+        ' 
+        lblCityDemo.AutoSize = True
+        lblCityDemo.Font = New Font("Times New Roman", 14.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        lblCityDemo.Location = New Point(9, 223)
+        lblCityDemo.Name = "lblCityDemo"
+        lblCityDemo.Size = New Size(41, 21)
+        lblCityDemo.TabIndex = 5
+        lblCityDemo.Text = "City"
+        ' 
+        ' TextBox3
+        ' 
+        TextBox3.Location = New Point(223, 117)
+        TextBox3.Name = "TextBox3"
+        TextBox3.Size = New Size(100, 23)
+        TextBox3.TabIndex = 11
+        ' 
+        ' lblHospitalNameDemo
+        ' 
+        lblHospitalNameDemo.AutoSize = True
+        lblHospitalNameDemo.Font = New Font("Times New Roman", 14.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        lblHospitalNameDemo.Location = New Point(9, 166)
+        lblHospitalNameDemo.Name = "lblHospitalNameDemo"
+        lblHospitalNameDemo.Size = New Size(120, 21)
+        lblHospitalNameDemo.TabIndex = 6
+        lblHospitalNameDemo.Text = "Hospital Name"
+        ' 
+        ' txtNpiDemo
+        ' 
+        txtNpiDemo.Location = New Point(223, 67)
+        txtNpiDemo.Name = "txtNpiDemo"
+        txtNpiDemo.Size = New Size(100, 23)
+        txtNpiDemo.TabIndex = 10
+        ' 
+        ' lblStateDemo
+        ' 
+        lblStateDemo.AutoSize = True
+        lblStateDemo.Font = New Font("Times New Roman", 14.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        lblStateDemo.Location = New Point(9, 285)
+        lblStateDemo.Name = "lblStateDemo"
+        lblStateDemo.Size = New Size(47, 21)
+        lblStateDemo.TabIndex = 7
+        lblStateDemo.Text = "State"
+        ' 
+        ' lblPhoneAreaCodeDemo
+        ' 
+        lblPhoneAreaCodeDemo.AutoSize = True
+        lblPhoneAreaCodeDemo.Font = New Font("Times New Roman", 14.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        lblPhoneAreaCodeDemo.Location = New Point(6, 539)
+        lblPhoneAreaCodeDemo.Name = "lblPhoneAreaCodeDemo"
+        lblPhoneAreaCodeDemo.Size = New Size(172, 21)
+        lblPhoneAreaCodeDemo.TabIndex = 9
+        lblPhoneAreaCodeDemo.Text = "Telephone Area Code"
+        ' 
+        ' lblZipDemo
+        ' 
+        lblZipDemo.AutoSize = True
+        lblZipDemo.Font = New Font("Times New Roman", 14.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        lblZipDemo.Location = New Point(6, 428)
+        lblZipDemo.Name = "lblZipDemo"
+        lblZipDemo.Size = New Size(83, 21)
+        lblZipDemo.TabIndex = 8
+        lblZipDemo.Text = "ZIP Code"
         ' 
         ' Button2
         ' 
@@ -1099,159 +1250,20 @@ Partial Class Search
         Button2.Text = "Search!"
         Button2.UseVisualStyleBackColor = True
         ' 
-        ' TextBox7
-        ' 
-        TextBox7.Location = New Point(223, 539)
-        TextBox7.Name = "TextBox7"
-        TextBox7.Size = New Size(100, 23)
-        TextBox7.TabIndex = 15
-        ' 
-        ' TextBox6
-        ' 
-        TextBox6.Location = New Point(223, 431)
-        TextBox6.Name = "TextBox6"
-        TextBox6.Size = New Size(100, 23)
-        TextBox6.TabIndex = 14
-        ' 
-        ' TextBox5
-        ' 
-        TextBox5.Location = New Point(223, 225)
-        TextBox5.Name = "TextBox5"
-        TextBox5.Size = New Size(100, 23)
-        TextBox5.TabIndex = 13
-        ' 
-        ' TextBox4
-        ' 
-        TextBox4.Location = New Point(223, 168)
-        TextBox4.Name = "TextBox4"
-        TextBox4.Size = New Size(100, 23)
-        TextBox4.TabIndex = 12
-        ' 
-        ' TextBox3
-        ' 
-        TextBox3.Location = New Point(223, 119)
-        TextBox3.Name = "TextBox3"
-        TextBox3.Size = New Size(100, 23)
-        TextBox3.TabIndex = 11
-        ' 
-        ' TextBox2
-        ' 
-        TextBox2.Location = New Point(223, 69)
-        TextBox2.Name = "TextBox2"
-        TextBox2.Size = New Size(100, 23)
-        TextBox2.TabIndex = 10
-        ' 
-        ' lblPhoneAreaCodeDemo
-        ' 
-        lblPhoneAreaCodeDemo.AutoSize = True
-        lblPhoneAreaCodeDemo.Font = New Font("Times New Roman", 14.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        lblPhoneAreaCodeDemo.Location = New Point(6, 541)
-        lblPhoneAreaCodeDemo.Name = "lblPhoneAreaCodeDemo"
-        lblPhoneAreaCodeDemo.Size = New Size(172, 21)
-        lblPhoneAreaCodeDemo.TabIndex = 9
-        lblPhoneAreaCodeDemo.Text = "Telephone Area Code"
-        ' 
-        ' lblZipDemo
-        ' 
-        lblZipDemo.AutoSize = True
-        lblZipDemo.Font = New Font("Times New Roman", 14.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        lblZipDemo.Location = New Point(6, 430)
-        lblZipDemo.Name = "lblZipDemo"
-        lblZipDemo.Size = New Size(83, 21)
-        lblZipDemo.TabIndex = 8
-        lblZipDemo.Text = "ZIP Code"
-        ' 
-        ' lblStateDemo
-        ' 
-        lblStateDemo.AutoSize = True
-        lblStateDemo.Font = New Font("Times New Roman", 14.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        lblStateDemo.Location = New Point(9, 287)
-        lblStateDemo.Name = "lblStateDemo"
-        lblStateDemo.Size = New Size(47, 21)
-        lblStateDemo.TabIndex = 7
-        lblStateDemo.Text = "State"
-        ' 
-        ' lblHospitalNameDemo
-        ' 
-        lblHospitalNameDemo.AutoSize = True
-        lblHospitalNameDemo.Font = New Font("Times New Roman", 14.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        lblHospitalNameDemo.Location = New Point(9, 168)
-        lblHospitalNameDemo.Name = "lblHospitalNameDemo"
-        lblHospitalNameDemo.Size = New Size(120, 21)
-        lblHospitalNameDemo.TabIndex = 6
-        lblHospitalNameDemo.Text = "Hospital Name"
-        ' 
-        ' lblCityDemo
-        ' 
-        lblCityDemo.AutoSize = True
-        lblCityDemo.Font = New Font("Times New Roman", 14.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        lblCityDemo.Location = New Point(9, 225)
-        lblCityDemo.Name = "lblCityDemo"
-        lblCityDemo.Size = New Size(41, 21)
-        lblCityDemo.TabIndex = 5
-        lblCityDemo.Text = "City"
-        ' 
-        ' lblTaxDemo
-        ' 
-        lblTaxDemo.AutoSize = True
-        lblTaxDemo.Font = New Font("Times New Roman", 14.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        lblTaxDemo.Location = New Point(9, 119)
-        lblTaxDemo.Name = "lblTaxDemo"
-        lblTaxDemo.Size = New Size(97, 21)
-        lblTaxDemo.TabIndex = 4
-        lblTaxDemo.Text = "Tax ID/EIN"
-        ' 
-        ' lblNpiDemo
-        ' 
-        lblNpiDemo.AutoSize = True
-        lblNpiDemo.Font = New Font("Times New Roman", 14.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        lblNpiDemo.Location = New Point(9, 68)
-        lblNpiDemo.Name = "lblNpiDemo"
-        lblNpiDemo.Size = New Size(40, 21)
-        lblNpiDemo.TabIndex = 3
-        lblNpiDemo.Text = "NPI"
-        ' 
-        ' lbStateDemo
-        ' 
-        lbStateDemo.FormattingEnabled = True
-        lbStateDemo.ItemHeight = 15
-        lbStateDemo.Items.AddRange(New Object() {"Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Lousiana", "Maine", "Maryland", "Massachussetts", "Michigan", "Minnesota", "Mississippi ", "Missouri", "Montana", "Nerbraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "TN", "TX", "Utah", "Vermont", "Virginia", "Washington", "West Virginia ", "Wisconsin", "Wyoming"})
-        lbStateDemo.Location = New Point(223, 287)
-        lbStateDemo.Name = "lbStateDemo"
-        lbStateDemo.Size = New Size(100, 94)
-        lbStateDemo.TabIndex = 2
-        ' 
-        ' TextBox1
-        ' 
-        TextBox1.Location = New Point(223, 22)
-        TextBox1.Name = "TextBox1"
-        TextBox1.Size = New Size(100, 23)
-        TextBox1.TabIndex = 1
-        ' 
-        ' lblCmsCertNumDemo
-        ' 
-        lblCmsCertNumDemo.AutoSize = True
-        lblCmsCertNumDemo.Font = New Font("Times New Roman", 14.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        lblCmsCertNumDemo.Location = New Point(6, 21)
-        lblCmsCertNumDemo.Name = "lblCmsCertNumDemo"
-        lblCmsCertNumDemo.Size = New Size(211, 21)
-        lblCmsCertNumDemo.TabIndex = 0
-        lblCmsCertNumDemo.Text = "CMS Certification Number"
-        ' 
         ' TabPage2
         ' 
         TabPage2.BackColor = Color.Red
         TabPage2.Controls.Add(Button3)
-        TabPage2.Controls.Add(TextBox17)
-        TabPage2.Controls.Add(TextBox16)
-        TabPage2.Controls.Add(TextBox15)
-        TabPage2.Controls.Add(TextBox14)
-        TabPage2.Controls.Add(TextBox13)
-        TabPage2.Controls.Add(TextBox12)
-        TabPage2.Controls.Add(TextBox11)
-        TabPage2.Controls.Add(TextBox10)
-        TabPage2.Controls.Add(TextBox9)
-        TabPage2.Controls.Add(TextBox8)
+        TabPage2.Controls.Add(txtMaxTotPatRevUtil)
+        TabPage2.Controls.Add(txtMaxTotalBedsUtil)
+        TabPage2.Controls.Add(txtMaxAnnualDisUtil)
+        TabPage2.Controls.Add(txtMaxSpecialBedsUtil)
+        TabPage2.Controls.Add(txtMaxRoutineBedsUtil)
+        TabPage2.Controls.Add(txtMinTotPatRevUtil)
+        TabPage2.Controls.Add(txtMinTotalBedsUtil)
+        TabPage2.Controls.Add(txtMinAnnualDisUtil)
+        TabPage2.Controls.Add(txtMinSpecialBedsUtil)
+        TabPage2.Controls.Add(txtMinRoutineBedsUtil)
         TabPage2.Controls.Add(lblMaxRoutine)
         TabPage2.Controls.Add(lblMaxSpecial)
         TabPage2.Controls.Add(lblMaxTotalBeds)
@@ -1283,75 +1295,75 @@ Partial Class Search
         Button3.Text = "Search!"
         Button3.UseVisualStyleBackColor = True
         ' 
-        ' TextBox17
+        ' txtMaxTotPatRevUtil
         ' 
-        TextBox17.Location = New Point(496, 225)
-        TextBox17.Name = "TextBox17"
-        TextBox17.Size = New Size(100, 23)
-        TextBox17.TabIndex = 25
+        txtMaxTotPatRevUtil.Location = New Point(496, 225)
+        txtMaxTotPatRevUtil.Name = "txtMaxTotPatRevUtil"
+        txtMaxTotPatRevUtil.Size = New Size(100, 23)
+        txtMaxTotPatRevUtil.TabIndex = 25
         ' 
-        ' TextBox16
+        ' txtMaxTotalBedsUtil
         ' 
-        TextBox16.Location = New Point(496, 174)
-        TextBox16.Name = "TextBox16"
-        TextBox16.Size = New Size(100, 23)
-        TextBox16.TabIndex = 24
+        txtMaxTotalBedsUtil.Location = New Point(496, 126)
+        txtMaxTotalBedsUtil.Name = "txtMaxTotalBedsUtil"
+        txtMaxTotalBedsUtil.Size = New Size(100, 23)
+        txtMaxTotalBedsUtil.TabIndex = 24
         ' 
-        ' TextBox15
+        ' txtMaxAnnualDisUtil
         ' 
-        TextBox15.Location = New Point(496, 129)
-        TextBox15.Name = "TextBox15"
-        TextBox15.Size = New Size(100, 23)
-        TextBox15.TabIndex = 23
+        txtMaxAnnualDisUtil.Location = New Point(496, 174)
+        txtMaxAnnualDisUtil.Name = "txtMaxAnnualDisUtil"
+        txtMaxAnnualDisUtil.Size = New Size(100, 23)
+        txtMaxAnnualDisUtil.TabIndex = 23
         ' 
-        ' TextBox14
+        ' txtMaxSpecialBedsUtil
         ' 
-        TextBox14.Location = New Point(496, 77)
-        TextBox14.Name = "TextBox14"
-        TextBox14.Size = New Size(100, 23)
-        TextBox14.TabIndex = 22
+        txtMaxSpecialBedsUtil.Location = New Point(496, 77)
+        txtMaxSpecialBedsUtil.Name = "txtMaxSpecialBedsUtil"
+        txtMaxSpecialBedsUtil.Size = New Size(100, 23)
+        txtMaxSpecialBedsUtil.TabIndex = 22
         ' 
-        ' TextBox13
+        ' txtMaxRoutineBedsUtil
         ' 
-        TextBox13.Location = New Point(496, 28)
-        TextBox13.Name = "TextBox13"
-        TextBox13.Size = New Size(100, 23)
-        TextBox13.TabIndex = 21
+        txtMaxRoutineBedsUtil.Location = New Point(496, 28)
+        txtMaxRoutineBedsUtil.Name = "txtMaxRoutineBedsUtil"
+        txtMaxRoutineBedsUtil.Size = New Size(100, 23)
+        txtMaxRoutineBedsUtil.TabIndex = 21
         ' 
-        ' TextBox12
+        ' txtMinTotPatRevUtil
         ' 
-        TextBox12.Location = New Point(295, 225)
-        TextBox12.Name = "TextBox12"
-        TextBox12.Size = New Size(100, 23)
-        TextBox12.TabIndex = 20
+        txtMinTotPatRevUtil.Location = New Point(295, 225)
+        txtMinTotPatRevUtil.Name = "txtMinTotPatRevUtil"
+        txtMinTotPatRevUtil.Size = New Size(100, 23)
+        txtMinTotPatRevUtil.TabIndex = 20
         ' 
-        ' TextBox11
+        ' txtMinTotalBedsUtil
         ' 
-        TextBox11.Location = New Point(295, 172)
-        TextBox11.Name = "TextBox11"
-        TextBox11.Size = New Size(100, 23)
-        TextBox11.TabIndex = 19
+        txtMinTotalBedsUtil.Location = New Point(295, 129)
+        txtMinTotalBedsUtil.Name = "txtMinTotalBedsUtil"
+        txtMinTotalBedsUtil.Size = New Size(100, 23)
+        txtMinTotalBedsUtil.TabIndex = 19
         ' 
-        ' TextBox10
+        ' txtMinAnnualDisUtil
         ' 
-        TextBox10.Location = New Point(295, 126)
-        TextBox10.Name = "TextBox10"
-        TextBox10.Size = New Size(100, 23)
-        TextBox10.TabIndex = 18
+        txtMinAnnualDisUtil.Location = New Point(295, 175)
+        txtMinAnnualDisUtil.Name = "txtMinAnnualDisUtil"
+        txtMinAnnualDisUtil.Size = New Size(100, 23)
+        txtMinAnnualDisUtil.TabIndex = 18
         ' 
-        ' TextBox9
+        ' txtMinSpecialBedsUtil
         ' 
-        TextBox9.Location = New Point(295, 74)
-        TextBox9.Name = "TextBox9"
-        TextBox9.Size = New Size(100, 23)
-        TextBox9.TabIndex = 17
+        txtMinSpecialBedsUtil.Location = New Point(295, 74)
+        txtMinSpecialBedsUtil.Name = "txtMinSpecialBedsUtil"
+        txtMinSpecialBedsUtil.Size = New Size(100, 23)
+        txtMinSpecialBedsUtil.TabIndex = 17
         ' 
-        ' TextBox8
+        ' txtMinRoutineBedsUtil
         ' 
-        TextBox8.Location = New Point(295, 28)
-        TextBox8.Name = "TextBox8"
-        TextBox8.Size = New Size(100, 23)
-        TextBox8.TabIndex = 16
+        txtMinRoutineBedsUtil.Location = New Point(295, 28)
+        txtMinRoutineBedsUtil.Name = "txtMinRoutineBedsUtil"
+        txtMinRoutineBedsUtil.Size = New Size(100, 23)
+        txtMinRoutineBedsUtil.TabIndex = 16
         ' 
         ' lblMaxRoutine
         ' 
@@ -1869,7 +1881,7 @@ Partial Class Search
         ' 
         ' Search
         ' 
-        AutoScaleDimensions = New SizeF(7F, 15F)
+        AutoScaleDimensions = New SizeF(7.0F, 15.0F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(1558, 709)
         Controls.Add(TabControl1)
@@ -1889,7 +1901,8 @@ Partial Class Search
         GroupBox1.ResumeLayout(False)
         GroupBox1.PerformLayout()
         TabPage1.ResumeLayout(False)
-        TabPage1.PerformLayout()
+        grpDemographicsTab.ResumeLayout(False)
+        grpDemographicsTab.PerformLayout()
         TabPage2.ResumeLayout(False)
         TabPage2.PerformLayout()
         TabPage3.ResumeLayout(False)
@@ -1905,15 +1918,15 @@ Partial Class Search
     Friend WithEvents TabPage3 As TabPage
     Friend WithEvents TabPage4 As TabPage
     Friend WithEvents ListBox1 As ListBox
-    Friend WithEvents TextBox1 As TextBox
+    Friend WithEvents txtCmsCertNumDemo As TextBox
     Friend WithEvents lblCmsCertNumDemo As Label
     Friend WithEvents lbStateDemo As ListBox
-    Friend WithEvents TextBox7 As TextBox
-    Friend WithEvents TextBox6 As TextBox
-    Friend WithEvents TextBox5 As TextBox
-    Friend WithEvents TextBox4 As TextBox
+    Friend WithEvents txtAreaCodeDemo As TextBox
+    Friend WithEvents txtZipCodeDemo As TextBox
+    Friend WithEvents txtCityDemo As TextBox
+    Friend WithEvents txtHospitalNameDemo As TextBox
     Friend WithEvents TextBox3 As TextBox
-    Friend WithEvents TextBox2 As TextBox
+    Friend WithEvents txtNpiDemo As TextBox
     Friend WithEvents lblPhoneAreaCodeDemo As Label
     Friend WithEvents lblZipDemo As Label
     Friend WithEvents lblStateDemo As Label
@@ -1926,16 +1939,15 @@ Partial Class Search
     Friend WithEvents lblTotalBeds As Label
     Friend WithEvents lblSpecial As Label
     Friend WithEvents lblRoutine As Label
-    Friend WithEvents TextBox17 As TextBox
-    Friend WithEvents TextBox16 As TextBox
-    Friend WithEvents TextBox15 As TextBox
-    Friend WithEvents TextBox14 As TextBox
-    Friend WithEvents TextBox13 As TextBox
-    Friend WithEvents TextBox12 As TextBox
-    Friend WithEvents TextBox11 As TextBox
-    Friend WithEvents TextBox10 As TextBox
-    Friend WithEvents TextBox9 As TextBox
-    Friend WithEvents TextBox8 As TextBox
+    Friend WithEvents txtMaxTotPatRevUtil As TextBox
+    Friend WithEvents txtMaxTotalBedsUtil As TextBox
+    Friend WithEvents txtMaxAnnualDisUtil As TextBox
+    Friend WithEvents txtMaxSpecialBedsUtil As TextBox
+    Friend WithEvents txtMaxRoutineBedsUtil As TextBox
+    Friend WithEvents txtMinTotPatRevUtil As TextBox
+    Friend WithEvents txtMinTotalBedsUtil As TextBox
+    Friend WithEvents txtMinAnnualDisUtil As TextBox
+    Friend WithEvents txtMinRoutineBedsUtil As TextBox
     Friend WithEvents lblMaxRoutine As Label
     Friend WithEvents lblMaxSpecial As Label
     Friend WithEvents lblMaxTotalBeds As Label
@@ -2067,4 +2079,6 @@ Partial Class Search
     Friend WithEvents tbCode As TextBox
     Friend WithEvents Label1 As Label
     Friend WithEvents btnSearchHCPCSCode As Button
+    Friend WithEvents grpDemographicsTab As GroupBox
+    Friend WithEvents txtMinSpecialBedsUtil As TextBox
 End Class
