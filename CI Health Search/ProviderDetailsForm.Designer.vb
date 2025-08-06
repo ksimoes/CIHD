@@ -17,8 +17,13 @@ Partial Class ProviderDetailsForm
 
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ProviderDetailsForm))
         dgvDetails = New DataGridView()
+        lblHCPCSDescription = New Label()
+        linkMoreInfo = New LinkLabel()
+        picLoad = New PictureBox()
         CType(dgvDetails, ComponentModel.ISupportInitialize).BeginInit()
+        CType(picLoad, ComponentModel.ISupportInitialize).BeginInit()
         SuspendLayout()
         ' 
         ' dgvDetails
@@ -29,49 +34,58 @@ Partial Class ProviderDetailsForm
         dgvDetails.Size = New Size(716, 322)
         dgvDetails.TabIndex = 0
         ' 
+        ' lblHCPCSDescription
+        ' 
+        lblHCPCSDescription.AutoSize = True
+        lblHCPCSDescription.Font = New Font("Segoe UI", 9.75F, FontStyle.Italic)
+        lblHCPCSDescription.ForeColor = Color.DimGray
+        lblHCPCSDescription.Location = New Point(20, 60)
+        lblHCPCSDescription.Name = "lblHCPCSDescription"
+        lblHCPCSDescription.Size = New Size(0, 17)
+        lblHCPCSDescription.TabIndex = 100
+        lblHCPCSDescription.Visible = False
+        ' 
+        ' linkMoreInfo
+        ' 
+        linkMoreInfo.AutoSize = True
+        linkMoreInfo.Font = New Font("Segoe UI", 9.75F)
+        linkMoreInfo.Location = New Point(20, 80)
+        linkMoreInfo.Name = "linkMoreInfo"
+        linkMoreInfo.Size = New Size(121, 17)
+        linkMoreInfo.TabIndex = 101
+        linkMoreInfo.TabStop = True
+        linkMoreInfo.Text = "More about HCPCS"
+        linkMoreInfo.Visible = False
+        ' 
+        ' picLoad
+        ' 
+        picLoad.Image = CType(resources.GetObject("picLoad.Image"), Image)
+        picLoad.Location = New Point(285, 154)
+        picLoad.Name = "picLoad"
+        picLoad.Size = New Size(198, 197)
+        picLoad.TabIndex = 102
+        picLoad.TabStop = False
+        picLoad.Visible = False
+        ' 
         ' ProviderDetailsForm
         ' 
         AutoScaleDimensions = New SizeF(7.0F, 15.0F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(1088, 633)
+        Controls.Add(picLoad)
         Controls.Add(dgvDetails)
+        Controls.Add(lblHCPCSDescription)
+        Controls.Add(linkMoreInfo)
         Name = "ProviderDetailsForm"
         Text = "ProviderDetailsForm"
         CType(dgvDetails, ComponentModel.ISupportInitialize).EndInit()
+        CType(picLoad, ComponentModel.ISupportInitialize).EndInit()
         ResumeLayout(False)
-        ' ...
-
-        ' 
-        ' lblHCPCSDescription
-        '
-        Me.lblHCPCSDescription = New System.Windows.Forms.Label()
-        Me.lblHCPCSDescription.AutoSize = True
-        Me.lblHCPCSDescription.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Italic)
-        Me.lblHCPCSDescription.Location = New System.Drawing.Point(20, 60) ' Adjust as needed
-        Me.lblHCPCSDescription.Name = "lblHCPCSDescription"
-        Me.lblHCPCSDescription.Size = New System.Drawing.Size(0, 17)
-        Me.lblHCPCSDescription.TabIndex = 100
-        Me.lblHCPCSDescription.Visible = False
-        Me.lblHCPCSDescription.ForeColor = System.Drawing.Color.DimGray
-        Me.Controls.Add(Me.lblHCPCSDescription)
-
-        '
-        ' linkMoreInfo
-        '
-        Me.linkMoreInfo = New System.Windows.Forms.LinkLabel()
-        Me.linkMoreInfo.AutoSize = True
-        Me.linkMoreInfo.Font = New System.Drawing.Font("Segoe UI", 9.75!)
-        Me.linkMoreInfo.Location = New System.Drawing.Point(20, 80) ' Adjust as needed
-        Me.linkMoreInfo.Name = "linkMoreInfo"
-        Me.linkMoreInfo.Size = New System.Drawing.Size(120, 17)
-        Me.linkMoreInfo.TabIndex = 101
-        Me.linkMoreInfo.TabStop = True
-        Me.linkMoreInfo.Text = "More about HCPCS"
-        Me.linkMoreInfo.Visible = False
-        Me.Controls.Add(Me.linkMoreInfo)
+        PerformLayout()
     End Sub
 
     Friend WithEvents dgvDetails As DataGridView
     Friend WithEvents lblHCPCSDescription As System.Windows.Forms.Label
     Friend WithEvents linkMoreInfo As System.Windows.Forms.LinkLabel
+    Friend WithEvents picLoad As PictureBox
 End Class

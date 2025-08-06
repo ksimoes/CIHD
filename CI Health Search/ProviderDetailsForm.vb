@@ -13,13 +13,19 @@ Public Class ProviderDetailsForm
     Private WithEvents btnResearchPayment As New Button With {.Text = "Research Payment", .Width = 110, .Height = 28}
     Private buttonPanel As New FlowLayoutPanel()
 
+    Private picLoading As New PictureBox With {
+    .Size = New Size(48, 48),
+    .SizeMode = PictureBoxSizeMode.CenterImage,
+    .Visible = False,
+    .BackColor = Color.Transparent}
+
     Private currentNpi As String
     Private lblLoading As New Label With {.Text = "Loading...", .Dock = DockStyle.Top, .ForeColor = Color.Red, .Font = New Font("Segoe UI", 12, FontStyle.Bold), .Visible = False}
 
     ' Description constants
     Private Const Level1Desc As String = "HCPCS Code Level 1 - Physician and other qualified healthcare professional services, codes for procedures like surgeries, office visits, and diagnostic tests."
     Private Const Level2Desc As String = "HCPCS Code Level 2 - Non-physician services, supplies, and durable medical equipment, codes for procedures like surgeries, office visits, and diagnostic tests."
-    Private Const PrescriberDrugsDesc As String = "This table shows drugs prescribed by the provider, including brand and generic names, total claims, and drug costs."
+    Private Const PrescriberDrugsDesc As String = "(Part D)This table shows drugs prescribed by the provider, including brand and generic names, total claims, and drug costs."
     Private Const ProviderProfileDesc As String = "This table displays the provider's NPI profile, including name, credentials, taxonomy, and status."
     Private Const AssociatedHospitalsDesc As String = "This table lists hospitals and facilities where the provider is affiliated, including facility type and location."
     Private Const GeneralPaymentDesc As String = "This table shows general payments made to the provider, such as consulting fees, honoraria, and gifts."
@@ -34,6 +40,7 @@ Public Class ProviderDetailsForm
     ' Main constructor
     Public Sub New(npi As String)
         InitializeComponent()
+
         AddHandler dgvDetails.CellContentClick, AddressOf dgvDetails_CellContentClick
         Me.Text = $"Provider Details for NPI: {npi}"
         Me.Size = New Size(1000, 600)
@@ -66,6 +73,8 @@ Public Class ProviderDetailsForm
         AddHandler btnResearchPayment.Click, AddressOf btnResearchPayment_Click
 
         btnPrescriberDrugs.PerformClick()
+
+
     End Sub
 
     Private Async Sub btnPrescriberDrugs_Click(sender As Object, e As EventArgs)
