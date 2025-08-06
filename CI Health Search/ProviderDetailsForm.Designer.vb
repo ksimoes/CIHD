@@ -59,7 +59,7 @@ Partial Class ProviderDetailsForm
         ' 
         ' picLoad
         ' 
-        picLoad.BackColor = Color.Transparent
+        picLoad.BackColor = SystemColors.ControlDark
         picLoad.Image = CType(resources.GetObject("picLoad.Image"), Image)
         picLoad.Location = New Point(285, 154)
         picLoad.Name = "picLoad"

@@ -22,6 +22,7 @@ Partial Class Inpatient
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Inpatient))
         btnOutpatientInpatient = New Button()
         btnQualityInpatient = New Button()
         btnFinIndInpatient = New Button()
@@ -29,8 +30,10 @@ Partial Class Inpatient
         btnDepartmentsInpatient = New Button()
         btnProfileInpatient = New Button()
         gbKeyAttending = New GroupBox()
+        picLoad1 = New PictureBox()
         dgvCeo = New DataGridView()
         gbPatientOrigin = New GroupBox()
+        picLoad2 = New PictureBox()
         dgvPatientOrigin = New DataGridView()
         gbTrendReport = New GroupBox()
         Label16 = New Label()
@@ -40,12 +43,16 @@ Partial Class Inpatient
         Button1 = New Button()
         dgvNewApiTable = New DataGridView()
         lblHN = New Label()
+        picLoad3 = New PictureBox()
         gbKeyAttending.SuspendLayout()
+        CType(picLoad1, ComponentModel.ISupportInitialize).BeginInit()
         CType(dgvCeo, ComponentModel.ISupportInitialize).BeginInit()
         gbPatientOrigin.SuspendLayout()
+        CType(picLoad2, ComponentModel.ISupportInitialize).BeginInit()
         CType(dgvPatientOrigin, ComponentModel.ISupportInitialize).BeginInit()
         gbTrendReport.SuspendLayout()
         CType(dgvNewApiTable, ComponentModel.ISupportInitialize).BeginInit()
+        CType(picLoad3, ComponentModel.ISupportInitialize).BeginInit()
         SuspendLayout()
         ' 
         ' btnOutpatientInpatient
@@ -104,6 +111,7 @@ Partial Class Inpatient
         ' 
         ' gbKeyAttending
         ' 
+        gbKeyAttending.Controls.Add(picLoad1)
         gbKeyAttending.Controls.Add(dgvCeo)
         gbKeyAttending.Location = New Point(12, 12)
         gbKeyAttending.Name = "gbKeyAttending"
@@ -111,6 +119,18 @@ Partial Class Inpatient
         gbKeyAttending.TabIndex = 21
         gbKeyAttending.TabStop = False
         gbKeyAttending.Text = "Key Attending Providers"
+        ' 
+        ' picLoad1
+        ' 
+        picLoad1.BackColor = SystemColors.ControlDark
+        picLoad1.Image = CType(resources.GetObject("picLoad1.Image"), Image)
+        picLoad1.Location = New Point(168, 22)
+        picLoad1.Name = "picLoad1"
+        picLoad1.Size = New Size(200, 118)
+        picLoad1.SizeMode = PictureBoxSizeMode.CenterImage
+        picLoad1.TabIndex = 103
+        picLoad1.TabStop = False
+        picLoad1.Visible = False
         ' 
         ' dgvCeo
         ' 
@@ -122,6 +142,7 @@ Partial Class Inpatient
         ' 
         ' gbPatientOrigin
         ' 
+        gbPatientOrigin.Controls.Add(picLoad2)
         gbPatientOrigin.Controls.Add(dgvPatientOrigin)
         gbPatientOrigin.Location = New Point(12, 164)
         gbPatientOrigin.Name = "gbPatientOrigin"
@@ -129,6 +150,17 @@ Partial Class Inpatient
         gbPatientOrigin.TabIndex = 22
         gbPatientOrigin.TabStop = False
         gbPatientOrigin.Text = "Patient Origin"
+        ' 
+        ' picLoad2
+        ' 
+        picLoad2.BackColor = SystemColors.ControlDark
+        picLoad2.Image = CType(resources.GetObject("picLoad2.Image"), Image)
+        picLoad2.Location = New Point(357, 22)
+        picLoad2.Name = "picLoad2"
+        picLoad2.Size = New Size(198, 204)
+        picLoad2.TabIndex = 103
+        picLoad2.TabStop = False
+        picLoad2.Visible = False
         ' 
         ' dgvPatientOrigin
         ' 
@@ -217,11 +249,23 @@ Partial Class Inpatient
         lblHN.TabIndex = 26
         lblHN.Text = "Label1"
         ' 
+        ' picLoad3
+        ' 
+        picLoad3.BackColor = SystemColors.ControlDark
+        picLoad3.Image = CType(resources.GetObject("picLoad3.Image"), Image)
+        picLoad3.Location = New Point(276, 654)
+        picLoad3.Name = "picLoad3"
+        picLoad3.Size = New Size(198, 197)
+        picLoad3.TabIndex = 103
+        picLoad3.TabStop = False
+        picLoad3.Visible = False
+        ' 
         ' Inpatient
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(1537, 1061)
+        Controls.Add(picLoad3)
         Controls.Add(lblHN)
         Controls.Add(dgvNewApiTable)
         Controls.Add(Button1)
@@ -238,12 +282,15 @@ Partial Class Inpatient
         StartPosition = FormStartPosition.CenterScreen
         Text = "Inpatient"
         gbKeyAttending.ResumeLayout(False)
+        CType(picLoad1, ComponentModel.ISupportInitialize).EndInit()
         CType(dgvCeo, ComponentModel.ISupportInitialize).EndInit()
         gbPatientOrigin.ResumeLayout(False)
+        CType(picLoad2, ComponentModel.ISupportInitialize).EndInit()
         CType(dgvPatientOrigin, ComponentModel.ISupportInitialize).EndInit()
         gbTrendReport.ResumeLayout(False)
         gbTrendReport.PerformLayout()
         CType(dgvNewApiTable, ComponentModel.ISupportInitialize).EndInit()
+        CType(picLoad3, ComponentModel.ISupportInitialize).EndInit()
         ResumeLayout(False)
         PerformLayout()
     End Sub
@@ -266,4 +313,7 @@ Partial Class Inpatient
     Friend WithEvents dgvCeo As DataGridView
     Friend WithEvents dgvNewApiTable As DataGridView
     Friend WithEvents lblHN As Label
+    Friend WithEvents picLoad1 As PictureBox
+    Friend WithEvents picLoad2 As PictureBox
+    Friend WithEvents picLoad3 As PictureBox
 End Class
