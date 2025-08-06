@@ -59,6 +59,7 @@ Partial Class ProviderDetailsForm
         ' 
         ' picLoad
         ' 
+        picLoad.BackColor = Color.Transparent
         picLoad.Image = CType(resources.GetObject("picLoad.Image"), Image)
         picLoad.Location = New Point(285, 154)
         picLoad.Name = "picLoad"
@@ -69,7 +70,7 @@ Partial Class ProviderDetailsForm
         ' 
         ' ProviderDetailsForm
         ' 
-        AutoScaleDimensions = New SizeF(7.0F, 15.0F)
+        AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(1088, 633)
         Controls.Add(picLoad)

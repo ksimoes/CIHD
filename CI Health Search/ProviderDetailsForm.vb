@@ -13,14 +13,11 @@ Public Class ProviderDetailsForm
     Private WithEvents btnResearchPayment As New Button With {.Text = "Research Payment", .Width = 110, .Height = 28}
     Private buttonPanel As New FlowLayoutPanel()
 
-    Private picLoading As New PictureBox With {
-    .Size = New Size(48, 48),
-    .SizeMode = PictureBoxSizeMode.CenterImage,
-    .Visible = False,
-    .BackColor = Color.Transparent}
+    ' Use your existing PictureBox for loading indication
+    ' Make sure you have a PictureBox named picLoading on your form (in the Designer)
+    ' and that it is placed over dgvDetails and set to Visible = False by default.
 
     Private currentNpi As String
-    Private lblLoading As New Label With {.Text = "Loading...", .Dock = DockStyle.Top, .ForeColor = Color.Red, .Font = New Font("Segoe UI", 12, FontStyle.Bold), .Visible = False}
 
     ' Description constants
     Private Const Level1Desc As String = "HCPCS Code Level 1 - Physician and other qualified healthcare professional services, codes for procedures like surgeries, office visits, and diagnostic tests."
@@ -60,9 +57,6 @@ Public Class ProviderDetailsForm
         buttonPanel.Controls.Add(btnResearchPayment)
         Me.Controls.Add(buttonPanel)
 
-        Me.Controls.Add(lblLoading)
-        lblLoading.BringToFront()
-
         AddHandler btnProviderProfile.Click, AddressOf btnProviderProfile_Click
         AddHandler btnPrescriberDrugs.Click, AddressOf btnPrescriberDrugs_Click
         AddHandler btnHCPCSLevel1.Click, AddressOf btnHCPCSLevel1_Click
@@ -73,8 +67,6 @@ Public Class ProviderDetailsForm
         AddHandler btnResearchPayment.Click, AddressOf btnResearchPayment_Click
 
         btnPrescriberDrugs.PerformClick()
-
-
     End Sub
 
     Private Async Sub btnPrescriberDrugs_Click(sender As Object, e As EventArgs)
@@ -109,7 +101,238 @@ Public Class ProviderDetailsForm
         lblHCPCSDescription.Text = AssociatedHospitalsDesc
         lblHCPCSDescription.Visible = True
         linkMoreInfo.Visible = False
-        lblLoading.Visible = True
+        Await LoadAssociatedHospitalsTable()
+    End Sub
+
+    Private Async Sub btnGeneralPayment_Click(sender As Object, e As EventArgs)
+        lblHCPCSDescription.Text = GeneralPaymentDesc
+        lblHCPCSDescription.Visible = True
+        linkMoreInfo.Visible = False
+        Await LoadGeneralPaymentTable()
+    End Sub
+
+    Private Async Sub btnOwnershipData_Click(sender As Object, e As EventArgs)
+        lblHCPCSDescription.Text = OwnershipDataDesc
+        lblHCPCSDescription.Visible = True
+        linkMoreInfo.Visible = False
+        Await LoadOwnershipDataTable()
+    End Sub
+
+    Private Async Sub btnResearchPayment_Click(sender As Object, e As EventArgs)
+        lblHCPCSDescription.Text = ResearchPaymentDesc
+        lblHCPCSDescription.Visible = True
+        linkMoreInfo.Visible = False
+        Await LoadResearchPaymentTable()
+    End Sub
+
+    Private Sub ClearGrid()
+        dgvDetails.DataSource = Nothing
+        dgvDetails.Columns.Clear()
+        dgvDetails.Rows.Clear()
+        dgvDetails.Refresh()
+    End Sub
+
+    Private Sub ApplyCustomColors()
+        With dgvDetails
+            .AlternatingRowsDefaultCellStyle.BackColor = Color.LightYellow
+            .DefaultCellStyle.BackColor = Color.White
+            .ColumnHeadersDefaultCellStyle.BackColor = Color.DarkSlateBlue
+            .ColumnHeadersDefaultCellStyle.ForeColor = Color.White
+            .DefaultCellStyle.SelectionBackColor = Color.LightSkyBlue
+            .DefaultCellStyle.SelectionForeColor = Color.Black
+            .EnableHeadersVisualStyles = False
+        End With
+    End Sub
+
+    Private Sub linkMoreInfo_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles linkMoreInfo.LinkClicked
+        Try
+            Dim psi As New ProcessStartInfo With {
+                .FileName = "https://www.cms.gov/medicare/coding-billing/healthcare-common-procedure-system/alpha-numeric",
+                .UseShellExecute = True
+            }
+            Process.Start(psi)
+        Catch ex As Exception
+            MessageBox.Show("Unable to open link: " & ex.Message)
+        End Try
+    End Sub
+
+    ' --- Table Loaders with picLoading spinner ---
+
+    Private Async Function LoadPrescriberDrugsTable() As Task
+        picLoad.Visible = True
+        Try
+            ClearGrid()
+            Dim dt As New DataTable()
+            Dim apiUrl As String = $"https://data.cms.gov/data-api/v1/dataset/9552739e-3d05-4c1b-8eff-ecabf391e2e5/data?filter[Prscrbr_NPI]={Uri.EscapeDataString(currentNpi)}&size=100"
+            Using client As New HttpClient()
+                Dim response = Await client.GetAsync(apiUrl)
+                If response.IsSuccessStatusCode Then
+                    Dim json = Await response.Content.ReadAsStringAsync()
+                    Dim data = JArray.Parse(json)
+                    If data.Count > 0 Then
+                        Dim firstObj As JObject = CType(data(0), JObject)
+                        For Each col In firstObj.Properties()
+                            If dt.Columns.Contains(col.Name) = False Then
+                                dt.Columns.Add(col.Name)
+                            End If
+                        Next
+                        For Each item In data
+                            Dim obj As JObject = CType(item, JObject)
+                            Dim npiVal As String = obj("Prscrbr_NPI")?.ToString()
+                            If npiVal = currentNpi Then
+                                Dim row = dt.NewRow()
+                                For Each col In dt.Columns
+                                    row(col.ToString()) = obj(col.ToString())
+                                Next
+                                dt.Rows.Add(row)
+                            End If
+                        Next
+                    End If
+                End If
+            End Using
+
+            If dt.Columns.Count = 0 Then
+                dt.Columns.Add("Prscrbr_NPI")
+                dt.Columns.Add("Brnd_Name")
+                dt.Columns.Add("Gnrc_Name")
+            End If
+
+            dgvDetails.DataSource = dt
+            SetFriendlyColumnHeaders()
+            ApplyCustomColors()
+            dgvDetails.Refresh()
+        Catch ex As Exception
+            MessageBox.Show("Error loading Prescriber Drugs: " & ex.Message)
+        Finally
+            picLoad.Visible = False
+        End Try
+    End Function
+
+    Private Async Function LoadProviderProfileTable() As Task
+        picLoad.Visible = True
+        Try
+            ClearGrid()
+            Dim apiUrl As String = $"https://npiregistry.cms.hhs.gov/api/?number={Uri.EscapeDataString(currentNpi)}&version=2.1"
+            Dim dt As New DataTable()
+            Using client As New HttpClient()
+                Dim response = Await client.GetAsync(apiUrl)
+                If response.IsSuccessStatusCode Then
+                    Dim json = Await response.Content.ReadAsStringAsync()
+                    Dim obj = JObject.Parse(json)
+                    If obj("results") IsNot Nothing AndAlso obj("results").HasValues Then
+                        Dim result = obj("results")(0)
+                        dt.Columns.Add("NPI")
+                        dt.Columns.Add("Enumeration Type")
+                        dt.Columns.Add("First Name")
+                        dt.Columns.Add("Last Name")
+                        dt.Columns.Add("Credential")
+                        dt.Columns.Add("Gender")
+                        dt.Columns.Add("Enumeration Date")
+                        dt.Columns.Add("Last Updated")
+                        dt.Columns.Add("Status")
+                        dt.Columns.Add("Primary Taxonomy")
+                        dt.Columns.Add("Primary Taxonomy Desc")
+                        dt.Columns.Add("Primary Taxonomy State")
+                        dt.Columns.Add("Primary Taxonomy License")
+
+                        Dim row = dt.NewRow()
+                        row("NPI") = result("number")?.ToString()
+                        row("Enumeration Type") = result("enumeration_type")?.ToString()
+                        row("First Name") = result("basic")?("first_name")?.ToString()
+                        row("Last Name") = result("basic")?("last_name")?.ToString()
+                        row("Credential") = result("basic")?("credential")?.ToString()
+                        row("Gender") = result("basic")?("gender")?.ToString()
+                        row("Enumeration Date") = result("basic")?("enumeration_date")?.ToString()
+                        row("Last Updated") = result("basic")?("last_updated")?.ToString()
+                        row("Status") = result("basic")?("status")?.ToString()
+
+                        Dim primaryTaxonomy = result("taxonomies")?.FirstOrDefault(Function(t) t("primary")?.ToString().ToLower() = "true")
+                        If primaryTaxonomy Is Nothing AndAlso result("taxonomies") IsNot Nothing AndAlso result("taxonomies").HasValues Then
+                            primaryTaxonomy = result("taxonomies")(0)
+                        End If
+                        row("Primary Taxonomy") = primaryTaxonomy?("code")?.ToString()
+                        row("Primary Taxonomy Desc") = primaryTaxonomy?("desc")?.ToString()
+                        row("Primary Taxonomy State") = primaryTaxonomy?("state")?.ToString()
+                        row("Primary Taxonomy License") = primaryTaxonomy?("license")?.ToString()
+
+                        dt.Rows.Add(row)
+                    Else
+                        dt.Columns.Add("NPI")
+                        dt.Columns.Add("Status")
+                        Dim row = dt.NewRow()
+                        row("NPI") = currentNpi
+                        row("Status") = "Not found"
+                        dt.Rows.Add(row)
+                    End If
+                End If
+            End Using
+            dgvDetails.DataSource = dt
+            ApplyCustomColors()
+            dgvDetails.Refresh()
+        Catch ex As Exception
+            MessageBox.Show("Error loading Provider Profile: " & ex.Message)
+        Finally
+            picLoad.Visible = False
+        End Try
+    End Function
+
+    Private Async Function LoadHCPCSTable(level As Integer) As Task
+        picLoad.Visible = True
+        Try
+            ClearGrid()
+            Dim apiUrl As String = $"https://data.cms.gov/data-api/v1/dataset/92396110-2aed-4d63-a6a2-5d6207d46a29/data?filter[Rndrng_NPI]={Uri.EscapeDataString(currentNpi)}&size=1000"
+            Dim dt As New DataTable()
+            Using client As New HttpClient()
+                Dim response = Await client.GetAsync(apiUrl)
+                If response.IsSuccessStatusCode Then
+                    Dim json = Await response.Content.ReadAsStringAsync()
+                    Dim data = JArray.Parse(json)
+                    If data.Count > 0 Then
+                        Dim firstObj As JObject = CType(data(0), JObject)
+                        For Each col In firstObj.Properties()
+                            If dt.Columns.Contains(col.Name) = False Then
+                                dt.Columns.Add(col.Name)
+                            End If
+                        Next
+                        For Each item In data
+                            Dim obj As JObject = CType(item, JObject)
+                            Dim hcpcsCode As String = obj("HCPCS_Cd")?.ToString()
+                            If Not String.IsNullOrWhiteSpace(hcpcsCode) Then
+                                If level = 1 AndAlso hcpcsCode.Length = 5 AndAlso hcpcsCode.All(AddressOf Char.IsDigit) Then
+                                    Dim row = dt.NewRow()
+                                    For Each col In dt.Columns
+                                        row(col.ToString()) = obj(col.ToString())
+                                    Next
+                                    dt.Rows.Add(row)
+                                ElseIf level = 2 AndAlso hcpcsCode.Length = 5 AndAlso Char.IsLetter(hcpcsCode(0)) AndAlso hcpcsCode.Substring(1).All(AddressOf Char.IsDigit) Then
+                                    Dim row = dt.NewRow()
+                                    For Each col In dt.Columns
+                                        row(col.ToString()) = obj(col.ToString())
+                                    Next
+                                    dt.Rows.Add(row)
+                                End If
+                            End If
+                        Next
+                    Else
+                        dt.Columns.Add("Rndrng_NPI")
+                        dt.Columns.Add("HCPCS_Cd")
+                        dt.Columns.Add("HCPCS_Desc")
+                    End If
+                End If
+            End Using
+            dgvDetails.DataSource = dt
+            SetHCPCSColumnHeaders()
+            ApplyCustomColors()
+            dgvDetails.Refresh()
+        Catch ex As Exception
+            MessageBox.Show("Error loading HCPCS table: " & ex.Message)
+        Finally
+            picLoad.Visible = False
+        End Try
+    End Function
+
+    Private Async Function LoadAssociatedHospitalsTable() As Task
+        picLoad.Visible = True
         Try
             ClearGrid()
             Dim dt As New DataTable()
@@ -204,265 +427,35 @@ Public Class ProviderDetailsForm
         Catch ex As Exception
             MessageBox.Show("Error loading associated hospitals: " & ex.Message)
         Finally
-            lblLoading.Visible = False
-        End Try
-    End Sub
-
-    Private Async Sub btnGeneralPayment_Click(sender As Object, e As EventArgs)
-        lblHCPCSDescription.Text = GeneralPaymentDesc
-        lblHCPCSDescription.Visible = True
-        linkMoreInfo.Visible = False
-        Await LoadGeneralPaymentTable()
-    End Sub
-
-    Private Async Sub btnOwnershipData_Click(sender As Object, e As EventArgs)
-        lblHCPCSDescription.Text = OwnershipDataDesc
-        lblHCPCSDescription.Visible = True
-        linkMoreInfo.Visible = False
-        Await LoadOwnershipDataTable()
-    End Sub
-
-    Private Async Sub btnResearchPayment_Click(sender As Object, e As EventArgs)
-        lblHCPCSDescription.Text = ResearchPaymentDesc
-        lblHCPCSDescription.Visible = True
-        linkMoreInfo.Visible = False
-        Await LoadResearchPaymentTable()
-    End Sub
-
-    Private Sub ClearGrid()
-        dgvDetails.DataSource = Nothing
-        dgvDetails.Columns.Clear()
-        dgvDetails.Rows.Clear()
-        dgvDetails.Refresh()
-    End Sub
-
-    Private Sub ApplyCustomColors()
-        With dgvDetails
-            .AlternatingRowsDefaultCellStyle.BackColor = Color.LightYellow   ' Alternating rows
-            .DefaultCellStyle.BackColor = Color.White                        ' Main rows
-            .ColumnHeadersDefaultCellStyle.BackColor = Color.DarkSlateBlue   ' Header background
-            .ColumnHeadersDefaultCellStyle.ForeColor = Color.White           ' Header text
-            .DefaultCellStyle.SelectionBackColor = Color.LightSkyBlue        ' Selected row
-            .DefaultCellStyle.SelectionForeColor = Color.Black
-            .EnableHeadersVisualStyles = False
-        End With
-    End Sub
-
-    Private Sub linkMoreInfo_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles linkMoreInfo.LinkClicked
-        Try
-            Dim psi As New ProcessStartInfo With {
-            .FileName = "https://www.cms.gov/medicare/coding-billing/healthcare-common-procedure-system/alpha-numeric",
-            .UseShellExecute = True
-        }
-            Process.Start(psi)
-        Catch ex As Exception
-            MessageBox.Show("Unable to open link: " & ex.Message)
-        End Try
-    End Sub
-
-    Private Async Function LoadPrescriberDrugsTable() As Task
-        lblLoading.Visible = True
-        Try
-            ClearGrid()
-            Dim dt As New DataTable()
-            Dim apiUrl As String = $"https://data.cms.gov/data-api/v1/dataset/9552739e-3d05-4c1b-8eff-ecabf391e2e5/data?filter[Prscrbr_NPI]={Uri.EscapeDataString(currentNpi)}&size=100"
-            Using client As New HttpClient()
-                Dim response = Await client.GetAsync(apiUrl)
-                If response.IsSuccessStatusCode Then
-                    Dim json = Await response.Content.ReadAsStringAsync()
-                    Dim data = JArray.Parse(json)
-                    If data.Count > 0 Then
-                        Dim firstObj As JObject = CType(data(0), JObject)
-                        For Each col In firstObj.Properties()
-                            If dt.Columns.Contains(col.Name) = False Then
-                                dt.Columns.Add(col.Name)
-                            End If
-                        Next
-                        For Each item In data
-                            Dim obj As JObject = CType(item, JObject)
-                            Dim npiVal As String = obj("Prscrbr_NPI")?.ToString()
-                            If npiVal = currentNpi Then
-                                Dim row = dt.NewRow()
-                                For Each col In dt.Columns
-                                    row(col.ToString()) = obj(col.ToString())
-                                Next
-                                dt.Rows.Add(row)
-                            End If
-                        Next
-                    End If
-                End If
-            End Using
-
-            If dt.Columns.Count = 0 Then
-                dt.Columns.Add("Prscrbr_NPI")
-                dt.Columns.Add("Brnd_Name")
-                dt.Columns.Add("Gnrc_Name")
-            End If
-
-            dgvDetails.DataSource = dt
-            SetFriendlyColumnHeaders()
-            ApplyCustomColors()
-            dgvDetails.Refresh()
-        Catch ex As Exception
-            MessageBox.Show("Error loading Prescriber Drugs: " & ex.Message)
-        Finally
-            lblLoading.Visible = False
+            picLoad.Visible = False
         End Try
     End Function
-
-    Private Async Function LoadProviderProfileTable() As Task
-        lblLoading.Visible = True
-        Try
-            ClearGrid()
-            Dim apiUrl As String = $"https://npiregistry.cms.hhs.gov/api/?number={Uri.EscapeDataString(currentNpi)}&version=2.1"
-            Dim dt As New DataTable()
-            Using client As New HttpClient()
-                Dim response = Await client.GetAsync(apiUrl)
-                If response.IsSuccessStatusCode Then
-                    Dim json = Await response.Content.ReadAsStringAsync()
-                    Dim obj = JObject.Parse(json)
-                    If obj("results") IsNot Nothing AndAlso obj("results").HasValues Then
-                        Dim result = obj("results")(0)
-                        dt.Columns.Add("NPI")
-                        dt.Columns.Add("Enumeration Type")
-                        dt.Columns.Add("First Name")
-                        dt.Columns.Add("Last Name")
-                        dt.Columns.Add("Credential")
-                        dt.Columns.Add("Gender")
-                        dt.Columns.Add("Enumeration Date")
-                        dt.Columns.Add("Last Updated")
-                        dt.Columns.Add("Status")
-                        dt.Columns.Add("Primary Taxonomy")
-                        dt.Columns.Add("Primary Taxonomy Desc")
-                        dt.Columns.Add("Primary Taxonomy State")
-                        dt.Columns.Add("Primary Taxonomy License")
-
-                        Dim row = dt.NewRow()
-                        row("NPI") = result("number")?.ToString()
-                        row("Enumeration Type") = result("enumeration_type")?.ToString()
-                        row("First Name") = result("basic")?("first_name")?.ToString()
-                        row("Last Name") = result("basic")?("last_name")?.ToString()
-                        row("Credential") = result("basic")?("credential")?.ToString()
-                        row("Gender") = result("basic")?("gender")?.ToString()
-                        row("Enumeration Date") = result("basic")?("enumeration_date")?.ToString()
-                        row("Last Updated") = result("basic")?("last_updated")?.ToString()
-                        row("Status") = result("basic")?("status")?.ToString()
-
-                        Dim primaryTaxonomy = result("taxonomies")?.FirstOrDefault(Function(t) t("primary")?.ToString().ToLower() = "true")
-                        If primaryTaxonomy Is Nothing AndAlso result("taxonomies") IsNot Nothing AndAlso result("taxonomies").HasValues Then
-                            primaryTaxonomy = result("taxonomies")(0)
-                        End If
-                        row("Primary Taxonomy") = primaryTaxonomy?("code")?.ToString()
-                        row("Primary Taxonomy Desc") = primaryTaxonomy?("desc")?.ToString()
-                        row("Primary Taxonomy State") = primaryTaxonomy?("state")?.ToString()
-                        row("Primary Taxonomy License") = primaryTaxonomy?("license")?.ToString()
-
-                        dt.Rows.Add(row)
-                    Else
-                        dt.Columns.Add("NPI")
-                        dt.Columns.Add("Status")
-                        Dim row = dt.NewRow()
-                        row("NPI") = currentNpi
-                        row("Status") = "Not found"
-                        dt.Rows.Add(row)
-                    End If
-                End If
-            End Using
-            dgvDetails.DataSource = dt
-            ApplyCustomColors()
-            dgvDetails.Refresh()
-        Catch ex As Exception
-            MessageBox.Show("Error loading Provider Profile: " & ex.Message)
-        Finally
-            lblLoading.Visible = False
-        End Try
-    End Function
-
-    Private Async Function LoadHCPCSTable(level As Integer) As Task
-        lblLoading.Visible = True
-        Try
-            ClearGrid()
-            Dim apiUrl As String = $"https://data.cms.gov/data-api/v1/dataset/92396110-2aed-4d63-a6a2-5d6207d46a29/data?filter[Rndrng_NPI]={Uri.EscapeDataString(currentNpi)}&size=1000"
-            Dim dt As New DataTable()
-            Using client As New HttpClient()
-                Dim response = Await client.GetAsync(apiUrl)
-                If response.IsSuccessStatusCode Then
-                    Dim json = Await response.Content.ReadAsStringAsync()
-                    Dim data = JArray.Parse(json)
-                    If data.Count > 0 Then
-                        Dim firstObj As JObject = CType(data(0), JObject)
-                        For Each col In firstObj.Properties()
-                            If dt.Columns.Contains(col.Name) = False Then
-                                dt.Columns.Add(col.Name)
-                            End If
-                        Next
-                        For Each item In data
-                            Dim obj As JObject = CType(item, JObject)
-                            Dim hcpcsCode As String = obj("HCPCS_Cd")?.ToString()
-                            If Not String.IsNullOrWhiteSpace(hcpcsCode) Then
-                                If level = 1 AndAlso hcpcsCode.Length = 5 AndAlso hcpcsCode.All(AddressOf Char.IsDigit) Then
-                                    Dim row = dt.NewRow()
-                                    For Each col In dt.Columns
-                                        row(col.ToString()) = obj(col.ToString())
-                                    Next
-                                    dt.Rows.Add(row)
-                                ElseIf level = 2 AndAlso hcpcsCode.Length = 5 AndAlso Char.IsLetter(hcpcsCode(0)) AndAlso hcpcsCode.Substring(1).All(AddressOf Char.IsDigit) Then
-                                    Dim row = dt.NewRow()
-                                    For Each col In dt.Columns
-                                        row(col.ToString()) = obj(col.ToString())
-                                    Next
-                                    dt.Rows.Add(row)
-                                End If
-                            End If
-                        Next
-                    Else
-                        dt.Columns.Add("Rndrng_NPI")
-                        dt.Columns.Add("HCPCS_Cd")
-                        dt.Columns.Add("HCPCS_Desc")
-                    End If
-                End If
-            End Using
-            dgvDetails.DataSource = dt
-            SetHCPCSColumnHeaders()
-            ApplyCustomColors()
-            dgvDetails.Refresh()
-        Catch ex As Exception
-            MessageBox.Show("Error loading HCPCS table: " & ex.Message)
-        Finally
-            lblLoading.Visible = False
-        End Try
-    End Function
-
-
-
-    ' --- NEW: General Payment, Ownership Data, Research Payment Table Loaders ---
 
     Private Async Function LoadGeneralPaymentTable() As Task
-        lblLoading.Visible = True
+        picLoad.Visible = True
         Try
             ClearGrid()
             Dim dt As New DataTable()
             Dim apiUrl As String = "https://openpaymentsdata.cms.gov/api/1/datastore/query/e6b17c6a-2534-4207-a4a1-6746a14911ff/0"
 
-            ' Build the request body using JObject/JArray
             Dim conditions As New JArray(
-            New JObject(
-                New JProperty("resource", "t"),
-                New JProperty("property", "record_number"),
-                New JProperty("value", 1),
-                New JProperty("operator", ">")
-            ),
-            New JObject(
-                New JProperty("resource", "t"),
-                New JProperty("property", "Covered_Recipient_NPI"),
-                New JProperty("value", currentNpi),
-                New JProperty("operator", "=")
+                New JObject(
+                    New JProperty("resource", "t"),
+                    New JProperty("property", "record_number"),
+                    New JProperty("value", 1),
+                    New JProperty("operator", ">")
+                ),
+                New JObject(
+                    New JProperty("resource", "t"),
+                    New JProperty("property", "Covered_Recipient_NPI"),
+                    New JProperty("value", currentNpi),
+                    New JProperty("operator", "=")
+                )
             )
-        )
             Dim postBody As New JObject(
-            New JProperty("conditions", conditions),
-            New JProperty("limit", 3)
-        )
+                New JProperty("conditions", conditions),
+                New JProperty("limit", 3)
+            )
 
             Using client As New HttpClient()
                 Dim content = New StringContent(postBody.ToString(), System.Text.Encoding.UTF8, "application/json")
@@ -472,13 +465,11 @@ Public Class ProviderDetailsForm
                     Dim obj = JObject.Parse(json)
                     If obj("results") IsNot Nothing AndAlso obj("results").HasValues Then
                         Dim data = obj("results")
-                        ' Dynamically add columns based on the first result
                         For Each col In data(0).ToObject(Of JObject)().Properties()
                             If Not dt.Columns.Contains(col.Name) Then
                                 dt.Columns.Add(col.Name)
                             End If
                         Next
-                        ' Add rows
                         For Each item In data
                             Dim row = dt.NewRow()
                             For Each col In dt.Columns
@@ -502,36 +493,35 @@ Public Class ProviderDetailsForm
         Catch ex As Exception
             MessageBox.Show("Error loading General Payment: " & ex.Message)
         Finally
-            lblLoading.Visible = False
+            picLoad.Visible = False
         End Try
     End Function
 
     Private Async Function LoadOwnershipDataTable() As Task
-        lblLoading.Visible = True
+        picLoad.Visible = True
         Try
             ClearGrid()
             Dim dt As New DataTable()
             Dim apiUrl As String = "https://openpaymentsdata.cms.gov/api/1/datastore/query/9ac4f7f8-b6e4-4d80-8410-4aba7e71dd02/0"
 
-            ' Use the correct NPI property: Physician_NPI
             Dim conditions As New JArray(
-            New JObject(
-                New JProperty("resource", "t"),
-                New JProperty("property", "record_number"),
-                New JProperty("value", 1),
-                New JProperty("operator", ">")
-            ),
-            New JObject(
-                New JProperty("resource", "t"),
-                New JProperty("property", "physician_NPI"),
-                New JProperty("value", currentNpi),
-                New JProperty("operator", "=")
+                New JObject(
+                    New JProperty("resource", "t"),
+                    New JProperty("property", "record_number"),
+                    New JProperty("value", 1),
+                    New JProperty("operator", ">")
+                ),
+                New JObject(
+                    New JProperty("resource", "t"),
+                    New JProperty("property", "physician_NPI"),
+                    New JProperty("value", currentNpi),
+                    New JProperty("operator", "=")
+                )
             )
-        )
             Dim postBody As New JObject(
-            New JProperty("conditions", conditions),
-            New JProperty("limit", 3)
-        )
+                New JProperty("conditions", conditions),
+                New JProperty("limit", 3)
+            )
 
             Using client As New HttpClient()
                 Dim content = New StringContent(postBody.ToString(), System.Text.Encoding.UTF8, "application/json")
@@ -569,36 +559,35 @@ Public Class ProviderDetailsForm
         Catch ex As Exception
             MessageBox.Show("Error loading Ownership Data: " & ex.Message)
         Finally
-            lblLoading.Visible = False
+            picLoad.Visible = False
         End Try
     End Function
 
     Private Async Function LoadResearchPaymentTable() As Task
-        lblLoading.Visible = True
+        picLoad.Visible = True
         Try
             ClearGrid()
             Dim dt As New DataTable()
             Dim apiUrl As String = "https://openpaymentsdata.cms.gov/api/1/datastore/query/2f15cb85-8887-4dcc-a318-1f8ec1d815b3/0"
 
-            ' Build the request body using JObject/JArray
             Dim conditions As New JArray(
-            New JObject(
-                New JProperty("resource", "t"),
-                New JProperty("property", "record_number"),
-                New JProperty("value", 1),
-                New JProperty("operator", ">")
-            ),
-            New JObject(
-                New JProperty("resource", "t"),
-                New JProperty("property", "Covered_Recipient_NPI"),
-                New JProperty("value", currentNpi),
-                New JProperty("operator", "=")
+                New JObject(
+                    New JProperty("resource", "t"),
+                    New JProperty("property", "record_number"),
+                    New JProperty("value", 1),
+                    New JProperty("operator", ">")
+                ),
+                New JObject(
+                    New JProperty("resource", "t"),
+                    New JProperty("property", "Covered_Recipient_NPI"),
+                    New JProperty("value", currentNpi),
+                    New JProperty("operator", "=")
+                )
             )
-        )
             Dim postBody As New JObject(
-            New JProperty("conditions", conditions),
-            New JProperty("limit", 3)
-        )
+                New JProperty("conditions", conditions),
+                New JProperty("limit", 3)
+            )
 
             Using client As New HttpClient()
                 Dim content = New StringContent(postBody.ToString(), System.Text.Encoding.UTF8, "application/json")
@@ -608,13 +597,11 @@ Public Class ProviderDetailsForm
                     Dim obj = JObject.Parse(json)
                     If obj("results") IsNot Nothing AndAlso obj("results").HasValues Then
                         Dim data = obj("results")
-                        ' Dynamically add columns based on the first result
                         For Each col In data(0).ToObject(Of JObject)().Properties()
                             If Not dt.Columns.Contains(col.Name) Then
                                 dt.Columns.Add(col.Name)
                             End If
                         Next
-                        ' Add rows
                         For Each item In data
                             Dim row = dt.NewRow()
                             For Each col In dt.Columns
@@ -638,11 +625,11 @@ Public Class ProviderDetailsForm
         Catch ex As Exception
             MessageBox.Show("Error loading Research Payment: " & ex.Message)
         Finally
-            lblLoading.Visible = False
+            picLoad.Visible = False
         End Try
     End Function
 
-    ' --- END NEW TABLE LOADERS ---
+    ' --- END Table Loaders ---
 
     ' Handle CCN link click
     Private Async Sub dgvDetails_CellContentClick(sender As Object, e As DataGridViewCellEventArgs)
@@ -755,6 +742,10 @@ Public Class ProviderDetailsForm
     End Sub
 
     Private Sub ProviderDetailsForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-
+        ' Optionally center picLoading over dgvDetails
+        If Me.Controls.Contains(picLoad) AndAlso Me.Controls.Contains(dgvDetails) Then
+            picLoad.Left = dgvDetails.Left + (dgvDetails.Width - picLoad.Width) \ 2
+            picLoad.Top = dgvDetails.Top + (dgvDetails.Height - picLoad.Height) \ 2
+        End If
     End Sub
 End Class
