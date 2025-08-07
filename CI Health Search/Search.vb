@@ -260,22 +260,36 @@ Public Class Search
     End Function
 
     Private Async Sub btnSearchHCPCSCode_Click(sender As Object, e As EventArgs) Handles btnSearchHCPCSCode.Click
-        Dim code As String = tbCode.Text.Trim().ToUpper()
-        If String.IsNullOrWhiteSpace(code) Then
-            MessageBox.Show("Please enter an HCPCS code to search.")
+        Dim codeInput As String = tbCode.Text.Trim().ToUpper()
+        If String.IsNullOrWhiteSpace(codeInput) Then
+            MessageBox.Show("Please enter an HCPCS code or range to search.")
             Return
         End If
 
-        Dim stateFilter As String = If(lbStateAll.SelectedItem IsNot Nothing, lbStateAll.SelectedItem.ToString().Trim(), "")
-        Dim cityFilter As String = txtCityAll.Text.Trim()
-        Dim zipFilter As String = txtZipCodeDemoAll.Text.Trim()
+        Dim codesToSearch As New List(Of String)
 
-        lblstatus.Text = "Searching by HCPCS code..."
-        lblstatus.Visible = True
+        If codeInput.Contains("-") AndAlso codeInput.Length >= 11 Then
+            ' Range mode, e.g. A1000-A1010
+            Dim parts = codeInput.Split("-"c)
+            If parts.Length = 2 Then
+                Dim prefixFrom = parts(0).Substring(0, 1)
+                Dim prefixTo = parts(1).Substring(0, 1)
+                Dim numFrom As Integer, numTo As Integer
+                If prefixFrom = prefixTo AndAlso Integer.TryParse(parts(0).Substring(1), numFrom) AndAlso Integer.TryParse(parts(1).Substring(1), numTo) Then
+                    For i = numFrom To numTo
+                        codesToSearch.Add(prefixFrom & i.ToString("D4"))
+                    Next
+                End If
+            End If
+        Else
+            codesToSearch.Add(codeInput)
+        End If
 
-        Try
+        Dim allResults As New DataTable()
+        Dim initialized As Boolean = False
+
+        For Each code In codesToSearch
             Dim apiUrl As String = $"https://data.cms.gov/data-api/v1/dataset/92396110-2aed-4d63-a6a2-5d6207d46a29/data?filter[HCPCS_Cd]={Uri.EscapeDataString(code)}&size=1000"
-            Dim dt As New DataTable()
             Using client As New HttpClient()
                 client.Timeout = TimeSpan.FromSeconds(15)
                 Dim response = Await client.GetAsync(apiUrl)
@@ -283,8 +297,11 @@ Public Class Search
                     Dim json = Await response.Content.ReadAsStringAsync()
                     Dim data = JArray.Parse(json)
                     If data.Count > 0 Then
+                        Dim dt As New DataTable()
                         For Each col In data(0).ToObject(Of JObject)().Properties()
-                            dt.Columns.Add(col.Name)
+                            If Not dt.Columns.Contains(col.Name) Then
+                                dt.Columns.Add(col.Name)
+                            End If
                         Next
                         For Each item In data
                             Dim row = dt.NewRow()
@@ -293,45 +310,27 @@ Public Class Search
                             Next
                             dt.Rows.Add(row)
                         Next
+                        If Not initialized Then
+                            allResults = dt.Clone()
+                            initialized = True
+                        End If
+                        For Each row As DataRow In dt.Rows
+                            allResults.ImportRow(row)
+                        Next
                     End If
-                Else
-                    MessageBox.Show("HCPCS API error: " & response.StatusCode.ToString())
                 End If
             End Using
+        Next
 
-            Dim filteredRows = dt.AsEnumerable().Where(Function(r)
-                                                           Dim match = True
-                                                           If Not String.IsNullOrWhiteSpace(stateFilter) Then
-                                                               match = match AndAlso r.Field(Of String)("Rndrng_Prvdr_State_Abrvtn")?.Trim().Equals(stateFilter, StringComparison.OrdinalIgnoreCase)
-                                                           End If
-                                                           If Not String.IsNullOrWhiteSpace(cityFilter) Then
-                                                               match = match AndAlso r.Field(Of String)("Rndrng_Prvdr_City")?.Trim().Equals(cityFilter, StringComparison.OrdinalIgnoreCase)
-                                                           End If
-                                                           If Not String.IsNullOrWhiteSpace(zipFilter) Then
-                                                               match = match AndAlso r.Field(Of String)("Rndrng_Prvdr_Zip5")?.Trim().Equals(zipFilter, StringComparison.OrdinalIgnoreCase)
-                                                           End If
-                                                           Return match
-                                                       End Function).ToArray()
-
-            Dim filteredDt As DataTable = If(filteredRows.Length > 0, filteredRows.CopyToDataTable(), dt.Clone())
-
-            If filteredDt.Rows.Count = 0 Then
-                MessageBox.Show("No results found for this HCPCS code and filters.")
-                lblstatus.Text = ""
-                lblstatus.Visible = False
-                Return
-            End If
-
-            Dim popup As New HCPCSCodeResultsForm(filteredDt, code)
-            popup.ShowDialog()
-        Catch ex As TaskCanceledException
-            MessageBox.Show("HCPCS API request timed out.")
-        Catch ex As Exception
-            MessageBox.Show("Error searching by HCPCS code: " & ex.Message)
-        Finally
+        If allResults.Rows.Count = 0 Then
+            MessageBox.Show("No results found for this HCPCS code or range.")
             lblstatus.Text = ""
             lblstatus.Visible = False
-        End Try
+            Return
+        End If
+
+        Dim popup As New HCPCSCodeResultsForm(allResults, codeInput)
+        popup.ShowDialog()
     End Sub
 
     Private Async Function SearchByApiAsync(selectedState As String, filterSummary As String) As Task
