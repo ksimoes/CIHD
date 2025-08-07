@@ -3,7 +3,7 @@
 Public Class HCPCSCodeResultsForm
     Public Sub New(dt As DataTable, code As String)
         InitializeComponent()
-        Me.Text = $"Providers for HCPCS Code: {code}"
+        Me.Text = $"Providers for HCPCS Code: {code}   (Rows: {dt.Rows.Count})"
         dgvCodeResults.DataSource = dt
         'StyleDataGridView()
         ApplyCustomColors()

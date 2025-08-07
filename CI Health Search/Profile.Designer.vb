@@ -101,6 +101,9 @@ Partial Class Profile
         lblCooResult = New Label()
         lblPurchasingMatResult = New Label()
         Panel1 = New Panel()
+        lblTot = New Label()
+        Label16 = New Label()
+        Label15 = New Label()
         picLoading = New PictureBox()
         Label13 = New Label()
         txtDebugJson = New TextBox()
@@ -145,9 +148,6 @@ Partial Class Profile
         Column1 = New DataGridViewTextBoxColumn()
         Column2 = New DataGridViewTextBoxColumn()
         Column3 = New DataGridViewTextBoxColumn()
-        Label15 = New Label()
-        Label16 = New Label()
-        lblTot = New Label()
         Panel1.SuspendLayout()
         CType(picLoading, ComponentModel.ISupportInitialize).BeginInit()
         CType(dgvProviders, ComponentModel.ISupportInitialize).BeginInit()
@@ -1007,6 +1007,39 @@ Partial Class Profile
         Panel1.Size = New Size(1439, 2000)
         Panel1.TabIndex = 81
         ' 
+        ' lblTot
+        ' 
+        lblTot.AutoSize = True
+        lblTot.Font = New Font("Segoe UI", 9.75F)
+        lblTot.Location = New Point(846, 79)
+        lblTot.Name = "lblTot"
+        lblTot.Size = New Size(11, 17)
+        lblTot.TabIndex = 99
+        lblTot.Text = "."
+        lblTot.TextAlign = ContentAlignment.MiddleCenter
+        ' 
+        ' Label16
+        ' 
+        Label16.AutoSize = True
+        Label16.Font = New Font("Segoe UI", 9.75F)
+        Label16.Location = New Point(685, 79)
+        Label16.Name = "Label16"
+        Label16.Size = New Size(163, 17)
+        Label16.TabIndex = 98
+        Label16.Text = "Total Affiliated Providers - "
+        Label16.TextAlign = ContentAlignment.MiddleCenter
+        ' 
+        ' Label15
+        ' 
+        Label15.AutoSize = True
+        Label15.Font = New Font("Segoe UI", 9.75F)
+        Label15.Location = New Point(685, 125)
+        Label15.Name = "Label15"
+        Label15.Size = New Size(112, 17)
+        Label15.TabIndex = 97
+        Label15.Text = "Data is from 2025"
+        Label15.TextAlign = ContentAlignment.MiddleCenter
+        ' 
         ' picLoading
         ' 
         picLoading.Image = CType(resources.GetObject("picLoading.Image"), Image)
@@ -1426,39 +1459,6 @@ Partial Class Profile
         ' 
         Column3.HeaderText = "Associated NPI's"
         Column3.Name = "Column3"
-        ' 
-        ' Label15
-        ' 
-        Label15.AutoSize = True
-        Label15.Font = New Font("Segoe UI", 9.75F)
-        Label15.Location = New Point(685, 125)
-        Label15.Name = "Label15"
-        Label15.Size = New Size(181, 17)
-        Label15.TabIndex = 97
-        Label15.Text = "First Tables Data is from 2025"
-        Label15.TextAlign = ContentAlignment.MiddleCenter
-        ' 
-        ' Label16
-        ' 
-        Label16.AutoSize = True
-        Label16.Font = New Font("Segoe UI", 9.75F)
-        Label16.Location = New Point(685, 79)
-        Label16.Name = "Label16"
-        Label16.Size = New Size(163, 17)
-        Label16.TabIndex = 98
-        Label16.Text = "Total Affiliated Providers - "
-        Label16.TextAlign = ContentAlignment.MiddleCenter
-        ' 
-        ' lblTot
-        ' 
-        lblTot.AutoSize = True
-        lblTot.Font = New Font("Segoe UI", 9.75F)
-        lblTot.Location = New Point(846, 79)
-        lblTot.Name = "lblTot"
-        lblTot.Size = New Size(11, 17)
-        lblTot.TabIndex = 99
-        lblTot.Text = "."
-        lblTot.TextAlign = ContentAlignment.MiddleCenter
         ' 
         ' Profile
         ' 

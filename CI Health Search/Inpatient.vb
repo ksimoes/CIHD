@@ -125,15 +125,13 @@ Public Class Inpatient
             Dim dtMasterCeo As New DataTable()
             dtMasterCeo.Columns.Add("Organization Name")
             dtMasterCeo.Columns.Add("First Name - Owner")
-            dtMasterCeo.Columns.Add("Payment")
-            dtMasterCeo.Columns.Add("Cost")
-            dtMasterCeo.Columns.Add("CMI")
+            'dtMasterCeo.Columns.Add("Cost")
+            'dtMasterCeo.Columns.Add("CMI")
 
             For Each row As DataRow In dtCeo.Rows
                 dtMasterCeo.Rows.Add(
-                        myHospital.CMSNum,
-               row("Organization Name").ToString(),
-               row("First Name - Owner").ToString())
+        row("Organization Name").ToString(),
+        row("First Name - Owner").ToString())
 
 
             Next

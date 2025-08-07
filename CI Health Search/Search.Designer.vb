@@ -236,20 +236,20 @@ Partial Class Search
         ' lblCheckingStatus
         ' 
         lblCheckingStatus.AutoSize = True
-        lblCheckingStatus.Location = New Point(670, 648)
+        lblCheckingStatus.Location = New Point(574, 598)
         lblCheckingStatus.Name = "lblCheckingStatus"
-        lblCheckingStatus.Size = New Size(41, 15)
+        lblCheckingStatus.Size = New Size(10, 15)
         lblCheckingStatus.TabIndex = 96
-        lblCheckingStatus.Text = "Label1"
+        lblCheckingStatus.Text = "."
         ' 
         ' lblstatus
         ' 
         lblstatus.AutoSize = True
-        lblstatus.Location = New Point(623, 648)
+        lblstatus.Location = New Point(574, 575)
         lblstatus.Name = "lblstatus"
-        lblstatus.Size = New Size(41, 15)
+        lblstatus.Size = New Size(10, 15)
         lblstatus.TabIndex = 74
-        lblstatus.Text = "Label1"
+        lblstatus.Text = "."
         ' 
         ' Button1
         ' 
@@ -657,7 +657,6 @@ Partial Class Search
         ' 
         lbControl.FormattingEnabled = True
         lbControl.ItemHeight = 15
-
         lbControl.Location = New Point(349, 407)
         lbControl.Name = "lbControl"
         lbControl.Size = New Size(187, 49)

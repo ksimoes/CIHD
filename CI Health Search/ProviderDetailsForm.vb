@@ -23,7 +23,7 @@ Public Class ProviderDetailsForm
     Private Const Level1Desc As String = "HCPCS Code Level 1 - Physician and other qualified healthcare professional services, codes for procedures like surgeries, office visits, and diagnostic tests.(2023)"
     Private Const Level2Desc As String = "HCPCS Code Level 2 - Non-physician services, supplies, and durable medical equipment, codes for procedures like surgeries, office visits, and diagnostic tests.(2023)"
     Private Const PrescriberDrugsDesc As String = "(Part D)This table shows drugs prescribed by the provider, including brand and generic names, total claims, and drug costs.(2023)"
-    Private Const ProviderProfileDesc As String = "This table displays the provider's NPI profile, including name, credentials, taxonomy, and status.(Actively Updated)"
+    Private Const ProviderProfileDesc As String = "This table displays the provider's NPI profile, including name, credentials, taxonomy, and status.(Up to date/Current)"
     Private Const AssociatedHospitalsDesc As String = "This table lists hospitals and facilities where the provider is affiliated, including facility type and location.(2025)"
     Private Const GeneralPaymentDesc As String = "This table shows general payments made to the provider, such as consulting fees, honoraria, and gifts.(2024)"
     Private Const OwnershipDataDesc As String = "This table displays ownership or investment interests held by the provider in healthcare entities.(2024)"
