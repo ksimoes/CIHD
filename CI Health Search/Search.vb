@@ -19,20 +19,20 @@ Public Class Search
     }
 
     Private ReadOnly TypeOfControlMap As New Dictionary(Of String, String) From {
-    {"1", "Voluntary Non‐Profit‐Church"},
-    {"2", "Voluntary Non‐Profit‐Other"},
-    {"3", "Proprietary‐Individual"},
-    {"4", "Proprietary‐Corporation"},
-    {"5", "Proprietary‐Partnership"},
-    {"6", "Proprietary‐Other"},
-    {"7", "Governmental‐Federal"},
-    {"8", "Governmental‐City‐County"},
-    {"9", "Governmental‐County"},
-    {"10", "Governmental‐State"},
-    {"11", "Governmental‐Hospital District"},
-    {"12", "Governmental‐City"},
-    {"13", "Governmental‐Other"}
-}
+        {"1", "Voluntary Non‐Profit‐Church"},
+        {"2", "Voluntary Non‐Profit‐Other"},
+        {"3", "Proprietary‐Individual"},
+        {"4", "Proprietary‐Corporation"},
+        {"5", "Proprietary‐Partnership"},
+        {"6", "Proprietary‐Other"},
+        {"7", "Governmental‐Federal"},
+        {"8", "Governmental‐City‐County"},
+        {"9", "Governmental‐County"},
+        {"10", "Governmental‐State"},
+        {"11", "Governmental‐Hospital District"},
+        {"12", "Governmental‐City"},
+        {"13", "Governmental‐Other"}
+    }
 
     Public Function useSQL(ByRef selectedState As String) As Boolean
         Using conn As New SqlConnection(connectionString)
@@ -266,7 +266,6 @@ Public Class Search
             Return
         End If
 
-        ' Use your existing controls for filters
         Dim stateFilter As String = If(lbStateAll.SelectedItem IsNot Nothing, lbStateAll.SelectedItem.ToString().Trim(), "")
         Dim cityFilter As String = txtCityAll.Text.Trim()
         Dim zipFilter As String = txtZipCodeDemoAll.Text.Trim()
@@ -300,7 +299,6 @@ Public Class Search
                 End If
             End Using
 
-            ' Filter by state, city, zip if provided
             Dim filteredRows = dt.AsEnumerable().Where(Function(r)
                                                            Dim match = True
                                                            If Not String.IsNullOrWhiteSpace(stateFilter) Then
@@ -360,6 +358,12 @@ Public Class Search
         If Not String.IsNullOrEmpty(txtHospitalNameAll.Text) Then filters.Add("filter[Hospital Name]=" & Uri.EscapeDataString(txtHospitalNameAll.Text.Trim()))
         If cbRUAll.SelectedItem IsNot Nothing AndAlso Not String.IsNullOrEmpty(cbRUAll.SelectedItem.ToString()) Then
             filters.Add("filter[Rural Versus Urban]=" & Uri.EscapeDataString(cbRUAll.SelectedItem.ToString()))
+        End If
+
+        ' Add Type of Control filter if selected
+        Dim selectedControlItem = TryCast(lbControl.SelectedItem, ControlTypeItem)
+        If selectedControlItem IsNot Nothing AndAlso Not String.IsNullOrEmpty(selectedControlItem.Code) Then
+            filters.Add("filter[Type of Control]=" & Uri.EscapeDataString(selectedControlItem.Code))
         End If
 
         Dim zipCode As String = If(Not String.IsNullOrWhiteSpace(txtZipCodeDemoAll.Text), txtZipCodeDemoAll.Text.Trim(), TextBox40.Text.Trim())
@@ -454,6 +458,12 @@ Public Class Search
             Dim selectedState As String = ""
             If lbStateAll.SelectedItem IsNot Nothing Then
                 selectedState = lbStateAll.SelectedItem.ToString().Trim()
+            End If
+
+            ' Add Type of Control filter if selected
+            Dim selectedControlItem = TryCast(lbControl.SelectedItem, ControlTypeItem)
+            If selectedControlItem IsNot Nothing AndAlso Not String.IsNullOrEmpty(selectedControlItem.Code) Then
+                filters.Add("filter[Type of Control]=" & Uri.EscapeDataString(selectedControlItem.Code))
             End If
 
             If Not String.IsNullOrWhiteSpace(txtCmsCertNumDemoAll.Text) Then
@@ -622,267 +632,64 @@ Public Class Search
         lblstatus.Visible = False
     End Sub
 
-    Private Async Sub SearchDemographicsTab(
-    lbState As ListBox,
-    txtCity As TextBox,
-    txtCmsCertNum As TextBox,
-    txtNpi As TextBox,
-    txtHospitalName As TextBox,
-    txtAreaCode As TextBox,
-    txtZipCode As TextBox
-)
-        lblstatus.Text = "Searching..."
-        lblstatus.Visible = True
-        Try
-            Dim selectedState As String = ""
-            If lbState.SelectedItem IsNot Nothing Then
-                selectedState = lbState.SelectedItem.ToString().Trim()
+    Private Sub PopulateTypeOfControlList()
+        lbControl.Items.Clear()
+        lbControl.Items.Add(New ControlTypeItem With {.Code = "", .Desc = "All"})
+        If Results.resultsTable IsNot Nothing AndAlso Results.resultsTable.Columns.Contains("Type of Control") Then
+            Dim codes = Results.resultsTable.AsEnumerable().
+            Select(Function(r) r.Field(Of String)("Type of Control")).
+            Where(Function(s) Not String.IsNullOrWhiteSpace(s)).
+            Distinct().
+            OrderBy(Function(s) s).
+            ToList()
+            For Each code In codes
+                Dim desc = If(TypeOfControlMap.ContainsKey(code), TypeOfControlMap(code), code)
+                lbControl.Items.Add(New ControlTypeItem With {.Code = code, .Desc = desc})
+            Next
+        End If
+
+        If lbControl.Items.Count > 1 Then
+            lbControl.SelectedIndex = 1
+            lbControl.SelectedIndex = 0
+        Else
+            lbControl.SelectedIndex = 0
+        End If
+    End Sub
+
+    Private Sub lbControl_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lbControl.SelectedIndexChanged
+        If Results.resultsTable Is Nothing OrElse Not Results.resultsTable.Columns.Contains("Type of Control") Then Return
+
+        Dim selectedItem = TryCast(lbControl.SelectedItem, ControlTypeItem)
+        Dim codeStr As String = If(selectedItem IsNot Nothing, selectedItem.Code, "")
+
+        Dim dt As DataTable = Results.resultsTable
+
+        If String.IsNullOrEmpty(codeStr) Then
+            Results.SetResults(dt)
+        Else
+            Dim filtered = dt.AsEnumerable().Where(Function(r)
+                                                       Dim valObj = r("Type of Control")
+                                                       If valObj Is Nothing OrElse valObj Is DBNull.Value Then Return False
+                                                       Return valObj.ToString().Trim() = codeStr.Trim()
+                                                   End Function)
+
+            If filtered.Any() Then
+                MessageBox.Show("Filtered rows: " & filtered.Count().ToString())
+                Results.SetResults(filtered.CopyToDataTable())
+            Else
+                Results.SetResults(dt.Clone())
             End If
-
-            Dim filters As New List(Of String)
-            If Not String.IsNullOrWhiteSpace(txtCity.Text) Then filters.Add("filter[City]=" & Uri.EscapeDataString(txtCity.Text.Trim()))
-            If Not String.IsNullOrWhiteSpace(txtCmsCertNum.Text) Then filters.Add("filter[Provider CCN]=" & Uri.EscapeDataString(txtCmsCertNum.Text.Trim()))
-            If Not String.IsNullOrWhiteSpace(txtNpi.Text) Then filters.Add("filter[NPI]=" & Uri.EscapeDataString(txtNpi.Text.Trim()))
-            If Not String.IsNullOrWhiteSpace(txtHospitalName.Text) Then filters.Add("filter[Hospital Name]=" & Uri.EscapeDataString(txtHospitalName.Text.Trim()))
-            If Not String.IsNullOrWhiteSpace(txtAreaCode.Text) Then filters.Add("filter[Phone]=" & Uri.EscapeDataString(txtAreaCode.Text.Trim()))
-            If Not String.IsNullOrWhiteSpace(txtZipCode.Text) Then filters.Add("filter[Zip Code]=" & Uri.EscapeDataString(txtZipCode.Text.Trim()))
-            If Not String.IsNullOrEmpty(selectedState) Then filters.Add("filter[State Code]=" & Uri.EscapeDataString(selectedState))
-            filters.Add("size=1000")
-
-            Dim apiUrl As String = "https://data.cms.gov/data-api/v1/dataset/8015f175-35cc-4cab-a664-b7c87d91a027/data?" & String.Join("&", filters)
-
-            Using client As New HttpClient()
-                Dim response As HttpResponseMessage = Await client.GetAsync(apiUrl)
-                If response.IsSuccessStatusCode Then
-                    Dim json As String = Await response.Content.ReadAsStringAsync()
-                    Dim data As JArray = JArray.Parse(json)
-                    If data.Count > 0 Then
-                        Dim dt As New DataTable()
-                        For Each col In data(0).ToObject(Of JObject)().Properties()
-                            dt.Columns.Add(col.Name)
-                        Next
-                        For Each item In data
-                            Dim row = dt.NewRow()
-                            For Each col In dt.Columns
-                                row(col.ToString()) = item(col.ToString())
-                            Next
-                            dt.Rows.Add(row)
-                        Next
-                        Results.SetResults(dt, "Demographics Search")
-                        PopulateTypeOfControlList()
-                        Results.SelectedState = selectedState
-                        Hide()
-                        Results.Show()
-                    Else
-                        MessageBox.Show("No results found for your search.")
-                    End If
-                Else
-                    MessageBox.Show("API error: " & response.StatusCode.ToString())
-                End If
-            End Using
-        Catch ex As Exception
-            MessageBox.Show("Error during search: " & ex.Message)
-        Finally
-            lblstatus.Text = ""
-            lblstatus.Visible = False
-        End Try
+        End If
     End Sub
 
-    Private Async Sub SearchUtilizationRanges(
-    txtMinRoutineBeds As TextBox,
-    txtMaxRoutineBeds As TextBox,
-    txtMinSpecialBeds As TextBox,
-    txtMaxSpecialBeds As TextBox,
-    txtMinAnnualDis As TextBox,
-    txtMaxAnnualDis As TextBox,
-    txtMinTotPatRev As TextBox,
-    txtMaxTotPatRev As TextBox,
-    txtMinTotalBeds As TextBox,
-    txtMaxTotalBeds As TextBox
-)
-        lblstatus.Text = "Searching..."
-        lblstatus.Visible = True
-        Try
-            Dim filters As New List(Of String)
-            filters.Add("size=1000")
-            Dim apiUrl As String = "https://data.cms.gov/data-api/v1/dataset/8015f175-35cc-4cab-a664-b7c87d91a027/data?" & String.Join("&", filters)
-
-            Using client As New HttpClient()
-                Dim response As HttpResponseMessage = Await client.GetAsync(apiUrl)
-                If response.IsSuccessStatusCode Then
-                    Dim json As String = Await response.Content.ReadAsStringAsync()
-                    Dim data As JArray = JArray.Parse(json)
-                    If data.Count > 0 Then
-                        Dim dt As New DataTable()
-                        For Each col In data(0).ToObject(Of JObject)().Properties()
-                            dt.Columns.Add(col.Name)
-                        Next
-                        For Each item In data
-                            Dim row = dt.NewRow()
-                            For Each col In dt.Columns
-                                row(col.ToString()) = item(col.ToString())
-                            Next
-                            dt.Rows.Add(row)
-                        Next
-
-                        ' Routine Beds
-                        If (Not String.IsNullOrEmpty(txtMinRoutineBeds.Text) OrElse Not String.IsNullOrEmpty(txtMaxRoutineBeds.Text)) AndAlso dt.Columns.Contains("Routine Beds") Then
-                            Dim minVal As Decimal = 0
-                            Dim maxVal As Decimal = Decimal.MaxValue
-                            If Not String.IsNullOrEmpty(txtMinRoutineBeds.Text) Then Decimal.TryParse(txtMinRoutineBeds.Text, minVal)
-                            If Not String.IsNullOrEmpty(txtMaxRoutineBeds.Text) Then Decimal.TryParse(txtMaxRoutineBeds.Text, maxVal)
-                            Dim filteredRows = dt.AsEnumerable().Where(
-                            Function(r)
-                                Dim val As Decimal = 0
-                                Dim strVal = r.Field(Of String)("Routine Beds")
-                                If String.IsNullOrWhiteSpace(strVal) OrElse Not Decimal.TryParse(strVal.Replace("$", "").Replace(",", ""), val) Then
-                                    Return False
-                                End If
-                                Return val >= minVal AndAlso val <= maxVal
-                            End Function
-                        ).ToArray()
-                            dt = If(filteredRows.Length > 0, filteredRows.CopyToDataTable(), dt.Clone())
-                        End If
-
-                        ' Special Care Beds
-                        If (Not String.IsNullOrEmpty(txtMinSpecialBeds.Text) OrElse Not String.IsNullOrEmpty(txtMaxSpecialBeds.Text)) AndAlso dt.Columns.Contains("Special Care Beds") Then
-                            Dim minVal As Decimal = 0
-                            Dim maxVal As Decimal = Decimal.MaxValue
-                            If Not String.IsNullOrEmpty(txtMinSpecialBeds.Text) Then Decimal.TryParse(txtMinSpecialBeds.Text, minVal)
-                            If Not String.IsNullOrEmpty(txtMaxSpecialBeds.Text) Then Decimal.TryParse(txtMaxSpecialBeds.Text, maxVal)
-                            Dim filteredRows = dt.AsEnumerable().Where(
-                            Function(r)
-                                Dim val As Decimal = 0
-                                Dim strVal = r.Field(Of String)("Special Care Beds")
-                                If String.IsNullOrWhiteSpace(strVal) OrElse Not Decimal.TryParse(strVal.Replace("$", "").Replace(",", ""), val) Then
-                                    Return False
-                                End If
-                                Return val >= minVal AndAlso val <= maxVal
-                            End Function
-                        ).ToArray()
-                            dt = If(filteredRows.Length > 0, filteredRows.CopyToDataTable(), dt.Clone())
-                        End If
-
-                        ' Annual Discharges
-                        If (Not String.IsNullOrEmpty(txtMinAnnualDis.Text) OrElse Not String.IsNullOrEmpty(txtMaxAnnualDis.Text)) AndAlso dt.Columns.Contains("Annual Discharges") Then
-                            Dim minVal As Decimal = 0
-                            Dim maxVal As Decimal = Decimal.MaxValue
-                            If Not String.IsNullOrEmpty(txtMinAnnualDis.Text) Then Decimal.TryParse(txtMinAnnualDis.Text, minVal)
-                            If Not String.IsNullOrEmpty(txtMaxAnnualDis.Text) Then Decimal.TryParse(txtMaxAnnualDis.Text, maxVal)
-                            Dim filteredRows = dt.AsEnumerable().Where(
-                            Function(r)
-                                Dim val As Decimal = 0
-                                Dim strVal = r.Field(Of String)("Annual Discharges")
-                                If String.IsNullOrWhiteSpace(strVal) OrElse Not Decimal.TryParse(strVal.Replace("$", "").Replace(",", ""), val) Then
-                                    Return False
-                                End If
-                                Return val >= minVal AndAlso val <= maxVal
-                            End Function
-                        ).ToArray()
-                            dt = If(filteredRows.Length > 0, filteredRows.CopyToDataTable(), dt.Clone())
-                        End If
-
-                        ' Total Patient Revenue
-                        If (Not String.IsNullOrEmpty(txtMinTotPatRev.Text) OrElse Not String.IsNullOrEmpty(txtMaxTotPatRev.Text)) AndAlso dt.Columns.Contains("Total Patient Revenue") Then
-                            Dim minVal As Decimal = 0
-                            Dim maxVal As Decimal = Decimal.MaxValue
-                            If Not String.IsNullOrEmpty(txtMinTotPatRev.Text) Then Decimal.TryParse(txtMinTotPatRev.Text, minVal)
-                            If Not String.IsNullOrEmpty(txtMaxTotPatRev.Text) Then Decimal.TryParse(txtMaxTotPatRev.Text, maxVal)
-                            Dim filteredRows = dt.AsEnumerable().Where(
-                            Function(r)
-                                Dim val As Decimal = 0
-                                Dim strVal = r.Field(Of String)("Total Patient Revenue")
-                                If String.IsNullOrWhiteSpace(strVal) OrElse Not Decimal.TryParse(strVal.Replace("$", "").Replace(",", ""), val) Then
-                                    Return False
-                                End If
-                                Return val >= minVal AndAlso val <= maxVal
-                            End Function
-                        ).ToArray()
-                            dt = If(filteredRows.Length > 0, filteredRows.CopyToDataTable(), dt.Clone())
-                        End If
-
-                        ' Total Beds
-                        If (Not String.IsNullOrEmpty(txtMinTotalBeds.Text) OrElse Not String.IsNullOrEmpty(txtMaxTotalBeds.Text)) AndAlso dt.Columns.Contains("Number of Beds") Then
-                            Dim minBeds As Decimal = 0
-                            Dim maxBeds As Decimal = Decimal.MaxValue
-                            If Not String.IsNullOrEmpty(txtMinTotalBeds.Text) Then Decimal.TryParse(txtMinTotalBeds.Text, minBeds)
-                            If Not String.IsNullOrEmpty(txtMaxTotalBeds.Text) Then Decimal.TryParse(txtMaxTotalBeds.Text, maxBeds)
-                            Dim filteredRows = dt.AsEnumerable().Where(
-                            Function(r)
-                                Dim val As Decimal = 0
-                                Dim strVal = r.Field(Of String)("Number of Beds")
-                                If String.IsNullOrWhiteSpace(strVal) OrElse Not Decimal.TryParse(strVal.Replace("$", "").Replace(",", ""), val) Then
-                                    Return False
-                                End If
-                                Return val >= minBeds AndAlso val <= maxBeds
-                            End Function
-                        ).ToArray()
-                            dt = If(filteredRows.Length > 0, filteredRows.CopyToDataTable(), dt.Clone())
-                        End If
-
-                        If dt.Rows.Count = 0 Then
-                            MessageBox.Show("No results found for your search.")
-                            Return
-                        End If
-
-                        Results.SetResults(dt, "Utilization Search")
-                        PopulateTypeOfControlList()
-                        Hide()
-                        Results.Show()
-                    Else
-                        MessageBox.Show("No results found for your search.")
-                    End If
-                Else
-                    MessageBox.Show("API error: " & response.StatusCode.ToString())
-                End If
-            End Using
-        Catch ex As Exception
-            MessageBox.Show("Error during search: " & ex.Message)
-        Finally
-            lblstatus.Text = ""
-            lblstatus.Visible = False
-        End Try
+    Private Sub Search_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        lbControl.Items.Clear()
+        lbControl.Items.Add(New ControlTypeItem With {.Code = "", .Desc = "All"})
+        For Each kvp In TypeOfControlMap
+            lbControl.Items.Add(New ControlTypeItem With {.Code = kvp.Key, .Desc = kvp.Value})
+        Next
+        lbControl.SelectedIndex = 0
     End Sub
-
-    Private Function BuildFilterSummary() As String
-        Dim filters As New List(Of String)
-        If Not String.IsNullOrWhiteSpace(txtHospitalNameAll.Text) Then filters.Add("Hospital Name: " & txtHospitalNameAll.Text)
-        If Not String.IsNullOrWhiteSpace(txtCityAll.Text) Then filters.Add("City: " & txtCityAll.Text)
-        If Not String.IsNullOrWhiteSpace(txtNpiAll.Text) Then filters.Add("NPI: " & txtNpiAll.Text)
-        If Not String.IsNullOrWhiteSpace(txtTaxAll.Text) Then filters.Add("Tax ID/EIN: " & txtTaxAll.Text)
-        If Not String.IsNullOrWhiteSpace(txtCmsCertNumDemoAll.Text) Then filters.Add("CMS Cert #: " & txtCmsCertNumDemoAll.Text)
-        If Not String.IsNullOrWhiteSpace(txtZipCodeDemoAll.Text) Then filters.Add("ZIP: " & txtZipCodeDemoAll.Text)
-        If Not String.IsNullOrWhiteSpace(txtAreaCodeAll.Text) Then filters.Add("Area Code: " & txtAreaCodeAll.Text)
-        If lbStateAll.SelectedItems.Count > 0 Then filters.Add("State: " & String.Join(", ", lbStateAll.SelectedItems.Cast(Of String)()))
-        If Not String.IsNullOrWhiteSpace(txtMinRoutineAll.Text) Then filters.Add("Min Routine Beds: " & txtMinRoutineAll.Text)
-        If Not String.IsNullOrWhiteSpace(txtMaxRoutineAll.Text) Then filters.Add("Max Routine Beds: " & txtMaxRoutineAll.Text)
-        If Not String.IsNullOrWhiteSpace(txtMinSpecialAll.Text) Then filters.Add("Min Special Beds: " & txtMinSpecialAll.Text)
-        If Not String.IsNullOrWhiteSpace(txtMaxSpecialAll.Text) Then filters.Add("Max Special Beds: " & txtMaxSpecialAll.Text)
-        If Not String.IsNullOrWhiteSpace(txtMinTotalBedsAll.Text) Then filters.Add("Min Total Beds: " & txtMinTotalBedsAll.Text)
-        If Not String.IsNullOrWhiteSpace(txtMaxTotalBedsAll.Text) Then filters.Add("Max Total Beds: " & txtMaxTotalBedsAll.Text)
-        If Not String.IsNullOrWhiteSpace(txtMinAnnualDisAll.Text) Then filters.Add("Min Annual Discharges: " & txtMinAnnualDisAll.Text)
-        If Not String.IsNullOrWhiteSpace(txtMaxAnnualDisAll.Text) Then filters.Add("Max Annual Discharges: " & txtMaxAnnualDisAll.Text)
-        If Not String.IsNullOrWhiteSpace(txtMinTotPatRevAll.Text) Then filters.Add("Min Total Patient Revenue: " & txtMinTotPatRevAll.Text)
-        If Not String.IsNullOrWhiteSpace(txtMaxTotPatRevAll.Text) Then filters.Add("Max Total Patient Revenue: " & txtMaxTotPatRevAll.Text)
-        If ComboBox17.SelectedIndex >= 0 Then filters.Add("Medicare Policy: " & ComboBox17.Text)
-        If ComboBox18.SelectedIndex >= 0 Then filters.Add("Facility: " & ComboBox18.Text)
-        If ComboBox19.SelectedIndex >= 0 Then filters.Add("Service: " & ComboBox19.Text)
-        If ComboBox20.SelectedIndex >= 0 Then filters.Add("Control: " & ComboBox20.Text)
-        If ComboBox21.SelectedIndex >= 0 Then filters.Add("ACO: " & ComboBox21.Text)
-        If tbCode.Text.Trim() <> "" Then filters.Add("HCPCS Code: " & tbCode.Text)
-        If lbTypeFacilityCharAll.SelectedItems.Count > 0 Then filters.Add("Facility Char: " & String.Join(", ", lbTypeFacilityCharAll.SelectedItems.Cast(Of String)()))
-        If lbControl.SelectedItems.Count > 0 Then filters.Add("Type of Control: " & String.Join(", ", lbControl.SelectedItems.Cast(Of String)()))
-        If ListBox14.SelectedItems.Count > 0 Then filters.Add("Services: " & String.Join(", ", ListBox14.SelectedItems.Cast(Of String)()))
-        If ListBox15.SelectedItems.Count > 0 Then filters.Add("HealthCare System: " & String.Join(", ", ListBox15.SelectedItems.Cast(Of String)()))
-        If Not String.IsNullOrWhiteSpace(txtcountygeoall.Text) Then filters.Add("County: " & txtcountygeoall.Text)
-        If Not String.IsNullOrWhiteSpace(TextBox38.Text) Then filters.Add("Miles: " & TextBox38.Text)
-        If Not String.IsNullOrWhiteSpace(TextBox39.Text) Then filters.Add("CMS Cert #: " & TextBox39.Text)
-        If Not String.IsNullOrWhiteSpace(TextBox40.Text) Then filters.Add("ZIP: " & TextBox40.Text)
-        If cbRUAll.SelectedIndex >= 0 Then filters.Add("Urban/Rural: " & cbRUAll.Text)
-        If ComboBox11.SelectedIndex >= 0 Then filters.Add("County: " & ComboBox11.Text)
-        If ListBox8.SelectedItems.Count > 0 Then filters.Add("Counties: " & String.Join(", ", ListBox8.SelectedItems.Cast(Of String)()))
-        Return String.Join("; ", filters)
-    End Function
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         lbStateAll.ClearSelected()
@@ -901,67 +708,11 @@ Public Class Search
         txtMaxTotPatRevAll.Clear()
     End Sub
 
-    Private Sub PopulateTypeOfControlList()
-        lbControl.Items.Clear()
-        lbControl.Items.Add("All")
-        If Results.resultsTable IsNot Nothing AndAlso Results.resultsTable.Columns.Contains("Type of Control") Then
-            Dim codes = Results.resultsTable.AsEnumerable().
-            Select(Function(r) r.Field(Of String)("Type of Control")).
-            Where(Function(s) Not String.IsNullOrWhiteSpace(s)).
-            Distinct().
-            OrderBy(Function(s) s).
-            ToList()
-            For Each code In codes
-                If TypeOfControlMap.ContainsKey(code) Then
-                    lbControl.Items.Add(TypeOfControlMap(code))
-                Else
-                    lbControl.Items.Add(code) ' fallback if unmapped
-                End If
-            Next
-        End If
-        lbControl.SelectedIndex = 0
-    End Sub
-
-    Private Sub lbControl_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lbControl.SelectedIndexChanged
-        If Results.resultsTable Is Nothing OrElse Not Results.resultsTable.Columns.Contains("Type of Control") Then Return
-
-        Dim selectedDesc As String = lbControl.SelectedItem?.ToString()
-        Dim dt As DataTable = Results.resultsTable
-
-        If selectedDesc = "All" Then
-            Results.SetResults(dt)
-        Else
-            ' Find the code for the selected description
-            Dim code = TypeOfControlMap.FirstOrDefault(Function(kv) kv.Value = selectedDesc).Key
-
-            Dim filtered = dt.AsEnumerable().
-            Where(Function(r)
-                      Dim valObj = r("Type of Control")
-                      If valObj Is Nothing OrElse valObj Is DBNull.Value Then Return False
-                      ' Compare as string, trim spaces
-                      Return valObj.ToString().Trim() = code
-                  End Function)
-
-            If filtered.Any() Then
-                Results.SetResults(filtered.CopyToDataTable())
-            Else
-                Results.SetResults(dt.Clone())
-            End If
-        End If
-    End Sub
-
-
-    Private Sub Search_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-
-    End Sub
-
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
         SearchDemographicsTab(lbStateDemo, txtCityDemo, txtCmsCertNumDemo, txtNpiDemo, txtHospitalNameDemo, txtAreaCodeDemo, txtZipCodeDemo)
-
     End Sub
 
     Private Sub TextBox2_TextChanged(sender As Object, e As EventArgs) Handles txtNpiDemo.TextChanged
-
     End Sub
 
     Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
@@ -971,7 +722,44 @@ Public Class Search
         txtMinAnnualDisUtil, txtMaxAnnualDisUtil,
         txtMinTotPatRevUtil, txtMaxTotPatRevUtil,
         txtMinTotalBedsUtil, txtMaxTotalBedsUtil)
-
-
     End Sub
+
+    Private Function BuildFilterSummary() As String
+        Return ""
+    End Function
+
+    Private Sub SearchDemographicsTab(
+        lbState As ListBox,
+        txtCity As TextBox,
+        txtCmsCertNum As TextBox,
+        txtNpi As TextBox,
+        txtHospitalName As TextBox,
+        txtAreaCode As TextBox,
+        txtZipCode As TextBox
+    )
+        ' Stub for SearchDemographicsTab
+    End Sub
+
+    Private Sub SearchUtilizationRanges(
+        txtMinRoutineBeds As TextBox,
+        txtMaxRoutineBeds As TextBox,
+        txtMinSpecialBeds As TextBox,
+        txtMaxSpecialBeds As TextBox,
+        txtMinAnnualDis As TextBox,
+        txtMaxAnnualDis As TextBox,
+        txtMinTotPatRev As TextBox,
+        txtMaxTotPatRev As TextBox,
+        txtMinTotalBeds As TextBox,
+        txtMaxTotalBeds As TextBox
+    )
+        ' Stub for SearchUtilizationRanges
+    End Sub
+End Class
+
+Public Class ControlTypeItem
+    Public Property Code As String
+    Public Property Desc As String
+    Public Overrides Function ToString() As String
+        Return Desc
+    End Function
 End Class

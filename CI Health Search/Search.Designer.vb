@@ -657,7 +657,7 @@ Partial Class Search
         ' 
         lbControl.FormattingEnabled = True
         lbControl.ItemHeight = 15
-        lbControl.Items.AddRange(New Object() {"Government Hospital District", "Governmental, City", "Governmental, City-County", "Governmental, County", "Governmental, Federal ", "Governmental, Other", "Governmental, State", "Proprietary, Corporation", "Proprietary, Individual", "Proprietary, Other", "Proprietary, Partnership", "Voluntary Nonprofit, Church", "Voluntary Nonprofit, Other"})
+
         lbControl.Location = New Point(349, 407)
         lbControl.Name = "lbControl"
         lbControl.Size = New Size(187, 49)
