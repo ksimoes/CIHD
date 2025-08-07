@@ -8,6 +8,23 @@ Public Class Results
     Public Shared SelectedHospital As New HospitalContext()
 
     ' Call this from Search form to set and display results
+
+    ' Add this mapping dictionary at the top of your Results class (or make it Shared in Search)
+    Private ReadOnly TypeOfControlMap As New Dictionary(Of String, String) From {
+    {"1", "Voluntary Non‐Profit‐Church"},
+    {"2", "Voluntary Non‐Profit‐Other"},
+    {"3", "Proprietary‐Individual"},
+    {"4", "Proprietary‐Corporation"},
+    {"5", "Proprietary‐Partnership"},
+    {"6", "Proprietary‐Other"},
+    {"7", "Governmental‐Federal"},
+    {"8", "Governmental‐City‐County"},
+    {"9", "Governmental‐County"},
+    {"10", "Governmental‐State"},
+    {"11", "Governmental‐Hospital District"},
+    {"12", "Governmental‐City"},
+    {"13", "Governmental‐Other"}
+}
     Public Sub SetResults(dt As DataTable, Optional filterSummary As String = "")
         resultsTable = dt
 
@@ -20,6 +37,7 @@ Public Class Results
             dgvResults.Columns.Add("Zip", "Zip")
             dgvResults.Columns.Add("BedCount", "Bed Count")
             dgvResults.Columns.Add("CMSCCN", "CMS/CCN")
+            dgvResults.Columns.Add("TypeOfControl", "Type of Control")
             dgvResults.SelectionMode = DataGridViewSelectionMode.FullRowSelect
             dgvResults.MultiSelect = False
         End If
@@ -78,14 +96,15 @@ Public Class Results
                 state = row("State Code").ToString()
             End If
             Dim zip As String = If(dt.Columns.Contains("Zip Code"), row("Zip Code").ToString(),
-               If(dt.Columns.Contains("ZIP"), row("ZIP").ToString(), ""))
+       If(dt.Columns.Contains("ZIP"), row("ZIP").ToString(), ""))
 
             Dim bedCount As String = If(bedCountCol <> "" AndAlso Not IsDBNull(row(bedCountCol)), row(bedCountCol).ToString(), "")
             Dim cmsccn As String = If(cmsCol <> "" AndAlso Not IsDBNull(row(cmsCol)), row(cmsCol).ToString(), "")
+            Dim typeOfControlCode As String = If(dt.Columns.Contains("Type of Control"), row("Type of Control").ToString(), "")
+            Dim typeOfControlDesc As String = If(TypeOfControlMap.ContainsKey(typeOfControlCode), TypeOfControlMap(typeOfControlCode), typeOfControlCode)
 
-            dgvResults.Rows.Add(False, name, city, state, zip, bedCount, cmsccn)
+            dgvResults.Rows.Add(False, name, city, state, zip, bedCount, cmsccn, typeOfControlDesc)
         Next
-
         ' Show result count
         lblMatches.Text = $"{dt.Rows.Count} result(s) found"
 

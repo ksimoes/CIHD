@@ -32,9 +32,9 @@ Partial Class Login
         ' 
         ' Button1
         ' 
-        Button1.Location = New Point(713, 392)
+        Button1.Location = New Point(701, 384)
         Button1.Name = "Button1"
-        Button1.Size = New Size(143, 72)
+        Button1.Size = New Size(155, 80)
         Button1.TabIndex = 1
         Button1.Text = "Login"
         Button1.UseVisualStyleBackColor = True
@@ -43,7 +43,7 @@ Partial Class Login
         ' 
         Label80.AutoSize = True
         Label80.Font = New Font("Times New Roman", 14.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        Label80.Location = New Point(74, 53)
+        Label80.Location = New Point(74, 51)
         Label80.Name = "Label80"
         Label80.Size = New Size(61, 21)
         Label80.TabIndex = 28

@@ -65,6 +65,10 @@ Public Class HCPCSCodeResultsForm
 
     Private currentLevel As Integer = 1 ' 1 for Level 1, 2 for Level 2
 
+    Private Sub HCPCSCodeResultsForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
+    End Sub
+
     ' When you load Level 1 data:
 
 

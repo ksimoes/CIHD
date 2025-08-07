@@ -66,7 +66,7 @@ Partial Class Search
         lblServiceAll = New Label()
         ComboBox20 = New ComboBox()
         lblControlAll = New Label()
-        ListBox13 = New ListBox()
+        lbControl = New ListBox()
         lblTeachingAll = New Label()
         ListBox14 = New ListBox()
         lblHealthCareAll = New Label()
@@ -538,7 +538,7 @@ Partial Class Search
         GroupBox2.Controls.Add(lblServiceAll)
         GroupBox2.Controls.Add(ComboBox20)
         GroupBox2.Controls.Add(lblControlAll)
-        GroupBox2.Controls.Add(ListBox13)
+        GroupBox2.Controls.Add(lbControl)
         GroupBox2.Controls.Add(lblTeachingAll)
         GroupBox2.Controls.Add(ListBox14)
         GroupBox2.Controls.Add(lblHealthCareAll)
@@ -653,15 +653,15 @@ Partial Class Search
         lblControlAll.TabIndex = 77
         lblControlAll.Text = "Type of Control"
         ' 
-        ' ListBox13
+        ' lbControl
         ' 
-        ListBox13.FormattingEnabled = True
-        ListBox13.ItemHeight = 15
-        ListBox13.Items.AddRange(New Object() {"Government Hospital District", "Governmental, City", "Governmental, City-County", "Governmental, County", "Governmental, Federal ", "Governmental, Other", "Governmental, State", "Proprietary, Corporation", "Proprietary, Individual", "Proprietary, Other", "Proprietary, Partnership", "Voluntary Nonprofit, Church", "Voluntary Nonprofit, Other"})
-        ListBox13.Location = New Point(349, 407)
-        ListBox13.Name = "ListBox13"
-        ListBox13.Size = New Size(187, 49)
-        ListBox13.TabIndex = 87
+        lbControl.FormattingEnabled = True
+        lbControl.ItemHeight = 15
+        lbControl.Items.AddRange(New Object() {"Government Hospital District", "Governmental, City", "Governmental, City-County", "Governmental, County", "Governmental, Federal ", "Governmental, Other", "Governmental, State", "Proprietary, Corporation", "Proprietary, Individual", "Proprietary, Other", "Proprietary, Partnership", "Voluntary Nonprofit, Church", "Voluntary Nonprofit, Other"})
+        lbControl.Location = New Point(349, 407)
+        lbControl.Name = "lbControl"
+        lbControl.Size = New Size(187, 49)
+        lbControl.TabIndex = 87
         ' 
         ' lblTeachingAll
         ' 
@@ -1881,7 +1881,7 @@ Partial Class Search
         ' 
         ' Search
         ' 
-        AutoScaleDimensions = New SizeF(7.0F, 15.0F)
+        AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(1558, 709)
         Controls.Add(TabControl1)
@@ -2031,7 +2031,7 @@ Partial Class Search
     Friend WithEvents Label50 As Label
     Friend WithEvents ComboBox20 As ComboBox
     Friend WithEvents lblControlAll As Label
-    Friend WithEvents ListBox13 As ListBox
+    Friend WithEvents lbControl As ListBox
     Friend WithEvents lblTeachingAll As Label
     Friend WithEvents ListBox14 As ListBox
     Friend WithEvents lblHealthCareAll As Label

@@ -18,6 +18,22 @@ Public Class Search
         {"Rural Health Clinic", "RHC"}
     }
 
+    Private ReadOnly TypeOfControlMap As New Dictionary(Of String, String) From {
+    {"1", "Voluntary Non‐Profit‐Church"},
+    {"2", "Voluntary Non‐Profit‐Other"},
+    {"3", "Proprietary‐Individual"},
+    {"4", "Proprietary‐Corporation"},
+    {"5", "Proprietary‐Partnership"},
+    {"6", "Proprietary‐Other"},
+    {"7", "Governmental‐Federal"},
+    {"8", "Governmental‐City‐County"},
+    {"9", "Governmental‐County"},
+    {"10", "Governmental‐State"},
+    {"11", "Governmental‐Hospital District"},
+    {"12", "Governmental‐City"},
+    {"13", "Governmental‐Other"}
+}
+
     Public Function useSQL(ByRef selectedState As String) As Boolean
         Using conn As New SqlConnection(connectionString)
             Using cmd As New SqlCommand("Select UseSql from dbo.States Where StateCode = '" + selectedState + "'", conn)
@@ -392,6 +408,7 @@ Public Class Search
                     End If
 
                     Results.SetResults(dt, filterSummary)
+                    PopulateTypeOfControlList()
                     Results.SelectedState = selectedState
                     Hide()
                     Results.Show()
@@ -479,6 +496,7 @@ Public Class Search
                             If dtMatches.Rows.Count > 0 Then
                                 Results.SetResults(dtMatches, filterSummary)
                                 Results.SelectedState = npiState
+                                PopulateTypeOfControlList()
                                 Hide()
                                 Results.Show()
                                 lblstatus.Text = ""
@@ -565,6 +583,7 @@ Public Class Search
                 End Using
 
                 Results.SetResults(dt, filterSummary)
+                PopulateTypeOfControlList()
                 Results.SelectedState = selectedState
                 Hide()
                 Results.Show()
@@ -628,6 +647,7 @@ Public Class Search
                             dt.Rows.Add(row)
                         Next
                         Results.SetResults(dt, "Demographics Search")
+                        PopulateTypeOfControlList()
                         Results.SelectedState = selectedState
                         Hide()
                         Results.Show()
@@ -784,6 +804,7 @@ Public Class Search
                         End If
 
                         Results.SetResults(dt, "Utilization Search")
+                        PopulateTypeOfControlList()
                         Hide()
                         Results.Show()
                     Else
@@ -828,7 +849,7 @@ Public Class Search
         If ComboBox21.SelectedIndex >= 0 Then filters.Add("ACO: " & ComboBox21.Text)
         If tbCode.Text.Trim() <> "" Then filters.Add("HCPCS Code: " & tbCode.Text)
         If lbTypeFacilityCharAll.SelectedItems.Count > 0 Then filters.Add("Facility Char: " & String.Join(", ", lbTypeFacilityCharAll.SelectedItems.Cast(Of String)()))
-        If ListBox13.SelectedItems.Count > 0 Then filters.Add("Type of Control: " & String.Join(", ", ListBox13.SelectedItems.Cast(Of String)()))
+        If lbControl.SelectedItems.Count > 0 Then filters.Add("Type of Control: " & String.Join(", ", lbControl.SelectedItems.Cast(Of String)()))
         If ListBox14.SelectedItems.Count > 0 Then filters.Add("Services: " & String.Join(", ", ListBox14.SelectedItems.Cast(Of String)()))
         If ListBox15.SelectedItems.Count > 0 Then filters.Add("HealthCare System: " & String.Join(", ", ListBox15.SelectedItems.Cast(Of String)()))
         If Not String.IsNullOrWhiteSpace(txtcountygeoall.Text) Then filters.Add("County: " & txtcountygeoall.Text)
@@ -857,6 +878,56 @@ Public Class Search
         txtMinTotPatRevAll.Clear()
         txtMaxTotPatRevAll.Clear()
     End Sub
+
+    Private Sub PopulateTypeOfControlList()
+        lbControl.Items.Clear()
+        lbControl.Items.Add("All")
+        If Results.resultsTable IsNot Nothing AndAlso Results.resultsTable.Columns.Contains("Type of Control") Then
+            Dim codes = Results.resultsTable.AsEnumerable().
+            Select(Function(r) r.Field(Of String)("Type of Control")).
+            Where(Function(s) Not String.IsNullOrWhiteSpace(s)).
+            Distinct().
+            OrderBy(Function(s) s).
+            ToList()
+            For Each code In codes
+                If TypeOfControlMap.ContainsKey(code) Then
+                    lbControl.Items.Add(TypeOfControlMap(code))
+                Else
+                    lbControl.Items.Add(code) ' fallback if unmapped
+                End If
+            Next
+        End If
+        lbControl.SelectedIndex = 0
+    End Sub
+
+    Private Sub lbControl_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lbControl.SelectedIndexChanged
+        If Results.resultsTable Is Nothing OrElse Not Results.resultsTable.Columns.Contains("Type of Control") Then Return
+
+        Dim selectedDesc As String = lbControl.SelectedItem?.ToString()
+        Dim dt As DataTable = Results.resultsTable
+
+        If selectedDesc = "All" Then
+            Results.SetResults(dt)
+        Else
+            ' Find the code for the selected description
+            Dim code = TypeOfControlMap.FirstOrDefault(Function(kv) kv.Value = selectedDesc).Key
+
+            Dim filtered = dt.AsEnumerable().
+            Where(Function(r)
+                      Dim valObj = r("Type of Control")
+                      If valObj Is Nothing OrElse valObj Is DBNull.Value Then Return False
+                      ' Compare as string, trim spaces
+                      Return valObj.ToString().Trim() = code
+                  End Function)
+
+            If filtered.Any() Then
+                Results.SetResults(filtered.CopyToDataTable())
+            Else
+                Results.SetResults(dt.Clone())
+            End If
+        End If
+    End Sub
+
 
     Private Sub Search_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 

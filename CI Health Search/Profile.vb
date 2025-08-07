@@ -79,6 +79,9 @@ Public Class Profile
         If Not String.IsNullOrWhiteSpace(ctx.Name) Then Return ctx.Name
         Return "N/A"
     End Function
+    Private Sub dgvProviders_DataBindingComplete(sender As Object, e As DataGridViewBindingCompleteEventArgs) Handles dgvProviders.DataBindingComplete
+        lblTot.Text = dgvProviders.Rows.Cast(Of DataGridViewRow)().Count(Function(r) Not r.IsNewRow).ToString()
+    End Sub
 
     Private Function GetBestAddress(ctx As HospitalContext) As String
         If ctx.LastDataRow IsNot Nothing Then
