@@ -427,6 +427,23 @@ Public Class Search
                         ).ToArray()
                         dt = If(filteredRows.Length > 0, filteredRows.CopyToDataTable(), dt.Clone())
                     End If
+                    If (Not String.IsNullOrEmpty(txtMinAnnualDisAll.Text) OrElse Not String.IsNullOrEmpty(txtMaxAnnualDisAll.Text)) AndAlso dt.Columns.Contains("Hospital Total Discharges (V + XVIII + XIX + Unknown) For Adults & Peds") Then
+                        Dim minDis As Decimal = 0
+                        Dim maxDis As Decimal = Decimal.MaxValue
+                        If Not String.IsNullOrEmpty(txtMinAnnualDisAll.Text) Then Decimal.TryParse(txtMinAnnualDisAll.Text, minDis)
+                        If Not String.IsNullOrEmpty(txtMaxAnnualDisAll.Text) Then Decimal.TryParse(txtMaxAnnualDisAll.Text, maxDis)
+                        Dim filteredRows = dt.AsEnumerable().Where(
+        Function(r)
+            Dim val As Decimal = 0
+            Dim strVal = r.Field(Of String)("Hospital Total Discharges (V + XVIII + XIX + Unknown) For Adults & Peds")
+            If String.IsNullOrWhiteSpace(strVal) OrElse Not Decimal.TryParse(strVal.Replace("$", "").Replace(",", ""), val) Then
+                Return False
+            End If
+            Return val >= minDis AndAlso val <= maxDis
+        End Function
+    ).ToArray()
+                        dt = If(filteredRows.Length > 0, filteredRows.CopyToDataTable(), dt.Clone())
+                    End If
 
                     If dt.Rows.Count = 0 Then
                         MessageBox.Show("No results found for your search.")
@@ -635,25 +652,10 @@ Public Class Search
     Private Sub PopulateTypeOfControlList()
         lbControl.Items.Clear()
         lbControl.Items.Add(New ControlTypeItem With {.Code = "", .Desc = "All"})
-        If Results.resultsTable IsNot Nothing AndAlso Results.resultsTable.Columns.Contains("Type of Control") Then
-            Dim codes = Results.resultsTable.AsEnumerable().
-            Select(Function(r) r.Field(Of String)("Type of Control")).
-            Where(Function(s) Not String.IsNullOrWhiteSpace(s)).
-            Distinct().
-            OrderBy(Function(s) s).
-            ToList()
-            For Each code In codes
-                Dim desc = If(TypeOfControlMap.ContainsKey(code), TypeOfControlMap(code), code)
-                lbControl.Items.Add(New ControlTypeItem With {.Code = code, .Desc = desc})
-            Next
-        End If
-
-        If lbControl.Items.Count > 1 Then
-            lbControl.SelectedIndex = 1
-            lbControl.SelectedIndex = 0
-        Else
-            lbControl.SelectedIndex = 0
-        End If
+        For Each kvp In TypeOfControlMap
+            lbControl.Items.Add(New ControlTypeItem With {.Code = kvp.Key, .Desc = kvp.Value})
+        Next
+        lbControl.ClearSelected()
     End Sub
 
     Private Sub lbControl_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lbControl.SelectedIndexChanged
@@ -674,7 +676,7 @@ Public Class Search
                                                    End Function)
 
             If filtered.Any() Then
-                MessageBox.Show("Filtered rows: " & filtered.Count().ToString())
+
                 Results.SetResults(filtered.CopyToDataTable())
             Else
                 Results.SetResults(dt.Clone())
@@ -683,12 +685,7 @@ Public Class Search
     End Sub
 
     Private Sub Search_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        lbControl.Items.Clear()
-        lbControl.Items.Add(New ControlTypeItem With {.Code = "", .Desc = "All"})
-        For Each kvp In TypeOfControlMap
-            lbControl.Items.Add(New ControlTypeItem With {.Code = kvp.Key, .Desc = kvp.Value})
-        Next
-        lbControl.SelectedIndex = 0
+        PopulateTypeOfControlList()
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
@@ -706,6 +703,7 @@ Public Class Search
         txtcountygeoall.Clear()
         txtMinTotPatRevAll.Clear()
         txtMaxTotPatRevAll.Clear()
+        lbControl.ClearSelected()
     End Sub
 
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
