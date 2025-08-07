@@ -266,6 +266,11 @@ Public Class Search
             Return
         End If
 
+        ' Use your existing controls for filters
+        Dim stateFilter As String = If(lbStateAll.SelectedItem IsNot Nothing, lbStateAll.SelectedItem.ToString().Trim(), "")
+        Dim cityFilter As String = txtCityAll.Text.Trim()
+        Dim zipFilter As String = txtZipCodeDemoAll.Text.Trim()
+
         lblstatus.Text = "Searching by HCPCS code..."
         lblstatus.Visible = True
 
@@ -295,14 +300,31 @@ Public Class Search
                 End If
             End Using
 
-            If dt.Rows.Count = 0 Then
-                MessageBox.Show("No results found for this HCPCS code.")
+            ' Filter by state, city, zip if provided
+            Dim filteredRows = dt.AsEnumerable().Where(Function(r)
+                                                           Dim match = True
+                                                           If Not String.IsNullOrWhiteSpace(stateFilter) Then
+                                                               match = match AndAlso r.Field(Of String)("Rndrng_Prvdr_State_Abrvtn")?.Trim().Equals(stateFilter, StringComparison.OrdinalIgnoreCase)
+                                                           End If
+                                                           If Not String.IsNullOrWhiteSpace(cityFilter) Then
+                                                               match = match AndAlso r.Field(Of String)("Rndrng_Prvdr_City")?.Trim().Equals(cityFilter, StringComparison.OrdinalIgnoreCase)
+                                                           End If
+                                                           If Not String.IsNullOrWhiteSpace(zipFilter) Then
+                                                               match = match AndAlso r.Field(Of String)("Rndrng_Prvdr_Zip5")?.Trim().Equals(zipFilter, StringComparison.OrdinalIgnoreCase)
+                                                           End If
+                                                           Return match
+                                                       End Function).ToArray()
+
+            Dim filteredDt As DataTable = If(filteredRows.Length > 0, filteredRows.CopyToDataTable(), dt.Clone())
+
+            If filteredDt.Rows.Count = 0 Then
+                MessageBox.Show("No results found for this HCPCS code and filters.")
                 lblstatus.Text = ""
                 lblstatus.Visible = False
                 Return
             End If
 
-            Dim popup As New HCPCSCodeResultsForm(dt, code)
+            Dim popup As New HCPCSCodeResultsForm(filteredDt, code)
             popup.ShowDialog()
         Catch ex As TaskCanceledException
             MessageBox.Show("HCPCS API request timed out.")
