@@ -1,6 +1,7 @@
 ﻿Imports System.Data
 
 Public Class HCPCSCodeResultsForm
+    Private WithEvents cmsColumns As New ContextMenuStrip()
     Private currentPage As Integer = 0
     Private pageSize As Integer = 100
     Private code As String
@@ -30,6 +31,54 @@ Public Class HCPCSCodeResultsForm
         btnPrevPage.Enabled = currentPage > 0
         btnNextPage.Enabled = dt.Rows.Count = pageSize
     End Function
+
+    Private Sub SetupColumnContextMenu()
+        cmsColumns.Items.Clear()
+
+        ' Add "Show All" and "Hide All" options
+        Dim showAllItem As New ToolStripMenuItem("Show All Columns")
+        AddHandler showAllItem.Click, Sub()
+                                          For Each col As DataGridViewColumn In dgvCodeResults.Columns
+                                              col.Visible = True
+                                          Next
+                                      End Sub
+        Dim hideAllItem As New ToolStripMenuItem("Hide All Columns")
+        AddHandler hideAllItem.Click, Sub()
+                                          For Each col As DataGridViewColumn In dgvCodeResults.Columns
+                                              col.Visible = False
+                                          Next
+                                      End Sub
+        cmsColumns.Items.Add(showAllItem)
+        cmsColumns.Items.Add(hideAllItem)
+        cmsColumns.Items.Add(New ToolStripSeparator())
+
+        ' Add a menu item for each column
+        For Each col As DataGridViewColumn In dgvCodeResults.Columns
+            Dim item As New ToolStripMenuItem(col.HeaderText) With {
+            .Checked = col.Visible,
+            .CheckOnClick = True,
+            .Tag = col.Name
+        }
+            AddHandler item.CheckedChanged, AddressOf ColumnMenuItem_CheckedChanged
+            cmsColumns.Items.Add(item)
+        Next
+    End Sub
+
+    Private Sub ColumnMenuItem_CheckedChanged(sender As Object, e As EventArgs)
+        Dim item = CType(sender, ToolStripMenuItem)
+        Dim colName = item.Tag.ToString()
+        If dgvCodeResults.Columns.Contains(colName) Then
+            dgvCodeResults.Columns(colName).Visible = item.Checked
+        End If
+    End Sub
+
+    ' Show context menu on right-click
+    Private Sub dgvCodeResults_MouseUp(sender As Object, e As MouseEventArgs) Handles dgvCodeResults.MouseUp
+        If e.Button = MouseButtons.Right Then
+            SetupColumnContextMenu()
+            cmsColumns.Show(dgvCodeResults, e.Location)
+        End If
+    End Sub
 
     ' Next page button
     Private Async Sub btnNextPage_Click(sender As Object, e As EventArgs) Handles btnNextPage.Click
