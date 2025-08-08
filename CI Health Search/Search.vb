@@ -266,7 +266,6 @@ Public Class Search
             Return
         End If
 
-        ' Support single code or range (e.g. A1000-A1010)
         Dim codesToSearch As New List(Of String)
         If codeInput.Contains("-") AndAlso codeInput.Length >= 11 Then
             Dim parts = codeInput.Split("-"c)
@@ -284,7 +283,6 @@ Public Class Search
             codesToSearch.Add(codeInput)
         End If
 
-        ' Gather filters
         Dim stateFilter As String = If(lbStateAll.SelectedItem IsNot Nothing, lbStateAll.SelectedItem.ToString().Trim(), "")
         Dim cityFilter As String = txtCityAll.Text.Trim()
         Dim zipFilter As String = txtZipCodeDemoAll.Text.Trim()
@@ -297,57 +295,65 @@ Public Class Search
             Dim initialized As Boolean = False
 
             For Each code In codesToSearch
-                Dim apiUrl As String = $"https://data.cms.gov/data-api/v1/dataset/92396110-2aed-4d63-a6a2-5d6207d46a29/data?filter[HCPCS_Cd]={Uri.EscapeDataString(code)}&size=1000"
-                Dim dt As New DataTable()
-                Using client As New HttpClient()
-                    client.Timeout = TimeSpan.FromSeconds(15)
-                    Dim response = Await client.GetAsync(apiUrl)
-                    If response.IsSuccessStatusCode Then
-                        Dim json = Await response.Content.ReadAsStringAsync()
-                        Dim data = JArray.Parse(json)
-                        If data.Count > 0 Then
-                            For Each col In data(0).ToObject(Of JObject)().Properties()
-                                If Not dt.Columns.Contains(col.Name) Then
-                                    dt.Columns.Add(col.Name)
-                                End If
-                            Next
-                            For Each item In data
-                                Dim row = dt.NewRow()
-                                For Each col In dt.Columns
-                                    row(col.ToString()) = item(col.ToString())
-                                Next
-                                dt.Rows.Add(row)
-                            Next
-                        End If
-                    Else
-                        MessageBox.Show("HCPCS API error: " & response.StatusCode.ToString())
+                Dim offset As Integer = 0
+                Dim pageSize As Integer = 1000
+                Dim moreData As Boolean = True
+
+                While moreData
+                    Dim apiUrl As New System.Text.StringBuilder($"https://data.cms.gov/data-api/v1/dataset/92396110-2aed-4d63-a6a2-5d6207d46a29/data?filter[HCPCS_Cd]={Uri.EscapeDataString(code)}")
+                    If Not String.IsNullOrWhiteSpace(stateFilter) Then
+                        apiUrl.Append($"&filter[Rndrng_Prvdr_State_Abrvtn]={Uri.EscapeDataString(stateFilter)}")
                     End If
-                End Using
+                    If Not String.IsNullOrWhiteSpace(cityFilter) Then
+                        apiUrl.Append($"&filter[Rndrng_Prvdr_City]={Uri.EscapeDataString(cityFilter)}")
+                    End If
+                    If Not String.IsNullOrWhiteSpace(zipFilter) Then
+                        apiUrl.Append($"&filter[Rndrng_Prvdr_Zip5]={Uri.EscapeDataString(zipFilter)}")
+                    End If
+                    apiUrl.Append($"&size={pageSize}&offset={offset}")
 
-                ' Filter by state, city, zip if provided
-                Dim filteredRows = dt.AsEnumerable().Where(Function(r)
-                                                               Dim match = True
-                                                               If Not String.IsNullOrWhiteSpace(stateFilter) Then
-                                                                   match = match AndAlso r.Field(Of String)("Rndrng_Prvdr_State_Abrvtn")?.Trim().Equals(stateFilter, StringComparison.OrdinalIgnoreCase)
-                                                               End If
-                                                               If Not String.IsNullOrWhiteSpace(cityFilter) Then
-                                                                   match = match AndAlso r.Field(Of String)("Rndrng_Prvdr_City")?.Trim().Equals(cityFilter, StringComparison.OrdinalIgnoreCase)
-                                                               End If
-                                                               If Not String.IsNullOrWhiteSpace(zipFilter) Then
-                                                                   match = match AndAlso r.Field(Of String)("Rndrng_Prvdr_Zip5")?.Trim().Equals(zipFilter, StringComparison.OrdinalIgnoreCase)
-                                                               End If
-                                                               Return match
-                                                           End Function).ToArray()
+                    Dim dt As New DataTable()
+                    Using client As New HttpClient()
+                        client.Timeout = TimeSpan.FromSeconds(60)
+                        Dim response = Await client.GetAsync(apiUrl.ToString())
+                        If response.IsSuccessStatusCode Then
+                            Dim json = Await response.Content.ReadAsStringAsync()
+                            Dim data = JArray.Parse(json)
+                            If data.Count > 0 Then
+                                For Each col In data(0).ToObject(Of JObject)().Properties()
+                                    If Not dt.Columns.Contains(col.Name) Then
+                                        dt.Columns.Add(col.Name)
+                                    End If
+                                Next
+                                For Each item In data
+                                    Dim row = dt.NewRow()
+                                    For Each col In dt.Columns
+                                        row(col.ToString()) = item(col.ToString())
+                                    Next
+                                    dt.Rows.Add(row)
+                                Next
+                            End If
 
-                Dim filteredDt As DataTable = If(filteredRows.Length > 0, filteredRows.CopyToDataTable(), dt.Clone())
+                            If Not initialized Then
+                                allResults = dt.Clone()
+                                initialized = True
+                            End If
+                            For Each row As DataRow In dt.Rows
+                                allResults.ImportRow(row)
+                            Next
 
-                If Not initialized Then
-                    allResults = filteredDt.Clone()
-                    initialized = True
-                End If
-                For Each row As DataRow In filteredDt.Rows
-                    allResults.ImportRow(row)
-                Next
+                            If data.Count < pageSize Then
+                                moreData = False
+                            Else
+                                offset += pageSize
+                                Await Task.Delay(500) ' Be nice to the API
+                            End If
+                        Else
+                            MessageBox.Show("HCPCS API error: " & response.StatusCode.ToString())
+                            moreData = False
+                        End If
+                    End Using
+                End While
             Next
 
             If allResults.Rows.Count = 0 Then
