@@ -7,16 +7,18 @@ Partial Class HCPCSCodeResultsForm
         dgvCodeResults = New DataGridView()
         lblHCPCSDescription = New Label()
         linkMoreInfo = New LinkLabel()
+        btnPrevPage = New Button()
+        btnNextPage = New Button()
+        lblStatus = New Label()
         CType(dgvCodeResults, ComponentModel.ISupportInitialize).BeginInit()
         SuspendLayout()
         ' 
         ' dgvCodeResults
         ' 
         dgvCodeResults.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        dgvCodeResults.Dock = DockStyle.Fill
         dgvCodeResults.Location = New Point(0, 0)
         dgvCodeResults.Name = "dgvCodeResults"
-        dgvCodeResults.Size = New Size(1341, 587)
+        dgvCodeResults.Size = New Size(1341, 560)
         dgvCodeResults.TabIndex = 0
         ' 
         ' lblHCPCSDescription
@@ -42,11 +44,41 @@ Partial Class HCPCSCodeResultsForm
         linkMoreInfo.Text = "More about HCPCS"
         linkMoreInfo.Visible = False
         ' 
+        ' btnPrevPage
+        ' 
+        btnPrevPage.Location = New Point(12, 566)
+        btnPrevPage.Name = "btnPrevPage"
+        btnPrevPage.Size = New Size(121, 23)
+        btnPrevPage.TabIndex = 4
+        btnPrevPage.Text = "Previous"
+        btnPrevPage.UseVisualStyleBackColor = True
+        ' 
+        ' btnNextPage
+        ' 
+        btnNextPage.Location = New Point(1208, 566)
+        btnNextPage.Name = "btnNextPage"
+        btnNextPage.Size = New Size(121, 23)
+        btnNextPage.TabIndex = 5
+        btnNextPage.Text = "Next"
+        btnNextPage.UseVisualStyleBackColor = True
+        ' 
+        ' lblStatus
+        ' 
+        lblStatus.AutoSize = True
+        lblStatus.Location = New Point(621, 570)
+        lblStatus.Name = "lblStatus"
+        lblStatus.Size = New Size(39, 15)
+        lblStatus.TabIndex = 6
+        lblStatus.Text = "Status"
+        ' 
         ' HCPCSCodeResultsForm
         ' 
         AutoScaleDimensions = New SizeF(7.0F, 15.0F)
         AutoScaleMode = AutoScaleMode.Font
-        ClientSize = New Size(1341, 587)
+        ClientSize = New Size(1341, 590)
+        Controls.Add(lblStatus)
+        Controls.Add(btnNextPage)
+        Controls.Add(btnPrevPage)
         Controls.Add(dgvCodeResults)
         Controls.Add(lblHCPCSDescription)
         Controls.Add(linkMoreInfo)
@@ -60,4 +92,7 @@ Partial Class HCPCSCodeResultsForm
     Friend WithEvents dgvCodeResults As DataGridView
     Friend WithEvents lblHCPCSDescription As System.Windows.Forms.Label
     Friend WithEvents linkMoreInfo As System.Windows.Forms.LinkLabel
+    Friend WithEvents btnPrevPage As Button
+    Friend WithEvents btnNextPage As Button
+    Friend WithEvents lblStatus As Label
 End Class

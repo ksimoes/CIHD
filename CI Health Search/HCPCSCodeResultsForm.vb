@@ -1,75 +1,62 @@
 ﻿Imports System.Data
 
 Public Class HCPCSCodeResultsForm
-    Public Sub New(dt As DataTable, code As String)
+    Private currentPage As Integer = 0
+    Private pageSize As Integer = 100
+    Private code As String
+    Private state As String
+
+    ' Constructor for paged results
+    Public Sub New(hcpcsCode As String, stateFilter As String)
         InitializeComponent()
-        Me.Text = $"Providers for HCPCS Code: {code}   (Rows: {dt.Rows.Count})"
-        dgvCodeResults.DataSource = dt
-        'StyleDataGridView()
-        ApplyCustomColors()
+        code = hcpcsCode
+        state = stateFilter
     End Sub
 
-    ''Private Sub StyleDataGridView()
-    'With dgvCodeResults
-    '.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
-    '.ReadOnly = True
-    '.AllowUserToAddRows = False
-    '.AllowUserToDeleteRows = False
-    '.DefaultCellStyle.Font = New Font("Segoe UI", 10)
-    '.ColumnHeadersDefaultCellStyle.Font = New Font("Segoe UI", 10, FontStyle.Bold)
-    '.DefaultCellStyle.Padding = New Padding(4, 2, 4, 2)
-    '.RowTemplate.Height = 28
-    '.AlternatingRowsDefaultCellStyle.BackColor = Color.WhiteSmoke
-    '.DefaultCellStyle.BackColor = Color.White
-    '.ColumnHeadersDefaultCellStyle.BackColor = Color.SteelBlue
-    '.ColumnHeadersDefaultCellStyle.ForeColor = Color.White
-    '.DefaultCellStyle.SelectionBackColor = Color.LightSkyBlue
-    '.DefaultCellStyle.SelectionForeColor = Color.Black
-    '.EnableHeadersVisualStyles = False
-    '.RowHeadersVisible = False
-    'End With
-    'End Sub '
+    ' Load the first page when the form loads
+    Private Async Sub HCPCSCodeResultsForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Await LoadPage()
+    End Sub
+
+    ' Load a single page of results
+    Private Async Function LoadPage() As Task
+        btnNextPage.Enabled = False
+        btnPrevPage.Enabled = False
+        lblStatus.Text = $"Loading page {currentPage + 1}..."
+        Dim offset = currentPage * pageSize
+        Dim dt = Await CType(Owner, Search).FetchHCPCSPage(code, state, pageSize, offset)
+        dgvCodeResults.DataSource = dt
+        lblStatus.Text = $"Page {currentPage + 1} (showing {dt.Rows.Count} results)"
+        btnPrevPage.Enabled = currentPage > 0
+        btnNextPage.Enabled = dt.Rows.Count = pageSize
+    End Function
+
+    ' Next page button
+    Private Async Sub btnNextPage_Click(sender As Object, e As EventArgs) Handles btnNextPage.Click
+        currentPage += 1
+        Await LoadPage()
+    End Sub
+
+    ' Previous page button
+    Private Async Sub btnPrevPage_Click(sender As Object, e As EventArgs) Handles btnPrevPage.Click
+        If currentPage > 0 Then
+            currentPage -= 1
+            Await LoadPage()
+        End If
+    End Sub
+
+    ' Optional: Apply custom DataGridView colors
     Private Sub ApplyCustomColors()
         With dgvCodeResults
-            .AlternatingRowsDefaultCellStyle.BackColor = Color.LightYellow   ' Alternating rows
-            .DefaultCellStyle.BackColor = Color.White                        ' Main rows
-            .ColumnHeadersDefaultCellStyle.BackColor = Color.DarkSlateBlue   ' Header background
-            .ColumnHeadersDefaultCellStyle.ForeColor = Color.White           ' Header text
-            .DefaultCellStyle.SelectionBackColor = Color.LightSkyBlue        ' Selected row
+            .AlternatingRowsDefaultCellStyle.BackColor = Color.LightYellow
+            .DefaultCellStyle.BackColor = Color.White
+            .ColumnHeadersDefaultCellStyle.BackColor = Color.DarkSlateBlue
+            .ColumnHeadersDefaultCellStyle.ForeColor = Color.White
+            .DefaultCellStyle.SelectionBackColor = Color.LightSkyBlue
             .DefaultCellStyle.SelectionForeColor = Color.Black
             .EnableHeadersVisualStyles = False
         End With
     End Sub
 
-    Private Const Level1Desc As String = "HCPCS Level 1: Description of the HCPCS code for the specific medical service furnished by the provider. HCPCS descriptions associated with CPT codes are consumer friendly descriptions provided by the AMA. CPT Consumer Friendly Descriptors are lay synonyms for CPT descriptors that are intended to help healthcare consumers who are not medical professionals understand clinical procedures on bills and patient portals. CPT Consumer Friendly Descriptors should not be used for clinical coding or documentation. "
-    Private Const Level2Desc As String = "HCPCS Level 2: All other descriptions are CMS Level II descriptions provided in long form. Due to variable length restrictions, the CMS Level II descriptions have been truncated to 256 bytes. As a result, the same HCPCS description can be associated with more than one HCPCS code. "
-
-
-    ' When showing Level 1 table:
-    Private Sub ShowLevel1Table()
-        lblHCPCSDescription.Text = Level1Desc
-        lblHCPCSDescription.Visible = True
-        linkMoreInfo.Visible = True
-    End Sub
-
-    Private Sub ShowLevel2Table()
-        lblHCPCSDescription.Text = Level2Desc
-        lblHCPCSDescription.Visible = True
-        linkMoreInfo.Visible = True
-    End Sub
-
-    Private Sub HideTables()
-        lblHCPCSDescription.Visible = False
-        linkMoreInfo.Visible = False
-    End Sub
-
-    Private currentLevel As Integer = 1 ' 1 for Level 1, 2 for Level 2
-
-    Private Sub HCPCSCodeResultsForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-
-    End Sub
-
-    ' When you load Level 1 data:
-
-
+    ' (Optional) Call ApplyCustomColors in the constructor or after InitializeComponent if desired
 End Class

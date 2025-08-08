@@ -363,7 +363,8 @@ Public Class Search
                 Return
             End If
 
-            Dim popup As New HCPCSCodeResultsForm(allResults, codeInput)
+            Dim popup As New HCPCSCodeResultsForm(codeInput, stateFilter)
+            popup.Owner = Me
             popup.ShowDialog()
         Catch ex As TaskCanceledException
             MessageBox.Show("HCPCS API request timed out.")
@@ -374,6 +375,40 @@ Public Class Search
             lblstatus.Visible = False
         End Try
     End Sub
+
+    ' Example: Fetch a single page of results
+    Public Async Function FetchHCPCSPage(code As String, state As String, pageSize As Integer, offset As Integer) As Task(Of DataTable)
+        Dim apiUrl As New System.Text.StringBuilder($"https://data.cms.gov/data-api/v1/dataset/92396110-2aed-4d63-a6a2-5d6207d46a29/data?filter[HCPCS_Cd]={Uri.EscapeDataString(code)}")
+        If Not String.IsNullOrWhiteSpace(state) Then
+            apiUrl.Append($"&filter[Rndrng_Prvdr_State_Abrvtn]={Uri.EscapeDataString(state)}")
+        End If
+        apiUrl.Append($"&size={pageSize}&offset={offset}")
+
+        Dim dt As New DataTable()
+        Using client As New HttpClient()
+            client.Timeout = TimeSpan.FromSeconds(60)
+            Dim response = Await client.GetAsync(apiUrl.ToString())
+            If response.IsSuccessStatusCode Then
+                Dim json = Await response.Content.ReadAsStringAsync()
+                Dim data = JArray.Parse(json)
+                If data.Count > 0 Then
+                    For Each col In data(0).ToObject(Of JObject)().Properties()
+                        If Not dt.Columns.Contains(col.Name) Then
+                            dt.Columns.Add(col.Name)
+                        End If
+                    Next
+                    For Each item In data
+                        Dim row = dt.NewRow()
+                        For Each col In dt.Columns
+                            row(col.ToString()) = item(col.ToString())
+                        Next
+                        dt.Rows.Add(row)
+                    Next
+                End If
+            End If
+        End Using
+        Return dt
+    End Function
 
     Private Async Function SearchByApiAsync(selectedState As String, filterSummary As String) As Task
         Dim apiUrl As String = "https://data.cms.gov/data-api/v1/dataset/8015f175-35cc-4cab-a664-b7c87d91a027/data?"
