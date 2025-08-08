@@ -266,10 +266,9 @@ Public Class Search
             Return
         End If
 
+        ' Support single code or range (e.g. A1000-A1010)
         Dim codesToSearch As New List(Of String)
-
         If codeInput.Contains("-") AndAlso codeInput.Length >= 11 Then
-            ' Range mode, e.g. A1000-A1010
             Dim parts = codeInput.Split("-"c)
             If parts.Length = 2 Then
                 Dim prefixFrom = parts(0).Substring(0, 1)
@@ -285,52 +284,89 @@ Public Class Search
             codesToSearch.Add(codeInput)
         End If
 
-        Dim allResults As New DataTable()
-        Dim initialized As Boolean = False
+        ' Gather filters
+        Dim stateFilter As String = If(lbStateAll.SelectedItem IsNot Nothing, lbStateAll.SelectedItem.ToString().Trim(), "")
+        Dim cityFilter As String = txtCityAll.Text.Trim()
+        Dim zipFilter As String = txtZipCodeDemoAll.Text.Trim()
 
-        For Each code In codesToSearch
-            Dim apiUrl As String = $"https://data.cms.gov/data-api/v1/dataset/92396110-2aed-4d63-a6a2-5d6207d46a29/data?filter[HCPCS_Cd]={Uri.EscapeDataString(code)}&size=1000"
-            Using client As New HttpClient()
-                client.Timeout = TimeSpan.FromSeconds(15)
-                Dim response = Await client.GetAsync(apiUrl)
-                If response.IsSuccessStatusCode Then
-                    Dim json = Await response.Content.ReadAsStringAsync()
-                    Dim data = JArray.Parse(json)
-                    If data.Count > 0 Then
-                        Dim dt As New DataTable()
-                        For Each col In data(0).ToObject(Of JObject)().Properties()
-                            If Not dt.Columns.Contains(col.Name) Then
-                                dt.Columns.Add(col.Name)
-                            End If
-                        Next
-                        For Each item In data
-                            Dim row = dt.NewRow()
-                            For Each col In dt.Columns
-                                row(col.ToString()) = item(col.ToString())
+        lblstatus.Text = "Searching by HCPCS code..."
+        lblstatus.Visible = True
+
+        Try
+            Dim allResults As New DataTable()
+            Dim initialized As Boolean = False
+
+            For Each code In codesToSearch
+                Dim apiUrl As String = $"https://data.cms.gov/data-api/v1/dataset/92396110-2aed-4d63-a6a2-5d6207d46a29/data?filter[HCPCS_Cd]={Uri.EscapeDataString(code)}&size=1000"
+                Dim dt As New DataTable()
+                Using client As New HttpClient()
+                    client.Timeout = TimeSpan.FromSeconds(15)
+                    Dim response = Await client.GetAsync(apiUrl)
+                    If response.IsSuccessStatusCode Then
+                        Dim json = Await response.Content.ReadAsStringAsync()
+                        Dim data = JArray.Parse(json)
+                        If data.Count > 0 Then
+                            For Each col In data(0).ToObject(Of JObject)().Properties()
+                                If Not dt.Columns.Contains(col.Name) Then
+                                    dt.Columns.Add(col.Name)
+                                End If
                             Next
-                            dt.Rows.Add(row)
-                        Next
-                        If Not initialized Then
-                            allResults = dt.Clone()
-                            initialized = True
+                            For Each item In data
+                                Dim row = dt.NewRow()
+                                For Each col In dt.Columns
+                                    row(col.ToString()) = item(col.ToString())
+                                Next
+                                dt.Rows.Add(row)
+                            Next
                         End If
-                        For Each row As DataRow In dt.Rows
-                            allResults.ImportRow(row)
-                        Next
+                    Else
+                        MessageBox.Show("HCPCS API error: " & response.StatusCode.ToString())
                     End If
-                End If
-            End Using
-        Next
+                End Using
 
-        If allResults.Rows.Count = 0 Then
-            MessageBox.Show("No results found for this HCPCS code or range.")
+                ' Filter by state, city, zip if provided
+                Dim filteredRows = dt.AsEnumerable().Where(Function(r)
+                                                               Dim match = True
+                                                               If Not String.IsNullOrWhiteSpace(stateFilter) Then
+                                                                   match = match AndAlso r.Field(Of String)("Rndrng_Prvdr_State_Abrvtn")?.Trim().Equals(stateFilter, StringComparison.OrdinalIgnoreCase)
+                                                               End If
+                                                               If Not String.IsNullOrWhiteSpace(cityFilter) Then
+                                                                   match = match AndAlso r.Field(Of String)("Rndrng_Prvdr_City")?.Trim().Equals(cityFilter, StringComparison.OrdinalIgnoreCase)
+                                                               End If
+                                                               If Not String.IsNullOrWhiteSpace(zipFilter) Then
+                                                                   match = match AndAlso r.Field(Of String)("Rndrng_Prvdr_Zip5")?.Trim().Equals(zipFilter, StringComparison.OrdinalIgnoreCase)
+                                                               End If
+                                                               Return match
+                                                           End Function).ToArray()
+
+                Dim filteredDt As DataTable = If(filteredRows.Length > 0, filteredRows.CopyToDataTable(), dt.Clone())
+
+                If Not initialized Then
+                    allResults = filteredDt.Clone()
+                    initialized = True
+                End If
+                For Each row As DataRow In filteredDt.Rows
+                    allResults.ImportRow(row)
+                Next
+            Next
+
+            If allResults.Rows.Count = 0 Then
+                MessageBox.Show("No results found for this HCPCS code or range and filters.")
+                lblstatus.Text = ""
+                lblstatus.Visible = False
+                Return
+            End If
+
+            Dim popup As New HCPCSCodeResultsForm(allResults, codeInput)
+            popup.ShowDialog()
+        Catch ex As TaskCanceledException
+            MessageBox.Show("HCPCS API request timed out.")
+        Catch ex As Exception
+            MessageBox.Show("Error searching by HCPCS code: " & ex.Message)
+        Finally
             lblstatus.Text = ""
             lblstatus.Visible = False
-            Return
-        End If
-
-        Dim popup As New HCPCSCodeResultsForm(allResults, codeInput)
-        popup.ShowDialog()
+        End Try
     End Sub
 
     Private Async Function SearchByApiAsync(selectedState As String, filterSummary As String) As Task
