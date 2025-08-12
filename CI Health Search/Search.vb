@@ -266,6 +266,8 @@ Public Class Search
             Return
         End If
 
+        picLoading.Visible = True ' <-- Show loading spinner
+
         Dim codesToSearch As New List(Of String)
         If codeInput.Contains("-") AndAlso codeInput.Length >= 11 Then
             Dim parts = codeInput.Split("-"c)
@@ -373,6 +375,7 @@ Public Class Search
         Finally
             lblstatus.Text = ""
             lblstatus.Visible = False
+            picLoading.Visible = False ' <-- Hide loading spinner
         End Try
     End Sub
 

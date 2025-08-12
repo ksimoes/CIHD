@@ -49,7 +49,7 @@ Partial Class ProviderDetailsForm
         ' 
         linkMoreInfo.AutoSize = True
         linkMoreInfo.Font = New Font("Segoe UI", 9.75F)
-        linkMoreInfo.Location = New Point(20, 80)
+        linkMoreInfo.Location = New Point(40, 78)
         linkMoreInfo.Name = "linkMoreInfo"
         linkMoreInfo.Size = New Size(121, 17)
         linkMoreInfo.TabIndex = 101

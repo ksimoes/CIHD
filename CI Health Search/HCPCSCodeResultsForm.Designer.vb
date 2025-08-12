@@ -46,7 +46,7 @@ Partial Class HCPCSCodeResultsForm
         ' 
         ' btnPrevPage
         ' 
-        btnPrevPage.Location = New Point(12, 566)
+        btnPrevPage.Location = New Point(1081, 566)
         btnPrevPage.Name = "btnPrevPage"
         btnPrevPage.Size = New Size(121, 23)
         btnPrevPage.TabIndex = 4
@@ -73,7 +73,7 @@ Partial Class HCPCSCodeResultsForm
         ' 
         ' HCPCSCodeResultsForm
         ' 
-        AutoScaleDimensions = New SizeF(7.0F, 15.0F)
+        AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(1341, 590)
         Controls.Add(lblStatus)

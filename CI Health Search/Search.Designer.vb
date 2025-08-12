@@ -22,8 +22,10 @@ Partial Class Search
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Search))
         TabControl1 = New TabControl()
         TabPage5 = New TabPage()
+        picLoading = New PictureBox()
         lblCheckingStatus = New Label()
         lblstatus = New Label()
         Button1 = New Button()
@@ -192,6 +194,7 @@ Partial Class Search
         lblFacility = New Label()
         TabControl1.SuspendLayout()
         TabPage5.SuspendLayout()
+        CType(picLoading, ComponentModel.ISupportInitialize).BeginInit()
         GroupBox5.SuspendLayout()
         GroupBox2.SuspendLayout()
         GroupBox3.SuspendLayout()
@@ -218,6 +221,7 @@ Partial Class Search
         ' 
         ' TabPage5
         ' 
+        TabPage5.Controls.Add(picLoading)
         TabPage5.Controls.Add(lblCheckingStatus)
         TabPage5.Controls.Add(lblstatus)
         TabPage5.Controls.Add(Button1)
@@ -232,6 +236,18 @@ Partial Class Search
         TabPage5.TabIndex = 4
         TabPage5.Text = "All"
         TabPage5.UseVisualStyleBackColor = True
+        ' 
+        ' picLoading
+        ' 
+        picLoading.BackColor = Color.Transparent
+        picLoading.Image = CType(resources.GetObject("picLoading.Image"), Image)
+        picLoading.Location = New Point(748, 575)
+        picLoading.Name = "picLoading"
+        picLoading.Size = New Size(120, 103)
+        picLoading.SizeMode = PictureBoxSizeMode.CenterImage
+        picLoading.TabIndex = 104
+        picLoading.TabStop = False
+        picLoading.Visible = False
         ' 
         ' lblCheckingStatus
         ' 
@@ -1891,6 +1907,7 @@ Partial Class Search
         TabControl1.ResumeLayout(False)
         TabPage5.ResumeLayout(False)
         TabPage5.PerformLayout()
+        CType(picLoading, ComponentModel.ISupportInitialize).EndInit()
         GroupBox5.ResumeLayout(False)
         GroupBox5.PerformLayout()
         GroupBox2.ResumeLayout(False)
@@ -2080,4 +2097,5 @@ Partial Class Search
     Friend WithEvents btnSearchHCPCSCode As Button
     Friend WithEvents grpDemographicsTab As GroupBox
     Friend WithEvents txtMinSpecialBedsUtil As TextBox
+    Friend WithEvents picLoading As PictureBox
 End Class
