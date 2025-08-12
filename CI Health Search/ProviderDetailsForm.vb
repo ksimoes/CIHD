@@ -16,6 +16,8 @@ Public Class ProviderDetailsForm
     Private filterPanel As Panel
     Private columnFilters As New Dictionary(Of String, ComboBox)
     Private currentDataTable As DataTable
+    Private dgvFilterHelper As DataGridViewFilterHelper
+
 
     ' Use your existing PictureBox for loading indication
     ' Make sure you have a PictureBox named picLoading on your form (in the Designer)
@@ -314,6 +316,7 @@ Public Class ProviderDetailsForm
             End If
 
             dgvDetails.DataSource = dt
+            dgvFilterHelper = New DataGridViewFilterHelper(dgvDetails, Me)
             SetFriendlyColumnHeaders()
             ApplyCustomColors()
             dgvDetails.Refresh()
@@ -383,6 +386,7 @@ Public Class ProviderDetailsForm
                 End If
             End Using
             dgvDetails.DataSource = dt
+            dgvFilterHelper = New DataGridViewFilterHelper(dgvDetails, Me)
             ApplyCustomColors()
             dgvDetails.Refresh()
         Catch ex As Exception
@@ -437,6 +441,7 @@ Public Class ProviderDetailsForm
                 End If
             End Using
             dgvDetails.DataSource = dt
+            dgvFilterHelper = New DataGridViewFilterHelper(dgvDetails, Me)
             SetHCPCSColumnHeaders()
             ApplyCustomColors()
             dgvDetails.Refresh()
@@ -523,6 +528,7 @@ Public Class ProviderDetailsForm
                 MessageBox.Show("No associated hospitals found for this provider.")
             Else
                 dgvDetails.DataSource = dt
+                dgvFilterHelper = New DataGridViewFilterHelper(dgvDetails, Me)
 
                 If dgvDetails.Columns.Contains("Facility Affiliation Certification Number") Then
                     Dim idx = dgvDetails.Columns("Facility Affiliation Certification Number").Index
@@ -604,6 +610,7 @@ Public Class ProviderDetailsForm
             End If
 
             dgvDetails.DataSource = dt
+            dgvFilterHelper = New DataGridViewFilterHelper(dgvDetails, Me)
             ApplyCustomColors()
             dgvDetails.Refresh()
         Catch ex As Exception
@@ -670,6 +677,7 @@ Public Class ProviderDetailsForm
             End If
 
             dgvDetails.DataSource = dt
+            dgvFilterHelper = New DataGridViewFilterHelper(dgvDetails, Me)
             ApplyCustomColors()
             dgvDetails.Refresh()
         Catch ex As Exception
@@ -736,6 +744,7 @@ Public Class ProviderDetailsForm
             End If
 
             dgvDetails.DataSource = dt
+            dgvFilterHelper = New DataGridViewFilterHelper(dgvDetails, Me)
             ApplyCustomColors()
             dgvDetails.Refresh()
         Catch ex As Exception

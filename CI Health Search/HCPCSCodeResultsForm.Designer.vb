@@ -16,9 +16,10 @@ Partial Class HCPCSCodeResultsForm
         ' dgvCodeResults
         ' 
         dgvCodeResults.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        dgvCodeResults.Dock = DockStyle.Fill
         dgvCodeResults.Location = New Point(0, 0)
         dgvCodeResults.Name = "dgvCodeResults"
-        dgvCodeResults.Size = New Size(1341, 560)
+        dgvCodeResults.Size = New Size(1448, 697)
         dgvCodeResults.TabIndex = 0
         ' 
         ' lblHCPCSDescription
@@ -46,7 +47,7 @@ Partial Class HCPCSCodeResultsForm
         ' 
         ' btnPrevPage
         ' 
-        btnPrevPage.Location = New Point(1081, 566)
+        btnPrevPage.Location = New Point(1197, 674)
         btnPrevPage.Name = "btnPrevPage"
         btnPrevPage.Size = New Size(121, 23)
         btnPrevPage.TabIndex = 4
@@ -55,7 +56,7 @@ Partial Class HCPCSCodeResultsForm
         ' 
         ' btnNextPage
         ' 
-        btnNextPage.Location = New Point(1208, 566)
+        btnNextPage.Location = New Point(1324, 674)
         btnNextPage.Name = "btnNextPage"
         btnNextPage.Size = New Size(121, 23)
         btnNextPage.TabIndex = 5
@@ -65,7 +66,7 @@ Partial Class HCPCSCodeResultsForm
         ' lblStatus
         ' 
         lblStatus.AutoSize = True
-        lblStatus.Location = New Point(621, 570)
+        lblStatus.Location = New Point(656, 678)
         lblStatus.Name = "lblStatus"
         lblStatus.Size = New Size(39, 15)
         lblStatus.TabIndex = 6
@@ -73,9 +74,9 @@ Partial Class HCPCSCodeResultsForm
         ' 
         ' HCPCSCodeResultsForm
         ' 
-        AutoScaleDimensions = New SizeF(7F, 15F)
+        AutoScaleDimensions = New SizeF(7.0F, 15.0F)
         AutoScaleMode = AutoScaleMode.Font
-        ClientSize = New Size(1341, 590)
+        ClientSize = New Size(1448, 697)
         Controls.Add(lblStatus)
         Controls.Add(btnNextPage)
         Controls.Add(btnPrevPage)

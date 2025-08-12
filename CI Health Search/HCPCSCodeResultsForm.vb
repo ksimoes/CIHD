@@ -21,11 +21,15 @@ Public Class HCPCSCodeResultsForm
 
         ' Create filter panel for column filters
         filterPanel = New Panel() With {
-            .Height = 30,
-            .Dock = DockStyle.Top
-        }
+        .Height = 30,
+        .Dock = DockStyle.Top
+    }
         Me.Controls.Add(filterPanel)
         Me.Controls.SetChildIndex(filterPanel, 0) ' Ensure it's above the DataGridView
+
+        ' Ensure DataGridView is set up correctly
+        dgvCodeResults.ColumnHeadersVisible = True
+        dgvCodeResults.Dock = DockStyle.Fill
     End Sub
 
     ' Load the first page when the form loads
@@ -71,7 +75,7 @@ Public Class HCPCSCodeResultsForm
                 .Name = "btnFilter_" & col.Name,
                 .Width = col.Width,
                 .Left = dgvCodeResults.GetCellDisplayRectangle(col.Index, -1, True).Left,
-                .Top = 0,
+                .Top = -3,
                 .Text = "(All)",
                 .Tag = col.Name,
                 .Height = 24
