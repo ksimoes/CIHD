@@ -39,7 +39,7 @@ Partial Class Outpatient
         ' 
         ' btnInpatientOutpatient
         ' 
-        btnInpatientOutpatient.Location = New Point(1320, 9)
+        btnInpatientOutpatient.Location = New Point(1326, 43)
         btnInpatientOutpatient.Name = "btnInpatientOutpatient"
         btnInpatientOutpatient.Size = New Size(75, 26)
         btnInpatientOutpatient.TabIndex = 19
@@ -48,7 +48,7 @@ Partial Class Outpatient
         ' 
         ' btnQualityOutpatient
         ' 
-        btnQualityOutpatient.Location = New Point(1239, 8)
+        btnQualityOutpatient.Location = New Point(1245, 42)
         btnQualityOutpatient.Name = "btnQualityOutpatient"
         btnQualityOutpatient.Size = New Size(75, 26)
         btnQualityOutpatient.TabIndex = 18
@@ -57,7 +57,7 @@ Partial Class Outpatient
         ' 
         ' btnFinIndOutpatient
         ' 
-        btnFinIndOutpatient.Location = New Point(1158, 8)
+        btnFinIndOutpatient.Location = New Point(1164, 42)
         btnFinIndOutpatient.Name = "btnFinIndOutpatient"
         btnFinIndOutpatient.Size = New Size(75, 27)
         btnFinIndOutpatient.TabIndex = 17
@@ -66,7 +66,7 @@ Partial Class Outpatient
         ' 
         ' btnFinancialOutpatient
         ' 
-        btnFinancialOutpatient.Location = New Point(1077, 9)
+        btnFinancialOutpatient.Location = New Point(1083, 43)
         btnFinancialOutpatient.Name = "btnFinancialOutpatient"
         btnFinancialOutpatient.Size = New Size(75, 26)
         btnFinancialOutpatient.TabIndex = 16
@@ -75,7 +75,7 @@ Partial Class Outpatient
         ' 
         ' btnDepartmentsOutpatient
         ' 
-        btnDepartmentsOutpatient.Location = New Point(996, 9)
+        btnDepartmentsOutpatient.Location = New Point(1002, 43)
         btnDepartmentsOutpatient.Name = "btnDepartmentsOutpatient"
         btnDepartmentsOutpatient.Size = New Size(75, 26)
         btnDepartmentsOutpatient.TabIndex = 15
@@ -84,7 +84,7 @@ Partial Class Outpatient
         ' 
         ' btnProfileOutpatient
         ' 
-        btnProfileOutpatient.Location = New Point(915, 9)
+        btnProfileOutpatient.Location = New Point(921, 43)
         btnProfileOutpatient.Name = "btnProfileOutpatient"
         btnProfileOutpatient.Size = New Size(75, 26)
         btnProfileOutpatient.TabIndex = 14
@@ -93,7 +93,7 @@ Partial Class Outpatient
         ' 
         ' Button1
         ' 
-        Button1.Location = New Point(1401, 6)
+        Button1.Location = New Point(1407, 40)
         Button1.Name = "Button1"
         Button1.Size = New Size(122, 30)
         Button1.TabIndex = 20
@@ -103,7 +103,7 @@ Partial Class Outpatient
         ' dgvAPC
         ' 
         dgvAPC.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        dgvAPC.Location = New Point(37, 41)
+        dgvAPC.Location = New Point(37, 121)
         dgvAPC.Name = "dgvAPC"
         dgvAPC.Size = New Size(897, 541)
         dgvAPC.TabIndex = 21
@@ -129,7 +129,7 @@ Partial Class Outpatient
         ' lblHN
         ' 
         lblHN.AutoSize = True
-        lblHN.Location = New Point(525, 20)
+        lblHN.Location = New Point(530, 55)
         lblHN.Name = "lblHN"
         lblHN.Size = New Size(41, 15)
         lblHN.TabIndex = 23
@@ -139,7 +139,7 @@ Partial Class Outpatient
         ' 
         Label1.AutoSize = True
         Label1.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
-        Label1.Location = New Point(37, 20)
+        Label1.Location = New Point(37, 87)
         Label1.Name = "Label1"
         Label1.Size = New Size(376, 15)
         Label1.TabIndex = 22

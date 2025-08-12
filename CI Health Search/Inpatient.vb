@@ -6,39 +6,33 @@ Public Class Inpatient
 
     Private currentHospital As HospitalContext
 
-    Private Function GetBestFacilityName(ctx As HospitalContext) As String
-        If ctx Is Nothing Then Return "N/A"
-        If ctx.LastDataRow IsNot Nothing Then
-            Dim row = ctx.LastDataRow
-            If row.Table.Columns.Contains("FAC_NAME") Then Return row("FAC_NAME").ToString()
-            If row.Table.Columns.Contains("PRVDR_NAME") Then Return row("PRVDR_NAME").ToString()
-            If row.Table.Columns.Contains("ORGANIZATION NAME") Then Return row("ORGANIZATION NAME").ToString()
-            If row.Table.Columns.Contains("organization_name") Then Return row("organization_name").ToString()
-            If row.Table.Columns.Contains("Facility Name") Then Return row("Facility Name").ToString()
-            If row.Table.Columns.Contains("Hospital Name") Then Return row("Hospital Name").ToString()
-        End If
-        If Not String.IsNullOrWhiteSpace(ctx.Name) Then Return ctx.Name
-        Return "N/A"
-    End Function
+    ' Filter panels and buttons for each table
+    Private filterPanelPatientOrigin As Panel
+    Private filterPanelCeo As Panel
+    Private filterPanelNewApiTable As Panel
 
-    ' New constructor to accept a HospitalContext
+    Private btnFilterPatientOrigin As Button
+    Private btnFilterCeo As Button
+    Private btnFilterNewApiTable As Button
+
+    ' API URLs
+    Private strURLPatientOrigin As String = "https://data.cms.gov/data-api/v1/dataset/8708ca8b-8636-44ed-8303-724cbfaf78ad/data"
+    Private strURLPatientOrigin2019 As String = "https://data.cms.gov/data-api/v1/dataset/2713ba99-c59e-4b25-9a3d-3661d35988da/data"
+    Private strURLPatientOrigin2023 As String = "https://data.cms.gov/data-api/v1/dataset/7f749f00-bfa9-4377-9a98-90c15cacc2f3/data"
+    Private strUrlCeoApi As String = "https://data.cms.gov/data-api/v1/dataset/029c119f-f79c-49be-9100-344d31d10344/data"
+    Private strUrlNewApi As String = "https://data.cms.gov/data-api/v1/dataset/690ddc6c-2767-4618-b277-420ffb2bf27c/data"
+
+    ' --- Constructors ---
     Public Sub New(hosp As HospitalContext)
         InitializeComponent()
         currentHospital = hosp
     End Sub
 
-    ' Default constructor for designer compatibility
     Public Sub New()
         InitializeComponent()
     End Sub
-    ' NOTE MEDICARE_PROV_NUM = CCN Number
-    Dim strURLPatientOrigin As String = "https://data.cms.gov/data-api/v1/dataset/8708ca8b-8636-44ed-8303-724cbfaf78ad/data"
-    Dim strURLPatientOrigin2019 As String = "https://data.cms.gov/data-api/v1/dataset/2713ba99-c59e-4b25-9a3d-3661d35988da/data"
-    Dim strURLPatientOrigin2023 As String = "https://data.cms.gov/data-api/v1/dataset/7f749f00-bfa9-4377-9a98-90c15cacc2f3/data"
-    Dim strUrlCeoApi As String = "https://data.cms.gov/data-api/v1/dataset/029c119f-f79c-49be-9100-344d31d10344/data"
-    Dim strUrlNewApi As String = "https://data.cms.gov/data-api/v1/dataset/690ddc6c-2767-4618-b277-420ffb2bf27c/data"
 
-    ' Call this method to load data into the DataGridView
+    ' --- Data Loaders ---
     Public Async Function LoadPatientOriginDataAsync(myHospital As HospitalContext) As Task
         picLoad1.Visible = True
         Try
@@ -54,12 +48,10 @@ Public Class Inpatient
             dtMasterCurrent.Columns.Add("Market Share")
             dtMasterCurrent.Columns.Add("Market Share 5 Years Prior")
 
-            ' Sort by TOTAL_CASES descending and take top 10
-            Dim topRows = dtCurrPatientZipsByHosp.AsEnumerable() _
-            .OrderByDescending(Function(r) If(IsNumeric(r("TOTAL_CASES")), Convert.ToInt32(r("TOTAL_CASES")), 0)) _
-            .Take(10).ToList()
+            Dim topRows = dtCurrPatientZipsByHosp.AsEnumerable().
+                OrderByDescending(Function(r) If(IsNumeric(r("TOTAL_CASES")), Convert.ToInt32(r("TOTAL_CASES")), 0)).
+                Take(10).ToList()
 
-            ' Prepare all the tasks for parallel execution
             Dim zipCodes = topRows.Select(Function(r) r("ZIP_CD_OF_RESIDENCE").ToString()).ToList()
             Dim zipTasks = zipCodes.Select(Function(zip) GetTablefromAPI(strURLPatientOrigin + "?filter[ZIP_CD_OF_RESIDENCE]=" + zip)).ToArray()
             Dim zipTasks5Yr = zipCodes.Select(Function(zip) GetTablefromAPI(strURLPatientOrigin2019 + "?filter[ZIP_CD_OF_RESIDENCE]=" + zip)).ToArray()
@@ -73,13 +65,11 @@ Public Class Inpatient
                 Dim dtAllHospitalsForZip = allZipResults(i)
                 Dim totalDischargesFromZip As Integer = dtAllHospitalsForZip.AsEnumerable().Sum(Function(r) If(IsNumeric(r("TOTAL_CASES")), Convert.ToInt32(r("TOTAL_CASES")), 0))
 
-                ' Market Share (current)
                 Dim marketShare As String = "0.00"
                 If totalDischargesFromZip > 0 Then
                     marketShare = ((hospitalDischarges / totalDischargesFromZip) * 100).ToString("N2")
                 End If
 
-                ' Discharge Change (compare to prior year)
                 Dim prevYearRow = dtPrevYearPatientZipsByHosp.AsEnumerable().FirstOrDefault(Function(r) r("ZIP_CD_OF_RESIDENCE").ToString() = zipCode)
                 Dim prevYearDischarges As Integer = If(prevYearRow IsNot Nothing AndAlso IsNumeric(prevYearRow("TOTAL_CASES")), Convert.ToInt32(prevYearRow("TOTAL_CASES")), 0)
                 Dim dischargeChange As String = "N/A"
@@ -87,10 +77,8 @@ Public Class Inpatient
                     dischargeChange = (((hospitalDischarges - prevYearDischarges) / prevYearDischarges) * 100).ToString("N2")
                 End If
 
-                ' Market Share 5 Years Prior
                 Dim dtAllHospitalsForZip5Yr = allZipResults5Yr(i)
                 Dim totalDischargesFromZip5Yr As Integer = dtAllHospitalsForZip5Yr.AsEnumerable().Sum(Function(r) If(IsNumeric(r("TOTAL_CASES")), Convert.ToInt32(r("TOTAL_CASES")), 0))
-                ' Find this hospital's discharges for this ZIP 5 years ago
                 Dim hosp5YrRow = dtAllHospitalsForZip5Yr.AsEnumerable().FirstOrDefault(Function(r) r("MEDICARE_PROV_NUM").ToString() = myHospital.CMSNum)
                 Dim hospitalDischarges5Yr As Integer = If(hosp5YrRow IsNot Nothing AndAlso IsNumeric(hosp5YrRow("TOTAL_CASES")), Convert.ToInt32(hosp5YrRow("TOTAL_CASES")), 0)
                 Dim marketShare5Yr As String = "0.00"
@@ -99,18 +87,22 @@ Public Class Inpatient
                 End If
 
                 dtMasterCurrent.Rows.Add(
-                myHospital.CMSNum,
-                zipCode,
-                datarow("TOTAL_CASES").ToString(),
-                datarow("TOTAL_DAYS_OF_CARE").ToString(),
-                datarow("TOTAL_CHARGES").ToString(),
-                dischargeChange,
-                marketShare,
-                marketShare5Yr
-            )
+                    myHospital.CMSNum,
+                    zipCode,
+                    datarow("TOTAL_CASES").ToString(),
+                    datarow("TOTAL_DAYS_OF_CARE").ToString(),
+                    datarow("TOTAL_CHARGES").ToString(),
+                    dischargeChange,
+                    marketShare,
+                    marketShare5Yr
+                )
             Next
 
             dgvPatientOrigin.DataSource = dtMasterCurrent
+            Dim helperPatientOrigin = New DataGridViewFilterHelper(dgvPatientOrigin, Me)
+            filterPanelPatientOrigin = helperPatientOrigin.FilterPanel
+            filterPanelPatientOrigin.Visible = False
+            Me.Controls.Add(filterPanelPatientOrigin)
         Catch ex As Exception
             MessageBox.Show("Error loading Patient Origin: " & ex.Message)
         Finally
@@ -125,24 +117,18 @@ Public Class Inpatient
             Dim dtMasterCeo As New DataTable()
             dtMasterCeo.Columns.Add("Organization Name")
             dtMasterCeo.Columns.Add("First Name - Owner")
-            'dtMasterCeo.Columns.Add("Cost")
-            'dtMasterCeo.Columns.Add("CMI")
 
             For Each row As DataRow In dtCeo.Rows
                 dtMasterCeo.Rows.Add(
-        row("Organization Name").ToString(),
-        row("First Name - Owner").ToString())
-
-
+                    row("Organization Name").ToString(),
+                    row("First Name - Owner").ToString())
             Next
 
-
-
-
-
-
-
             dgvCeo.DataSource = dtMasterCeo
+            Dim helperCeo = New DataGridViewFilterHelper(dgvCeo, Me)
+            filterPanelCeo = helperCeo.FilterPanel
+            filterPanelCeo.Visible = False
+            Me.Controls.Add(filterPanelCeo)
         Catch ex As Exception
             MessageBox.Show("Error loading CEO Data: " & ex.Message)
         Finally
@@ -156,8 +142,6 @@ Public Class Inpatient
             Dim rawDt As DataTable = Await GetTablefromAPI(apiUrl)
             Dim dtCustom As New DataTable()
 
-
-            ' Customize columns
             dtCustom.Columns.Add("Provider Name")
             dtCustom.Columns.Add("DRG Description")
             dtCustom.Columns.Add("Avg Charge")
@@ -166,15 +150,19 @@ Public Class Inpatient
 
             For Each row As DataRow In rawDt.Rows
                 dtCustom.Rows.Add(
-                row("Rndrng_Prvdr_Org_Name").ToString(),
-                row("DRG_Desc").ToString(),
-                row("Avg_Submtd_Cvrd_chrg").ToString(),
-                row("Avg_Tot_Pymt_Amt").ToString(),
-                row("Avg_Mdcr_Pymt_Amt").ToString()
+                    row("Rndrng_Prvdr_Org_Name").ToString(),
+                    row("DRG_Desc").ToString(),
+                    row("Avg_Submtd_Cvrd_chrg").ToString(),
+                    row("Avg_Tot_Pymt_Amt").ToString(),
+                    row("Avg_Mdcr_Pymt_Amt").ToString()
                 )
             Next
 
             dgvNewApiTable.DataSource = dtCustom
+            Dim helperNewApiTable = New DataGridViewFilterHelper(dgvNewApiTable, Me)
+            filterPanelNewApiTable = helperNewApiTable.FilterPanel
+            filterPanelNewApiTable.Visible = False
+            Me.Controls.Add(filterPanelNewApiTable)
             FormatNewApiTable()
         Catch ex As Exception
             MessageBox.Show("Error loading DRG Table: " & ex.Message)
@@ -195,6 +183,7 @@ Public Class Inpatient
             .RowHeadersVisible = False
         End With
     End Sub
+
     Public Async Function GetTablefromAPI(strAPI As String) As Task(Of DataTable)
         Dim dt As New DataTable()
         Using client As New HttpClient()
@@ -204,12 +193,9 @@ Public Class Inpatient
                 Dim data As JArray = JArray.Parse(json)
 
                 If data.Count > 0 Then
-                    ' Create columns based on the first record
                     For Each prop In CType(data(0), JObject).Properties()
                         dt.Columns.Add(prop.Name)
                     Next
-
-                    ' Add rows
                     For Each item As JObject In data
                         Dim row As DataRow = dt.NewRow()
                         For Each prop In item.Properties()
@@ -223,6 +209,107 @@ Public Class Inpatient
         End Using
     End Function
 
+    ' --- UI Setup ---
+    Private Async Sub Inpatient_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        If currentHospital IsNot Nothing Then
+            lblHN.Text = GetBestFacilityName(currentHospital)
+            Await LoadPatientOriginDataAsync(currentHospital)
+            Await LoadCeoDataAsync(currentHospital)
+            Dim apiUrl As String = strUrlNewApi & "?filter[Rndrng_Prvdr_CCN]=" & currentHospital.CMSNum
+            Await LoadNewApiDataAsync(apiUrl)
+        Else
+            lblHN.Text = "No hospital context"
+        End If
+
+        ' Create and position filter buttons after all tables are loaded and sized
+        btnFilterPatientOrigin = New Button With {.Text = "Filter", .Width = 60}
+        btnFilterCeo = New Button With {.Text = "Filter", .Width = 60}
+        btnFilterNewApiTable = New Button With {.Text = "Filter", .Width = 60}
+
+        btnFilterPatientOrigin.Top = dgvPatientOrigin.Top - btnFilterPatientOrigin.Height - 2
+        btnFilterPatientOrigin.Left = dgvPatientOrigin.Left
+        Me.Controls.Add(btnFilterPatientOrigin)
+        AddHandler btnFilterPatientOrigin.Click, AddressOf btnFilterPatientOrigin_Click
+
+        btnFilterCeo.Top = dgvCeo.Top - btnFilterCeo.Height - 2
+        btnFilterCeo.Left = dgvCeo.Left
+        Me.Controls.Add(btnFilterCeo)
+        AddHandler btnFilterCeo.Click, AddressOf btnFilterCeo_Click
+
+        btnFilterNewApiTable.Top = dgvNewApiTable.Top - btnFilterNewApiTable.Height - 2
+        btnFilterNewApiTable.Left = dgvNewApiTable.Left
+        Me.Controls.Add(btnFilterNewApiTable)
+        AddHandler btnFilterNewApiTable.Click, AddressOf btnFilterNewApiTable_Click
+    End Sub
+
+    Private Sub Inpatient_Resize(sender As Object, e As EventArgs) Handles Me.Resize
+        If btnFilterPatientOrigin IsNot Nothing Then
+            btnFilterPatientOrigin.Top = dgvPatientOrigin.Top - btnFilterPatientOrigin.Height - 2
+            btnFilterPatientOrigin.Left = dgvPatientOrigin.Left
+        End If
+        If btnFilterCeo IsNot Nothing Then
+            btnFilterCeo.Top = dgvCeo.Top - btnFilterCeo.Height - 2
+            btnFilterCeo.Left = dgvCeo.Left
+        End If
+        If btnFilterNewApiTable IsNot Nothing Then
+            btnFilterNewApiTable.Top = dgvNewApiTable.Top - btnFilterNewApiTable.Height - 2
+            btnFilterNewApiTable.Left = dgvNewApiTable.Left
+        End If
+    End Sub
+
+    ' --- Filter Button Handlers ---
+    Private Sub btnFilterPatientOrigin_Click(sender As Object, e As EventArgs)
+        HideAllFilterPanels()
+        filterPanelPatientOrigin.Left = dgvPatientOrigin.Left
+        filterPanelPatientOrigin.Top = dgvPatientOrigin.Top - filterPanelPatientOrigin.Height
+        filterPanelPatientOrigin.Width = dgvPatientOrigin.Width
+        filterPanelPatientOrigin.Visible = True
+        Me.Controls.SetChildIndex(filterPanelPatientOrigin, 0)
+    End Sub
+
+    Private Sub btnFilterCeo_Click(sender As Object, e As EventArgs)
+        HideAllFilterPanels()
+        filterPanelCeo.Left = dgvCeo.Left
+        filterPanelCeo.Top = dgvCeo.Top - filterPanelCeo.Height
+        filterPanelCeo.Width = dgvCeo.Width
+        filterPanelCeo.Visible = True
+        Me.Controls.SetChildIndex(filterPanelCeo, 0)
+    End Sub
+
+    Private Sub btnFilterNewApiTable_Click(sender As Object, e As EventArgs)
+        HideAllFilterPanels()
+        filterPanelNewApiTable.Left = dgvNewApiTable.Left
+        filterPanelNewApiTable.Top = dgvNewApiTable.Top - filterPanelNewApiTable.Height
+        filterPanelNewApiTable.Width = dgvNewApiTable.Width
+        filterPanelNewApiTable.Visible = True
+        Me.Controls.SetChildIndex(filterPanelNewApiTable, 0)
+    End Sub
+
+    Private Sub HideAllFilterPanels()
+        If filterPanelPatientOrigin IsNot Nothing Then filterPanelPatientOrigin.Visible = False
+        If filterPanelCeo IsNot Nothing Then filterPanelCeo.Visible = False
+        If filterPanelNewApiTable IsNot Nothing Then filterPanelNewApiTable.Visible = False
+    End Sub
+
+    ' --- Other event handlers and methods (unchanged) ---
+    ' ... (keep your other methods as needed) ...
+
+    Private Function GetBestFacilityName(ctx As HospitalContext) As String
+        If ctx Is Nothing Then Return "N/A"
+        If ctx.LastDataRow IsNot Nothing Then
+            Dim row = ctx.LastDataRow
+            If row.Table.Columns.Contains("FAC_NAME") Then Return row("FAC_NAME").ToString()
+            If row.Table.Columns.Contains("PRVDR_NAME") Then Return row("PRVDR_NAME").ToString()
+            If row.Table.Columns.Contains("ORGANIZATION NAME") Then Return row("ORGANIZATION NAME").ToString()
+            If row.Table.Columns.Contains("organization_name") Then Return row("organization_name").ToString()
+            If row.Table.Columns.Contains("Facility Name") Then Return row("Facility Name").ToString()
+            If row.Table.Columns.Contains("Hospital Name") Then Return row("Hospital Name").ToString()
+        End If
+        If Not String.IsNullOrWhiteSpace(ctx.Name) Then Return ctx.Name
+        Return "N/A"
+    End Function
+
+    ' Navigation and other button handlers (unchanged)
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles btnProfileInpatient.Click
         Me.Hide()
         Dim cmsNum As String = currentHospital.CMSNum
@@ -270,25 +357,13 @@ Public Class Inpatient
         Search.Show()
     End Sub
 
-    Private Sub Label14_Click(sender As Object, e As EventArgs) Handles Label14.Click
+    Private Sub Label14_Click(sender As Object, e As EventArgs)
     End Sub
 
     Private Sub dgvPatientOrigin_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvPatientOrigin.CellContentClick
     End Sub
 
-    Private Async Sub Inpatient_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        If currentHospital IsNot Nothing Then
-            lblHN.Text = GetBestFacilityName(currentHospital)
-            Await LoadPatientOriginDataAsync(currentHospital)
-            Await LoadCeoDataAsync(currentHospital)
-            Dim apiUrl As String = strUrlNewApi & "?filter[Rndrng_Prvdr_CCN]=" & currentHospital.CMSNum
-            Await LoadNewApiDataAsync(apiUrl)
-        Else
-            lblHN.Text = "No hospital context"
-        End If
-    End Sub
-
     Private Sub DataGridView1_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvNewApiTable.CellContentClick
-
     End Sub
+
 End Class

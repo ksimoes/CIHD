@@ -35,11 +35,6 @@ Partial Class Inpatient
         gbPatientOrigin = New GroupBox()
         picLoad2 = New PictureBox()
         dgvPatientOrigin = New DataGridView()
-        gbTrendReport = New GroupBox()
-        Label16 = New Label()
-        Label15 = New Label()
-        Label14 = New Label()
-        Label13 = New Label()
         Button1 = New Button()
         dgvNewApiTable = New DataGridView()
         lblHN = New Label()
@@ -50,14 +45,13 @@ Partial Class Inpatient
         gbPatientOrigin.SuspendLayout()
         CType(picLoad2, ComponentModel.ISupportInitialize).BeginInit()
         CType(dgvPatientOrigin, ComponentModel.ISupportInitialize).BeginInit()
-        gbTrendReport.SuspendLayout()
         CType(dgvNewApiTable, ComponentModel.ISupportInitialize).BeginInit()
         CType(picLoad3, ComponentModel.ISupportInitialize).BeginInit()
         SuspendLayout()
         ' 
         ' btnOutpatientInpatient
         ' 
-        btnOutpatientInpatient.Location = New Point(1460, 11)
+        btnOutpatientInpatient.Location = New Point(1468, 50)
         btnOutpatientInpatient.Name = "btnOutpatientInpatient"
         btnOutpatientInpatient.Size = New Size(75, 24)
         btnOutpatientInpatient.TabIndex = 20
@@ -66,7 +60,7 @@ Partial Class Inpatient
         ' 
         ' btnQualityInpatient
         ' 
-        btnQualityInpatient.Location = New Point(1379, 12)
+        btnQualityInpatient.Location = New Point(1387, 51)
         btnQualityInpatient.Name = "btnQualityInpatient"
         btnQualityInpatient.Size = New Size(75, 24)
         btnQualityInpatient.TabIndex = 18
@@ -75,7 +69,7 @@ Partial Class Inpatient
         ' 
         ' btnFinIndInpatient
         ' 
-        btnFinIndInpatient.Location = New Point(1298, 10)
+        btnFinIndInpatient.Location = New Point(1306, 49)
         btnFinIndInpatient.Name = "btnFinIndInpatient"
         btnFinIndInpatient.Size = New Size(75, 25)
         btnFinIndInpatient.TabIndex = 17
@@ -84,7 +78,7 @@ Partial Class Inpatient
         ' 
         ' btnFinancialInpatient
         ' 
-        btnFinancialInpatient.Location = New Point(1217, 11)
+        btnFinancialInpatient.Location = New Point(1225, 50)
         btnFinancialInpatient.Name = "btnFinancialInpatient"
         btnFinancialInpatient.Size = New Size(75, 24)
         btnFinancialInpatient.TabIndex = 16
@@ -93,7 +87,7 @@ Partial Class Inpatient
         ' 
         ' btnDepartmentsInpatient
         ' 
-        btnDepartmentsInpatient.Location = New Point(1136, 11)
+        btnDepartmentsInpatient.Location = New Point(1144, 50)
         btnDepartmentsInpatient.Name = "btnDepartmentsInpatient"
         btnDepartmentsInpatient.Size = New Size(75, 24)
         btnDepartmentsInpatient.TabIndex = 15
@@ -102,7 +96,7 @@ Partial Class Inpatient
         ' 
         ' btnProfileInpatient
         ' 
-        btnProfileInpatient.Location = New Point(1055, 11)
+        btnProfileInpatient.Location = New Point(1063, 50)
         btnProfileInpatient.Name = "btnProfileInpatient"
         btnProfileInpatient.Size = New Size(75, 24)
         btnProfileInpatient.TabIndex = 14
@@ -113,7 +107,7 @@ Partial Class Inpatient
         ' 
         gbKeyAttending.Controls.Add(picLoad1)
         gbKeyAttending.Controls.Add(dgvCeo)
-        gbKeyAttending.Location = New Point(12, 12)
+        gbKeyAttending.Location = New Point(12, 49)
         gbKeyAttending.Name = "gbKeyAttending"
         gbKeyAttending.Size = New Size(580, 146)
         gbKeyAttending.TabIndex = 21
@@ -124,7 +118,7 @@ Partial Class Inpatient
         ' 
         picLoad1.BackColor = SystemColors.ControlDark
         picLoad1.Image = CType(resources.GetObject("picLoad1.Image"), Image)
-        picLoad1.Location = New Point(168, 22)
+        picLoad1.Location = New Point(161, 22)
         picLoad1.Name = "picLoad1"
         picLoad1.Size = New Size(200, 118)
         picLoad1.SizeMode = PictureBoxSizeMode.CenterImage
@@ -135,16 +129,17 @@ Partial Class Inpatient
         ' dgvCeo
         ' 
         dgvCeo.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        dgvCeo.Location = New Point(0, 22)
+        dgvCeo.Dock = DockStyle.Fill
+        dgvCeo.Location = New Point(3, 19)
         dgvCeo.Name = "dgvCeo"
-        dgvCeo.Size = New Size(568, 118)
+        dgvCeo.Size = New Size(574, 124)
         dgvCeo.TabIndex = 32
         ' 
         ' gbPatientOrigin
         ' 
         gbPatientOrigin.Controls.Add(picLoad2)
         gbPatientOrigin.Controls.Add(dgvPatientOrigin)
-        gbPatientOrigin.Location = New Point(12, 164)
+        gbPatientOrigin.Location = New Point(12, 298)
         gbPatientOrigin.Name = "gbPatientOrigin"
         gbPatientOrigin.Size = New Size(1150, 274)
         gbPatientOrigin.TabIndex = 22
@@ -165,67 +160,15 @@ Partial Class Inpatient
         ' dgvPatientOrigin
         ' 
         dgvPatientOrigin.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        dgvPatientOrigin.Location = New Point(0, 22)
+        dgvPatientOrigin.Dock = DockStyle.Fill
+        dgvPatientOrigin.Location = New Point(3, 19)
         dgvPatientOrigin.Name = "dgvPatientOrigin"
-        dgvPatientOrigin.Size = New Size(984, 204)
+        dgvPatientOrigin.Size = New Size(1144, 252)
         dgvPatientOrigin.TabIndex = 31
-        ' 
-        ' gbTrendReport
-        ' 
-        gbTrendReport.Controls.Add(Label16)
-        gbTrendReport.Controls.Add(Label15)
-        gbTrendReport.Controls.Add(Label14)
-        gbTrendReport.Controls.Add(Label13)
-        gbTrendReport.Location = New Point(12, 444)
-        gbTrendReport.Name = "gbTrendReport"
-        gbTrendReport.Size = New Size(462, 128)
-        gbTrendReport.TabIndex = 22
-        gbTrendReport.TabStop = False
-        gbTrendReport.Text = "Trend Report"
-        ' 
-        ' Label16
-        ' 
-        Label16.AutoSize = True
-        Label16.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
-        Label16.Location = New Point(406, 19)
-        Label16.Name = "Label16"
-        Label16.Size = New Size(51, 15)
-        Label16.TabIndex = 31
-        Label16.Text = "FY 2022"
-        ' 
-        ' Label15
-        ' 
-        Label15.AutoSize = True
-        Label15.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
-        Label15.Location = New Point(317, 19)
-        Label15.Name = "Label15"
-        Label15.Size = New Size(51, 15)
-        Label15.TabIndex = 30
-        Label15.Text = "FY 2023"
-        ' 
-        ' Label14
-        ' 
-        Label14.AutoSize = True
-        Label14.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
-        Label14.Location = New Point(224, 19)
-        Label14.Name = "Label14"
-        Label14.Size = New Size(51, 15)
-        Label14.TabIndex = 29
-        Label14.Text = "FY 2024"
-        ' 
-        ' Label13
-        ' 
-        Label13.AutoSize = True
-        Label13.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
-        Label13.Location = New Point(6, 19)
-        Label13.Name = "Label13"
-        Label13.Size = New Size(171, 15)
-        Label13.TabIndex = 28
-        Label13.Text = "Inpatient Utilization Statistics"
         ' 
         ' Button1
         ' 
-        Button1.Location = New Point(1413, 42)
+        Button1.Location = New Point(1421, 81)
         Button1.Name = "Button1"
         Button1.Size = New Size(122, 30)
         Button1.TabIndex = 24
@@ -235,7 +178,7 @@ Partial Class Inpatient
         ' dgvNewApiTable
         ' 
         dgvNewApiTable.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        dgvNewApiTable.Location = New Point(12, 578)
+        dgvNewApiTable.Location = New Point(1, 697)
         dgvNewApiTable.Name = "dgvNewApiTable"
         dgvNewApiTable.Size = New Size(809, 364)
         dgvNewApiTable.TabIndex = 25
@@ -243,7 +186,7 @@ Partial Class Inpatient
         ' lblHN
         ' 
         lblHN.AutoSize = True
-        lblHN.Location = New Point(639, 10)
+        lblHN.Location = New Point(12, 211)
         lblHN.Name = "lblHN"
         lblHN.Size = New Size(41, 15)
         lblHN.TabIndex = 26
@@ -253,7 +196,7 @@ Partial Class Inpatient
         ' 
         picLoad3.BackColor = SystemColors.ControlDark
         picLoad3.Image = CType(resources.GetObject("picLoad3.Image"), Image)
-        picLoad3.Location = New Point(276, 654)
+        picLoad3.Location = New Point(254, 794)
         picLoad3.Name = "picLoad3"
         picLoad3.Size = New Size(198, 197)
         picLoad3.TabIndex = 103
@@ -265,19 +208,18 @@ Partial Class Inpatient
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(1537, 1061)
-        Controls.Add(picLoad3)
-        Controls.Add(lblHN)
-        Controls.Add(dgvNewApiTable)
-        Controls.Add(Button1)
-        Controls.Add(gbTrendReport)
-        Controls.Add(gbPatientOrigin)
-        Controls.Add(gbKeyAttending)
         Controls.Add(btnOutpatientInpatient)
         Controls.Add(btnQualityInpatient)
         Controls.Add(btnFinIndInpatient)
         Controls.Add(btnFinancialInpatient)
         Controls.Add(btnDepartmentsInpatient)
         Controls.Add(btnProfileInpatient)
+        Controls.Add(picLoad3)
+        Controls.Add(lblHN)
+        Controls.Add(dgvNewApiTable)
+        Controls.Add(Button1)
+        Controls.Add(gbPatientOrigin)
+        Controls.Add(gbKeyAttending)
         Name = "Inpatient"
         StartPosition = FormStartPosition.CenterScreen
         Text = "Inpatient"
@@ -287,8 +229,6 @@ Partial Class Inpatient
         gbPatientOrigin.ResumeLayout(False)
         CType(picLoad2, ComponentModel.ISupportInitialize).EndInit()
         CType(dgvPatientOrigin, ComponentModel.ISupportInitialize).EndInit()
-        gbTrendReport.ResumeLayout(False)
-        gbTrendReport.PerformLayout()
         CType(dgvNewApiTable, ComponentModel.ISupportInitialize).EndInit()
         CType(picLoad3, ComponentModel.ISupportInitialize).EndInit()
         ResumeLayout(False)
@@ -303,12 +243,7 @@ Partial Class Inpatient
     Friend WithEvents btnProfileInpatient As Button
     Friend WithEvents gbKeyAttending As GroupBox
     Friend WithEvents gbPatientOrigin As GroupBox
-    Friend WithEvents gbTrendReport As GroupBox
     Friend WithEvents Button1 As Button
-    Friend WithEvents Label14 As Label
-    Friend WithEvents Label13 As Label
-    Friend WithEvents Label16 As Label
-    Friend WithEvents Label15 As Label
     Friend WithEvents dgvPatientOrigin As DataGridView
     Friend WithEvents dgvCeo As DataGridView
     Friend WithEvents dgvNewApiTable As DataGridView

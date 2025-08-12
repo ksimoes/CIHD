@@ -8,6 +8,8 @@ Public Class Outpatient
     Dim strUrlApcApi As String = "https://data.cms.gov/data-api/v1/dataset/ccbc9a44-40d4-46b4-a709-5caa59212e50/data"
 
     Private currentHospital As HospitalContext
+    Private dgvFilterHelper As DataGridViewFilterHelper
+    Private filterPanelRef As Panel
 
     Private Function GetBestFacilityName(ctx As HospitalContext) As String
         If ctx Is Nothing Then Return "N/A"
@@ -89,6 +91,15 @@ Public Class Outpatient
         Next
 
         dgvAPC.DataSource = dtCustom
+        If filterPanelRef IsNot Nothing AndAlso Me.Controls.Contains(filterPanelRef) Then
+            Me.Controls.Remove(filterPanelRef)
+            filterPanelRef.Dispose()
+            filterPanelRef = Nothing
+        End If
+        dgvFilterHelper = New DataGridViewFilterHelper(dgvAPC, Me)
+        filterPanelRef = dgvFilterHelper.FilterPanel
+
+
         FormatApcTable()
     End Function
 

@@ -5,7 +5,7 @@ Public Class HCPCSCodeResultsForm
     Private currentDataTable As DataTable
     Private filterPanel As Panel
     Private columnDropdowns As New Dictionary(Of String, Button)
-    Private dropdownControls As New Dictionary(Of String, MultiSelectDropdown)
+    Private dropdownControls As New Dictionary(Of String, MultiSelectDropdown2)
     Private openDropdownHosts As New Dictionary(Of String, DropdownHost2)
     Private currentPage As Integer = 0
     Private pageSize As Integer = 100
@@ -14,6 +14,7 @@ Public Class HCPCSCodeResultsForm
     Private totalRowCount As Integer = 0
 
     ' Constructor for paged results
+    ' Constructor for paged results
     Public Sub New(hcpcsCode As String, stateFilter As String)
         InitializeComponent()
         code = hcpcsCode
@@ -21,15 +22,22 @@ Public Class HCPCSCodeResultsForm
 
         ' Create filter panel for column filters
         filterPanel = New Panel() With {
-        .Height = 30,
-        .Dock = DockStyle.Top
+        .Height = 44, ' Make it taller!
+        .Dock = DockStyle.Top,
+        .Visible = True
     }
         Me.Controls.Add(filterPanel)
         Me.Controls.SetChildIndex(filterPanel, 0) ' Ensure it's above the DataGridView
 
-        ' Ensure DataGridView is set up correctly
+        ' DataGridView should be Dock = Fill in the Designer!
         dgvCodeResults.ColumnHeadersVisible = True
         dgvCodeResults.Dock = DockStyle.Fill
+
+        filterPanel.Width = dgvCodeResults.Width
+        filterPanel.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        AddHandler Me.Resize, Sub(sender, e)
+                                  filterPanel.Width = dgvCodeResults.Width
+                              End Sub
     End Sub
 
     ' Load the first page when the form loads
@@ -59,6 +67,7 @@ Public Class HCPCSCodeResultsForm
         btnNextPage.Enabled = dt.Rows.Count = pageSize
 
         SetupColumnFilters()
+        ApplyCustomColors()
     End Function
 
     ' Multi-select, searchable dropdown filter panel
@@ -86,7 +95,7 @@ Public Class HCPCSCodeResultsForm
                 Distinct().
                 OrderBy(Function(v) v).
                 ToList()
-            Dim dropdown = New MultiSelectDropdown(uniqueVals)
+            Dim dropdown = New MultiSelectDropdown2(uniqueVals)
             dropdown.Visible = False
             AddHandler dropdown.SelectionChanged, Sub()
                                                       btn.Text = If(dropdown.SelectedValues.Count = 0, "(All)", String.Join(", ", dropdown.SelectedValues.Take(2)) & If(dropdown.SelectedValues.Count > 2, " ...", ""))
@@ -235,7 +244,7 @@ Public Class HCPCSCodeResultsForm
     End Sub
 End Class
 
-' --- MultiSelectDropdown and DropdownHost classes (copy from Profile.vb) ---
+' --- MultiSelectDropdown2 and DropdownHost2 classes ---
 
 Public Class MultiSelectDropdown2
     Inherits Panel
