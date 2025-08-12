@@ -52,6 +52,11 @@ Public Class Profile
 }
     Private connectionString As String = "Data Source=cihg-sql1.database.windows.net;Initial Catalog=CIHData;User ID=cihgadmin;Password=P!bxbFrHw4-jCvU*;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
     Public strCMSnum As String
+    Private providersFilterPanel As Panel
+    Private providersColumnDropdowns As New Dictionary(Of String, Button)
+    Private providersDropdownControls As New Dictionary(Of String, MultiSelectDropdown)
+    Private providersCurrentDataTable As DataTable
+    Private providersOpenDropdownHosts As New Dictionary(Of String, DropdownHost)
 
     Private currentHospital As HospitalContext
 
@@ -588,6 +593,8 @@ Public Class Profile
 
                         ' --- Bind to DataGridView and set column visibility ---
                         dgvProviders.DataSource = dt
+                        providersCurrentDataTable = dt
+                        SetupProvidersColumnFilters()
 
                         ' Set custom column headers
                         If dgvProviders.Columns.Contains("provider_first_name") Then
@@ -668,7 +675,112 @@ Public Class Profile
         End Try
     End Function
 
+    Private Sub SetupProvidersColumnFilters()
+        If providersFilterPanel Is Nothing Then
+            providersFilterPanel = New Panel() With {
+            .Height = 30,
+            .Width = dgvProviders.Width,
+            .Left = dgvProviders.Left,
+            .Top = dgvProviders.Top - 30,
+            .Anchor = dgvProviders.Anchor
+        }
+            dgvProviders.Parent.Controls.Add(providersFilterPanel)
+            providersFilterPanel.BringToFront()
+        End If
 
+        providersFilterPanel.Width = dgvProviders.Width
+        providersFilterPanel.Left = dgvProviders.Left
+        providersFilterPanel.Top = dgvProviders.Top - providersFilterPanel.Height
+
+        providersFilterPanel.Controls.Clear()
+        providersColumnDropdowns.Clear()
+        providersDropdownControls.Clear()
+        If providersCurrentDataTable Is Nothing OrElse dgvProviders.Columns.Count = 0 Then Return
+
+        For Each col As DataGridViewColumn In dgvProviders.Columns
+            If Not col.Visible Then Continue For
+            Dim btn As New Button() With {
+        .Name = "btnProviderFilter_" & col.Name,
+        .Width = col.Width,
+        .Left = dgvProviders.GetCellDisplayRectangle(col.Index, -1, True).Left,
+        .Top = 0,
+        .Text = $"(All)",
+        .Tag = col.Name,
+        .Height = 24
+    }
+            Dim uniqueVals = providersCurrentDataTable.AsEnumerable().
+        Select(Function(r) r(col.Name)?.ToString()).
+        Where(Function(v) Not String.IsNullOrEmpty(v)).
+        Distinct().
+        OrderBy(Function(v) v).
+        ToList()
+            Dim dropdown = New MultiSelectDropdown(uniqueVals)
+            dropdown.Visible = False
+            AddHandler dropdown.SelectionChanged, Sub()
+                                                      btn.Text = If(dropdown.SelectedValues.Count = 0, "(All)", String.Join(", ", dropdown.SelectedValues.Take(2)) & If(dropdown.SelectedValues.Count > 2, " ...", ""))
+                                                      ApplyProvidersMultiColumnFilter()
+                                                  End Sub
+            providersFilterPanel.Controls.Add(btn)
+            providersColumnDropdowns(col.Name) = btn
+            providersDropdownControls(col.Name) = dropdown
+
+            AddHandler btn.Click, Sub(senderBtn, eBtn)
+                                      Dim host = New DropdownHost(dropdown)
+                                      Dim btnScreen = btn.PointToScreen(New Point(0, btn.Height))
+                                      host.Show(btnScreen)
+                                  End Sub
+        Next
+        AddHandler dgvProviders.ColumnWidthChanged, AddressOf dgvProviders_ColumnWidthChanged
+        AddHandler dgvProviders.Scroll, AddressOf dgvProviders_Scroll
+        PositionProvidersFilterCombos()
+    End Sub
+
+    Private Sub PositionProvidersFilterCombos()
+        If providersFilterPanel IsNot Nothing Then
+            providersFilterPanel.Width = dgvProviders.Width
+            providersFilterPanel.Left = dgvProviders.Left
+            providersFilterPanel.Top = dgvProviders.Top - providersFilterPanel.Height
+        End If
+
+        For Each col As DataGridViewColumn In dgvProviders.Columns
+            If providersColumnDropdowns.ContainsKey(col.Name) Then
+                Dim btn = providersColumnDropdowns(col.Name)
+                Dim rect = dgvProviders.GetCellDisplayRectangle(col.Index, -1, True)
+                btn.Left = rect.Left
+                btn.Width = rect.Width
+                If providersDropdownControls.ContainsKey(col.Name) Then
+                    Dim dd = providersDropdownControls(col.Name)
+                    dd.Left = btn.Left
+                    dd.Width = btn.Width
+                    dd.Top = btn.Bottom
+                End If
+            End If
+        Next
+    End Sub
+
+    Private Sub dgvProviders_ColumnWidthChanged(sender As Object, e As DataGridViewColumnEventArgs)
+        PositionProvidersFilterCombos()
+    End Sub
+
+    Private Sub dgvProviders_Scroll(sender As Object, e As ScrollEventArgs)
+        PositionProvidersFilterCombos()
+    End Sub
+
+    Private Sub ApplyProvidersMultiColumnFilter()
+        If providersCurrentDataTable Is Nothing Then Return
+        Dim filterParts As New List(Of String)
+        For Each kvp In providersDropdownControls
+            Dim col = kvp.Key
+            Dim dd = kvp.Value
+            If dd.SelectedValues.Count > 0 Then
+                Dim orParts = dd.SelectedValues.Select(Function(val) $"[{col}] = '{val.Replace("'", "''")}'")
+                filterParts.Add("(" & String.Join(" OR ", orParts) & ")")
+            End If
+        Next
+        Dim dv As New DataView(providersCurrentDataTable)
+        dv.RowFilter = String.Join(" AND ", filterParts)
+        dgvProviders.DataSource = dv
+    End Sub
 
 
 
@@ -694,8 +806,8 @@ Public Class Profile
 
     Private Sub btnFinIndProfile_Click(sender As Object, e As EventArgs) Handles btnFinIndProfile.Click
         Me.Hide()
-       Dim finIndForm As New FinInd(Results.SelectedHospital)
-finIndForm.Show()
+        Dim finIndForm As New FinInd(Results.SelectedHospital)
+        finIndForm.Show()
     End Sub
 
 
@@ -766,5 +878,68 @@ finIndForm.Show()
                 End If
             End If
         End If
+    End Sub
+End Class
+Public Class MultiSelectDropdown
+    Inherits Panel
+
+    Public Event SelectionChanged()
+    Private WithEvents txtSearch As New TextBox() With {.Dock = DockStyle.Top, .PlaceholderText = "Search..."}
+    Private WithEvents clb As New CheckedListBox() With {.Dock = DockStyle.Fill, .CheckOnClick = True}
+    Private allItems As List(Of String)
+
+    Public Sub New(items As IEnumerable(Of String))
+        Me.Height = 200
+        Me.Width = 200
+        Me.BorderStyle = BorderStyle.FixedSingle
+        Me.Controls.Add(clb)
+        Me.Controls.Add(txtSearch)
+        allItems = items.Distinct().OrderBy(Function(x) x).ToList()
+        clb.Items.AddRange(allItems.ToArray())
+    End Sub
+
+    Public ReadOnly Property SelectedValues As List(Of String)
+        Get
+            Return clb.CheckedItems.Cast(Of String)().ToList()
+        End Get
+    End Property
+
+    Public Sub SetChecked(values As IEnumerable(Of String))
+        For i = 0 To clb.Items.Count - 1
+            clb.SetItemChecked(i, values.Contains(clb.Items(i).ToString()))
+        Next
+    End Sub
+
+    Private Sub txtSearch_TextChanged(sender As Object, e As EventArgs) Handles txtSearch.TextChanged
+        Dim filter = txtSearch.Text.Trim().ToLower()
+        clb.Items.Clear()
+        For Each item In allItems
+            If item.ToLower().Contains(filter) Then
+                clb.Items.Add(item, False)
+            End If
+        Next
+    End Sub
+
+    Private Sub clb_ItemCheck(sender As Object, e As ItemCheckEventArgs) Handles clb.ItemCheck
+        ' Raise after the check state changes
+        Me.BeginInvoke(Sub() RaiseEvent SelectionChanged())
+    End Sub
+End Class
+
+Public Class DropdownHost
+    Inherits ToolStripDropDown
+
+    Public Sub New(content As Control)
+        MyBase.New()
+        content.Dock = DockStyle.Fill
+        Dim host = New ToolStripControlHost(content)
+        host.Margin = Padding.Empty
+        host.Padding = Padding.Empty
+        host.AutoSize = False
+        Me.Padding = Padding.Empty
+        Me.Items.Add(host)
+        Me.AutoClose = True
+        Me.Width = content.Width
+        Me.Height = content.Height
     End Sub
 End Class

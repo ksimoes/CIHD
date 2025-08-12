@@ -106,7 +106,6 @@ Partial Class Profile
         Label15 = New Label()
         picLoading = New PictureBox()
         Label13 = New Label()
-        txtDebugJson = New TextBox()
         dgvProviders = New DataGridView()
         GroupBox2 = New GroupBox()
         lblPN = New Label()
@@ -969,7 +968,6 @@ Partial Class Profile
         Panel1.Controls.Add(Label15)
         Panel1.Controls.Add(picLoading)
         Panel1.Controls.Add(Label13)
-        Panel1.Controls.Add(txtDebugJson)
         Panel1.Controls.Add(lblCfoResult)
         Panel1.Controls.Add(dgvProviders)
         Panel1.Controls.Add(lblCeoPresResult)
@@ -1011,7 +1009,7 @@ Partial Class Profile
         ' 
         lblTot.AutoSize = True
         lblTot.Font = New Font("Segoe UI", 9.75F)
-        lblTot.Location = New Point(846, 79)
+        lblTot.Location = New Point(821, 79)
         lblTot.Name = "lblTot"
         lblTot.Size = New Size(11, 17)
         lblTot.TabIndex = 99
@@ -1022,7 +1020,7 @@ Partial Class Profile
         ' 
         Label16.AutoSize = True
         Label16.Font = New Font("Segoe UI", 9.75F)
-        Label16.Location = New Point(685, 79)
+        Label16.Location = New Point(661, 81)
         Label16.Name = "Label16"
         Label16.Size = New Size(163, 17)
         Label16.TabIndex = 98
@@ -1033,7 +1031,7 @@ Partial Class Profile
         ' 
         Label15.AutoSize = True
         Label15.Font = New Font("Segoe UI", 9.75F)
-        Label15.Location = New Point(685, 125)
+        Label15.Location = New Point(661, 124)
         Label15.Name = "Label15"
         Label15.Size = New Size(112, 17)
         Label15.TabIndex = 97
@@ -1043,7 +1041,7 @@ Partial Class Profile
         ' picLoading
         ' 
         picLoading.Image = CType(resources.GetObject("picLoading.Image"), Image)
-        picLoading.Location = New Point(956, 357)
+        picLoading.Location = New Point(940, 412)
         picLoading.Name = "picLoading"
         picLoading.Size = New Size(207, 195)
         picLoading.TabIndex = 96
@@ -1054,28 +1052,18 @@ Partial Class Profile
         ' 
         Label13.AutoSize = True
         Label13.Font = New Font("Segoe UI", 15.0F, FontStyle.Bold)
-        Label13.Location = New Point(681, 96)
+        Label13.Location = New Point(661, 96)
         Label13.Name = "Label13"
         Label13.Size = New Size(185, 28)
         Label13.TabIndex = 95
         Label13.Text = "Affiliate Providers"
         ' 
-        ' txtDebugJson
-        ' 
-        txtDebugJson.Location = New Point(962, 748)
-        txtDebugJson.Multiline = True
-        txtDebugJson.Name = "txtDebugJson"
-        txtDebugJson.ScrollBars = ScrollBars.Both
-        txtDebugJson.Size = New Size(400, 200)
-        txtDebugJson.TabIndex = 94
-        txtDebugJson.Visible = False
-        ' 
         ' dgvProviders
         ' 
         dgvProviders.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        dgvProviders.Location = New Point(685, 145)
+        dgvProviders.Location = New Point(664, 181)
         dgvProviders.Name = "dgvProviders"
-        dgvProviders.Size = New Size(742, 597)
+        dgvProviders.Size = New Size(775, 664)
         dgvProviders.TabIndex = 93
         ' 
         ' GroupBox2
@@ -1605,7 +1593,6 @@ Partial Class Profile
     Friend WithEvents Label12 As Label
     Friend WithEvents Label11 As Label
     Friend WithEvents Label10 As Label
-    Friend WithEvents txtDebugJson As TextBox
     Friend WithEvents Label13 As Label
     Friend WithEvents lblDBA As Label
     Friend WithEvents Label14 As Label

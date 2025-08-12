@@ -4,7 +4,9 @@ Public Class HCPCSCodeResultsForm
     Private WithEvents cmsColumns As New ContextMenuStrip()
     Private currentDataTable As DataTable
     Private filterPanel As Panel
-    Private columnFilters As New Dictionary(Of String, ComboBox)
+    Private columnDropdowns As New Dictionary(Of String, Button)
+    Private dropdownControls As New Dictionary(Of String, MultiSelectDropdown)
+    Private openDropdownHosts As New Dictionary(Of String, DropdownHost2)
     Private currentPage As Integer = 0
     Private pageSize As Integer = 100
     Private code As String
@@ -55,52 +57,79 @@ Public Class HCPCSCodeResultsForm
         SetupColumnFilters()
     End Function
 
-    ' Dynamically create ComboBoxes for each column above the DataGridView
+    ' Multi-select, searchable dropdown filter panel
     Private Sub SetupColumnFilters()
         filterPanel.Controls.Clear()
-        columnFilters.Clear()
+        columnDropdowns.Clear()
+        dropdownControls.Clear()
+        openDropdownHosts.Clear()
         If currentDataTable Is Nothing OrElse dgvCodeResults.Columns.Count = 0 Then Return
 
         For Each col As DataGridViewColumn In dgvCodeResults.Columns
             If Not col.Visible Then Continue For
-            Dim cb As New ComboBox() With {
-                .Name = "cbFilter_" & col.Name,
+            Dim btn As New Button() With {
+                .Name = "btnFilter_" & col.Name,
                 .Width = col.Width,
                 .Left = dgvCodeResults.GetCellDisplayRectangle(col.Index, -1, True).Left,
                 .Top = 0,
-                .DropDownStyle = ComboBoxStyle.DropDown, ' Editable for search
-                .Tag = col.Name
+                .Text = "(All)",
+                .Tag = col.Name,
+                .Height = 24
             }
-            cb.Items.Add("(All)")
             Dim uniqueVals = currentDataTable.AsEnumerable().
                 Select(Function(r) r(col.Name)?.ToString()).
                 Where(Function(v) Not String.IsNullOrEmpty(v)).
                 Distinct().
                 OrderBy(Function(v) v).
                 ToList()
-            For Each v In uniqueVals
-                cb.Items.Add(v)
-            Next
-            cb.SelectedIndex = 0
-            AddHandler cb.SelectedIndexChanged, AddressOf ColumnFilterChanged
-            AddHandler cb.TextUpdate, AddressOf ComboBox_TextUpdate
-            filterPanel.Controls.Add(cb)
-            columnFilters(col.Name) = cb
+            Dim dropdown = New MultiSelectDropdown(uniqueVals)
+            dropdown.Visible = False
+            AddHandler dropdown.SelectionChanged, Sub()
+                                                      btn.Text = If(dropdown.SelectedValues.Count = 0, "(All)", String.Join(", ", dropdown.SelectedValues.Take(2)) & If(dropdown.SelectedValues.Count > 2, " ...", ""))
+                                                      ApplyMultiColumnFilter()
+                                                  End Sub
+            filterPanel.Controls.Add(btn)
+            columnDropdowns(col.Name) = btn
+            dropdownControls(col.Name) = dropdown
+
+            AddHandler btn.Click, Sub(senderBtn, eBtn)
+                                      Dim colName = col.Name
+                                      ' Toggle: close if open, open if closed
+                                      If openDropdownHosts.ContainsKey(colName) Then
+                                          openDropdownHosts(colName).Close()
+                                          openDropdownHosts.Remove(colName)
+                                          Return
+                                      End If
+                                      ' Close any other open dropdowns
+                                      For Each h In openDropdownHosts.Values.ToList()
+                                          h.Close()
+                                      Next
+                                      openDropdownHosts.Clear()
+                                      Dim host As DropdownHost2 = Nothing
+                                      host = New DropdownHost2(dropdown)
+                                      AddHandler host.Closed, Sub()
+                                                                  If openDropdownHosts.ContainsKey(colName) Then
+                                                                      openDropdownHosts.Remove(colName)
+                                                                  End If
+                                                              End Sub
+                                      openDropdownHosts(colName) = host
+                                      Dim btnScreen = btn.PointToScreen(New Point(0, btn.Height))
+                                      host.Show(btnScreen)
+                                  End Sub
         Next
-        ' Optional: handle resizing
         AddHandler dgvCodeResults.ColumnWidthChanged, AddressOf dgvCodeResults_ColumnWidthChanged
         AddHandler dgvCodeResults.Scroll, AddressOf dgvCodeResults_Scroll
         PositionFilterCombos()
     End Sub
 
-    ' Keep ComboBoxes aligned with columns
+    ' Keep filter buttons aligned with columns
     Private Sub PositionFilterCombos()
         For Each col As DataGridViewColumn In dgvCodeResults.Columns
-            If columnFilters.ContainsKey(col.Name) Then
-                Dim cb = columnFilters(col.Name)
+            If columnDropdowns.ContainsKey(col.Name) Then
+                Dim btn = columnDropdowns(col.Name)
                 Dim rect = dgvCodeResults.GetCellDisplayRectangle(col.Index, -1, True)
-                cb.Left = rect.Left
-                cb.Width = rect.Width
+                btn.Left = rect.Left
+                btn.Width = rect.Width
             End If
         Next
     End Sub
@@ -113,45 +142,16 @@ Public Class HCPCSCodeResultsForm
         PositionFilterCombos()
     End Sub
 
-    ' Search-as-you-type for ComboBox filter
-    Private Sub ComboBox_TextUpdate(sender As Object, e As EventArgs)
-        Dim cb = CType(sender, ComboBox)
-        Dim colName = cb.Tag.ToString()
-        If currentDataTable Is Nothing OrElse String.IsNullOrEmpty(colName) Then Return
-
-        Dim searchText = cb.Text.Trim().ToLower()
-        Dim allVals = currentDataTable.AsEnumerable().
-            Select(Function(r) r(colName)?.ToString()).
-            Where(Function(v) Not String.IsNullOrEmpty(v)).
-            Distinct().
-            OrderBy(Function(v) v).
-            ToList()
-
-        Dim currentSelection = cb.Text
-
-        cb.Items.Clear()
-        cb.Items.Add("(All)")
-        For Each v In allVals
-            If v.ToLower().Contains(searchText) Then
-                cb.Items.Add(v)
-            End If
-        Next
-
-        cb.DroppedDown = True
-        cb.Text = currentSelection
-        cb.SelectionStart = cb.Text.Length
-        cb.SelectionLength = 0
-    End Sub
-
     ' Apply multi-column filter
-    Private Sub ColumnFilterChanged(sender As Object, e As EventArgs)
+    Private Sub ApplyMultiColumnFilter()
         If currentDataTable Is Nothing Then Return
         Dim filterParts As New List(Of String)
-        For Each kvp In columnFilters
+        For Each kvp In dropdownControls
             Dim col = kvp.Key
-            Dim cb = kvp.Value
-            If cb.SelectedIndex > 0 Then
-                filterParts.Add($"[{col}] = '{cb.SelectedItem.ToString().Replace("'", "''")}'")
+            Dim dd = kvp.Value
+            If dd.SelectedValues.Count > 0 Then
+                Dim orParts = dd.SelectedValues.Select(Function(val) $"[{col}] = '{val.Replace("'", "''")}'")
+                filterParts.Add("(" & String.Join(" OR ", orParts) & ")")
             End If
         Next
         Dim dv As New DataView(currentDataTable)
@@ -228,5 +228,71 @@ Public Class HCPCSCodeResultsForm
             .DefaultCellStyle.SelectionForeColor = Color.Black
             .EnableHeadersVisualStyles = False
         End With
+    End Sub
+End Class
+
+' --- MultiSelectDropdown and DropdownHost classes (copy from Profile.vb) ---
+
+Public Class MultiSelectDropdown2
+    Inherits Panel
+
+    Public Event SelectionChanged()
+    Private WithEvents txtSearch As New TextBox() With {.Dock = DockStyle.Top, .PlaceholderText = "Search..."}
+    Private WithEvents clb As New CheckedListBox() With {.Dock = DockStyle.Fill, .CheckOnClick = True}
+    Private allItems As List(Of String)
+
+    Public Sub New(items As IEnumerable(Of String))
+        Me.Height = 200
+        Me.Width = 200
+        Me.BorderStyle = BorderStyle.FixedSingle
+        Me.Controls.Add(clb)
+        Me.Controls.Add(txtSearch)
+        allItems = items.Distinct().OrderBy(Function(x) x).ToList()
+        clb.Items.AddRange(allItems.ToArray())
+    End Sub
+
+    Public ReadOnly Property SelectedValues As List(Of String)
+        Get
+            Return clb.CheckedItems.Cast(Of String)().ToList()
+        End Get
+    End Property
+
+    Public Sub SetChecked(values As IEnumerable(Of String))
+        For i = 0 To clb.Items.Count - 1
+            clb.SetItemChecked(i, values.Contains(clb.Items(i).ToString()))
+        Next
+    End Sub
+
+    Private Sub txtSearch_TextChanged(sender As Object, e As EventArgs) Handles txtSearch.TextChanged
+        Dim filter = txtSearch.Text.Trim().ToLower()
+        clb.Items.Clear()
+        For Each item In allItems
+            If item.ToLower().Contains(filter) Then
+                clb.Items.Add(item, False)
+            End If
+        Next
+    End Sub
+
+    Private Sub clb_ItemCheck(sender As Object, e As ItemCheckEventArgs) Handles clb.ItemCheck
+        ' Raise after the check state changes
+        Me.BeginInvoke(Sub() RaiseEvent SelectionChanged())
+    End Sub
+End Class
+
+Public Class DropdownHost2
+    Inherits ToolStripDropDown
+
+    Public Sub New(content As Control)
+        MyBase.New()
+        content.Dock = DockStyle.Fill
+        Dim host = New ToolStripControlHost(content)
+        host.Margin = Padding.Empty
+        host.Padding = Padding.Empty
+        host.AutoSize = False
+        Me.Padding = Padding.Empty
+        Me.Items.Add(host)
+        Me.AutoClose = True
+        Me.Width = content.Width
+        Me.Height = content.Height
     End Sub
 End Class

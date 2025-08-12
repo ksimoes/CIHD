@@ -1,6 +1,7 @@
 ﻿Imports System.Windows.Forms
 Imports Newtonsoft.Json.Linq
 Imports System.Net.Http
+Imports System.Data
 
 Public Class ProviderDetailsForm
     Private WithEvents btnPrescriberDrugs As New Button With {.Text = "Prescriber Drugs", .Width = 110, .Height = 28}
@@ -12,6 +13,9 @@ Public Class ProviderDetailsForm
     Private WithEvents btnOwnershipData As New Button With {.Text = "Ownership Data", .Width = 110, .Height = 28}
     Private WithEvents btnResearchPayment As New Button With {.Text = "Research Payment", .Width = 110, .Height = 28}
     Private buttonPanel As New FlowLayoutPanel()
+    Private filterPanel As Panel
+    Private columnFilters As New Dictionary(Of String, ComboBox)
+    Private currentDataTable As DataTable
 
     ' Use your existing PictureBox for loading indication
     ' Make sure you have a PictureBox named picLoading on your form (in the Designer)
@@ -68,6 +72,118 @@ Public Class ProviderDetailsForm
 
         btnPrescriberDrugs.PerformClick()
     End Sub
+
+    ' --- FILTER PANEL LOGIC ---
+
+    Private Sub SetupColumnFilters()
+        If filterPanel Is Nothing Then
+            filterPanel = New Panel() With {
+                .Height = 30,
+                .Dock = DockStyle.Top
+            }
+            Me.Controls.Add(filterPanel)
+            Me.Controls.SetChildIndex(filterPanel, 0)
+        End If
+
+        filterPanel.Controls.Clear()
+        columnFilters.Clear()
+        If currentDataTable Is Nothing OrElse dgvDetails.Columns.Count = 0 Then Return
+
+        For Each col As DataGridViewColumn In dgvDetails.Columns
+            If Not col.Visible Then Continue For
+            Dim cb As New ComboBox() With {
+                .Name = "cbFilter_" & col.Name,
+                .Width = col.Width,
+                .Left = dgvDetails.GetCellDisplayRectangle(col.Index, -1, True).Left,
+                .Top = 0,
+                .DropDownStyle = ComboBoxStyle.DropDown, ' Editable for search
+                .Tag = col.Name
+            }
+            cb.Items.Add("(All)")
+            Dim uniqueVals = currentDataTable.AsEnumerable().
+                Select(Function(r) r(col.Name)?.ToString()).
+                Where(Function(v) Not String.IsNullOrEmpty(v)).
+                Distinct().
+                OrderBy(Function(v) v).
+                ToList()
+            For Each v In uniqueVals
+                cb.Items.Add(v)
+            Next
+            cb.SelectedIndex = 0
+            AddHandler cb.SelectedIndexChanged, AddressOf ColumnFilterChanged
+            AddHandler cb.TextUpdate, AddressOf ComboBox_TextUpdate
+            filterPanel.Controls.Add(cb)
+            columnFilters(col.Name) = cb
+        Next
+        AddHandler dgvDetails.ColumnWidthChanged, AddressOf dgvDetails_ColumnWidthChanged
+        AddHandler dgvDetails.Scroll, AddressOf dgvDetails_Scroll
+        PositionFilterCombos()
+    End Sub
+
+    Private Sub PositionFilterCombos()
+        For Each col As DataGridViewColumn In dgvDetails.Columns
+            If columnFilters.ContainsKey(col.Name) Then
+                Dim cb = columnFilters(col.Name)
+                Dim rect = dgvDetails.GetCellDisplayRectangle(col.Index, -1, True)
+                cb.Left = rect.Left
+                cb.Width = rect.Width
+            End If
+        Next
+    End Sub
+
+    Private Sub dgvDetails_ColumnWidthChanged(sender As Object, e As DataGridViewColumnEventArgs)
+        PositionFilterCombos()
+    End Sub
+
+    Private Sub dgvDetails_Scroll(sender As Object, e As ScrollEventArgs)
+        PositionFilterCombos()
+    End Sub
+
+    Private Sub ComboBox_TextUpdate(sender As Object, e As EventArgs)
+        Dim cb = CType(sender, ComboBox)
+        Dim colName = cb.Tag.ToString()
+        If currentDataTable Is Nothing OrElse String.IsNullOrEmpty(colName) Then Return
+
+        Dim searchText = cb.Text.Trim().ToLower()
+        Dim allVals = currentDataTable.AsEnumerable().
+            Select(Function(r) r(colName)?.ToString()).
+            Where(Function(v) Not String.IsNullOrEmpty(v)).
+            Distinct().
+            OrderBy(Function(v) v).
+            ToList()
+
+        Dim currentSelection = cb.Text
+
+        cb.Items.Clear()
+        cb.Items.Add("(All)")
+        For Each v In allVals
+            If v.ToLower().Contains(searchText) Then
+                cb.Items.Add(v)
+            End If
+        Next
+
+        cb.DroppedDown = True
+        cb.Text = currentSelection
+        cb.SelectionStart = cb.Text.Length
+        cb.SelectionLength = 0
+    End Sub
+
+    Private Sub ColumnFilterChanged(sender As Object, e As EventArgs)
+        If currentDataTable Is Nothing Then Return
+        Dim filterParts As New List(Of String)
+        For Each kvp In columnFilters
+            Dim col = kvp.Key
+            Dim cb = kvp.Value
+            If cb.SelectedIndex > 0 Then
+                filterParts.Add($"[{col}] = '{cb.SelectedItem.ToString().Replace("'", "''")}'")
+            End If
+        Next
+        Dim dv As New DataView(currentDataTable)
+        dv.RowFilter = String.Join(" AND ", filterParts)
+        dgvDetails.DataSource = dv
+    End Sub
+
+    ' --- END FILTER PANEL LOGIC ---
 
     Private Async Sub btnPrescriberDrugs_Click(sender As Object, e As EventArgs)
         lblHCPCSDescription.Text = PrescriberDrugsDesc
