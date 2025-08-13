@@ -49,13 +49,22 @@ Public Class HCPCSCodeResultsForm
         btnPrevPage.Left = 10
         btnNextPage.Left = btnPrevPage.Right + 10
         lblStatus.Left = btnNextPage.Right + 20
+        txtPageNumber.Top = btnNextPage.Top
+        txtPageNumber.Left = lblStatus.Right + 20
+        btnGoToPage.Top = btnNextPage.Top
+        btnGoToPage.Left = txtPageNumber.Right + 5
 
         btnPrevPage.BringToFront()
         btnNextPage.BringToFront()
         lblStatus.BringToFront()
+        txtPageNumber.BringToFront()
+        btnGoToPage.BringToFront()
+
         btnPrevPage.Visible = True
         btnNextPage.Visible = True
         lblStatus.Visible = True
+        txtPageNumber.Visible = True
+        btnGoToPage.Visible = True
 
         ' On resize, keep everything aligned
         AddHandler Me.Resize, Sub(sender, e)
@@ -70,10 +79,16 @@ Public Class HCPCSCodeResultsForm
                                   btnPrevPage.Left = 10
                                   btnNextPage.Left = btnPrevPage.Right + 10
                                   lblStatus.Left = btnNextPage.Right + 20
+                                  txtPageNumber.Top = btnNextPage.Top
+                                  txtPageNumber.Left = lblStatus.Right + 20
+                                  btnGoToPage.Top = btnNextPage.Top
+                                  btnGoToPage.Left = txtPageNumber.Right + 5
 
                                   btnPrevPage.BringToFront()
                                   btnNextPage.BringToFront()
                                   lblStatus.BringToFront()
+                                  txtPageNumber.BringToFront()
+                                  btnGoToPage.BringToFront()
                               End Sub
     End Sub
 
@@ -194,6 +209,27 @@ Public Class HCPCSCodeResultsForm
         AddHandler dgvCodeResults.ColumnWidthChanged, AddressOf dgvCodeResults_ColumnWidthChanged
         AddHandler dgvCodeResults.Scroll, AddressOf dgvCodeResults_Scroll
         PositionFilterCombos()
+    End Sub
+
+    Private Async Sub btnGoToPage_Click(sender As Object, e As EventArgs) Handles btnGoToPage.Click
+        Dim pageNum As Integer
+        If Integer.TryParse(txtPageNumber.Text, pageNum) Then
+            If pageNum >= 1 AndAlso pageNum <= totalPages Then
+                currentPage = pageNum - 1
+                Await LoadPage()
+            Else
+                MessageBox.Show($"Please enter a page number between 1 and {totalPages}.")
+            End If
+        Else
+            MessageBox.Show("Please enter a valid page number.")
+        End If
+    End Sub
+
+    Private Async Sub txtPageNumber_KeyDown(sender As Object, e As KeyEventArgs) Handles txtPageNumber.KeyDown
+        If e.KeyCode = Keys.Enter Then
+            btnGoToPage.PerformClick()
+            e.SuppressKeyPress = True
+        End If
     End Sub
 
     ' Keep filter buttons aligned with columns
