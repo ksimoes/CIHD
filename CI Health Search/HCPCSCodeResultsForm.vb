@@ -22,8 +22,6 @@ Public Class HCPCSCodeResultsForm
         code = hcpcsCode
         state = stateFilter
 
-        ' Remove any TableLayoutPanel code
-
         ' Create filter panel
         filterPanel = New Panel() With {
         .Height = 44,
@@ -40,16 +38,42 @@ Public Class HCPCSCodeResultsForm
         dgvCodeResults.Top = filterPanel.Bottom
         dgvCodeResults.Left = 0
         dgvCodeResults.Width = Me.ClientSize.Width
-        dgvCodeResults.Height = Me.ClientSize.Height - filterPanel.Height - 60 ' leave space for paging buttons
+        dgvCodeResults.Height = Me.ClientSize.Height - filterPanel.Height - 80 ' leave space for paging buttons
         dgvCodeResults.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Left Or AnchorStyles.Right
         dgvCodeResults.BringToFront()
+
+        ' Position paging controls below DataGridView
+        btnPrevPage.Top = dgvCodeResults.Bottom + 8
+        btnNextPage.Top = dgvCodeResults.Bottom + 8
+        lblStatus.Top = dgvCodeResults.Bottom + btnNextPage.Height + 12
+        btnPrevPage.Left = 10
+        btnNextPage.Left = btnPrevPage.Right + 10
+        lblStatus.Left = btnNextPage.Right + 20
+
+        btnPrevPage.BringToFront()
+        btnNextPage.BringToFront()
+        lblStatus.BringToFront()
+        btnPrevPage.Visible = True
+        btnNextPage.Visible = True
+        lblStatus.Visible = True
 
         ' On resize, keep everything aligned
         AddHandler Me.Resize, Sub(sender, e)
                                   filterPanel.Width = Me.ClientSize.Width
                                   dgvCodeResults.Top = filterPanel.Bottom
                                   dgvCodeResults.Width = Me.ClientSize.Width
-                                  dgvCodeResults.Height = Me.ClientSize.Height - filterPanel.Height - 60
+                                  dgvCodeResults.Height = Me.ClientSize.Height - filterPanel.Height - 80
+
+                                  btnPrevPage.Top = dgvCodeResults.Bottom + 8
+                                  btnNextPage.Top = dgvCodeResults.Bottom + 8
+                                  lblStatus.Top = dgvCodeResults.Bottom + btnNextPage.Height + 12
+                                  btnPrevPage.Left = 10
+                                  btnNextPage.Left = btnPrevPage.Right + 10
+                                  lblStatus.Left = btnNextPage.Right + 20
+
+                                  btnPrevPage.BringToFront()
+                                  btnNextPage.BringToFront()
+                                  lblStatus.BringToFront()
                               End Sub
     End Sub
 
@@ -58,30 +82,54 @@ Public Class HCPCSCodeResultsForm
         Await LoadPage()
     End Sub
 
-    ' Load a single page of results
+    ' Add these fields if not present
+    Private totalPages As Integer = 0
+
+    ' Update LoadPage to handle paging and status
     Private Async Function LoadPage() As Task
         btnNextPage.Enabled = False
         btnPrevPage.Enabled = False
         lblStatus.Text = $"Loading page {currentPage + 1}..."
+        lblStatus.BringToFront()
+        lblStatus.Visible = True
+
         Dim offset = currentPage * pageSize
         Dim dt = Await CType(Owner, Search).FetchHCPCSPage(code, state, pageSize, offset)
         currentDataTable = dt
         dgvCodeResults.DataSource = dt
 
-        ' Fetch total row count only on the first page
-        If currentPage = 0 Then
+        ' Fetch total row count only on the first page load
+        If totalRowCount = 0 Then
             Dim allRowsDt = Await CType(Owner, Search).FetchHCPCSPage(code, state, 100000, 0)
             totalRowCount = allRowsDt.Rows.Count
+            totalPages = CInt(Math.Ceiling(totalRowCount / pageSize))
         End If
 
         Me.Text = $"HCPCS Code Results - {code}   (Total Rows: {totalRowCount})"
-        lblStatus.Text = $"Page {currentPage + 1} (showing {dt.Rows.Count} results)"
+        lblStatus.Text = $"Page {currentPage + 1} of {If(totalPages = 0, 1, totalPages)} (showing {dt.Rows.Count} results)"
+        lblStatus.BringToFront()
+        lblStatus.Visible = True
+
         btnPrevPage.Enabled = currentPage > 0
-        btnNextPage.Enabled = dt.Rows.Count = pageSize
+        btnNextPage.Enabled = (currentPage + 1) < totalPages
 
         SetupColumnFilters()
         ApplyCustomColors()
     End Function
+
+    Private Async Sub btnNextPage_Click(sender As Object, e As EventArgs) Handles btnNextPage.Click
+        If (currentPage + 1) < totalPages Then
+            currentPage += 1
+            Await LoadPage()
+        End If
+    End Sub
+
+    Private Async Sub btnPrevPage_Click(sender As Object, e As EventArgs) Handles btnPrevPage.Click
+        If currentPage > 0 Then
+            currentPage -= 1
+            Await LoadPage()
+        End If
+    End Sub
 
     ' Multi-select, searchable dropdown filter panel
     Private Sub SetupColumnFilters()
@@ -232,17 +280,7 @@ Public Class HCPCSCodeResultsForm
         End If
     End Sub
 
-    Private Async Sub btnNextPage_Click(sender As Object, e As EventArgs) Handles btnNextPage.Click
-        currentPage += 1
-        Await LoadPage()
-    End Sub
 
-    Private Async Sub btnPrevPage_Click(sender As Object, e As EventArgs) Handles btnPrevPage.Click
-        If currentPage > 0 Then
-            currentPage -= 1
-            Await LoadPage()
-        End If
-    End Sub
 
     Private Sub ApplyCustomColors()
         With dgvCodeResults
