@@ -192,6 +192,7 @@ Partial Class Search
         lblService = New Label()
         lblMedicare = New Label()
         lblFacility = New Label()
+        Button6 = New Button()
         TabControl1.SuspendLayout()
         TabPage5.SuspendLayout()
         CType(picLoading, ComponentModel.ISupportInitialize).BeginInit()
@@ -221,6 +222,7 @@ Partial Class Search
         ' 
         ' TabPage5
         ' 
+        TabPage5.Controls.Add(Button6)
         TabPage5.Controls.Add(picLoading)
         TabPage5.Controls.Add(lblCheckingStatus)
         TabPage5.Controls.Add(lblstatus)
@@ -1894,6 +1896,15 @@ Partial Class Search
         lblFacility.TabIndex = 5
         lblFacility.Text = "Type of Facility"
         ' 
+        ' Button6
+        ' 
+        Button6.Location = New Point(574, 620)
+        Button6.Name = "Button6"
+        Button6.Size = New Size(89, 55)
+        Button6.TabIndex = 105
+        Button6.Text = "Go to Individual"
+        Button6.UseVisualStyleBackColor = True
+        ' 
         ' Search
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
@@ -2098,4 +2109,5 @@ Partial Class Search
     Friend WithEvents grpDemographicsTab As GroupBox
     Friend WithEvents txtMinSpecialBedsUtil As TextBox
     Friend WithEvents picLoading As PictureBox
+    Friend WithEvents Button6 As Button
 End Class

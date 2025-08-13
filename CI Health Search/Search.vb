@@ -546,14 +546,14 @@ Public Class Search
     Private Async Sub btnSearchAll_Click(sender As Object, e As EventArgs) Handles btnSearchAll.Click
         lblstatus.Text = "Searching..."
         lblstatus.Visible = True
-        Dim filterSummary As String = BuildFilterSummary()
+        Dim filterSummary = BuildFilterSummary()
 
         Try
             Dim filters As New List(Of String)
             Dim parameters As New List(Of SqlParameter)
-            Dim selectedState As String = ""
+            Dim selectedState = ""
             If lbStateAll.SelectedItem IsNot Nothing Then
-                selectedState = lbStateAll.SelectedItem.ToString().Trim()
+                selectedState = lbStateAll.SelectedItem.ToString.Trim
             End If
 
             ' Add Type of Control filter if selected
@@ -563,9 +563,9 @@ Public Class Search
             End If
 
             If Not String.IsNullOrWhiteSpace(txtCmsCertNumDemoAll.Text) Then
-                Dim cmsNum As String = txtCmsCertNumDemoAll.Text.Trim()
-                Dim apiUrl As String = $"https://data.cms.gov/data-api/v1/dataset/8015f175-35cc-4cab-a664-b7c87d91a027/data?filter[Provider CCN]={Uri.EscapeDataString(cmsNum)}&size=1000"
-                Dim dt As DataTable = Await GetNpiResultsAsync(apiUrl)
+                Dim cmsNum = txtCmsCertNumDemoAll.Text.Trim
+                Dim apiUrl = $"https://data.cms.gov/data-api/v1/dataset/8015f175-35cc-4cab-a664-b7c87d91a027/data?filter[Provider CCN]={Uri.EscapeDataString(cmsNum)}&size=1000"
+                Dim dt = Await GetNpiResultsAsync(apiUrl)
                 If dt IsNot Nothing AndAlso dt.Rows.Count > 0 Then
                     Results.SetResults(dt, filterSummary)
                     Results.SelectedState = selectedState
@@ -583,41 +583,41 @@ Public Class Search
             End If
 
             If Not String.IsNullOrWhiteSpace(txtNpiAll.Text) Then
-                Dim npi As String = txtNpiAll.Text.Trim()
-                Dim facilityUrl As String = $"https://data.cms.gov/data-api/v1/dataset/8015f175-35cc-4cab-a664-b7c87d91a027/data?filter[NPI]={Uri.EscapeDataString(npi)}&size=1000"
-                Dim dtFacility As DataTable = Await GetNpiResultsAsync(facilityUrl)
-                Dim dtFacilityNpiOnly As DataTable = Await SearchFacilityNpiOnlyAsync(npi)
-                Dim providerUrl As String = $"https://data.cms.gov/data-api/v1/dataset/4bcae866-3411-439a-b762-90a6187c194b/data?filter[npi]={Uri.EscapeDataString(npi)}&size=1000"
-                Dim dtProvider As DataTable = Await GetNpiResultsAsync(providerUrl)
+                Dim npi = txtNpiAll.Text.Trim
+                Dim facilityUrl = $"https://data.cms.gov/data-api/v1/dataset/8015f175-35cc-4cab-a664-b7c87d91a027/data?filter[NPI]={Uri.EscapeDataString(npi)}&size=1000"
+                Dim dtFacility = Await GetNpiResultsAsync(facilityUrl)
+                Dim dtFacilityNpiOnly = Await SearchFacilityNpiOnlyAsync(npi)
+                Dim providerUrl = $"https://data.cms.gov/data-api/v1/dataset/4bcae866-3411-439a-b762-90a6187c194b/data?filter[npi]={Uri.EscapeDataString(npi)}&size=1000"
+                Dim dtProvider = Await GetNpiResultsAsync(providerUrl)
 
                 Dim npiInfo = Await GetNpiRegistryInfoAsync(npi)
                 If npiInfo IsNot Nothing Then
-                    Dim npiName = npiInfo("basic")?("organization_name")?.ToString()
-                    Dim npiCity = npiInfo("addresses")?(0)?("city")?.ToString()
-                    Dim npiState = npiInfo("addresses")?(0)?("state")?.ToString()
-                    Dim npiAddress = npiInfo("addresses")?(0)?("address_1")?.ToString()
+                    Dim npiName = npiInfo("basic")?("organization_name")?.ToString
+                    Dim npiCity = npiInfo("addresses")?(0)?("city")?.ToString
+                    Dim npiState = npiInfo("addresses")?(0)?("state")?.ToString
+                    Dim npiAddress = npiInfo("addresses")?(0)?("address_1")?.ToString
 
                     If Not String.IsNullOrEmpty(npiName) AndAlso Not String.IsNullOrEmpty(npiCity) AndAlso Not String.IsNullOrEmpty(npiState) Then
-                        Dim apiUrl As String = $"https://data.cms.gov/data-api/v1/dataset/8015f175-35cc-4cab-a664-b7c87d91a027/data?filter[State Code]={Uri.EscapeDataString(npiState)}&filter[City]={Uri.EscapeDataString(npiCity)}&size=1000"
-                        Dim dtFacilities As DataTable = Await GetNpiResultsAsync(apiUrl)
+                        Dim apiUrl = $"https://data.cms.gov/data-api/v1/dataset/8015f175-35cc-4cab-a664-b7c87d91a027/data?filter[State Code]={Uri.EscapeDataString(npiState)}&filter[City]={Uri.EscapeDataString(npiCity)}&size=1000"
+                        Dim dtFacilities = Await GetNpiResultsAsync(apiUrl)
 
                         If dtFacilities IsNot Nothing AndAlso dtFacilities.Rows.Count > 0 Then
-                            Dim dtMatches As DataTable = dtFacilities.Clone()
+                            Dim dtMatches = dtFacilities.Clone
                             For Each row As DataRow In dtFacilities.Rows
                                 Dim facilityName = ""
                                 If dtFacilities.Columns.Contains("Facility Name") Then
-                                    facilityName = row("Facility Name").ToString()
+                                    facilityName = row("Facility Name").ToString
                                 ElseIf dtFacilities.Columns.Contains("Hospital Name") Then
-                                    facilityName = row("Hospital Name").ToString()
+                                    facilityName = row("Hospital Name").ToString
                                 End If
 
-                                Dim facilityAddress As String = ""
+                                Dim facilityAddress = ""
                                 If dtFacilities.Columns.Contains("Street Address") Then
-                                    facilityAddress = row("Street Address").ToString()
+                                    facilityAddress = row("Street Address").ToString
                                 End If
 
-                                If (Not String.IsNullOrEmpty(facilityName) AndAlso IsFuzzyMatch(npiName, facilityName)) OrElse
-                                   (Not String.IsNullOrEmpty(facilityAddress) AndAlso IsFuzzyAddressMatch(npiAddress, facilityAddress)) Then
+                                If Not String.IsNullOrEmpty(facilityName) AndAlso IsFuzzyMatch(npiName, facilityName) OrElse
+                                   Not String.IsNullOrEmpty(facilityAddress) AndAlso IsFuzzyAddressMatch(npiAddress, facilityAddress) Then
                                     dtMatches.ImportRow(row)
                                 End If
                             Next
@@ -641,30 +641,30 @@ Public Class Search
                 Return
             End If
 
-            If lbTypeFacilityCharAll.SelectedItem IsNot Nothing AndAlso lbTypeFacilityCharAll.SelectedItem.ToString() = "Federally Qualified Health Centers" Then
-                Dim fqhcApiUrl As String = "https://data.cms.gov/data-api/v1/dataset/4bcae866-3411-439a-b762-90a6187c194b/data?"
+            If lbTypeFacilityCharAll.SelectedItem IsNot Nothing AndAlso lbTypeFacilityCharAll.SelectedItem.ToString = "Federally Qualified Health Centers" Then
+                Dim fqhcApiUrl = "https://data.cms.gov/data-api/v1/dataset/4bcae866-3411-439a-b762-90a6187c194b/data?"
                 Dim fqhcFilters As New List(Of String)
 
                 If lbStateAll.SelectedItem IsNot Nothing Then
-                    fqhcFilters.Add("filter[STATE]=" & Uri.EscapeDataString(lbStateAll.SelectedItem.ToString().Trim()))
+                    fqhcFilters.Add("filter[STATE]=" & Uri.EscapeDataString(lbStateAll.SelectedItem.ToString.Trim))
                 End If
                 If Not String.IsNullOrWhiteSpace(txtCityAll.Text) Then
-                    fqhcFilters.Add("filter[CITY]=" & Uri.EscapeDataString(txtCityAll.Text.Trim()))
+                    fqhcFilters.Add("filter[CITY]=" & Uri.EscapeDataString(txtCityAll.Text.Trim))
                 End If
                 If Not String.IsNullOrWhiteSpace(txtZipCodeDemoAll.Text) Then
-                    fqhcFilters.Add("filter[ZIP]=" & Uri.EscapeDataString(txtZipCodeDemoAll.Text.Trim()))
+                    fqhcFilters.Add("filter[ZIP]=" & Uri.EscapeDataString(txtZipCodeDemoAll.Text.Trim))
                 End If
                 If Not String.IsNullOrWhiteSpace(txtNpiAll.Text) Then
-                    fqhcFilters.Add("filter[NPI]=" & Uri.EscapeDataString(txtNpiAll.Text.Trim()))
+                    fqhcFilters.Add("filter[NPI]=" & Uri.EscapeDataString(txtNpiAll.Text.Trim))
                 End If
 
                 fqhcFilters.Add("size=10000")
                 fqhcApiUrl &= String.Join("&", fqhcFilters)
 
-                Dim fqhcDt As DataTable = Await GetNpiResultsAsync(fqhcApiUrl)
+                Dim fqhcDt = Await GetNpiResultsAsync(fqhcApiUrl)
                 If fqhcDt IsNot Nothing AndAlso fqhcDt.Rows.Count > 0 Then
                     Results.SetResults(fqhcDt, filterSummary)
-                    Results.SelectedState = If(lbStateAll.SelectedItem IsNot Nothing, lbStateAll.SelectedItem.ToString().Trim(), "")
+                    Results.SelectedState = If(lbStateAll.SelectedItem IsNot Nothing, lbStateAll.SelectedItem.ToString.Trim, "")
                     Hide()
                     Results.Show()
                     lblstatus.Text = ""
@@ -685,7 +685,7 @@ Public Class Search
                 End If
                 If Not String.IsNullOrEmpty(txtCityAll.Text) Then
                     filters.Add("City = @City")
-                    parameters.Add(New SqlParameter("@City", txtCityAll.Text.Trim()))
+                    parameters.Add(New SqlParameter("@City", txtCityAll.Text.Trim))
                 End If
 
                 Dim query As String
@@ -701,10 +701,10 @@ Public Class Search
                     query &= " AND " & String.Join(" AND ", filters)
                 End If
 
-                Dim dt As New DataTable()
+                Dim dt As New DataTable
                 Using conn As New SqlConnection(connectionString)
                     Using cmd As New SqlCommand(query, conn)
-                        cmd.Parameters.AddRange(parameters.ToArray())
+                        cmd.Parameters.AddRange(parameters.ToArray)
                         Dim da As New SqlDataAdapter(cmd)
                         da.Fill(dt)
                     End Using
@@ -830,6 +830,10 @@ Public Class Search
         txtMaxTotalBeds As TextBox
     )
         ' Stub for SearchUtilizationRanges
+    End Sub
+
+    Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click
+        Individual_Search.Show()
     End Sub
 End Class
 

@@ -23,24 +23,19 @@ Partial Class Individual_Search
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         GroupBox1 = New GroupBox()
-        Label1 = New Label()
-        Label2 = New Label()
-        Label3 = New Label()
-        Label4 = New Label()
-        Label5 = New Label()
-        Label6 = New Label()
-        Label7 = New Label()
-        Label8 = New Label()
-        Label9 = New Label()
-        Label10 = New Label()
-        Label11 = New Label()
-        tbNpi = New TextBox()
-        tbTS = New TextBox()
-        tbFirst = New TextBox()
-        tbMiddle = New TextBox()
-        tbLast = New TextBox()
-        tbAddress = New TextBox()
-        tbCity = New TextBox()
+        btnOrgSearch = New Button()
+        btnSearch = New Button()
+        tbMedSchool = New TextBox()
+        tbGradYear = New TextBox()
+        tbFacilityTyp = New TextBox()
+        tbProvEnroll = New TextBox()
+        Label18 = New Label()
+        Label17 = New Label()
+        Label12 = New Label()
+        Label13 = New Label()
+        Label14 = New Label()
+        Label15 = New Label()
+        Label16 = New Label()
         tbStLicNum = New TextBox()
         tbStLic = New TextBox()
         tbHCPCS = New TextBox()
@@ -48,20 +43,24 @@ Partial Class Individual_Search
         tbAT = New TextBox()
         tbZip = New TextBox()
         tbState = New TextBox()
-        Label12 = New Label()
-        Label13 = New Label()
-        Label14 = New Label()
-        Label15 = New Label()
-        Label16 = New Label()
-        Label17 = New Label()
-        Label18 = New Label()
-        tbMedSchool = New TextBox()
-        tbGradYear = New TextBox()
-        tbFacilityTyp = New TextBox()
-        tbProvEnroll = New TextBox()
-        Button1 = New Button()
-        btnSearch = New Button()
-        btnOrgSearch = New Button()
+        tbCity = New TextBox()
+        tbAddress = New TextBox()
+        tbLast = New TextBox()
+        tbMiddle = New TextBox()
+        tbFirst = New TextBox()
+        tbTS = New TextBox()
+        tbNpi = New TextBox()
+        Label11 = New Label()
+        Label10 = New Label()
+        Label9 = New Label()
+        Label8 = New Label()
+        Label7 = New Label()
+        Label6 = New Label()
+        Label5 = New Label()
+        Label4 = New Label()
+        Label3 = New Label()
+        Label2 = New Label()
+        Label1 = New Label()
         GroupBox1.SuspendLayout()
         SuspendLayout()
         ' 
@@ -69,7 +68,6 @@ Partial Class Individual_Search
         ' 
         GroupBox1.Controls.Add(btnOrgSearch)
         GroupBox1.Controls.Add(btnSearch)
-        GroupBox1.Controls.Add(Button1)
         GroupBox1.Controls.Add(tbMedSchool)
         GroupBox1.Controls.Add(tbGradYear)
         GroupBox1.Controls.Add(tbFacilityTyp)
@@ -113,153 +111,114 @@ Partial Class Individual_Search
         GroupBox1.TabStop = False
         GroupBox1.Text = "GroupBox1"
         ' 
-        ' Label1
+        ' btnOrgSearch
         ' 
-        Label1.AutoSize = True
-        Label1.Location = New Point(15, 29)
-        Label1.Name = "Label1"
-        Label1.Size = New Size(73, 15)
-        Label1.TabIndex = 0
-        Label1.Text = "NPI Number"
+        btnOrgSearch.Location = New Point(776, 610)
+        btnOrgSearch.Name = "btnOrgSearch"
+        btnOrgSearch.Size = New Size(166, 74)
+        btnOrgSearch.TabIndex = 38
+        btnOrgSearch.Text = "Go to Organizations Search"
+        btnOrgSearch.UseVisualStyleBackColor = True
         ' 
-        ' Label2
+        ' btnSearch
         ' 
-        Label2.AutoSize = True
-        Label2.Location = New Point(15, 64)
-        Label2.Name = "Label2"
-        Label2.Size = New Size(114, 15)
-        Label2.TabIndex = 1
-        Label2.Text = "Taxonomy/Specialty"
+        btnSearch.Location = New Point(556, 609)
+        btnSearch.Name = "btnSearch"
+        btnSearch.Size = New Size(167, 77)
+        btnSearch.TabIndex = 37
+        btnSearch.Text = "Search!"
+        btnSearch.UseVisualStyleBackColor = True
         ' 
-        ' Label3
+        ' tbMedSchool
         ' 
-        Label3.AutoSize = True
-        Label3.Location = New Point(15, 99)
-        Label3.Name = "Label3"
-        Label3.Size = New Size(64, 15)
-        Label3.TabIndex = 2
-        Label3.Text = "First Name"
+        tbMedSchool.Location = New Point(185, 610)
+        tbMedSchool.Name = "tbMedSchool"
+        tbMedSchool.Size = New Size(180, 23)
+        tbMedSchool.TabIndex = 35
         ' 
-        ' Label4
+        ' tbGradYear
         ' 
-        Label4.AutoSize = True
-        Label4.Location = New Point(15, 134)
-        Label4.Name = "Label4"
-        Label4.Size = New Size(79, 15)
-        Label4.TabIndex = 3
-        Label4.Text = "Middle Name"
+        tbGradYear.Location = New Point(185, 575)
+        tbGradYear.Name = "tbGradYear"
+        tbGradYear.Size = New Size(180, 23)
+        tbGradYear.TabIndex = 34
         ' 
-        ' Label5
+        ' tbFacilityTyp
         ' 
-        Label5.AutoSize = True
-        Label5.Location = New Point(15, 169)
-        Label5.Name = "Label5"
-        Label5.Size = New Size(63, 15)
-        Label5.TabIndex = 4
-        Label5.Text = "Last Name"
+        tbFacilityTyp.Location = New Point(185, 540)
+        tbFacilityTyp.Name = "tbFacilityTyp"
+        tbFacilityTyp.Size = New Size(180, 23)
+        tbFacilityTyp.TabIndex = 33
         ' 
-        ' Label6
+        ' tbProvEnroll
         ' 
-        Label6.AutoSize = True
-        Label6.Location = New Point(15, 204)
-        Label6.Name = "Label6"
-        Label6.Size = New Size(82, 15)
-        Label6.TabIndex = 5
-        Label6.Text = "Street Address"
+        tbProvEnroll.Location = New Point(185, 508)
+        tbProvEnroll.Name = "tbProvEnroll"
+        tbProvEnroll.Size = New Size(180, 23)
+        tbProvEnroll.TabIndex = 32
         ' 
-        ' Label7
+        ' Label18
         ' 
-        Label7.AutoSize = True
-        Label7.Location = New Point(15, 239)
-        Label7.Name = "Label7"
-        Label7.Size = New Size(28, 15)
-        Label7.TabIndex = 6
-        Label7.Text = "City"
+        Label18.AutoSize = True
+        Label18.Location = New Point(15, 622)
+        Label18.Name = "Label18"
+        Label18.Size = New Size(88, 15)
+        Label18.TabIndex = 31
+        Label18.Text = "Medical School"
         ' 
-        ' Label8
+        ' Label17
         ' 
-        Label8.AutoSize = True
-        Label8.Location = New Point(15, 274)
-        Label8.Name = "Label8"
-        Label8.Size = New Size(33, 15)
-        Label8.TabIndex = 7
-        Label8.Text = "State"
+        Label17.AutoSize = True
+        Label17.Location = New Point(15, 585)
+        Label17.Name = "Label17"
+        Label17.Size = New Size(91, 15)
+        Label17.TabIndex = 30
+        Label17.Text = "Graduation Year"
         ' 
-        ' Label9
+        ' Label12
         ' 
-        Label9.AutoSize = True
-        Label9.Location = New Point(15, 309)
-        Label9.Name = "Label9"
-        Label9.Size = New Size(55, 15)
-        Label9.TabIndex = 8
-        Label9.Text = "Zip Code"
+        Label12.AutoSize = True
+        Label12.Location = New Point(15, 551)
+        Label12.Name = "Label12"
+        Label12.Size = New Size(72, 15)
+        Label12.TabIndex = 29
+        Label12.Text = "Facility Type"
         ' 
-        ' Label10
+        ' Label13
         ' 
-        Label10.AutoSize = True
-        Label10.Location = New Point(15, 344)
-        Label10.Name = "Label10"
-        Label10.Size = New Size(77, 15)
-        Label10.TabIndex = 9
-        Label10.Text = "Address Type"
+        Label13.AutoSize = True
+        Label13.Location = New Point(15, 516)
+        Label13.Name = "Label13"
+        Label13.Size = New Size(112, 15)
+        Label13.TabIndex = 28
+        Label13.Text = "Provider Enrollment"
         ' 
-        ' Label11
+        ' Label14
         ' 
-        Label11.AutoSize = True
-        Label11.Location = New Point(15, 379)
-        Label11.Name = "Label11"
-        Label11.Size = New Size(45, 15)
-        Label11.TabIndex = 10
-        Label11.Text = "Gender"
+        Label14.AutoSize = True
+        Label14.Location = New Point(15, 481)
+        Label14.Name = "Label14"
+        Label14.Size = New Size(61, 15)
+        Label14.TabIndex = 27
+        Label14.Text = "State Lic #"
         ' 
-        ' tbNpi
+        ' Label15
         ' 
-        tbNpi.Location = New Point(185, 29)
-        tbNpi.Name = "tbNpi"
-        tbNpi.Size = New Size(180, 23)
-        tbNpi.TabIndex = 11
+        Label15.AutoSize = True
+        Label15.Location = New Point(15, 446)
+        Label15.Name = "Label15"
+        Label15.Size = New Size(51, 15)
+        Label15.TabIndex = 26
+        Label15.Text = "State Lic"
         ' 
-        ' tbTS
+        ' Label16
         ' 
-        tbTS.Location = New Point(185, 61)
-        tbTS.Name = "tbTS"
-        tbTS.Size = New Size(180, 23)
-        tbTS.TabIndex = 12
-        ' 
-        ' tbFirst
-        ' 
-        tbFirst.Location = New Point(185, 90)
-        tbFirst.Name = "tbFirst"
-        tbFirst.Size = New Size(180, 23)
-        tbFirst.TabIndex = 13
-        ' 
-        ' tbMiddle
-        ' 
-        tbMiddle.Location = New Point(185, 126)
-        tbMiddle.Name = "tbMiddle"
-        tbMiddle.Size = New Size(180, 23)
-        tbMiddle.TabIndex = 14
-        ' 
-        ' tbLast
-        ' 
-        tbLast.Location = New Point(185, 161)
-        tbLast.Name = "tbLast"
-        tbLast.Size = New Size(180, 23)
-        tbLast.TabIndex = 15
-        ' 
-        ' tbAddress
-        ' 
-        tbAddress.Location = New Point(185, 196)
-        tbAddress.Name = "tbAddress"
-        tbAddress.Size = New Size(180, 23)
-        tbAddress.TabIndex = 16
-        ' 
-        ' tbCity
-        ' 
-        tbCity.Location = New Point(185, 231)
-        tbCity.Name = "tbCity"
-        tbCity.Size = New Size(180, 23)
-        tbCity.TabIndex = 17
+        Label16.AutoSize = True
+        Label16.Location = New Point(15, 411)
+        Label16.Name = "Label16"
+        Label16.Size = New Size(76, 15)
+        Label16.TabIndex = 25
+        Label16.Text = "HCPCS Code"
         ' 
         ' tbStLicNum
         ' 
@@ -310,123 +269,153 @@ Partial Class Individual_Search
         tbState.Size = New Size(180, 23)
         tbState.TabIndex = 18
         ' 
-        ' Label12
+        ' tbCity
         ' 
-        Label12.AutoSize = True
-        Label12.Location = New Point(15, 551)
-        Label12.Name = "Label12"
-        Label12.Size = New Size(72, 15)
-        Label12.TabIndex = 29
-        Label12.Text = "Facility Type"
+        tbCity.Location = New Point(185, 231)
+        tbCity.Name = "tbCity"
+        tbCity.Size = New Size(180, 23)
+        tbCity.TabIndex = 17
         ' 
-        ' Label13
+        ' tbAddress
         ' 
-        Label13.AutoSize = True
-        Label13.Location = New Point(15, 516)
-        Label13.Name = "Label13"
-        Label13.Size = New Size(112, 15)
-        Label13.TabIndex = 28
-        Label13.Text = "Provider Enrollment"
+        tbAddress.Location = New Point(185, 196)
+        tbAddress.Name = "tbAddress"
+        tbAddress.Size = New Size(180, 23)
+        tbAddress.TabIndex = 16
         ' 
-        ' Label14
+        ' tbLast
         ' 
-        Label14.AutoSize = True
-        Label14.Location = New Point(15, 481)
-        Label14.Name = "Label14"
-        Label14.Size = New Size(61, 15)
-        Label14.TabIndex = 27
-        Label14.Text = "State Lic #"
+        tbLast.Location = New Point(185, 161)
+        tbLast.Name = "tbLast"
+        tbLast.Size = New Size(180, 23)
+        tbLast.TabIndex = 15
         ' 
-        ' Label15
+        ' tbMiddle
         ' 
-        Label15.AutoSize = True
-        Label15.Location = New Point(15, 446)
-        Label15.Name = "Label15"
-        Label15.Size = New Size(51, 15)
-        Label15.TabIndex = 26
-        Label15.Text = "State Lic"
+        tbMiddle.Location = New Point(185, 126)
+        tbMiddle.Name = "tbMiddle"
+        tbMiddle.Size = New Size(180, 23)
+        tbMiddle.TabIndex = 14
         ' 
-        ' Label16
+        ' tbFirst
         ' 
-        Label16.AutoSize = True
-        Label16.Location = New Point(15, 411)
-        Label16.Name = "Label16"
-        Label16.Size = New Size(76, 15)
-        Label16.TabIndex = 25
-        Label16.Text = "HCPCS Code"
+        tbFirst.Location = New Point(185, 90)
+        tbFirst.Name = "tbFirst"
+        tbFirst.Size = New Size(180, 23)
+        tbFirst.TabIndex = 13
         ' 
-        ' Label17
+        ' tbTS
         ' 
-        Label17.AutoSize = True
-        Label17.Location = New Point(15, 585)
-        Label17.Name = "Label17"
-        Label17.Size = New Size(91, 15)
-        Label17.TabIndex = 30
-        Label17.Text = "Graduation Year"
+        tbTS.Location = New Point(185, 61)
+        tbTS.Name = "tbTS"
+        tbTS.Size = New Size(180, 23)
+        tbTS.TabIndex = 12
         ' 
-        ' Label18
+        ' tbNpi
         ' 
-        Label18.AutoSize = True
-        Label18.Location = New Point(15, 622)
-        Label18.Name = "Label18"
-        Label18.Size = New Size(88, 15)
-        Label18.TabIndex = 31
-        Label18.Text = "Medical School"
+        tbNpi.Location = New Point(185, 29)
+        tbNpi.Name = "tbNpi"
+        tbNpi.Size = New Size(180, 23)
+        tbNpi.TabIndex = 11
         ' 
-        ' tbMedSchool
+        ' Label11
         ' 
-        tbMedSchool.Location = New Point(185, 610)
-        tbMedSchool.Name = "tbMedSchool"
-        tbMedSchool.Size = New Size(180, 23)
-        tbMedSchool.TabIndex = 35
+        Label11.AutoSize = True
+        Label11.Location = New Point(15, 379)
+        Label11.Name = "Label11"
+        Label11.Size = New Size(45, 15)
+        Label11.TabIndex = 10
+        Label11.Text = "Gender"
         ' 
-        ' tbGradYear
+        ' Label10
         ' 
-        tbGradYear.Location = New Point(185, 575)
-        tbGradYear.Name = "tbGradYear"
-        tbGradYear.Size = New Size(180, 23)
-        tbGradYear.TabIndex = 34
+        Label10.AutoSize = True
+        Label10.Location = New Point(15, 344)
+        Label10.Name = "Label10"
+        Label10.Size = New Size(77, 15)
+        Label10.TabIndex = 9
+        Label10.Text = "Address Type"
         ' 
-        ' tbFacilityTyp
+        ' Label9
         ' 
-        tbFacilityTyp.Location = New Point(185, 540)
-        tbFacilityTyp.Name = "tbFacilityTyp"
-        tbFacilityTyp.Size = New Size(180, 23)
-        tbFacilityTyp.TabIndex = 33
+        Label9.AutoSize = True
+        Label9.Location = New Point(15, 309)
+        Label9.Name = "Label9"
+        Label9.Size = New Size(55, 15)
+        Label9.TabIndex = 8
+        Label9.Text = "Zip Code"
         ' 
-        ' tbProvEnroll
+        ' Label8
         ' 
-        tbProvEnroll.Location = New Point(185, 508)
-        tbProvEnroll.Name = "tbProvEnroll"
-        tbProvEnroll.Size = New Size(180, 23)
-        tbProvEnroll.TabIndex = 32
+        Label8.AutoSize = True
+        Label8.Location = New Point(15, 274)
+        Label8.Name = "Label8"
+        Label8.Size = New Size(33, 15)
+        Label8.TabIndex = 7
+        Label8.Text = "State"
         ' 
-        ' Button1
+        ' Label7
         ' 
-        Button1.Location = New Point(3, 19)
-        Button1.Name = "Button1"
-        Button1.Size = New Size(75, 23)
-        Button1.TabIndex = 36
-        Button1.Text = "Button1"
-        Button1.UseVisualStyleBackColor = True
+        Label7.AutoSize = True
+        Label7.Location = New Point(15, 239)
+        Label7.Name = "Label7"
+        Label7.Size = New Size(28, 15)
+        Label7.TabIndex = 6
+        Label7.Text = "City"
         ' 
-        ' btnSearch
+        ' Label6
         ' 
-        btnSearch.Location = New Point(556, 609)
-        btnSearch.Name = "btnSearch"
-        btnSearch.Size = New Size(167, 77)
-        btnSearch.TabIndex = 37
-        btnSearch.Text = "Search!"
-        btnSearch.UseVisualStyleBackColor = True
+        Label6.AutoSize = True
+        Label6.Location = New Point(15, 204)
+        Label6.Name = "Label6"
+        Label6.Size = New Size(82, 15)
+        Label6.TabIndex = 5
+        Label6.Text = "Street Address"
         ' 
-        ' btnOrgSearch
+        ' Label5
         ' 
-        btnOrgSearch.Location = New Point(776, 610)
-        btnOrgSearch.Name = "btnOrgSearch"
-        btnOrgSearch.Size = New Size(166, 74)
-        btnOrgSearch.TabIndex = 38
-        btnOrgSearch.Text = "Go to Organizations Search"
-        btnOrgSearch.UseVisualStyleBackColor = True
+        Label5.AutoSize = True
+        Label5.Location = New Point(15, 169)
+        Label5.Name = "Label5"
+        Label5.Size = New Size(63, 15)
+        Label5.TabIndex = 4
+        Label5.Text = "Last Name"
+        ' 
+        ' Label4
+        ' 
+        Label4.AutoSize = True
+        Label4.Location = New Point(15, 134)
+        Label4.Name = "Label4"
+        Label4.Size = New Size(79, 15)
+        Label4.TabIndex = 3
+        Label4.Text = "Middle Name"
+        ' 
+        ' Label3
+        ' 
+        Label3.AutoSize = True
+        Label3.Location = New Point(15, 99)
+        Label3.Name = "Label3"
+        Label3.Size = New Size(64, 15)
+        Label3.TabIndex = 2
+        Label3.Text = "First Name"
+        ' 
+        ' Label2
+        ' 
+        Label2.AutoSize = True
+        Label2.Location = New Point(15, 64)
+        Label2.Name = "Label2"
+        Label2.Size = New Size(114, 15)
+        Label2.TabIndex = 1
+        Label2.Text = "Taxonomy/Specialty"
+        ' 
+        ' Label1
+        ' 
+        Label1.AutoSize = True
+        Label1.Location = New Point(15, 29)
+        Label1.Name = "Label1"
+        Label1.Size = New Size(73, 15)
+        Label1.TabIndex = 0
+        Label1.Text = "NPI Number"
         ' 
         ' Individual_Search
         ' 
@@ -481,5 +470,4 @@ Partial Class Individual_Search
     Friend WithEvents Label16 As Label
     Friend WithEvents btnOrgSearch As Button
     Friend WithEvents btnSearch As Button
-    Friend WithEvents Button1 As Button
 End Class
