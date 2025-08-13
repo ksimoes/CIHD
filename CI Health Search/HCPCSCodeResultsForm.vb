@@ -15,28 +15,41 @@ Public Class HCPCSCodeResultsForm
 
     ' Constructor for paged results
     ' Constructor for paged results
+    ' In HCPCSCodeResultsForm.vb
+
     Public Sub New(hcpcsCode As String, stateFilter As String)
         InitializeComponent()
         code = hcpcsCode
         state = stateFilter
 
-        ' Create filter panel for column filters
+        ' Remove any TableLayoutPanel code
+
+        ' Create filter panel
         filterPanel = New Panel() With {
-        .Height = 44, ' Make it taller!
-        .Dock = DockStyle.Top,
+        .Height = 44,
+        .Left = 0,
+        .Top = 0,
+        .Width = Me.ClientSize.Width,
+        .Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right,
         .Visible = True
     }
         Me.Controls.Add(filterPanel)
-        Me.Controls.SetChildIndex(filterPanel, 0) ' Ensure it's above the DataGridView
+        filterPanel.BringToFront()
 
-        ' DataGridView should be Dock = Fill in the Designer!
-        dgvCodeResults.ColumnHeadersVisible = True
-        dgvCodeResults.Dock = DockStyle.Fill
+        ' Position DataGridView below filter panel
+        dgvCodeResults.Top = filterPanel.Bottom
+        dgvCodeResults.Left = 0
+        dgvCodeResults.Width = Me.ClientSize.Width
+        dgvCodeResults.Height = Me.ClientSize.Height - filterPanel.Height - 60 ' leave space for paging buttons
+        dgvCodeResults.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Left Or AnchorStyles.Right
+        dgvCodeResults.BringToFront()
 
-        filterPanel.Width = dgvCodeResults.Width
-        filterPanel.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        ' On resize, keep everything aligned
         AddHandler Me.Resize, Sub(sender, e)
-                                  filterPanel.Width = dgvCodeResults.Width
+                                  filterPanel.Width = Me.ClientSize.Width
+                                  dgvCodeResults.Top = filterPanel.Bottom
+                                  dgvCodeResults.Width = Me.ClientSize.Width
+                                  dgvCodeResults.Height = Me.ClientSize.Height - filterPanel.Height - 60
                               End Sub
     End Sub
 
