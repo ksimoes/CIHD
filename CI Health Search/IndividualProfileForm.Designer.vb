@@ -23,18 +23,18 @@ Partial Class IndividualProfileForm
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         GroupBox1 = New GroupBox()
-        Label1 = New Label()
-        Label2 = New Label()
-        Label3 = New Label()
-        Label4 = New Label()
-        Label5 = New Label()
-        Label6 = New Label()
-        Label7 = New Label()
-        Label8 = New Label()
-        Label9 = New Label()
-        Label10 = New Label()
-        Label11 = New Label()
-        tbNpiResult = New TextBox()
+        Label17 = New Label()
+        lblFacility = New Label()
+        lblGradYear = New Label()
+        lblg = New Label()
+        lblMedSchool = New Label()
+        Label16 = New Label()
+        lblPhone = New Label()
+        Label13 = New Label()
+        lblLicNum = New Label()
+        lbllic = New Label()
+        lblTax = New Label()
+        Label12 = New Label()
         lblGender = New Label()
         lblAddressType = New Label()
         lblZip = New Label()
@@ -44,11 +44,41 @@ Partial Class IndividualProfileForm
         lblLast = New Label()
         lblMiddle = New Label()
         lblFirst = New Label()
+        tbNpiResult = New TextBox()
+        Label11 = New Label()
+        Label10 = New Label()
+        Label9 = New Label()
+        Label8 = New Label()
+        Label7 = New Label()
+        Label6 = New Label()
+        Label5 = New Label()
+        Label4 = New Label()
+        Label3 = New Label()
+        Label2 = New Label()
+        Label1 = New Label()
+        dgvAff = New DataGridView()
+        Label14 = New Label()
+        dgvDrugs = New DataGridView()
+        Label15 = New Label()
         GroupBox1.SuspendLayout()
+        CType(dgvAff, ComponentModel.ISupportInitialize).BeginInit()
+        CType(dgvDrugs, ComponentModel.ISupportInitialize).BeginInit()
         SuspendLayout()
         ' 
         ' GroupBox1
         ' 
+        GroupBox1.Controls.Add(Label17)
+        GroupBox1.Controls.Add(lblFacility)
+        GroupBox1.Controls.Add(lblGradYear)
+        GroupBox1.Controls.Add(lblg)
+        GroupBox1.Controls.Add(lblMedSchool)
+        GroupBox1.Controls.Add(Label16)
+        GroupBox1.Controls.Add(lblPhone)
+        GroupBox1.Controls.Add(Label13)
+        GroupBox1.Controls.Add(lblLicNum)
+        GroupBox1.Controls.Add(lbllic)
+        GroupBox1.Controls.Add(lblTax)
+        GroupBox1.Controls.Add(Label12)
         GroupBox1.Controls.Add(lblGender)
         GroupBox1.Controls.Add(lblAddressType)
         GroupBox1.Controls.Add(lblZip)
@@ -72,116 +102,125 @@ Partial Class IndividualProfileForm
         GroupBox1.Controls.Add(Label1)
         GroupBox1.Location = New Point(3, 12)
         GroupBox1.Name = "GroupBox1"
-        GroupBox1.Size = New Size(602, 1020)
+        GroupBox1.Size = New Size(602, 561)
         GroupBox1.TabIndex = 0
         GroupBox1.TabStop = False
-        GroupBox1.Text = "GroupBox1"
+        GroupBox1.Text = "Individual Profile"
         ' 
-        ' Label1
+        ' Label17
         ' 
-        Label1.AutoSize = True
-        Label1.Location = New Point(6, -21)
-        Label1.Name = "Label1"
-        Label1.Size = New Size(61, 15)
-        Label1.TabIndex = 0
-        Label1.Text = "Full Name"
+        Label17.AutoSize = True
+        Label17.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
+        Label17.Location = New Point(13, 510)
+        Label17.Name = "Label17"
+        Label17.Size = New Size(45, 15)
+        Label17.TabIndex = 32
+        Label17.Text = "Facility"
         ' 
-        ' Label2
+        ' lblFacility
         ' 
-        Label2.AutoSize = True
-        Label2.Location = New Point(9, 58)
-        Label2.Name = "Label2"
-        Label2.Size = New Size(64, 15)
-        Label2.TabIndex = 1
-        Label2.Text = "First Name"
+        lblFacility.AutoSize = True
+        lblFacility.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
+        lblFacility.Location = New Point(121, 510)
+        lblFacility.Name = "lblFacility"
+        lblFacility.Size = New Size(10, 15)
+        lblFacility.TabIndex = 31
+        lblFacility.Text = "."
         ' 
-        ' Label3
+        ' lblGradYear
         ' 
-        Label3.AutoSize = True
-        Label3.Location = New Point(9, 95)
-        Label3.Name = "Label3"
-        Label3.Size = New Size(79, 15)
-        Label3.TabIndex = 2
-        Label3.Text = "Middle Name"
+        lblGradYear.AutoSize = True
+        lblGradYear.Location = New Point(119, 485)
+        lblGradYear.Name = "lblGradYear"
+        lblGradYear.Size = New Size(10, 15)
+        lblGradYear.TabIndex = 30
+        lblGradYear.Text = "."
         ' 
-        ' Label4
+        ' lblg
         ' 
-        Label4.AutoSize = True
-        Label4.Location = New Point(9, 132)
-        Label4.Name = "Label4"
-        Label4.Size = New Size(63, 15)
-        Label4.TabIndex = 3
-        Label4.Text = "Last Name"
+        lblg.AutoSize = True
+        lblg.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
+        lblg.Location = New Point(9, 485)
+        lblg.Name = "lblg"
+        lblg.Size = New Size(96, 15)
+        lblg.TabIndex = 29
+        lblg.Text = "Graduation Year"
         ' 
-        ' Label5
+        ' lblMedSchool
         ' 
-        Label5.AutoSize = True
-        Label5.Location = New Point(9, 169)
-        Label5.Name = "Label5"
-        Label5.Size = New Size(82, 15)
-        Label5.TabIndex = 4
-        Label5.Text = "Street Address"
+        lblMedSchool.AutoSize = True
+        lblMedSchool.Location = New Point(121, 459)
+        lblMedSchool.Name = "lblMedSchool"
+        lblMedSchool.Size = New Size(10, 15)
+        lblMedSchool.TabIndex = 28
+        lblMedSchool.Text = "."
         ' 
-        ' Label6
+        ' Label16
         ' 
-        Label6.AutoSize = True
-        Label6.Location = New Point(11, 241)
-        Label6.Name = "Label6"
-        Label6.Size = New Size(28, 15)
-        Label6.TabIndex = 5
-        Label6.Text = "City"
+        Label16.AutoSize = True
+        Label16.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
+        Label16.Location = New Point(9, 459)
+        Label16.Name = "Label16"
+        Label16.Size = New Size(90, 15)
+        Label16.TabIndex = 27
+        Label16.Text = "Medical School"
         ' 
-        ' Label7
+        ' lblPhone
         ' 
-        Label7.AutoSize = True
-        Label7.Location = New Point(11, 281)
-        Label7.Name = "Label7"
-        Label7.Size = New Size(33, 15)
-        Label7.TabIndex = 6
-        Label7.Text = "State"
+        lblPhone.AutoSize = True
+        lblPhone.Location = New Point(121, 435)
+        lblPhone.Name = "lblPhone"
+        lblPhone.Size = New Size(10, 15)
+        lblPhone.TabIndex = 26
+        lblPhone.Text = "."
         ' 
-        ' Label8
+        ' Label13
         ' 
-        Label8.AutoSize = True
-        Label8.Location = New Point(9, 311)
-        Label8.Name = "Label8"
-        Label8.Size = New Size(55, 15)
-        Label8.TabIndex = 7
-        Label8.Text = "Zip Code"
+        Label13.AutoSize = True
+        Label13.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
+        Label13.Location = New Point(9, 435)
+        Label13.Name = "Label13"
+        Label13.Size = New Size(42, 15)
+        Label13.TabIndex = 25
+        Label13.Text = "Phone"
         ' 
-        ' Label9
+        ' lblLicNum
         ' 
-        Label9.AutoSize = True
-        Label9.Location = New Point(9, 206)
-        Label9.Name = "Label9"
-        Label9.Size = New Size(77, 15)
-        Label9.TabIndex = 8
-        Label9.Text = "Address Type"
+        lblLicNum.AutoSize = True
+        lblLicNum.Location = New Point(121, 404)
+        lblLicNum.Name = "lblLicNum"
+        lblLicNum.Size = New Size(10, 15)
+        lblLicNum.TabIndex = 24
+        lblLicNum.Text = "."
         ' 
-        ' Label10
+        ' lbllic
         ' 
-        Label10.AutoSize = True
-        Label10.Location = New Point(9, 339)
-        Label10.Name = "Label10"
-        Label10.Size = New Size(45, 15)
-        Label10.TabIndex = 9
-        Label10.Text = "Gender"
+        lbllic.AutoSize = True
+        lbllic.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
+        lbllic.Location = New Point(9, 404)
+        lbllic.Name = "lbllic"
+        lbllic.Size = New Size(97, 15)
+        lbllic.TabIndex = 23
+        lbllic.Text = "License Number"
         ' 
-        ' Label11
+        ' lblTax
         ' 
-        Label11.AutoSize = True
-        Label11.Location = New Point(9, 28)
-        Label11.Name = "Label11"
-        Label11.Size = New Size(73, 15)
-        Label11.TabIndex = 10
-        Label11.Text = "NPI Number"
+        lblTax.AutoSize = True
+        lblTax.Location = New Point(129, 375)
+        lblTax.Name = "lblTax"
+        lblTax.Size = New Size(10, 15)
+        lblTax.TabIndex = 22
+        lblTax.Text = "."
         ' 
-        ' tbNpiResult
+        ' Label12
         ' 
-        tbNpiResult.Location = New Point(108, 25)
-        tbNpiResult.Name = "tbNpiResult"
-        tbNpiResult.Size = New Size(100, 23)
-        tbNpiResult.TabIndex = 11
+        Label12.AutoSize = True
+        Label12.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
+        Label12.Location = New Point(9, 375)
+        Label12.Name = "Label12"
+        Label12.Size = New Size(119, 15)
+        Label12.TabIndex = 21
+        Label12.Text = "Taxonomy/Specialty"
         ' 
         ' lblGender
         ' 
@@ -264,17 +303,177 @@ Partial Class IndividualProfileForm
         lblFirst.TabIndex = 12
         lblFirst.Text = "."
         ' 
+        ' tbNpiResult
+        ' 
+        tbNpiResult.Location = New Point(108, 25)
+        tbNpiResult.Name = "tbNpiResult"
+        tbNpiResult.Size = New Size(100, 23)
+        tbNpiResult.TabIndex = 11
+        ' 
+        ' Label11
+        ' 
+        Label11.AutoSize = True
+        Label11.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
+        Label11.Location = New Point(9, 28)
+        Label11.Name = "Label11"
+        Label11.Size = New Size(76, 15)
+        Label11.TabIndex = 10
+        Label11.Text = "NPI Number"
+        ' 
+        ' Label10
+        ' 
+        Label10.AutoSize = True
+        Label10.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
+        Label10.Location = New Point(9, 339)
+        Label10.Name = "Label10"
+        Label10.Size = New Size(49, 15)
+        Label10.TabIndex = 9
+        Label10.Text = "Gender"
+        ' 
+        ' Label9
+        ' 
+        Label9.AutoSize = True
+        Label9.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
+        Label9.Location = New Point(9, 206)
+        Label9.Name = "Label9"
+        Label9.Size = New Size(80, 15)
+        Label9.TabIndex = 8
+        Label9.Text = "Address Type"
+        ' 
+        ' Label8
+        ' 
+        Label8.AutoSize = True
+        Label8.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
+        Label8.Location = New Point(9, 311)
+        Label8.Name = "Label8"
+        Label8.Size = New Size(55, 15)
+        Label8.TabIndex = 7
+        Label8.Text = "Zip Code"
+        ' 
+        ' Label7
+        ' 
+        Label7.AutoSize = True
+        Label7.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
+        Label7.Location = New Point(9, 281)
+        Label7.Name = "Label7"
+        Label7.Size = New Size(37, 15)
+        Label7.TabIndex = 6
+        Label7.Text = "State"
+        ' 
+        ' Label6
+        ' 
+        Label6.AutoSize = True
+        Label6.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
+        Label6.Location = New Point(9, 241)
+        Label6.Name = "Label6"
+        Label6.Size = New Size(28, 15)
+        Label6.TabIndex = 5
+        Label6.Text = "City"
+        ' 
+        ' Label5
+        ' 
+        Label5.AutoSize = True
+        Label5.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
+        Label5.Location = New Point(9, 169)
+        Label5.Name = "Label5"
+        Label5.Size = New Size(90, 15)
+        Label5.TabIndex = 4
+        Label5.Text = "Street Address"
+        ' 
+        ' Label4
+        ' 
+        Label4.AutoSize = True
+        Label4.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
+        Label4.Location = New Point(9, 132)
+        Label4.Name = "Label4"
+        Label4.Size = New Size(65, 15)
+        Label4.TabIndex = 3
+        Label4.Text = "Last Name"
+        ' 
+        ' Label3
+        ' 
+        Label3.AutoSize = True
+        Label3.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
+        Label3.Location = New Point(9, 95)
+        Label3.Name = "Label3"
+        Label3.Size = New Size(81, 15)
+        Label3.TabIndex = 2
+        Label3.Text = "Middle Name"
+        ' 
+        ' Label2
+        ' 
+        Label2.AutoSize = True
+        Label2.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
+        Label2.Location = New Point(9, 58)
+        Label2.Name = "Label2"
+        Label2.Size = New Size(67, 15)
+        Label2.TabIndex = 1
+        Label2.Text = "First Name"
+        ' 
+        ' Label1
+        ' 
+        Label1.AutoSize = True
+        Label1.Location = New Point(6, -21)
+        Label1.Name = "Label1"
+        Label1.Size = New Size(61, 15)
+        Label1.TabIndex = 0
+        Label1.Text = "Full Name"
+        ' 
+        ' dgvAff
+        ' 
+        dgvAff.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        dgvAff.Location = New Point(3, 621)
+        dgvAff.Name = "dgvAff"
+        dgvAff.Size = New Size(602, 168)
+        dgvAff.TabIndex = 1
+        ' 
+        ' Label14
+        ' 
+        Label14.AutoSize = True
+        Label14.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
+        Label14.Location = New Point(2, 603)
+        Label14.Name = "Label14"
+        Label14.Size = New Size(103, 15)
+        Label14.TabIndex = 2
+        Label14.Text = "Facility Affiliation"
+        ' 
+        ' dgvDrugs
+        ' 
+        dgvDrugs.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        dgvDrugs.Location = New Point(3, 811)
+        dgvDrugs.Name = "dgvDrugs"
+        dgvDrugs.Size = New Size(602, 168)
+        dgvDrugs.TabIndex = 3
+        ' 
+        ' Label15
+        ' 
+        Label15.AutoSize = True
+        Label15.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
+        Label15.Location = New Point(2, 792)
+        Label15.Name = "Label15"
+        Label15.Size = New Size(40, 15)
+        Label15.TabIndex = 4
+        Label15.Text = "Drugs"
+        Label15.TextAlign = ContentAlignment.MiddleCenter
+        ' 
         ' IndividualProfileForm
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(1222, 1061)
+        Controls.Add(Label15)
+        Controls.Add(dgvDrugs)
+        Controls.Add(Label14)
+        Controls.Add(dgvAff)
         Controls.Add(GroupBox1)
         Name = "IndividualProfileForm"
         Text = "IndividualProfileForm"
         GroupBox1.ResumeLayout(False)
         GroupBox1.PerformLayout()
+        CType(dgvAff, ComponentModel.ISupportInitialize).EndInit()
+        CType(dgvDrugs, ComponentModel.ISupportInitialize).EndInit()
         ResumeLayout(False)
+        PerformLayout()
     End Sub
 
     Friend WithEvents GroupBox1 As GroupBox
@@ -299,4 +498,20 @@ Partial Class IndividualProfileForm
     Friend WithEvents lblFirst As Label
     Friend WithEvents tbNpiResult As TextBox
     Friend WithEvents Label11 As Label
+    Friend WithEvents Label12 As Label
+    Friend WithEvents lblPhone As Label
+    Friend WithEvents Label13 As Label
+    Friend WithEvents lblLicNum As Label
+    Friend WithEvents lbllic As Label
+    Friend WithEvents lblTax As Label
+    Friend WithEvents dgvAff As DataGridView
+    Friend WithEvents Label14 As Label
+    Friend WithEvents dgvDrugs As DataGridView
+    Friend WithEvents Label15 As Label
+    Friend WithEvents Label17 As Label
+    Friend WithEvents lblFacility As Label
+    Friend WithEvents lblGradYear As Label
+    Friend WithEvents lblg As Label
+    Friend WithEvents lblMedSchool As Label
+    Friend WithEvents Label16 As Label
 End Class

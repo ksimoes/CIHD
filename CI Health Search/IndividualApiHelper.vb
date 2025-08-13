@@ -116,4 +116,36 @@ Module IndividualApiHelper
         End Using
         Return Nothing
     End Function
+
+    ' Fetch National Downloadable File by NPI
+    Public Async Function GetNationalDownloadableFileByNpiAsync(npi As String) As Task(Of JArray)
+        Dim url As String = "https://data.cms.gov/provider-data/api/1/datastore/query/mj5m-pzi6/0"
+        Dim body = $"{{""conditions"":[{{""resource"":""t"",""property"":""NPI"",""value"":""{npi}"",""operator"":""=""}}],""limit"":1}}"
+        Using client As New HttpClient()
+            Dim content = New StringContent(body, Text.Encoding.UTF8, "application/json")
+            Dim response = Await client.PostAsync(url, content)
+            If response.IsSuccessStatusCode Then
+                Dim json = Await response.Content.ReadAsStringAsync()
+                Dim obj = JObject.Parse(json)
+                Return TryCast(obj("data"), JArray)
+            End If
+        End Using
+        Return Nothing
+    End Function
+
+    ' Fetch Facility Affiliations by NPI
+    Public Async Function GetFacilityAffiliationsByNpiAsync(npi As String) As Task(Of JArray)
+        Dim url As String = "https://data.cms.gov/provider-data/api/1/datastore/query/27ea-46a8/0"
+        Dim body = $"{{""conditions"":[{{""resource"":""t"",""property"":""NPI"",""value"":""{npi}"",""operator"":""=""}}],""limit"":100}}"
+        Using client As New HttpClient()
+            Dim content = New StringContent(body, Text.Encoding.UTF8, "application/json")
+            Dim response = Await client.PostAsync(url, content)
+            If response.IsSuccessStatusCode Then
+                Dim json = Await response.Content.ReadAsStringAsync()
+                Dim obj = JObject.Parse(json)
+                Return TryCast(obj("data"), JArray)
+            End If
+        End Using
+        Return Nothing
+    End Function
 End Module
