@@ -15,7 +15,19 @@
 
         If validUsers.ContainsKey(username) AndAlso validUsers(username) = password Then
             Me.Hide()
-            Search.Show()
+            Using dlg As New SelectSearchTypeForm()
+                If dlg.ShowDialog() = DialogResult.OK Then
+                    If dlg.SelectedType = "Individual" Then
+                        Dim indForm As New Individual_Search()
+                        indForm.Show()
+                    ElseIf dlg.SelectedType = "Organization" Then
+                        Search.Show()
+                    End If
+                Else
+                    ' If user cancels, show login again
+                    Me.Show()
+                End If
+            End Using
         Else
             MessageBox.Show("Invalid username or password.", "Login Failed", MessageBoxButtons.OK, MessageBoxIcon.Error)
             txtPassword.Clear()
