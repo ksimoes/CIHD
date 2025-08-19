@@ -133,6 +133,18 @@ Module IndividualApiHelper
         Return Nothing
     End Function
 
+    Public Async Function SearchByHCPCSAsync(hcpcsCode As String) As Task(Of JArray)
+        Dim url As String = $"https://data.cms.gov/data-api/v1/dataset/92396110-2aed-4d63-a6a2-5d6207d46a29/data?filter[HCPCS_Cd]={Uri.EscapeDataString(hcpcsCode)}&size=100"
+        Using client As New HttpClient()
+            Dim response = Await client.GetAsync(url)
+            If response.IsSuccessStatusCode Then
+                Dim json = Await response.Content.ReadAsStringAsync()
+                Return JArray.Parse(json)
+            End If
+        End Using
+        Return Nothing
+    End Function
+
     ' Fetch Facility Affiliations by NPI
     Public Async Function GetFacilityAffiliationsByNpiAsync(npi As String) As Task(Of JArray)
         Dim url As String = "https://data.cms.gov/provider-data/api/1/datastore/query/27ea-46a8/0"

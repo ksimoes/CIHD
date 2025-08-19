@@ -60,9 +60,17 @@ Partial Class IndividualProfileForm
         Label14 = New Label()
         dgvDrugs = New DataGridView()
         Label15 = New Label()
+        dgvMain = New DataGridView()
+        dgvHCPCS = New DataGridView()
+        Label18 = New Label()
+        DataGridView1 = New DataGridView()
+        Label19 = New Label()
         GroupBox1.SuspendLayout()
         CType(dgvAff, ComponentModel.ISupportInitialize).BeginInit()
         CType(dgvDrugs, ComponentModel.ISupportInitialize).BeginInit()
+        CType(dgvMain, ComponentModel.ISupportInitialize).BeginInit()
+        CType(dgvHCPCS, ComponentModel.ISupportInitialize).BeginInit()
+        CType(DataGridView1, ComponentModel.ISupportInitialize).BeginInit()
         SuspendLayout()
         ' 
         ' GroupBox1
@@ -111,7 +119,7 @@ Partial Class IndividualProfileForm
         ' 
         Label17.AutoSize = True
         Label17.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
-        Label17.Location = New Point(13, 510)
+        Label17.Location = New Point(9, 510)
         Label17.Name = "Label17"
         Label17.Size = New Size(45, 15)
         Label17.TabIndex = 32
@@ -456,11 +464,61 @@ Partial Class IndividualProfileForm
         Label15.Text = "Drugs"
         Label15.TextAlign = ContentAlignment.MiddleCenter
         ' 
+        ' dgvMain
+        ' 
+        dgvMain.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        dgvMain.Location = New Point(608, 12)
+        dgvMain.Name = "dgvMain"
+        dgvMain.Size = New Size(602, 561)
+        dgvMain.TabIndex = 5
+        ' 
+        ' dgvHCPCS
+        ' 
+        dgvHCPCS.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        dgvHCPCS.Location = New Point(611, 621)
+        dgvHCPCS.Name = "dgvHCPCS"
+        dgvHCPCS.Size = New Size(602, 168)
+        dgvHCPCS.TabIndex = 6
+        ' 
+        ' Label18
+        ' 
+        Label18.AutoSize = True
+        Label18.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
+        Label18.Location = New Point(611, 603)
+        Label18.Name = "Label18"
+        Label18.Size = New Size(80, 15)
+        Label18.TabIndex = 7
+        Label18.Text = "HCPCS Codes"
+        ' 
+        ' DataGridView1
+        ' 
+        DataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        DataGridView1.Location = New Point(611, 811)
+        DataGridView1.Name = "DataGridView1"
+        DataGridView1.Size = New Size(602, 168)
+        DataGridView1.TabIndex = 8
+        ' 
+        ' Label19
+        ' 
+        Label19.AutoSize = True
+        Label19.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
+        Label19.Location = New Point(608, 792)
+        Label19.Name = "Label19"
+        Label19.Size = New Size(56, 15)
+        Label19.TabIndex = 9
+        Label19.Text = "Payment"
+        Label19.TextAlign = ContentAlignment.MiddleCenter
+        ' 
         ' IndividualProfileForm
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(1222, 1061)
+        Controls.Add(Label19)
+        Controls.Add(DataGridView1)
+        Controls.Add(Label18)
+        Controls.Add(dgvHCPCS)
+        Controls.Add(dgvMain)
         Controls.Add(Label15)
         Controls.Add(dgvDrugs)
         Controls.Add(Label14)
@@ -472,6 +530,9 @@ Partial Class IndividualProfileForm
         GroupBox1.PerformLayout()
         CType(dgvAff, ComponentModel.ISupportInitialize).EndInit()
         CType(dgvDrugs, ComponentModel.ISupportInitialize).EndInit()
+        CType(dgvMain, ComponentModel.ISupportInitialize).EndInit()
+        CType(dgvHCPCS, ComponentModel.ISupportInitialize).EndInit()
+        CType(DataGridView1, ComponentModel.ISupportInitialize).EndInit()
         ResumeLayout(False)
         PerformLayout()
     End Sub
@@ -514,4 +575,9 @@ Partial Class IndividualProfileForm
     Friend WithEvents lblg As Label
     Friend WithEvents lblMedSchool As Label
     Friend WithEvents Label16 As Label
+    Friend WithEvents dgvMain As DataGridView
+    Friend WithEvents dgvHCPCS As DataGridView
+    Friend WithEvents Label18 As Label
+    Friend WithEvents DataGridView1 As DataGridView
+    Friend WithEvents Label19 As Label
 End Class

@@ -32,6 +32,7 @@ Public Class IndividualProfileForm
         Await LoadProfileData()
         Await LoadAffiliationsTable()
         Await LoadPrescriberDrugsTable()
+        Await LoadHCPCSTable()
     End Sub
 
     Private Async Function LoadProfileData() As Task
@@ -218,6 +219,43 @@ Public Class IndividualProfileForm
         Catch
             Return ""
         End Try
+    End Function
+
+    Private Async Function LoadHCPCSTable() As Task
+        dgvHCPCS.DataSource = Nothing
+        dgvHCPCS.Columns.Clear()
+        dgvHCPCS.Rows.Clear()
+
+        Dim dt As New DataTable()
+        Dim apiUrl As String = $"https://data.cms.gov/data-api/v1/dataset/92396110-2aed-4d63-a6a2-5d6207d46a29/data?filter[Rndrng_NPI]={Uri.EscapeDataString(_npi)}&size=100"
+        Using client As New HttpClient()
+            Dim response = Await client.GetAsync(apiUrl)
+            If response.IsSuccessStatusCode Then
+                Dim json = Await response.Content.ReadAsStringAsync()
+                Dim data = JArray.Parse(json)
+                If data.Count > 0 Then
+                    ' Add columns dynamically based on the first result
+                    Dim firstObj As JObject = CType(data(0), JObject)
+                    For Each col In firstObj.Properties()
+                        If Not dt.Columns.Contains(col.Name) Then
+                            dt.Columns.Add(col.Name)
+                        End If
+                    Next
+                    ' Add rows
+                    For Each item In data
+                        Dim obj As JObject = CType(item, JObject)
+                        Dim row = dt.NewRow()
+                        For Each col In dt.Columns
+                            row(col.ToString()) = obj(col.ToString())
+                        Next
+                        dt.Rows.Add(row)
+                    Next
+                End If
+            End If
+        End Using
+
+        dgvHCPCS.DataSource = dt
+        dgvHCPCS.Refresh()
     End Function
 
     ' Optional: Remove if not needed
