@@ -31,8 +31,8 @@ Public Class IndividualResultsForm
                 DataGridView1.Columns.Add("State", "State")
                 For Each person As JObject In results
                     Dim npi = person("number")?.ToString()
-                    Dim firstName = person("basic")?("first_name")?.ToString()
-                    Dim lastName = person("basic")?("last_name")?.ToString()
+                    Dim firstName = If(person("basic")?("first_name") IsNot Nothing, person("basic")("first_name").ToString(), "N/A")
+                    Dim lastName = If(person("basic")?("last_name") IsNot Nothing, person("basic")("last_name").ToString(), "N/A")
                     Dim state = person("addresses")?(0)?("state")?.ToString()
                     DataGridView1.Rows.Add(npi, firstName, lastName, state)
                 Next

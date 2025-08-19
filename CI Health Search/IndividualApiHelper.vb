@@ -3,9 +3,49 @@ Imports Newtonsoft.Json.Linq
 
 Module IndividualApiHelper
     ' NPI Registry API (search and details)
-    Public Async Function SearchNpiRegistryAsync(Optional npi As String = "", Optional firstName As String = "", Optional lastName As String = "", Optional state As String = "", Optional limit As Integer = 10, Optional skip As Integer = 0) As Task(Of JArray)
+    Public Async Function SearchNpiRegistryAsync(
+    Optional npi As String = "",
+    Optional firstName As String = "",
+    Optional middleName As String = "",
+    Optional lastName As String = "",
+    Optional city As String = "",
+    Optional state As String = "",
+    Optional zip As String = "",
+    Optional gender As String = "",
+    Optional limit As Integer = 10,
+    Optional skip As Integer = 0
+) As Task(Of JArray)
         Dim baseUrl As String = "https://npiregistry.cms.hhs.gov/api/?version=2.1"
-        Dim url As String = $"{baseUrl}&number={Uri.EscapeDataString(npi)}&first_name={Uri.EscapeDataString(firstName)}&last_name={Uri.EscapeDataString(lastName)}&state={Uri.EscapeDataString(state)}&limit={limit}&skip={skip}"
+        Dim query As New List(Of String)
+
+        If Not String.IsNullOrWhiteSpace(npi) Then
+            query.Add("number=" & Uri.EscapeDataString(npi))
+        End If
+        If Not String.IsNullOrWhiteSpace(firstName) Then
+            query.Add("first_name=" & Uri.EscapeDataString(firstName))
+        End If
+        If Not String.IsNullOrWhiteSpace(middleName) Then
+            query.Add("middle_name=" & Uri.EscapeDataString(middleName))
+        End If
+        If Not String.IsNullOrWhiteSpace(lastName) Then
+            query.Add("last_name=" & Uri.EscapeDataString(lastName))
+        End If
+        If Not String.IsNullOrWhiteSpace(city) Then
+            query.Add("city=" & Uri.EscapeDataString(city))
+        End If
+        If Not String.IsNullOrWhiteSpace(state) Then
+            query.Add("state=" & Uri.EscapeDataString(state))
+        End If
+        If Not String.IsNullOrWhiteSpace(zip) Then
+            query.Add("postal_code=" & Uri.EscapeDataString(zip))
+        End If
+        If Not String.IsNullOrWhiteSpace(gender) Then
+            query.Add("gender=" & Uri.EscapeDataString(gender))
+        End If
+        query.Add("limit=" & limit.ToString())
+        query.Add("skip=" & skip.ToString())
+
+        Dim url As String = baseUrl & "&" & String.Join("&", query)
         Using client As New HttpClient()
             Dim response = Await client.GetAsync(url)
             If response.IsSuccessStatusCode Then

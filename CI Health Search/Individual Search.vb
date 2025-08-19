@@ -47,8 +47,23 @@ Public Class Individual_Search
             Return
         End If
 
+
         ' 4. Otherwise, search by name/state/etc.
-        Dim results2 = Await IndividualApiHelper.SearchNpiRegistryAsync(firstName:=firstName, lastName:=lastName, state:=state, limit:=25)
+        Dim middleName = tbMiddle.Text.Trim()
+        Dim city = tbCity.Text.Trim()
+        Dim zip = tbZip.Text.Trim()
+        Dim gender = tbGender.Text.Trim()
+
+        Dim results2 = Await IndividualApiHelper.SearchNpiRegistryAsync(
+    firstName:=firstName,
+    middleName:=middleName,
+    lastName:=lastName,
+    city:=city,
+    state:=state,
+    zip:=zip,
+    gender:=gender,
+    limit:=25
+)
         If results2 Is Nothing OrElse results2.Count = 0 Then
             MessageBox.Show("No individuals found with the given criteria.")
             Return
