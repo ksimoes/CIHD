@@ -35,9 +35,11 @@ Public Class IndividualProfileForm
         Await LoadHCPCSLevel1Table()
         Await LoadHCPCSLevel2Table()
         Await LoadTaxonomiesTable()
+        InitializeMainTableButtons()
         Await LoadGeneralPaymentTable()
         Await LoadOwnershipDataTable()
         Await LoadResearchPaymentTable()
+        ''InitializeMainTableButtons()
     End Sub
 
     Private Async Function LoadProfileData() As Task
@@ -563,6 +565,69 @@ Public Class IndividualProfileForm
         dgvResearch.DataSource = dt
         dgvResearch.Refresh()
     End Function
+
+    Private Sub InitializeMainTableButtons()
+        dgvMain.Columns.Clear()
+        dgvMain.Rows.Clear()
+        dgvMain.AllowUserToAddRows = False
+        dgvMain.ReadOnly = False
+
+        dgvMain.Columns.Add("TableName", "Table Name")
+        Dim btnCol As New DataGridViewButtonColumn()
+        btnCol.Name = "ShowButton"
+        btnCol.HeaderText = "Show"
+        btnCol.Text = "Show"
+        btnCol.UseColumnTextForButtonValue = True
+        dgvMain.Columns.Add(btnCol)
+
+        Dim tableList As New List(Of String) From {
+        "Prescriber Drugs",
+        "Affiliations",
+        "HCPCS Level 1",
+        "HCPCS Level 2",
+        "Taxonomies",
+        "General Payment",
+        "Ownership Data",
+        "Research Payment"
+    }
+
+        For Each tbl In tableList
+            dgvMain.Rows.Add(tbl)
+        Next
+    End Sub
+
+    Private Sub dgvMain_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvMain.CellContentClick
+        If e.RowIndex < 0 OrElse e.ColumnIndex <> dgvMain.Columns("ShowButton").Index Then Return
+
+        Dim tableName As String = dgvMain.Rows(e.RowIndex).Cells("TableName").Value.ToString()
+        Dim dt As DataTable = Nothing
+
+        Select Case tableName
+            Case "Prescriber Drugs"
+                dt = TryCast(dgvDrugs.DataSource, DataTable)
+            Case "Affiliations"
+                dt = TryCast(dgvAff.DataSource, DataTable)
+            Case "HCPCS Level 1"
+                dt = TryCast(dgvHCPCSlvl1.DataSource, DataTable)
+            Case "HCPCS Level 2"
+                dt = TryCast(dgvHCPCSlvl2.DataSource, DataTable)
+            Case "Taxonomies"
+                dt = TryCast(dgvTax.DataSource, DataTable)
+            Case "General Payment"
+                dt = TryCast(dgvGenPay.DataSource, DataTable)
+            Case "Ownership Data"
+                dt = TryCast(dgvOwner.DataSource, DataTable)
+            Case "Research Payment"
+                dt = TryCast(dgvResearch.DataSource, DataTable)
+        End Select
+
+        If dt IsNot Nothing AndAlso dt.Rows.Count > 0 Then
+            Dim viewer As New DataTableViewerForm(dt, tableName)
+            viewer.ShowDialog()
+        Else
+            MessageBox.Show("No data to display for " & tableName)
+        End If
+    End Sub
 
     ' Optional: Remove if not needed
     Private Sub GroupBox1_Enter(sender As Object, e As EventArgs)
