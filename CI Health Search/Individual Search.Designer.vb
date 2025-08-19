@@ -61,11 +61,13 @@ Partial Class Individual_Search
         Label3 = New Label()
         Label2 = New Label()
         Label1 = New Label()
+        Button1 = New Button()
         GroupBox1.SuspendLayout()
         SuspendLayout()
         ' 
         ' GroupBox1
         ' 
+        GroupBox1.Controls.Add(Button1)
         GroupBox1.Controls.Add(btnOrgSearch)
         GroupBox1.Controls.Add(btnSearch)
         GroupBox1.Controls.Add(tbMedSchool)
@@ -113,9 +115,9 @@ Partial Class Individual_Search
         ' 
         ' btnOrgSearch
         ' 
-        btnOrgSearch.Location = New Point(776, 610)
+        btnOrgSearch.Location = New Point(776, 609)
         btnOrgSearch.Name = "btnOrgSearch"
-        btnOrgSearch.Size = New Size(166, 74)
+        btnOrgSearch.Size = New Size(166, 77)
         btnOrgSearch.TabIndex = 38
         btnOrgSearch.Text = "Go to Organizations Search"
         btnOrgSearch.UseVisualStyleBackColor = True
@@ -417,6 +419,15 @@ Partial Class Individual_Search
         Label1.TabIndex = 0
         Label1.Text = "NPI Number"
         ' 
+        ' Button1
+        ' 
+        Button1.Location = New Point(967, 609)
+        Button1.Name = "Button1"
+        Button1.Size = New Size(167, 77)
+        Button1.TabIndex = 39
+        Button1.Text = "Clear"
+        Button1.UseVisualStyleBackColor = True
+        ' 
         ' Individual_Search
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
@@ -470,4 +481,5 @@ Partial Class Individual_Search
     Friend WithEvents Label16 As Label
     Friend WithEvents btnOrgSearch As Button
     Friend WithEvents btnSearch As Button
+    Friend WithEvents Button1 As Button
 End Class

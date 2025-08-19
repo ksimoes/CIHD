@@ -12,7 +12,7 @@ Public Class Individual_Search
     End Sub
 
     Private Async Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
-        Dim npi As String = tbNpi.Text.Trim()
+        Dim npi = tbNpi.Text.Trim
         If Not String.IsNullOrWhiteSpace(npi) Then
             ' Go straight to profile if NPI is provided
             Dim profileForm As New IndividualProfileForm(npi)
@@ -21,12 +21,12 @@ Public Class Individual_Search
         End If
 
         ' Otherwise, search by other criteria
-        Dim firstName As String = tbFirst.Text.Trim()
-        Dim lastName As String = tbLast.Text.Trim()
-        Dim state As String = tbState.Text.Trim()
+        Dim firstName = tbFirst.Text.Trim
+        Dim lastName = tbLast.Text.Trim
+        Dim state = tbState.Text.Trim
         ' Add more fields as needed
 
-        Dim results = Await IndividualApiHelper.SearchNpiRegistryAsync(firstName:=firstName, lastName:=lastName, state:=state, limit:=25)
+        Dim results = Await SearchNpiRegistryAsync(firstName:=firstName, lastName:=lastName, state:=state, limit:=25)
         If results Is Nothing OrElse results.Count = 0 Then
             MessageBox.Show("No individuals found with the given criteria.")
             Return
@@ -34,10 +34,31 @@ Public Class Individual_Search
 
         ' Show results in a popup for user to select
         Dim resultsForm As New IndividualResultsForm(results)
-        If resultsForm.ShowDialog() = DialogResult.OK AndAlso Not String.IsNullOrEmpty(resultsForm.SelectedNpi) Then
+        If resultsForm.ShowDialog = DialogResult.OK AndAlso Not String.IsNullOrEmpty(resultsForm.SelectedNpi) Then
             Dim profileForm As New IndividualProfileForm(resultsForm.SelectedNpi)
             profileForm.ShowDialog()
         End If
     End Sub
 
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        tbFirst.Clear()
+        tbLast.Clear()
+        tbNpi.Clear()
+        tbState.Clear()
+        tbTS.Clear()
+        tbMiddle.Clear()
+        tbAddress.Clear()
+        tbCity.Clear()
+        tbZip.Clear()
+        tbAT.Clear()
+        tbGender.Clear()
+        tbHCPCS.Clear()
+        tbStLic.Clear()
+        tbStLicNum.Clear()
+        tbProvEnroll.Clear()
+        tbFacilityTyp.Clear()
+        tbGradYear.Clear()
+        tbMedSchool.Clear()
+
+    End Sub
 End Class
