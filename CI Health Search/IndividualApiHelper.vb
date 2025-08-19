@@ -12,6 +12,7 @@ Module IndividualApiHelper
     Optional state As String = "",
     Optional zip As String = "",
     Optional gender As String = "",
+    Optional licenseState As String = "",
     Optional limit As Integer = 10,
     Optional skip As Integer = 0
 ) As Task(Of JArray)
@@ -41,6 +42,9 @@ Module IndividualApiHelper
         End If
         If Not String.IsNullOrWhiteSpace(gender) Then
             query.Add("gender=" & Uri.EscapeDataString(gender))
+        End If
+        If Not String.IsNullOrWhiteSpace(licenseState) Then
+            query.Add("license_state=" & Uri.EscapeDataString(licenseState))
         End If
         query.Add("limit=" & limit.ToString())
         query.Add("skip=" & skip.ToString())

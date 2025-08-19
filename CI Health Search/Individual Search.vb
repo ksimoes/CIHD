@@ -18,6 +18,7 @@ Public Class Individual_Search
         Dim lastName = tbLast.Text.Trim()
         Dim state = tbState.Text.Trim()
 
+
         ' 1. If both NPI and HCPCS are provided, go straight to profile
         If Not String.IsNullOrWhiteSpace(npi) AndAlso Not String.IsNullOrWhiteSpace(hcpcs) Then
             Dim profileForm As New IndividualProfileForm(npi)
@@ -53,6 +54,31 @@ Public Class Individual_Search
         Dim city = tbCity.Text.Trim()
         Dim zip = tbZip.Text.Trim()
         Dim gender = tbGender.Text.Trim()
+        Dim stLic = tbStLic.Text.Trim()
+
+        ' Check for state-only or license state-only search
+        Dim onlyState = Not String.IsNullOrWhiteSpace(state) AndAlso
+    String.IsNullOrWhiteSpace(firstName) AndAlso
+    String.IsNullOrWhiteSpace(lastName) AndAlso
+    String.IsNullOrWhiteSpace(city) AndAlso
+    String.IsNullOrWhiteSpace(zip) AndAlso
+    String.IsNullOrWhiteSpace(middleName) AndAlso
+    String.IsNullOrWhiteSpace(gender) AndAlso
+    String.IsNullOrWhiteSpace(stLic)
+
+        Dim onlyStLic = Not String.IsNullOrWhiteSpace(stLic) AndAlso
+    String.IsNullOrWhiteSpace(firstName) AndAlso
+    String.IsNullOrWhiteSpace(lastName) AndAlso
+    String.IsNullOrWhiteSpace(city) AndAlso
+    String.IsNullOrWhiteSpace(zip) AndAlso
+    String.IsNullOrWhiteSpace(middleName) AndAlso
+    String.IsNullOrWhiteSpace(gender) AndAlso
+    String.IsNullOrWhiteSpace(state)
+
+        If onlyState OrElse onlyStLic Then
+            MessageBox.Show("Please enter at least one additional search field (such as name, city, or zip) when searching by state or license state.")
+            Return
+        End If
 
         Dim results2 = Await IndividualApiHelper.SearchNpiRegistryAsync(
     firstName:=firstName,
@@ -62,8 +88,10 @@ Public Class Individual_Search
     state:=state,
     zip:=zip,
     gender:=gender,
+    licenseState:=stLic,
     limit:=25
 )
+
         If results2 Is Nothing OrElse results2.Count = 0 Then
             MessageBox.Show("No individuals found with the given criteria.")
             Return
