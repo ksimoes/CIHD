@@ -32,7 +32,12 @@ Public Class IndividualProfileForm
         Await LoadProfileData()
         Await LoadAffiliationsTable()
         Await LoadPrescriberDrugsTable()
-        Await LoadHCPCSTable()
+        Await LoadHCPCSLevel1Table()
+        Await LoadHCPCSLevel2Table()
+        Await LoadTaxonomiesTable()
+        Await LoadGeneralPaymentTable()
+        Await LoadOwnershipDataTable()
+        Await LoadResearchPaymentTable()
     End Sub
 
     Private Async Function LoadProfileData() As Task
@@ -70,6 +75,47 @@ Public Class IndividualProfileForm
                 End If
             End If
         Next
+
+        ' --- Display Mailing and Practice Addresses ---
+        Dim mailingAddr As JObject = Nothing
+        Dim practiceAddr As JObject = Nothing
+        Dim addresses = merged("addresses")
+        If addresses IsNot Nothing AndAlso addresses.Type = JTokenType.Array Then
+            For Each addr As JObject In addresses
+                Dim purpose = addr("address_purpose")?.ToString()?.ToUpperInvariant()
+                If purpose = "MAILING" AndAlso mailingAddr Is Nothing Then
+                    mailingAddr = addr
+                ElseIf purpose = "LOCATION" AndAlso practiceAddr Is Nothing Then
+                    practiceAddr = addr
+                End If
+            Next
+        End If
+
+        ' Set Mailing Address fields
+        If mailingAddr IsNot Nothing Then
+            lblMailingStreet.Text = mailingAddr("address_1")?.ToString()
+            lblMailingCity.Text = mailingAddr("city")?.ToString()
+            lblMailingState.Text = mailingAddr("state")?.ToString()
+            lblMailingZip.Text = mailingAddr("postal_code")?.ToString()
+        Else
+            lblMailingStreet.Text = ""
+            lblMailingCity.Text = ""
+            lblMailingState.Text = ""
+            lblMailingZip.Text = ""
+        End If
+
+        ' Set Practice Address fields
+        If practiceAddr IsNot Nothing Then
+            lblPracticeStreet.Text = practiceAddr("address_1")?.ToString()
+            lblPCity.Text = practiceAddr("city")?.ToString()
+            lblPracticeState.Text = practiceAddr("state")?.ToString()
+            lblPracticeZip.Text = practiceAddr("postal_code")?.ToString()
+        Else
+            lblPracticeStreet.Text = ""
+            lblPCity.Text = ""
+            lblPracticeState.Text = ""
+            lblPracticeZip.Text = ""
+        End If
     End Function
 
     Private Async Function LoadPrescriberDrugsTable() As Task
@@ -221,44 +267,312 @@ Public Class IndividualProfileForm
         End Try
     End Function
 
-    Private Async Function LoadHCPCSTable() As Task
-        dgvHCPCS.DataSource = Nothing
-        dgvHCPCS.Columns.Clear()
-        dgvHCPCS.Rows.Clear()
+
+    ' --- HCPCS Level 1 ---
+    Private Async Function LoadHCPCSLevel1Table() As Task
+        dgvHCPCSlvl1.DataSource = Nothing
+        dgvHCPCSlvl1.Columns.Clear()
+        dgvHCPCSlvl1.Rows.Clear()
 
         Dim dt As New DataTable()
-        Dim apiUrl As String = $"https://data.cms.gov/data-api/v1/dataset/92396110-2aed-4d63-a6a2-5d6207d46a29/data?filter[Rndrng_NPI]={Uri.EscapeDataString(_npi)}&size=100"
+        Dim apiUrl As String = $"https://data.cms.gov/data-api/v1/dataset/92396110-2aed-4d63-a6a2-5d6207d46a29/data?filter[Rndrng_NPI]={Uri.EscapeDataString(_npi)}&size=1000"
         Using client As New HttpClient()
             Dim response = Await client.GetAsync(apiUrl)
             If response.IsSuccessStatusCode Then
                 Dim json = Await response.Content.ReadAsStringAsync()
                 Dim data = JArray.Parse(json)
                 If data.Count > 0 Then
-                    ' Add columns dynamically based on the first result
                     Dim firstObj As JObject = CType(data(0), JObject)
                     For Each col In firstObj.Properties()
                         If Not dt.Columns.Contains(col.Name) Then
                             dt.Columns.Add(col.Name)
                         End If
                     Next
-                    ' Add rows
                     For Each item In data
                         Dim obj As JObject = CType(item, JObject)
-                        Dim row = dt.NewRow()
-                        For Each col In dt.Columns
-                            row(col.ToString()) = obj(col.ToString())
-                        Next
-                        dt.Rows.Add(row)
+                        Dim hcpcsCode As String = obj("HCPCS_Cd")?.ToString()
+                        ' Level 1: 5 digits, all numeric
+                        If Not String.IsNullOrWhiteSpace(hcpcsCode) AndAlso hcpcsCode.Length = 5 AndAlso hcpcsCode.All(AddressOf Char.IsDigit) Then
+                            Dim row = dt.NewRow()
+                            For Each col In dt.Columns
+                                row(col.ToString()) = obj(col.ToString())
+                            Next
+                            dt.Rows.Add(row)
+                        End If
                     Next
                 End If
             End If
         End Using
 
-        dgvHCPCS.DataSource = dt
-        dgvHCPCS.Refresh()
+        dgvHCPCSlvl1.DataSource = dt
+        dgvHCPCSlvl1.Refresh()
+    End Function
+
+    ' --- HCPCS Level 2 ---
+    Private Async Function LoadHCPCSLevel2Table() As Task
+        dgvHCPCSlvl2.DataSource = Nothing
+        dgvHCPCSlvl2.Columns.Clear()
+        dgvHCPCSlvl2.Rows.Clear()
+
+        Dim dt As New DataTable()
+        Dim apiUrl As String = $"https://data.cms.gov/data-api/v1/dataset/92396110-2aed-4d63-a6a2-5d6207d46a29/data?filter[Rndrng_NPI]={Uri.EscapeDataString(_npi)}&size=1000"
+        Using client As New HttpClient()
+            Dim response = Await client.GetAsync(apiUrl)
+            If response.IsSuccessStatusCode Then
+                Dim json = Await response.Content.ReadAsStringAsync()
+                Dim data = JArray.Parse(json)
+                If data.Count > 0 Then
+                    Dim firstObj As JObject = CType(data(0), JObject)
+                    For Each col In firstObj.Properties()
+                        If Not dt.Columns.Contains(col.Name) Then
+                            dt.Columns.Add(col.Name)
+                        End If
+                    Next
+                    For Each item In data
+                        Dim obj As JObject = CType(item, JObject)
+                        Dim hcpcsCode As String = obj("HCPCS_Cd")?.ToString()
+                        ' Level 2: 5 chars, first is letter, rest are digits
+                        If Not String.IsNullOrWhiteSpace(hcpcsCode) AndAlso hcpcsCode.Length = 5 AndAlso Char.IsLetter(hcpcsCode(0)) AndAlso hcpcsCode.Substring(1).All(AddressOf Char.IsDigit) Then
+                            Dim row = dt.NewRow()
+                            For Each col In dt.Columns
+                                row(col.ToString()) = obj(col.ToString())
+                            Next
+                            dt.Rows.Add(row)
+                        End If
+                    Next
+                End If
+            End If
+        End Using
+
+        dgvHCPCSlvl2.DataSource = dt
+        dgvHCPCSlvl2.Refresh()
+    End Function
+
+    Private Async Function LoadTaxonomiesTable() As Task
+        dgvTax.DataSource = Nothing
+        dgvTax.Columns.Clear()
+        dgvTax.Rows.Clear()
+
+        ' Fetch from NPI Registry
+        Dim npiResults = Await IndividualApiHelper.SearchNpiRegistryAsync(npi:=_npi)
+        Dim npiPerson As JObject = If(npiResults IsNot Nothing AndAlso npiResults.Count > 0, npiResults(0), Nothing)
+        If npiPerson Is Nothing OrElse npiPerson("taxonomies") Is Nothing Then
+            dgvTax.Columns.Add("Message", "Message")
+            dgvTax.Rows.Add("No taxonomy data found.")
+            Return
+        End If
+
+        ' Setup columns
+        dgvTax.Columns.Add("Code", "Code")
+        dgvTax.Columns.Add("Desc", "Description")
+        dgvTax.Columns.Add("Primary", "Primary")
+        dgvTax.Columns.Add("State", "State")
+        dgvTax.Columns.Add("License", "License")
+
+        ' Add rows for each taxonomy
+        For Each tax In npiPerson("taxonomies")
+            dgvTax.Rows.Add(
+            tax("code")?.ToString(),
+            tax("desc")?.ToString(),
+            tax("primary")?.ToString(),
+            tax("state")?.ToString(),
+            tax("license")?.ToString()
+        )
+        Next
+    End Function
+
+    Private Async Function LoadGeneralPaymentTable() As Task
+        dgvGenPay.DataSource = Nothing
+        dgvGenPay.Columns.Clear()
+        dgvGenPay.Rows.Clear()
+
+        Dim dt As New DataTable()
+        Dim apiUrl As String = "https://openpaymentsdata.cms.gov/api/1/datastore/query/e6b17c6a-2534-4207-a4a1-6746a14911ff/0"
+
+        Dim conditions As New JArray(
+        New JObject(
+            New JProperty("resource", "t"),
+            New JProperty("property", "record_number"),
+            New JProperty("value", 1),
+            New JProperty("operator", ">")
+        ),
+        New JObject(
+            New JProperty("resource", "t"),
+            New JProperty("property", "Covered_Recipient_NPI"),
+            New JProperty("value", _npi),
+            New JProperty("operator", "=")
+        )
+    )
+        Dim postBody As New JObject(
+        New JProperty("conditions", conditions),
+        New JProperty("limit", 10)
+    )
+
+        Using client As New HttpClient()
+            Dim content = New StringContent(postBody.ToString(), System.Text.Encoding.UTF8, "application/json")
+            Dim response = Await client.PostAsync(apiUrl, content)
+            If response.IsSuccessStatusCode Then
+                Dim json = Await response.Content.ReadAsStringAsync()
+                Dim obj = JObject.Parse(json)
+                If obj("results") IsNot Nothing AndAlso obj("results").HasValues Then
+                    Dim data = obj("results")
+                    For Each col In data(0).ToObject(Of JObject)().Properties()
+                        If Not dt.Columns.Contains(col.Name) Then
+                            dt.Columns.Add(col.Name)
+                        End If
+                    Next
+                    For Each item In data
+                        Dim row = dt.NewRow()
+                        For Each col In dt.Columns
+                            row(col.ToString()) = item(col.ToString())
+                        Next
+                        dt.Rows.Add(row)
+                    Next
+                End If
+            Else
+                MessageBox.Show("General Payment API error: " & response.StatusCode.ToString() & vbCrLf & Await response.Content.ReadAsStringAsync())
+            End If
+        End Using
+
+        If dt.Rows.Count = 0 Then
+            MessageBox.Show("No general payment data found.")
+        End If
+
+        dgvGenPay.DataSource = dt
+        dgvGenPay.Refresh()
+    End Function
+
+    Private Async Function LoadOwnershipDataTable() As Task
+        dgvOwner.DataSource = Nothing
+        dgvOwner.Columns.Clear()
+        dgvOwner.Rows.Clear()
+
+        Dim dt As New DataTable()
+        Dim apiUrl As String = "https://openpaymentsdata.cms.gov/api/1/datastore/query/9ac4f7f8-b6e4-4d80-8410-4aba7e71dd02/0"
+
+        Dim conditions As New JArray(
+        New JObject(
+            New JProperty("resource", "t"),
+            New JProperty("property", "record_number"),
+            New JProperty("value", 1),
+            New JProperty("operator", ">")
+        ),
+        New JObject(
+            New JProperty("resource", "t"),
+            New JProperty("property", "physician_NPI"),
+            New JProperty("value", _npi),
+            New JProperty("operator", "=")
+        )
+    )
+        Dim postBody As New JObject(
+        New JProperty("conditions", conditions),
+        New JProperty("limit", 10)
+    )
+
+        Using client As New HttpClient()
+            Dim content = New StringContent(postBody.ToString(), System.Text.Encoding.UTF8, "application/json")
+            Dim response = Await client.PostAsync(apiUrl, content)
+            If response.IsSuccessStatusCode Then
+                Dim json = Await response.Content.ReadAsStringAsync()
+                Dim obj = JObject.Parse(json)
+                If obj("results") IsNot Nothing AndAlso obj("results").HasValues Then
+                    Dim data = obj("results")
+                    For Each col In data(0).ToObject(Of JObject)().Properties()
+                        If Not dt.Columns.Contains(col.Name) Then
+                            dt.Columns.Add(col.Name)
+                        End If
+                    Next
+                    For Each item In data
+                        Dim row = dt.NewRow()
+                        For Each col In dt.Columns
+                            row(col.ToString()) = item(col.ToString())
+                        Next
+                        dt.Rows.Add(row)
+                    Next
+                End If
+            Else
+                MessageBox.Show("Ownership Data API error: " & response.StatusCode.ToString() & vbCrLf & Await response.Content.ReadAsStringAsync())
+            End If
+        End Using
+
+        If dt.Rows.Count = 0 Then
+            MessageBox.Show("No ownership data found.")
+        End If
+
+        dgvOwner.DataSource = dt
+        dgvOwner.Refresh()
+    End Function
+
+    Private Async Function LoadResearchPaymentTable() As Task
+        dgvResearch.DataSource = Nothing
+        dgvResearch.Columns.Clear()
+        dgvResearch.Rows.Clear()
+
+        Dim dt As New DataTable()
+        Dim apiUrl As String = "https://openpaymentsdata.cms.gov/api/1/datastore/query/2f15cb85-8887-4dcc-a318-1f8ec1d815b3/0"
+
+        Dim conditions As New JArray(
+        New JObject(
+            New JProperty("resource", "t"),
+            New JProperty("property", "record_number"),
+            New JProperty("value", 1),
+            New JProperty("operator", ">")
+        ),
+        New JObject(
+            New JProperty("resource", "t"),
+            New JProperty("property", "Covered_Recipient_NPI"),
+            New JProperty("value", _npi),
+            New JProperty("operator", "=")
+        )
+    )
+        Dim postBody As New JObject(
+        New JProperty("conditions", conditions),
+        New JProperty("limit", 10)
+    )
+
+        Using client As New HttpClient()
+            Dim content = New StringContent(postBody.ToString(), System.Text.Encoding.UTF8, "application/json")
+            Dim response = Await client.PostAsync(apiUrl, content)
+            If response.IsSuccessStatusCode Then
+                Dim json = Await response.Content.ReadAsStringAsync()
+                Dim obj = JObject.Parse(json)
+                If obj("results") IsNot Nothing AndAlso obj("results").HasValues Then
+                    Dim data = obj("results")
+                    For Each col In data(0).ToObject(Of JObject)().Properties()
+                        If Not dt.Columns.Contains(col.Name) Then
+                            dt.Columns.Add(col.Name)
+                        End If
+                    Next
+                    For Each item In data
+                        Dim row = dt.NewRow()
+                        For Each col In dt.Columns
+                            row(col.ToString()) = item(col.ToString())
+                        Next
+                        dt.Rows.Add(row)
+                    Next
+                End If
+            Else
+                MessageBox.Show("Research Payment API error: " & response.StatusCode.ToString() & vbCrLf & Await response.Content.ReadAsStringAsync())
+            End If
+        End Using
+
+        If dt.Rows.Count = 0 Then
+            MessageBox.Show("No research payment data found.")
+        End If
+
+        dgvResearch.DataSource = dt
+        dgvResearch.Refresh()
     End Function
 
     ' Optional: Remove if not needed
-    Private Sub GroupBox1_Enter(sender As Object, e As EventArgs) Handles GroupBox1.Enter
+    Private Sub GroupBox1_Enter(sender As Object, e As EventArgs)
+    End Sub
+
+    Private Sub GroupBox1_Enter_1(sender As Object, e As EventArgs) Handles GroupBox1.Enter
+
+    End Sub
+
+    Private Sub lblMailingState_Click(sender As Object, e As EventArgs)
+
     End Sub
 End Class
