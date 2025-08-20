@@ -40,7 +40,7 @@ Public Class IndividualProfileForm
         Await LoadGeneralPaymentTable()
         Await LoadOwnershipDataTable()
         Await LoadResearchPaymentTable()
-        TestNationalDownloadableFileApi()
+
         ''InitializeMainTableButtons()
     End Sub
 
@@ -51,11 +51,7 @@ Public Class IndividualProfileForm
 
         ' Fetch from National Downloadable File
         Dim natlResults = Await IndividualApiHelper.GetNationalDownloadableFileByNpiAsync(_npi)
-        If natlResults IsNot Nothing AndAlso natlResults.Count > 0 Then
-            ShowScrollableDebug(natlResults.ToString(), "National Downloadable File Raw Data")
-        Else
-            ShowScrollableDebug("No National Downloadable File data found.", "National Downloadable File Raw Data")
-        End If
+
         Dim natlPerson As JObject = If(natlResults IsNot Nothing AndAlso natlResults.Count > 0, natlResults(0), Nothing)
 
         If npiPerson Is Nothing AndAlso natlPerson Is Nothing Then
@@ -71,7 +67,7 @@ Public Class IndividualProfileForm
         If npiPerson IsNot Nothing Then
             merged.Merge(npiPerson, New JsonMergeSettings With {.MergeArrayHandling = MergeArrayHandling.Union})
         End If
-        ShowScrollableDebug(merged.ToString(), "Merged JSON Debug")
+
 
         ' Populate controls from merged data
         For Each kvp In NpiFieldMap
@@ -128,33 +124,25 @@ Public Class IndividualProfileForm
         End If
     End Function
 
-    Private Sub ShowScrollableDebug(text As String, Optional title As String = "Debug Output")
-        Dim frm As New Form With {
-        .Text = title,
-        .Width = 800,
-        .Height = 600
-    }
-        Dim txt As New TextBox With {
-        .Multiline = True,
-        .ScrollBars = ScrollBars.Both,
-        .Dock = DockStyle.Fill,
-        .ReadOnly = True,
-        .Font = New Font("Consolas", 10),
-        .Text = text
-    }
-        frm.Controls.Add(txt)
-        frm.ShowDialog()
-    End Sub
+    ''Private Sub ShowScrollableDebug(text As String, Optional title As String = "Debug Output")
+    ''    Dim frm As New Form With {
+    ''    .Text = title,
+    ''    .Width = 800,
+    ''    .Height = 600
+    ''}
+    ''    Dim txt As New TextBox With {
+    ''    .Multiline = True,
+    ''    .ScrollBars = ScrollBars.Both,
+    ''    .Dock = DockStyle.Fill,
+    ''    .ReadOnly = True,
+    ''    .Font = New Font("Consolas", 10),
+    ''    .Text = text
+    ''}
+    ''    frm.Controls.Add(txt)
+    ''    frm.ShowDialog()
+    ''End Sub
 
-    Private Async Sub TestNationalDownloadableFileApi()
-        Dim npi As String = "1003000126"
-        Dim natlResults = Await IndividualApiHelper.GetNationalDownloadableFileByNpiAsync(npi)
-        If natlResults IsNot Nothing AndAlso natlResults.Count > 0 Then
-            ShowScrollableDebug(natlResults.ToString(), "NDF API Result for " & npi)
-        Else
-            ShowScrollableDebug("No National Downloadable File data found for " & npi, "NDF API Result")
-        End If
-    End Sub
+
 
     Private Async Function LoadPrescriberDrugsTable() As Task
         dgvDrugs.DataSource = Nothing

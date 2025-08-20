@@ -59,6 +59,7 @@ Module IndividualApiHelper
     Optional lastName As String = "",
     Optional gradYear As String = "",
     Optional medSchool As String = "",
+    Optional state As String = "",
     Optional limit As Integer = 10
 ) As Task(Of JArray)
         Dim url As String = "https://data.cms.gov/provider-data/api/1/datastore/query/mj5m-pzi6/0"
@@ -100,6 +101,14 @@ Module IndividualApiHelper
             New JProperty("resource", "t"),
             New JProperty("property", "med_sch"),
             New JProperty("value", medSchool),
+            New JProperty("operator", "=")
+        ))
+        End If
+        If Not String.IsNullOrWhiteSpace(state) Then
+            conditions.Add(New JObject(
+            New JProperty("resource", "t"),
+            New JProperty("property", "state"),
+            New JProperty("value", state),
             New JProperty("operator", "=")
         ))
         End If

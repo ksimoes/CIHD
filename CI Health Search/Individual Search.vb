@@ -105,30 +105,31 @@ Public Class Individual_Search
         Dim results2 As JArray = Nothing
         If Not String.IsNullOrWhiteSpace(gradYear) OrElse Not String.IsNullOrWhiteSpace(medSchool) Then
             results2 = Await IndividualApiHelper.SearchNationalDownloadableFileAsync(
-            npi:=npi,
-            firstName:=firstName,
-            lastName:=lastName,
-            gradYear:=gradYear,
-            medSchool:=medSchool,
-            limit:=25
-        )
+        npi:=npi,
+        firstName:=firstName,
+        lastName:=lastName,
+        gradYear:=gradYear,
+        medSchool:=medSchool,
+        state:=state,
+        limit:=25
+    )
         Else
             results2 = Await IndividualApiHelper.SearchNpiRegistryAsync(
-            firstName:=firstName,
-            middleName:=middleName,
-            lastName:=lastName,
-            city:=city,
-            state:=state,
-            zip:=zip,
-            gender:=gender,
-            licenseState:=stLic,
-            licenseNumber:=stLicNum,
-            enumerationType:=provEnroll,
-            taxonomyDescription:=facilityTyp,
-            graduationYear:=gradYear,
-            medicalSchool:=medSchool,
-            limit:=25
-        )
+        firstName:=firstName,
+        middleName:=middleName,
+        lastName:=lastName,
+        city:=city,
+        state:=state,
+        zip:=zip,
+        gender:=gender,
+        licenseState:=stLic,
+        licenseNumber:=stLicNum,
+        enumerationType:=provEnroll,
+        taxonomyDescription:=facilityTyp,
+        graduationYear:=gradYear,
+        medicalSchool:=medSchool,
+        limit:=25
+    )
         End If
 
         If results2 Is Nothing OrElse results2.Count = 0 Then
