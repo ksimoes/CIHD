@@ -6,22 +6,22 @@ Public Class IndividualProfileForm
 
     ' Map control names to NPI Registry API and National Downloadable File JSON paths
     Private ReadOnly NpiFieldMap As New Dictionary(Of String, String) From {
-        {"tbNpiResult", "number"},
-        {"lblFirst", "basic.first_name"},
-        {"lblMiddle", "basic.middle_name"},
-        {"lblLast", "basic.last_name"},
-        {"lblGender", "basic.sex"},
-        {"lblStreetAddress", "addresses[0].address_1"},
-        {"lblCity", "addresses[0].city"},
-        {"lblState", "addresses[0].state"},
-        {"lblZip", "addresses[0].postal_code"},
-        {"lblAddressType", "addresses[0].address_purpose"},
-        {"lblTax", "taxonomies[0].desc"},
-        {"lblLicNum", "taxonomies[0].license"},
-        {"lblPhone", "addresses[0].telephone_number"},
-        {"lblMedSchool", "Med_sch"},
-        {"lblGradYear", "Grd_yr"}
-    }
+    {"tbNpiResult", "number|npi"},
+    {"lblFirst", "basic.first_name|provider_first_name"},
+    {"lblMiddle", "basic.middle_name|provider_middle_name"},
+    {"lblLast", "basic.last_name|provider_last_name"},
+    {"lblGender", "basic.sex|gndr"},
+    {"lblStreetAddress", "addresses[0].address_1|adr_ln_1"},
+    {"lblCity", "addresses[0].city|citytown"},
+    {"lblState", "addresses[0].state|state"},
+    {"lblZip", "addresses[0].postal_code|zip_code"},
+    {"lblAddressType", "addresses[0].address_purpose"},
+    {"lblTax", "taxonomies[0].desc|pri_spec"},
+    {"lblLicNum", "taxonomies[0].license"},
+    {"lblPhone", "addresses[0].telephone_number|telephone_number"},
+    {"lblMedSchool", "med_sch"},
+    {"lblGradYear", "grd_yr"}
+}
 
     Public Sub New(npi As String)
         InitializeComponent()
@@ -29,6 +29,7 @@ Public Class IndividualProfileForm
     End Sub
 
     Private Async Sub IndividualProfileForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
         Await LoadProfileData()
         Await LoadAffiliationsTable()
         Await LoadPrescriberDrugsTable()
@@ -39,6 +40,7 @@ Public Class IndividualProfileForm
         Await LoadGeneralPaymentTable()
         Await LoadOwnershipDataTable()
         Await LoadResearchPaymentTable()
+        TestNationalDownloadableFileApi()
         ''InitializeMainTableButtons()
     End Sub
 
@@ -49,6 +51,11 @@ Public Class IndividualProfileForm
 
         ' Fetch from National Downloadable File
         Dim natlResults = Await IndividualApiHelper.GetNationalDownloadableFileByNpiAsync(_npi)
+        If natlResults IsNot Nothing AndAlso natlResults.Count > 0 Then
+            ShowScrollableDebug(natlResults.ToString(), "National Downloadable File Raw Data")
+        Else
+            ShowScrollableDebug("No National Downloadable File data found.", "National Downloadable File Raw Data")
+        End If
         Dim natlPerson As JObject = If(natlResults IsNot Nothing AndAlso natlResults.Count > 0, natlResults(0), Nothing)
 
         If npiPerson Is Nothing AndAlso natlPerson Is Nothing Then
@@ -64,6 +71,7 @@ Public Class IndividualProfileForm
         If npiPerson IsNot Nothing Then
             merged.Merge(npiPerson, New JsonMergeSettings With {.MergeArrayHandling = MergeArrayHandling.Union})
         End If
+        ShowScrollableDebug(merged.ToString(), "Merged JSON Debug")
 
         ' Populate controls from merged data
         For Each kvp In NpiFieldMap
@@ -119,6 +127,34 @@ Public Class IndividualProfileForm
             lblPracticeZip.Text = ""
         End If
     End Function
+
+    Private Sub ShowScrollableDebug(text As String, Optional title As String = "Debug Output")
+        Dim frm As New Form With {
+        .Text = title,
+        .Width = 800,
+        .Height = 600
+    }
+        Dim txt As New TextBox With {
+        .Multiline = True,
+        .ScrollBars = ScrollBars.Both,
+        .Dock = DockStyle.Fill,
+        .ReadOnly = True,
+        .Font = New Font("Consolas", 10),
+        .Text = text
+    }
+        frm.Controls.Add(txt)
+        frm.ShowDialog()
+    End Sub
+
+    Private Async Sub TestNationalDownloadableFileApi()
+        Dim npi As String = "1003000126"
+        Dim natlResults = Await IndividualApiHelper.GetNationalDownloadableFileByNpiAsync(npi)
+        If natlResults IsNot Nothing AndAlso natlResults.Count > 0 Then
+            ShowScrollableDebug(natlResults.ToString(), "NDF API Result for " & npi)
+        Else
+            ShowScrollableDebug("No National Downloadable File data found for " & npi, "NDF API Result")
+        End If
+    End Sub
 
     Private Async Function LoadPrescriberDrugsTable() As Task
         dgvDrugs.DataSource = Nothing
@@ -247,26 +283,29 @@ Public Class IndividualProfileForm
 
     ' Helper to get a value from a JObject using a dot/bracket path
     Private Function GetJsonValue(obj As JObject, path As String) As String
-        Try
-            Dim parts = path.Split("."c)
-            Dim current As JToken = obj
-            For Each part In parts
-                If part.Contains("[") Then
-                    ' Handle array index, e.g., addresses[0]
-                    Dim arrName = part.Substring(0, part.IndexOf("["))
-                    Dim idx = Integer.Parse(part.Substring(part.IndexOf("[") + 1, part.IndexOf("]") - part.IndexOf("[") - 1))
-                    current = current(arrName)
-                    If current Is Nothing OrElse Not current.HasValues Then Return ""
-                    current = current(idx)
-                Else
-                    current = current(part)
-                End If
-                If current Is Nothing Then Return ""
-            Next
-            Return current.ToString()
-        Catch
-            Return ""
-        End Try
+        For Each tryPath In path.Split("|"c)
+            Try
+                Dim parts = tryPath.Split("."c)
+                Dim current As JToken = obj
+                For Each part In parts
+                    If part.Contains("[") Then
+                        Dim arrName = part.Substring(0, part.IndexOf("["))
+                        Dim idx = Integer.Parse(part.Substring(part.IndexOf("[") + 1, part.IndexOf("]") - part.IndexOf("[") - 1))
+                        current = current(arrName)
+                        If current Is Nothing OrElse Not current.HasValues Then GoTo NextPath
+                        current = current(idx)
+                    Else
+                        current = current(part)
+                    End If
+                    If current Is Nothing Then GoTo NextPath
+                Next
+                Return current.ToString()
+            Catch
+                ' Try next path
+            End Try
+NextPath:
+        Next
+        Return ""
     End Function
 
 

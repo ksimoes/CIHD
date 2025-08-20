@@ -88,7 +88,7 @@ Public Class IndividualResultsForm
         dgvFilterHelper = New DataGridViewFilterHelper(DataGridView1, Me)
         DataGridView1.Top = DataGridView1.Top + dgvFilterHelper.FilterPanel.Height
         DataGridView1.Height = DataGridView1.Height - dgvFilterHelper.FilterPanel.Height
-    End Sub
+    End Sub '
 
     Private Sub DataGridView1_CellDoubleClick(sender As Object, e As DataGridViewCellEventArgs) Handles DataGridView1.CellDoubleClick
         If e.RowIndex >= 0 Then

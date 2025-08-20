@@ -63,7 +63,7 @@ Module IndividualApiHelper
             If response.IsSuccessStatusCode Then
                 Dim json = Await response.Content.ReadAsStringAsync()
                 Dim obj = JObject.Parse(json)
-                Return TryCast(obj("data"), JArray)
+                Return TryCast(obj("results"), JArray)
             End If
         End Using
         Return Nothing
@@ -156,14 +156,14 @@ Module IndividualApiHelper
     ' Fetch National Downloadable File by NPI
     Public Async Function GetNationalDownloadableFileByNpiAsync(npi As String) As Task(Of JArray)
         Dim url As String = "https://data.cms.gov/provider-data/api/1/datastore/query/mj5m-pzi6/0"
-        Dim body = $"{{""conditions"":[{{""resource"":""t"",""property"":""NPI"",""value"":""{npi}"",""operator"":""=""}}],""limit"":1}}"
+        Dim body = $"{{""conditions"":[{{""resource"":""t"",""property"":""npi"",""value"":""{npi}"",""operator"":""=""}}],""limit"":1}}"
         Using client As New HttpClient()
             Dim content = New StringContent(body, Text.Encoding.UTF8, "application/json")
             Dim response = Await client.PostAsync(url, content)
             If response.IsSuccessStatusCode Then
                 Dim json = Await response.Content.ReadAsStringAsync()
                 Dim obj = JObject.Parse(json)
-                Return TryCast(obj("data"), JArray)
+                Return TryCast(obj("results"), JArray)
             End If
         End Using
         Return Nothing
