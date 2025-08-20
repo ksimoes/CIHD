@@ -46,12 +46,30 @@ Public Class IndividualResultsForm
                 DataGridView1.Columns.Add("FirstName", "First Name")
                 DataGridView1.Columns.Add("LastName", "Last Name")
                 DataGridView1.Columns.Add("State", "State")
+                DataGridView1.Columns.Add("Specialty", "Specialty")
+                DataGridView1.Columns.Add("Phone", "Phone")
+                DataGridView1.Columns.Add("Address", "Address")
                 For Each person As JObject In results
                     Dim npi = person("number")?.ToString()
                     Dim firstName = If(person("basic")?("first_name") IsNot Nothing, person("basic")("first_name").ToString(), "N/A")
                     Dim lastName = If(person("basic")?("last_name") IsNot Nothing, person("basic")("last_name").ToString(), "N/A")
                     Dim state = person("addresses")?(0)?("state")?.ToString()
-                    DataGridView1.Rows.Add(npi, firstName, lastName, state)
+                    Dim specialty = ""
+                    If person("taxonomies") IsNot Nothing AndAlso person("taxonomies").HasValues Then
+                        specialty = person("taxonomies")?(0)?("desc")?.ToString()
+                    End If
+                    Dim phone = person("addresses")?(0)?("telephone_number")?.ToString()
+                    Dim address = ""
+                    If person("addresses") IsNot Nothing AndAlso person("addresses").HasValues Then
+                        Dim addrObj = person("addresses")?(0)
+                        address = addrObj?("address_1")?.ToString()
+                        Dim addr2 = addrObj?("address_2")?.ToString()
+                        If Not String.IsNullOrWhiteSpace(addr2) Then
+                            address &= " " & addr2
+                        End If
+                        address &= ", " & addrObj?("city")?.ToString() & ", " & addrObj?("state")?.ToString() & " " & addrObj?("postal_code")?.ToString()
+                    End If
+                    DataGridView1.Rows.Add(npi, firstName, lastName, state, specialty, phone, address)
                 Next
             End If
         End If
