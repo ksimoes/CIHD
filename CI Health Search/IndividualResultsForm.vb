@@ -3,14 +3,30 @@
 Public Class IndividualResultsForm
     Public Property SelectedNpi As String = Nothing
 
-    Public Sub New(results As JArray)
+    Public Sub New(results As JArray, Optional showDrugColumns As Boolean = False)
         InitializeComponent()
         DataGridView1.Columns.Clear()
 
         If results.Count > 0 Then
             Dim firstObj As JObject = CType(results(0), JObject)
-            ' Detect if this is an HCPCS result (has "Rndrng_NPI") or NPI Registry (has "number")
-            If firstObj.ContainsKey("Rndrng_NPI") Then
+
+            ' Drug search: Brnd_Name or Gnrc_Name present, or showDrugColumns forced
+            If showDrugColumns OrElse firstObj.ContainsKey("Brnd_Name") OrElse firstObj.ContainsKey("Gnrc_Name") Then
+                DataGridView1.Columns.Add("NPI", "NPI")
+                DataGridView1.Columns.Add("FirstName", "First Name")
+                DataGridView1.Columns.Add("LastName", "Last Name")
+                DataGridView1.Columns.Add("Brnd_Name", "Brand Name")
+                DataGridView1.Columns.Add("Gnrc_Name", "Generic Name")
+                For Each person As JObject In results
+                    Dim npi = person("Prscrbr_NPI")?.ToString()
+                    Dim firstName = person("Prscrbr_First_Name")?.ToString()
+                    Dim lastName = person("Prscrbr_Last_Name")?.ToString()
+                    Dim brnd = person("Brnd_Name")?.ToString()
+                    Dim gnrc = person("Gnrc_Name")?.ToString()
+                    DataGridView1.Rows.Add(npi, firstName, lastName, brnd, gnrc)
+                Next
+
+            ElseIf firstObj.ContainsKey("Rndrng_NPI") Then
                 ' HCPCS dataset
                 DataGridView1.Columns.Add("NPI", "NPI")
                 DataGridView1.Columns.Add("FirstName", "First Name")
@@ -23,6 +39,7 @@ Public Class IndividualResultsForm
                     Dim state = person("Rndrng_Prvdr_State_Abrvtn")?.ToString()
                     DataGridView1.Rows.Add(npi, firstName, lastName, state)
                 Next
+
             Else
                 ' NPI Registry dataset
                 DataGridView1.Columns.Add("NPI", "NPI")

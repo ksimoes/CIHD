@@ -23,6 +23,11 @@ Partial Class Individual_Search
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         GroupBox1 = New GroupBox()
+        tbDrugGeneric = New TextBox()
+        tbDrug = New TextBox()
+        Label20 = New Label()
+        lblBrand = New Label()
+        Button1 = New Button()
         btnOrgSearch = New Button()
         btnSearch = New Button()
         tbMedSchool = New TextBox()
@@ -61,12 +66,15 @@ Partial Class Individual_Search
         Label3 = New Label()
         Label2 = New Label()
         Label1 = New Label()
-        Button1 = New Button()
         GroupBox1.SuspendLayout()
         SuspendLayout()
         ' 
         ' GroupBox1
         ' 
+        GroupBox1.Controls.Add(tbDrugGeneric)
+        GroupBox1.Controls.Add(tbDrug)
+        GroupBox1.Controls.Add(Label20)
+        GroupBox1.Controls.Add(lblBrand)
         GroupBox1.Controls.Add(Button1)
         GroupBox1.Controls.Add(btnOrgSearch)
         GroupBox1.Controls.Add(btnSearch)
@@ -112,6 +120,47 @@ Partial Class Individual_Search
         GroupBox1.TabIndex = 0
         GroupBox1.TabStop = False
         GroupBox1.Text = "GroupBox1"
+        ' 
+        ' tbDrugGeneric
+        ' 
+        tbDrugGeneric.Location = New Point(631, 55)
+        tbDrugGeneric.Name = "tbDrugGeneric"
+        tbDrugGeneric.Size = New Size(180, 23)
+        tbDrugGeneric.TabIndex = 43
+        ' 
+        ' tbDrug
+        ' 
+        tbDrug.Location = New Point(631, 26)
+        tbDrug.Name = "tbDrug"
+        tbDrug.Size = New Size(180, 23)
+        tbDrug.TabIndex = 42
+        ' 
+        ' Label20
+        ' 
+        Label20.AutoSize = True
+        Label20.Location = New Point(510, 61)
+        Label20.Name = "Label20"
+        Label20.Size = New Size(116, 15)
+        Label20.TabIndex = 41
+        Label20.Text = "Drug Name(Generic)"
+        ' 
+        ' lblBrand
+        ' 
+        lblBrand.AutoSize = True
+        lblBrand.Location = New Point(510, 29)
+        lblBrand.Name = "lblBrand"
+        lblBrand.Size = New Size(102, 15)
+        lblBrand.TabIndex = 40
+        lblBrand.Text = "Drug Brand Name"
+        ' 
+        ' Button1
+        ' 
+        Button1.Location = New Point(967, 609)
+        Button1.Name = "Button1"
+        Button1.Size = New Size(167, 77)
+        Button1.TabIndex = 39
+        Button1.Text = "Clear"
+        Button1.UseVisualStyleBackColor = True
         ' 
         ' btnOrgSearch
         ' 
@@ -419,15 +468,6 @@ Partial Class Individual_Search
         Label1.TabIndex = 0
         Label1.Text = "NPI Number"
         ' 
-        ' Button1
-        ' 
-        Button1.Location = New Point(967, 609)
-        Button1.Name = "Button1"
-        Button1.Size = New Size(167, 77)
-        Button1.TabIndex = 39
-        Button1.Text = "Clear"
-        Button1.UseVisualStyleBackColor = True
-        ' 
         ' Individual_Search
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
@@ -482,4 +522,8 @@ Partial Class Individual_Search
     Friend WithEvents btnOrgSearch As Button
     Friend WithEvents btnSearch As Button
     Friend WithEvents Button1 As Button
+    Friend WithEvents tbDrugGeneric As TextBox
+    Friend WithEvents tbDrug As TextBox
+    Friend WithEvents Label20 As Label
+    Friend WithEvents lblBrand As Label
 End Class

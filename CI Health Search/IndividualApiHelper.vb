@@ -204,4 +204,25 @@ Module IndividualApiHelper
         End Using
         Return Nothing
     End Function
+
+    Public Async Function SearchByDrugAsync(Optional brandName As String = "", Optional genericName As String = "") As Task(Of JArray)
+        Dim baseUrl As String = "https://data.cms.gov/data-api/v1/dataset/9552739e-3d05-4c1b-8eff-ecabf391e2e5/data?"
+        Dim filters As New List(Of String)
+        If Not String.IsNullOrWhiteSpace(brandName) Then
+            filters.Add($"filter[Brnd_Name]={Uri.EscapeDataString(brandName)}")
+        End If
+        If Not String.IsNullOrWhiteSpace(genericName) Then
+            filters.Add($"filter[Gnrc_Name]={Uri.EscapeDataString(genericName)}")
+        End If
+        filters.Add("size=100")
+        Dim url As String = baseUrl & String.Join("&", filters)
+        Using client As New HttpClient()
+            Dim response = Await client.GetAsync(url)
+            If response.IsSuccessStatusCode Then
+                Dim json = Await response.Content.ReadAsStringAsync()
+                Return JArray.Parse(json)
+            End If
+        End Using
+        Return Nothing
+    End Function
 End Module
