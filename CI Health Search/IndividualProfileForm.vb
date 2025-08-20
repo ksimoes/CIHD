@@ -640,4 +640,8 @@ Public Class IndividualProfileForm
     Private Sub lblMailingState_Click(sender As Object, e As EventArgs)
 
     End Sub
+
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        Individual_Search.Show()
+    End Sub
 End Class

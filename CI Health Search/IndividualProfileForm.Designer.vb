@@ -23,6 +23,9 @@ Partial Class IndividualProfileForm
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Panel1 = New Panel()
+        Label24 = New Label()
+        Label1 = New Label()
+        dgvOwner = New DataGridView()
         Label21 = New Label()
         dgvGenPay = New DataGridView()
         Label20 = New Label()
@@ -78,10 +81,9 @@ Partial Class IndividualProfileForm
         Label4 = New Label()
         Label3 = New Label()
         Label2 = New Label()
-        dgvOwner = New DataGridView()
-        Label1 = New Label()
-        Label24 = New Label()
+        Button1 = New Button()
         Panel1.SuspendLayout()
+        CType(dgvOwner, ComponentModel.ISupportInitialize).BeginInit()
         CType(dgvGenPay, ComponentModel.ISupportInitialize).BeginInit()
         CType(dgvTax, ComponentModel.ISupportInitialize).BeginInit()
         CType(dgvHCPCSlvl2, ComponentModel.ISupportInitialize).BeginInit()
@@ -91,12 +93,12 @@ Partial Class IndividualProfileForm
         CType(dgvDrugs, ComponentModel.ISupportInitialize).BeginInit()
         CType(dgvAff, ComponentModel.ISupportInitialize).BeginInit()
         GroupBox1.SuspendLayout()
-        CType(dgvOwner, ComponentModel.ISupportInitialize).BeginInit()
         SuspendLayout()
         ' 
         ' Panel1
         ' 
         Panel1.AutoScroll = True
+        Panel1.Controls.Add(Button1)
         Panel1.Controls.Add(Label24)
         Panel1.Controls.Add(Label1)
         Panel1.Controls.Add(dgvOwner)
@@ -120,6 +122,34 @@ Partial Class IndividualProfileForm
         Panel1.Name = "Panel1"
         Panel1.Size = New Size(1222, 1061)
         Panel1.TabIndex = 0
+        ' 
+        ' Label24
+        ' 
+        Label24.AutoSize = True
+        Label24.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
+        Label24.Location = New Point(3, 1946)
+        Label24.Name = "Label24"
+        Label24.Size = New Size(110, 15)
+        Label24.TabIndex = 27
+        Label24.Text = "Research Payment"
+        ' 
+        ' Label1
+        ' 
+        Label1.AutoSize = True
+        Label1.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
+        Label1.Location = New Point(3, 1750)
+        Label1.Name = "Label1"
+        Label1.Size = New Size(96, 15)
+        Label1.TabIndex = 26
+        Label1.Text = "Ownership Data"
+        ' 
+        ' dgvOwner
+        ' 
+        dgvOwner.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        dgvOwner.Location = New Point(3, 1768)
+        dgvOwner.Name = "dgvOwner"
+        dgvOwner.Size = New Size(603, 175)
+        dgvOwner.TabIndex = 25
         ' 
         ' Label21
         ' 
@@ -676,33 +706,14 @@ Partial Class IndividualProfileForm
         Label2.TabIndex = 1
         Label2.Text = "First Name"
         ' 
-        ' dgvOwner
+        ' Button1
         ' 
-        dgvOwner.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        dgvOwner.Location = New Point(3, 1768)
-        dgvOwner.Name = "dgvOwner"
-        dgvOwner.Size = New Size(603, 175)
-        dgvOwner.TabIndex = 25
-        ' 
-        ' Label1
-        ' 
-        Label1.AutoSize = True
-        Label1.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
-        Label1.Location = New Point(3, 1750)
-        Label1.Name = "Label1"
-        Label1.Size = New Size(96, 15)
-        Label1.TabIndex = 26
-        Label1.Text = "Ownership Data"
-        ' 
-        ' Label24
-        ' 
-        Label24.AutoSize = True
-        Label24.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
-        Label24.Location = New Point(3, 1946)
-        Label24.Name = "Label24"
-        Label24.Size = New Size(110, 15)
-        Label24.TabIndex = 27
-        Label24.Text = "Research Payment"
+        Button1.Location = New Point(1040, 570)
+        Button1.Name = "Button1"
+        Button1.Size = New Size(164, 88)
+        Button1.TabIndex = 28
+        Button1.Text = "Back to Search!"
+        Button1.UseVisualStyleBackColor = True
         ' 
         ' IndividualProfileForm
         ' 
@@ -714,6 +725,7 @@ Partial Class IndividualProfileForm
         Text = "IndividualProfileForm"
         Panel1.ResumeLayout(False)
         Panel1.PerformLayout()
+        CType(dgvOwner, ComponentModel.ISupportInitialize).EndInit()
         CType(dgvGenPay, ComponentModel.ISupportInitialize).EndInit()
         CType(dgvTax, ComponentModel.ISupportInitialize).EndInit()
         CType(dgvHCPCSlvl2, ComponentModel.ISupportInitialize).EndInit()
@@ -724,7 +736,6 @@ Partial Class IndividualProfileForm
         CType(dgvAff, ComponentModel.ISupportInitialize).EndInit()
         GroupBox1.ResumeLayout(False)
         GroupBox1.PerformLayout()
-        CType(dgvOwner, ComponentModel.ISupportInitialize).EndInit()
         ResumeLayout(False)
     End Sub
 
@@ -787,4 +798,5 @@ Partial Class IndividualProfileForm
     Friend WithEvents Label24 As Label
     Friend WithEvents Label1 As Label
     Friend WithEvents dgvOwner As DataGridView
+    Friend WithEvents Button1 As Button
 End Class
