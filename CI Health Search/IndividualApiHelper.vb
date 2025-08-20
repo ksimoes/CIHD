@@ -53,6 +53,74 @@ Module IndividualApiHelper
         Return Nothing
     End Function
 
+    Public Async Function SearchNationalDownloadableFileAsync(
+    Optional npi As String = "",
+    Optional firstName As String = "",
+    Optional lastName As String = "",
+    Optional gradYear As String = "",
+    Optional medSchool As String = "",
+    Optional limit As Integer = 10
+) As Task(Of JArray)
+        Dim url As String = "https://data.cms.gov/provider-data/api/1/datastore/query/mj5m-pzi6/0"
+        Dim conditions As New List(Of JObject)
+        If Not String.IsNullOrWhiteSpace(npi) Then
+            conditions.Add(New JObject(
+            New JProperty("resource", "t"),
+            New JProperty("property", "npi"),
+            New JProperty("value", npi),
+            New JProperty("operator", "=")
+        ))
+        End If
+        If Not String.IsNullOrWhiteSpace(firstName) Then
+            conditions.Add(New JObject(
+            New JProperty("resource", "t"),
+            New JProperty("property", "provider_first_name"),
+            New JProperty("value", firstName),
+            New JProperty("operator", "=")
+        ))
+        End If
+        If Not String.IsNullOrWhiteSpace(lastName) Then
+            conditions.Add(New JObject(
+            New JProperty("resource", "t"),
+            New JProperty("property", "provider_last_name"),
+            New JProperty("value", lastName),
+            New JProperty("operator", "=")
+        ))
+        End If
+        If Not String.IsNullOrWhiteSpace(gradYear) Then
+            conditions.Add(New JObject(
+            New JProperty("resource", "t"),
+            New JProperty("property", "grd_yr"),
+            New JProperty("value", gradYear),
+            New JProperty("operator", "=")
+        ))
+        End If
+        If Not String.IsNullOrWhiteSpace(medSchool) Then
+            conditions.Add(New JObject(
+            New JProperty("resource", "t"),
+            New JProperty("property", "med_sch"),
+            New JProperty("value", medSchool),
+            New JProperty("operator", "=")
+        ))
+        End If
+
+        Dim postBody As New JObject(
+        New JProperty("conditions", New JArray(conditions)),
+        New JProperty("limit", limit)
+    )
+
+        Using client As New HttpClient()
+            Dim content = New StringContent(postBody.ToString(), Text.Encoding.UTF8, "application/json")
+            Dim response = Await client.PostAsync(url, content)
+            If response.IsSuccessStatusCode Then
+                Dim json = Await response.Content.ReadAsStringAsync()
+                Dim obj = JObject.Parse(json)
+                Return TryCast(obj("results"), JArray)
+            End If
+        End Using
+        Return Nothing
+    End Function
+
     ' National Downloadable File
     Public Async Function GetNationalDownloadableFileAsync(Optional limit As Integer = 3) As Task(Of JArray)
         Dim url As String = "https://data.cms.gov/provider-data/api/1/datastore/query/mj5m-pzi6/0"

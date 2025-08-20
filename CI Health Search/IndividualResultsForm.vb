@@ -5,90 +5,115 @@ Public Class IndividualResultsForm
     Private dgvFilterHelper As DataGridViewFilterHelper
     Public Property SelectedNpi As String = Nothing
 
+    Private ReadOnly ResultsFieldMap As New Dictionary(Of String, String) From {
+    {"NPI", "number|npi"},
+    {"First Name", "basic.first_name|provider_first_name"},
+    {"Last Name", "basic.last_name|provider_last_name"},
+    {"Gender", "basic.sex|gndr"},
+    {"Medical School", "med_sch"},
+    {"Graduation Year", "grd_yr"},
+    {"Specialty", "taxonomies[0].desc|pri_spec"},
+    {"City", "addresses[0].city|citytown"},
+    {"State", "addresses[0].state|state"}}
+    ' Add more as needed
+
+
     Public Sub New(results As JArray, Optional showDrugColumns As Boolean = False)
         InitializeComponent()
         DataGridView1.Columns.Clear()
 
         Dim dt As New DataTable()
-        dt.Columns.Add("NPI")
-        dt.Columns.Add("First Name")
-        dt.Columns.Add("Last Name")
-        dt.Columns.Add("Phone")
-        dt.Columns.Add("Address")
-        dt.Columns.Add("Specialty")
-
-        ' Add extra columns for drug/HCPCS if needed
         Dim isDrug = showDrugColumns OrElse (results.Count > 0 AndAlso CType(results(0), JObject).ContainsKey("Brnd_Name"))
         Dim isHCPCS = (results.Count > 0 AndAlso CType(results(0), JObject).ContainsKey("Rndrng_NPI"))
 
+        Dim columns As New List(Of (Display As String, Field As String))
+
         If isDrug Then
-            dt.Columns.Add("Brand Name")
-            dt.Columns.Add("Generic Name")
+            columns.Add(("NPI", "Prscrbr_NPI"))
+            columns.Add(("First Name", "Prscrbr_First_Name"))
+            columns.Add(("Last Name", "Prscrbr_Last_Name"))
+            columns.Add(("Gender", "Prscrbr_Gndr"))
+            columns.Add(("Street Address", "Prscrbr_Addr1"))
+            columns.Add(("City", "Prscrbr_City"))
+            columns.Add(("State", "Prscrbr_State_Abrvtn"))
+            columns.Add(("Zip", "Prscrbr_Zip5"))
+            columns.Add(("Brand Name", "Brnd_Name"))
+            columns.Add(("Generic Name", "Gnrc_Name"))
         ElseIf isHCPCS Then
-            dt.Columns.Add("State")
+            columns.Add(("NPI", "Rndrng_NPI"))
+            columns.Add(("First Name", "Rndrng_Prvdr_First_Name"))
+            columns.Add(("Last Name", "Rndrng_Prvdr_Last_Org_Name"))
+            columns.Add(("Gender", "Rndrng_Prvdr_Gndr"))
+            columns.Add(("Street Address", "Rndrng_Prvdr_Street_Addr"))
+            columns.Add(("City", "Rndrng_Prvdr_City"))
+            columns.Add(("State", "Rndrng_Prvdr_State_Abrvtn"))
+            columns.Add(("Zip", "Rndrng_Prvdr_Zip5"))
+            columns.Add(("HCPCS Code", "HCPCS_Cd"))
         Else
-            dt.Columns.Add("State")
+            columns.Add(("NPI", "number|npi"))
+            columns.Add(("First Name", "basic.first_name|provider_first_name"))
+            columns.Add(("Last Name", "basic.last_name|provider_last_name"))
+            columns.Add(("Gender", "basic.sex|gndr"))
+            columns.Add(("Medical School", "med_sch"))
+            columns.Add(("Graduation Year", "grd_yr"))
+            columns.Add(("Specialty", "taxonomies[0].desc|pri_spec"))
+            columns.Add(("Phone", "addresses[0].telephone_number|telephone_number"))
+            columns.Add(("Street Address", "addresses[0].address_1|adr_ln_1"))
+            columns.Add(("City", "addresses[0].city|citytown"))
+            columns.Add(("State", "addresses[0].state|state"))
+            columns.Add(("Zip", "addresses[0].postal_code|zip_code"))
         End If
 
-        For Each person As JObject In results
-            Dim npi As String = ""
-            Dim firstName As String = ""
-            Dim lastName As String = ""
-            Dim phone As String = ""
-            Dim address As String = ""
-            Dim specialty As String = ""
-            Dim state As String = ""
-            Dim brandName As String = ""
-            Dim genericName As String = ""
+        For Each col In columns
+            dt.Columns.Add(col.Display)
+        Next
 
-            If isDrug Then
-                npi = person("Prscrbr_NPI")?.ToString()
-                firstName = person("Prscrbr_First_Name")?.ToString()
-                lastName = person("Prscrbr_Last_Name")?.ToString()
-                brandName = person("Brnd_Name")?.ToString()
-                genericName = person("Gnrc_Name")?.ToString()
-                ' Try to get phone/address/specialty if present (rare in this dataset)
-                phone = person("Prscrbr_Phone")?.ToString()
-                address = person("Prscrbr_Addr1")?.ToString()
-                specialty = person("Prscrbr_Type")?.ToString()
-                dt.Rows.Add(npi, firstName, lastName, phone, address, specialty, brandName, genericName)
-            ElseIf isHCPCS Then
-                npi = person("Rndrng_NPI")?.ToString()
-                firstName = person("Rndrng_Prvdr_First_Name")?.ToString()
-                lastName = person("Rndrng_Prvdr_Last_Org_Name")?.ToString()
-                state = person("Rndrng_Prvdr_State_Abrvtn")?.ToString()
-                ' Try to get phone/address/specialty if present (rare in this dataset)
-                phone = person("Rndrng_Prvdr_Phone")?.ToString()
-                address = person("Rndrng_Prvdr_Street_Addr")?.ToString()
-                specialty = person("Rndrng_Prvdr_Type")?.ToString()
-                dt.Rows.Add(npi, firstName, lastName, phone, address, specialty, state)
-            Else
-                npi = person("number")?.ToString()
-                firstName = If(person("basic")?("first_name") IsNot Nothing, person("basic")("first_name").ToString(), "N/A")
-                lastName = If(person("basic")?("last_name") IsNot Nothing, person("basic")("last_name").ToString(), "N/A")
-                state = person("addresses")?(0)?("state")?.ToString()
-                If person("taxonomies") IsNot Nothing AndAlso person("taxonomies").HasValues Then
-                    specialty = person("taxonomies")?(0)?("desc")?.ToString()
+        For Each result As JObject In results
+            Dim row As New List(Of String)
+            For Each col In columns
+                Dim val As String
+                If col.Field.Contains("|") Then
+                    val = GetJsonValue(result, col.Field)
+                Else
+                    val = result(col.Field)?.ToString()
                 End If
-                phone = person("addresses")?(0)?("telephone_number")?.ToString()
-                If person("addresses") IsNot Nothing AndAlso person("addresses").HasValues Then
-                    Dim addrObj = person("addresses")?(0)
-                    address = addrObj?("address_1")?.ToString()
-                    Dim addr2 = addrObj?("address_2")?.ToString()
-                    If Not String.IsNullOrWhiteSpace(addr2) Then
-                        address &= " " & addr2
-                    End If
-                    address &= ", " & addrObj?("city")?.ToString() & ", " & addrObj?("state")?.ToString() & " " & addrObj?("postal_code")?.ToString()
-                End If
-                dt.Rows.Add(npi, firstName, lastName, phone, address, specialty, state)
-            End If
+                If String.IsNullOrWhiteSpace(val) Then val = "N/A"
+                row.Add(val)
+            Next
+            dt.Rows.Add(row.ToArray())
         Next
 
         DataGridView1.DataSource = dt
         dgvFilterHelper = New DataGridViewFilterHelper(DataGridView1, Me)
         DataGridView1.Top = DataGridView1.Top + dgvFilterHelper.FilterPanel.Height
         DataGridView1.Height = DataGridView1.Height - dgvFilterHelper.FilterPanel.Height
-    End Sub '
+    End Sub
+
+    Private Function GetJsonValue(obj As JObject, path As String) As String
+        For Each tryPath In path.Split("|"c)
+            Try
+                Dim parts = tryPath.Split("."c)
+                Dim current As JToken = obj
+                For Each part In parts
+                    If part.Contains("[") Then
+                        Dim arrName = part.Substring(0, part.IndexOf("["))
+                        Dim idx = Integer.Parse(part.Substring(part.IndexOf("[") + 1, part.IndexOf("]") - part.IndexOf("[") - 1))
+                        current = current(arrName)
+                        If current Is Nothing OrElse Not current.HasValues Then GoTo NextPath
+                        current = current(idx)
+                    Else
+                        current = current(part)
+                    End If
+                    If current Is Nothing Then GoTo NextPath
+                Next
+                Return current.ToString()
+            Catch
+                ' Try next path
+            End Try
+NextPath:
+        Next
+        Return ""
+    End Function
 
     Private Sub DataGridView1_CellDoubleClick(sender As Object, e As DataGridViewCellEventArgs) Handles DataGridView1.CellDoubleClick
         If e.RowIndex >= 0 Then
