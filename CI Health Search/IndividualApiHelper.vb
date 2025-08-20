@@ -13,39 +13,31 @@ Module IndividualApiHelper
     Optional zip As String = "",
     Optional gender As String = "",
     Optional licenseState As String = "",
+    Optional licenseNumber As String = "",
+    Optional enumerationType As String = "",
+    Optional taxonomyDescription As String = "",
+    Optional graduationYear As String = "",
+    Optional medicalSchool As String = "",
     Optional limit As Integer = 10,
     Optional skip As Integer = 0
 ) As Task(Of JArray)
         Dim baseUrl As String = "https://npiregistry.cms.hhs.gov/api/?version=2.1"
         Dim query As New List(Of String)
 
-        If Not String.IsNullOrWhiteSpace(npi) Then
-            query.Add("number=" & Uri.EscapeDataString(npi))
-        End If
-        If Not String.IsNullOrWhiteSpace(firstName) Then
-            query.Add("first_name=" & Uri.EscapeDataString(firstName))
-        End If
-        If Not String.IsNullOrWhiteSpace(middleName) Then
-            query.Add("middle_name=" & Uri.EscapeDataString(middleName))
-        End If
-        If Not String.IsNullOrWhiteSpace(lastName) Then
-            query.Add("last_name=" & Uri.EscapeDataString(lastName))
-        End If
-        If Not String.IsNullOrWhiteSpace(city) Then
-            query.Add("city=" & Uri.EscapeDataString(city))
-        End If
-        If Not String.IsNullOrWhiteSpace(state) Then
-            query.Add("state=" & Uri.EscapeDataString(state))
-        End If
-        If Not String.IsNullOrWhiteSpace(zip) Then
-            query.Add("postal_code=" & Uri.EscapeDataString(zip))
-        End If
-        If Not String.IsNullOrWhiteSpace(gender) Then
-            query.Add("gender=" & Uri.EscapeDataString(gender))
-        End If
-        If Not String.IsNullOrWhiteSpace(licenseState) Then
-            query.Add("license_state=" & Uri.EscapeDataString(licenseState))
-        End If
+        If Not String.IsNullOrWhiteSpace(npi) Then query.Add("number=" & Uri.EscapeDataString(npi))
+        If Not String.IsNullOrWhiteSpace(firstName) Then query.Add("first_name=" & Uri.EscapeDataString(firstName))
+        If Not String.IsNullOrWhiteSpace(middleName) Then query.Add("middle_name=" & Uri.EscapeDataString(middleName))
+        If Not String.IsNullOrWhiteSpace(lastName) Then query.Add("last_name=" & Uri.EscapeDataString(lastName))
+        If Not String.IsNullOrWhiteSpace(city) Then query.Add("city=" & Uri.EscapeDataString(city))
+        If Not String.IsNullOrWhiteSpace(state) Then query.Add("state=" & Uri.EscapeDataString(state))
+        If Not String.IsNullOrWhiteSpace(zip) Then query.Add("postal_code=" & Uri.EscapeDataString(zip))
+        If Not String.IsNullOrWhiteSpace(gender) Then query.Add("gender=" & Uri.EscapeDataString(gender))
+        If Not String.IsNullOrWhiteSpace(licenseState) Then query.Add("license_state=" & Uri.EscapeDataString(licenseState))
+        If Not String.IsNullOrWhiteSpace(licenseNumber) Then query.Add("license_number=" & Uri.EscapeDataString(licenseNumber))
+        If Not String.IsNullOrWhiteSpace(enumerationType) Then query.Add("enumeration_type=" & Uri.EscapeDataString(enumerationType))
+        If Not String.IsNullOrWhiteSpace(taxonomyDescription) Then query.Add("taxonomy_description=" & Uri.EscapeDataString(taxonomyDescription))
+        If Not String.IsNullOrWhiteSpace(graduationYear) Then query.Add("graduation_year=" & Uri.EscapeDataString(graduationYear))
+        If Not String.IsNullOrWhiteSpace(medicalSchool) Then query.Add("medical_school=" & Uri.EscapeDataString(medicalSchool))
         query.Add("limit=" & limit.ToString())
         query.Add("skip=" & skip.ToString())
 

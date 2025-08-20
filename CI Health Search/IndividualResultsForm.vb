@@ -1,54 +1,58 @@
 ﻿Imports Newtonsoft.Json.Linq
 
 Public Class IndividualResultsForm
+
+    Private dgvFilterHelper As DataGridViewFilterHelper
     Public Property SelectedNpi As String = Nothing
 
     Public Sub New(results As JArray, Optional showDrugColumns As Boolean = False)
         InitializeComponent()
         DataGridView1.Columns.Clear()
 
+        Dim dt As New DataTable()
+
         If results.Count > 0 Then
             Dim firstObj As JObject = CType(results(0), JObject)
 
             ' Drug search: Brnd_Name or Gnrc_Name present, or showDrugColumns forced
             If showDrugColumns OrElse firstObj.ContainsKey("Brnd_Name") OrElse firstObj.ContainsKey("Gnrc_Name") Then
-                DataGridView1.Columns.Add("NPI", "NPI")
-                DataGridView1.Columns.Add("FirstName", "First Name")
-                DataGridView1.Columns.Add("LastName", "Last Name")
-                DataGridView1.Columns.Add("Brnd_Name", "Brand Name")
-                DataGridView1.Columns.Add("Gnrc_Name", "Generic Name")
+                dt.Columns.Add("NPI")
+                dt.Columns.Add("First Name")
+                dt.Columns.Add("Last Name")
+                dt.Columns.Add("Brand Name")
+                dt.Columns.Add("Generic Name")
                 For Each person As JObject In results
                     Dim npi = person("Prscrbr_NPI")?.ToString()
                     Dim firstName = person("Prscrbr_First_Name")?.ToString()
                     Dim lastName = person("Prscrbr_Last_Name")?.ToString()
                     Dim brnd = person("Brnd_Name")?.ToString()
                     Dim gnrc = person("Gnrc_Name")?.ToString()
-                    DataGridView1.Rows.Add(npi, firstName, lastName, brnd, gnrc)
+                    dt.Rows.Add(npi, firstName, lastName, brnd, gnrc)
                 Next
 
             ElseIf firstObj.ContainsKey("Rndrng_NPI") Then
                 ' HCPCS dataset
-                DataGridView1.Columns.Add("NPI", "NPI")
-                DataGridView1.Columns.Add("FirstName", "First Name")
-                DataGridView1.Columns.Add("LastName", "Last Name")
-                DataGridView1.Columns.Add("State", "State")
+                dt.Columns.Add("NPI")
+                dt.Columns.Add("First Name")
+                dt.Columns.Add("Last Name")
+                dt.Columns.Add("State")
                 For Each person As JObject In results
                     Dim npi = person("Rndrng_NPI")?.ToString()
                     Dim firstName = person("Rndrng_Prvdr_First_Name")?.ToString()
                     Dim lastName = person("Rndrng_Prvdr_Last_Org_Name")?.ToString()
                     Dim state = person("Rndrng_Prvdr_State_Abrvtn")?.ToString()
-                    DataGridView1.Rows.Add(npi, firstName, lastName, state)
+                    dt.Rows.Add(npi, firstName, lastName, state)
                 Next
 
             Else
                 ' NPI Registry dataset
-                DataGridView1.Columns.Add("NPI", "NPI")
-                DataGridView1.Columns.Add("FirstName", "First Name")
-                DataGridView1.Columns.Add("LastName", "Last Name")
-                DataGridView1.Columns.Add("State", "State")
-                DataGridView1.Columns.Add("Specialty", "Specialty")
-                DataGridView1.Columns.Add("Phone", "Phone")
-                DataGridView1.Columns.Add("Address", "Address")
+                dt.Columns.Add("NPI")
+                dt.Columns.Add("First Name")
+                dt.Columns.Add("Last Name")
+                dt.Columns.Add("State")
+                dt.Columns.Add("Specialty")
+                dt.Columns.Add("Phone")
+                dt.Columns.Add("Address")
                 For Each person As JObject In results
                     Dim npi = person("number")?.ToString()
                     Dim firstName = If(person("basic")?("first_name") IsNot Nothing, person("basic")("first_name").ToString(), "N/A")
@@ -69,10 +73,13 @@ Public Class IndividualResultsForm
                         End If
                         address &= ", " & addrObj?("city")?.ToString() & ", " & addrObj?("state")?.ToString() & " " & addrObj?("postal_code")?.ToString()
                     End If
-                    DataGridView1.Rows.Add(npi, firstName, lastName, state, specialty, phone, address)
+                    dt.Rows.Add(npi, firstName, lastName, state, specialty, phone, address)
                 Next
             End If
         End If
+
+        DataGridView1.DataSource = dt
+        dgvFilterHelper = New DataGridViewFilterHelper(DataGridView1, Me)
     End Sub
 
     Private Sub DataGridView1_CellDoubleClick(sender As Object, e As DataGridViewCellEventArgs) Handles DataGridView1.CellDoubleClick

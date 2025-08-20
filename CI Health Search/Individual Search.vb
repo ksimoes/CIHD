@@ -18,7 +18,12 @@ Public Class Individual_Search
         Dim lastName = tbLast.Text.Trim()
         Dim state = tbState.Text.Trim().ToUpper()
         Dim stLic = tbStLic.Text.Trim().ToUpper()
+        Dim provEnroll = tbProvEnroll.Text.Trim()
+        Dim facilityTyp = tbFacilityTyp.Text.Trim()
+        Dim gradYear = tbGradYear.Text.Trim()
+        Dim medSchool = tbMedSchool.Text.Trim()
         Dim brandName = tbDrug.Text.Trim()
+        Dim stLicNum = tbStLicNum.Text.Trim()
         Dim genericName = tbDrugGeneric.Text.Trim()
 
         ' 1. If both NPI and HCPCS are provided, go straight to profile
@@ -96,15 +101,20 @@ Public Class Individual_Search
         End If
 
         Dim results2 = Await IndividualApiHelper.SearchNpiRegistryAsync(
-        firstName:=firstName,
-        middleName:=middleName,
-        lastName:=lastName,
-        city:=city,
-        state:=state,
-        zip:=zip,
-        gender:=gender,
-        licenseState:=stLic,
-        limit:=25
+    firstName:=firstName,
+    middleName:=middleName,
+    lastName:=lastName,
+    city:=city,
+    state:=state,
+    zip:=zip,
+    gender:=gender,
+    licenseState:=stLic,
+    licenseNumber:=stLicNum,
+    enumerationType:=provEnroll,
+    taxonomyDescription:=facilityTyp,
+    graduationYear:=gradYear,
+    medicalSchool:=medSchool,
+    limit:=25
     )
 
         If results2 Is Nothing OrElse results2.Count = 0 Then
