@@ -13,5 +13,17 @@
         Me.Close()
     End Sub
 
+    Private Sub btnBoth_Click(sender As Object, e As EventArgs) Handles btnBoth.Click
+        ' Show the individual search form
+        Dim indForm As New Individual_Search()
+        indForm.Show()
+
+        ' Show the organization search form
+        Dim orgForm As New Search() ' Replace 'Search' with your actual organization search form class if different
+        orgForm.Show()
+
+        ' Optionally, hide or close the select type form
+        Me.Hide()
+    End Sub
 
 End Class
