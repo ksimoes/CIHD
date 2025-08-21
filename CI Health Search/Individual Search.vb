@@ -41,29 +41,16 @@ Public Class Individual_Search
             Return
         End If
 
-        ' 3. If only HCPCS is provided, search by code and show results
+
+
+        ' 4. If searching by drug brand or generic name
         If Not String.IsNullOrWhiteSpace(hcpcs) Then
-            Dim results = Await IndividualApiHelper.SearchByHCPCSAsync(hcpcs)
+            Dim results = Await IndividualApiHelper.SearchByHCPCSAsync(hcpcs, state)
             If results Is Nothing OrElse results.Count = 0 Then
                 MessageBox.Show("No individuals found for this HCPCS code.")
                 Return
             End If
             Dim resultsForm As New IndividualResultsForm(results)
-            If resultsForm.ShowDialog() = DialogResult.OK AndAlso Not String.IsNullOrEmpty(resultsForm.SelectedNpi) Then
-                Dim profileForm As New IndividualProfileForm(resultsForm.SelectedNpi)
-                profileForm.ShowDialog()
-            End If
-            Return
-        End If
-
-        ' 4. If searching by drug brand or generic name
-        If Not String.IsNullOrWhiteSpace(brandName) OrElse Not String.IsNullOrWhiteSpace(genericName) Then
-            Dim results = Await IndividualApiHelper.SearchByDrugAsync(brandName, genericName)
-            If results Is Nothing OrElse results.Count = 0 Then
-                MessageBox.Show("No individuals found for this drug.")
-                Return
-            End If
-            Dim resultsForm As New IndividualResultsForm(results, showDrugColumns:=True)
             If resultsForm.ShowDialog() = DialogResult.OK AndAlso Not String.IsNullOrEmpty(resultsForm.SelectedNpi) Then
                 Dim profileForm As New IndividualProfileForm(resultsForm.SelectedNpi)
                 profileForm.ShowDialog()
@@ -115,21 +102,21 @@ Public Class Individual_Search
     )
         Else
             results2 = Await IndividualApiHelper.SearchNpiRegistryAsync(
-        firstName:=firstName,
-        middleName:=middleName,
-        lastName:=lastName,
-        city:=city,
-        state:=state,
-        zip:=zip,
-        gender:=gender,
-        licenseState:=stLic,
-        licenseNumber:=stLicNum,
-        enumerationType:=provEnroll,
-        taxonomyDescription:=facilityTyp,
-        graduationYear:=gradYear,
-        medicalSchool:=medSchool,
-        limit:=25
-    )
+    firstName:=firstName,
+    middleName:=middleName,
+    lastName:=lastName,
+    city:=city,
+    state:=state,
+    zip:=zip,
+    gender:=gender,
+    licenseState:=stLic,
+    licenseNumber:=stLicNum,
+    enumerationType:="NPI-1",
+    taxonomyDescription:=facilityTyp,
+    graduationYear:=gradYear,
+    medicalSchool:=medSchool,
+    limit:=25
+)
         End If
 
         If results2 Is Nothing OrElse results2.Count = 0 Then

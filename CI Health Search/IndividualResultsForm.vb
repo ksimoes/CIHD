@@ -68,7 +68,15 @@ Public Class IndividualResultsForm
             dt.Columns.Add(col.Display)
         Next
 
+        If results.Count > 0 Then
+            ShowScrollableJson(results(0).ToString(), "First Result JSON")
+        End If
+
         For Each result As JObject In results
+            Dim skip As Boolean = False
+
+
+
             Dim row As New List(Of String)
             For Each col In columns
                 Dim val As String
@@ -114,6 +122,24 @@ NextPath:
         Next
         Return ""
     End Function
+
+    Private Sub ShowScrollableJson(text As String, Optional title As String = "JSON Debug")
+        Dim frm As New Form With {
+        .Text = title,
+        .Width = 800,
+        .Height = 600
+    }
+        Dim txt As New TextBox With {
+        .Multiline = True,
+        .ScrollBars = ScrollBars.Both,
+        .Dock = DockStyle.Fill,
+        .ReadOnly = True,
+        .Font = New Font("Consolas", 10),
+        .Text = text
+    }
+        frm.Controls.Add(txt)
+        frm.ShowDialog()
+    End Sub
 
     Private Sub DataGridView1_CellDoubleClick(sender As Object, e As DataGridViewCellEventArgs) Handles DataGridView1.CellDoubleClick
         If e.RowIndex >= 0 Then

@@ -246,8 +246,12 @@ Module IndividualApiHelper
         Return Nothing
     End Function
 
-    Public Async Function SearchByHCPCSAsync(hcpcsCode As String) As Task(Of JArray)
-        Dim url As String = $"https://data.cms.gov/data-api/v1/dataset/92396110-2aed-4d63-a6a2-5d6207d46a29/data?filter[HCPCS_Cd]={Uri.EscapeDataString(hcpcsCode)}&size=100"
+    Public Async Function SearchByHCPCSAsync(hcpcsCode As String, Optional state As String = "") As Task(Of JArray)
+        Dim url As String = $"https://data.cms.gov/data-api/v1/dataset/92396110-2aed-4d63-a6a2-5d6207d46a29/data?filter[HCPCS_Cd]={Uri.EscapeDataString(hcpcsCode)}"
+        If Not String.IsNullOrWhiteSpace(state) Then
+            url &= $"&filter[Rndrng_Prvdr_State_Abrvtn]={Uri.EscapeDataString(state)}"
+        End If
+        url &= "&size=100"
         Using client As New HttpClient()
             Dim response = Await client.GetAsync(url)
             If response.IsSuccessStatusCode Then
