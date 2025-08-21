@@ -6,20 +6,26 @@ Public Class IndividualResultsForm
     Public Property SelectedNpi As String = Nothing
 
     Private ReadOnly ResultsFieldMap As New Dictionary(Of String, String) From {
-    {"NPI", "number|npi"},
-    {"First Name", "basic.first_name|provider_first_name"},
-    {"Last Name", "basic.last_name|provider_last_name"},
-    {"Gender", "basic.sex|gndr"},
-    {"Medical School", "med_sch"},
-    {"Graduation Year", "grd_yr"},
-    {"Specialty", "taxonomies[0].desc|pri_spec"},
-    {"City", "addresses[0].city|citytown"},
-    {"State", "addresses[0].state|state"}}
+        {"NPI", "number|npi"},
+        {"First Name", "basic.first_name|provider_first_name"},
+        {"Last Name", "basic.last_name|provider_last_name"},
+        {"Gender", "basic.sex|gndr"},
+        {"Medical School", "med_sch"},
+        {"Graduation Year", "grd_yr"},
+        {"Specialty", "taxonomies[0].desc|pri_spec"},
+        {"City", "addresses[0].city|citytown"},
+        {"State", "addresses[0].state|state"}
+    }
     ' Add more as needed
 
-
-    Public Sub New(results As JArray, Optional showDrugColumns As Boolean = False)
+    Public Sub New(results As JArray, Optional showDrugColumns As Boolean = False, Optional searchSummary As String = "")
         InitializeComponent()
+        If Not String.IsNullOrWhiteSpace(searchSummary) Then
+            lblSearchSummary.Text = searchSummary
+            lblSearchSummary.Visible = True
+        Else
+            lblSearchSummary.Visible = False
+        End If
         DataGridView1.Columns.Clear()
 
         Dim dt As New DataTable()
@@ -73,10 +79,6 @@ Public Class IndividualResultsForm
         End If
 
         For Each result As JObject In results
-            Dim skip As Boolean = False
-
-
-
             Dim row As New List(Of String)
             For Each col In columns
                 Dim val As String
@@ -125,18 +127,18 @@ NextPath:
 
     Private Sub ShowScrollableJson(text As String, Optional title As String = "JSON Debug")
         Dim frm As New Form With {
-        .Text = title,
-        .Width = 800,
-        .Height = 600
-    }
+            .Text = title,
+            .Width = 800,
+            .Height = 600
+        }
         Dim txt As New TextBox With {
-        .Multiline = True,
-        .ScrollBars = ScrollBars.Both,
-        .Dock = DockStyle.Fill,
-        .ReadOnly = True,
-        .Font = New Font("Consolas", 10),
-        .Text = text
-    }
+            .Multiline = True,
+            .ScrollBars = ScrollBars.Both,
+            .Dock = DockStyle.Fill,
+            .ReadOnly = True,
+            .Font = New Font("Consolas", 10),
+            .Text = text
+        }
         frm.Controls.Add(txt)
         frm.ShowDialog()
     End Sub

@@ -24,6 +24,7 @@ Partial Class IndividualResultsForm
     Private Sub InitializeComponent()
         DataGridView1 = New DataGridView()
         Column1 = New DataGridViewTextBoxColumn()
+        lblSearchSummary = New Label()
         CType(DataGridView1, ComponentModel.ISupportInitialize).BeginInit()
         SuspendLayout()
         ' 
@@ -41,18 +42,30 @@ Partial Class IndividualResultsForm
         Column1.HeaderText = ""
         Column1.Name = "Column1"
         ' 
+        ' lblSearchSummary
+        ' 
+        lblSearchSummary.AutoSize = True
+        lblSearchSummary.Location = New Point(70, 414)
+        lblSearchSummary.Name = "lblSearchSummary"
+        lblSearchSummary.Size = New Size(10, 15)
+        lblSearchSummary.TabIndex = 1
+        lblSearchSummary.Text = "."
+        ' 
         ' IndividualResultsForm
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(921, 454)
+        Controls.Add(lblSearchSummary)
         Controls.Add(DataGridView1)
         Name = "IndividualResultsForm"
         Text = "IndividualResultsForm"
         CType(DataGridView1, ComponentModel.ISupportInitialize).EndInit()
         ResumeLayout(False)
+        PerformLayout()
     End Sub
 
     Friend WithEvents DataGridView1 As DataGridView
     Friend WithEvents Column1 As DataGridViewTextBoxColumn
+    Friend WithEvents lblSearchSummary As Label
 End Class
