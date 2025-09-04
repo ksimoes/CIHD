@@ -14,15 +14,14 @@
     End Sub
 
     Private Sub btnBoth_Click(sender As Object, e As EventArgs) Handles btnBoth.Click
-        ' Show the individual search form
+        ' Open both forms modelessly so they can be used at the same time
         Dim indForm As New Individual_Search()
-        indForm.Show()
+        indForm.Show() ' Modeless
 
-        ' Show the organization search form
         Dim orgForm As New Search() ' Replace 'Search' with your actual organization search form class if different
-        orgForm.Show()
+        orgForm.Show() ' Modeless
 
-        ' Optionally, hide or close the select type form
+        ' Hide this selector so it doesn't block interaction
         Me.Hide()
     End Sub
 

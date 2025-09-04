@@ -54,14 +54,14 @@ Public Class Individual_Search
         ' 1. If both NPI and HCPCS are provided, go straight to profile
         If Not String.IsNullOrWhiteSpace(npi) AndAlso Not String.IsNullOrWhiteSpace(hcpcs) Then
             Dim profileForm As New IndividualProfileForm(npi)
-            profileForm.ShowDialog()
+            profileForm.Show()
             Return
         End If
 
         ' 2. If only NPI is provided, go straight to profile
         If Not String.IsNullOrWhiteSpace(npi) Then
             Dim profileForm As New IndividualProfileForm(npi)
-            profileForm.ShowDialog()
+            profileForm.Show()
             Return
         End If
 
@@ -73,10 +73,7 @@ Public Class Individual_Search
                 Return
             End If
             Dim resultsForm As New IndividualResultsForm(results, showDrugColumns:=False, searchSummary:=searchSummary)
-            If resultsForm.ShowDialog() = DialogResult.OK AndAlso Not String.IsNullOrEmpty(resultsForm.SelectedNpi) Then
-                Dim profileForm As New IndividualProfileForm(resultsForm.SelectedNpi)
-                profileForm.ShowDialog()
-            End If
+            resultsForm.Show()
             Return
         End If
 
@@ -88,10 +85,7 @@ Public Class Individual_Search
                 Return
             End If
             Dim resultsForm As New IndividualResultsForm(results, showDrugColumns:=True, searchSummary:=searchSummary)
-            If resultsForm.ShowDialog() = DialogResult.OK AndAlso Not String.IsNullOrEmpty(resultsForm.SelectedNpi) Then
-                Dim profileForm As New IndividualProfileForm(resultsForm.SelectedNpi)
-                profileForm.ShowDialog()
-            End If
+            resultsForm.Show()
             Return
         End If
 
@@ -156,10 +150,7 @@ Public Class Individual_Search
             Return
         End If
         Dim resultsForm2 As New IndividualResultsForm(results2, showDrugColumns:=False, searchSummary:=searchSummary)
-        If resultsForm2.ShowDialog() = DialogResult.OK AndAlso Not String.IsNullOrEmpty(resultsForm2.SelectedNpi) Then
-            Dim profileForm As New IndividualProfileForm(resultsForm2.SelectedNpi)
-            profileForm.ShowDialog()
-        End If
+        resultsForm2.Show()
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click

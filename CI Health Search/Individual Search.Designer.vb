@@ -155,7 +155,8 @@ Partial Class Individual_Search
         ' 
         ' Button1
         ' 
-        Button1.Location = New Point(967, 609)
+        Button1.Anchor = AnchorStyles.Bottom Or AnchorStyles.Right
+        Button1.Location = New Point(830, 554)
         Button1.Name = "Button1"
         Button1.Size = New Size(167, 77)
         Button1.TabIndex = 39
@@ -164,7 +165,8 @@ Partial Class Individual_Search
         ' 
         ' btnOrgSearch
         ' 
-        btnOrgSearch.Location = New Point(776, 609)
+        btnOrgSearch.Anchor = AnchorStyles.Bottom Or AnchorStyles.Right
+        btnOrgSearch.Location = New Point(639, 554)
         btnOrgSearch.Name = "btnOrgSearch"
         btnOrgSearch.Size = New Size(166, 77)
         btnOrgSearch.TabIndex = 38
@@ -173,7 +175,8 @@ Partial Class Individual_Search
         ' 
         ' btnSearch
         ' 
-        btnSearch.Location = New Point(556, 609)
+        btnSearch.Anchor = AnchorStyles.Bottom Or AnchorStyles.Right
+        btnSearch.Location = New Point(419, 554)
         btnSearch.Name = "btnSearch"
         btnSearch.Size = New Size(167, 77)
         btnSearch.TabIndex = 37
@@ -472,6 +475,7 @@ Partial Class Individual_Search
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
+        AutoScroll = True
         ClientSize = New Size(1314, 710)
         Controls.Add(GroupBox1)
         Name = "Individual_Search"

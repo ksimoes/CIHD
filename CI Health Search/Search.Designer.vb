@@ -25,6 +25,7 @@ Partial Class Search
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Search))
         TabControl1 = New TabControl()
         TabPage5 = New TabPage()
+        Button6 = New Button()
         picLoading = New PictureBox()
         lblCheckingStatus = New Label()
         lblstatus = New Label()
@@ -192,7 +193,6 @@ Partial Class Search
         lblService = New Label()
         lblMedicare = New Label()
         lblFacility = New Label()
-        Button6 = New Button()
         TabControl1.SuspendLayout()
         TabPage5.SuspendLayout()
         CType(picLoading, ComponentModel.ISupportInitialize).BeginInit()
@@ -222,6 +222,7 @@ Partial Class Search
         ' 
         ' TabPage5
         ' 
+        TabPage5.AutoScroll = True
         TabPage5.Controls.Add(Button6)
         TabPage5.Controls.Add(picLoading)
         TabPage5.Controls.Add(lblCheckingStatus)
@@ -238,6 +239,15 @@ Partial Class Search
         TabPage5.TabIndex = 4
         TabPage5.Text = "All"
         TabPage5.UseVisualStyleBackColor = True
+        ' 
+        ' Button6
+        ' 
+        Button6.Location = New Point(574, 620)
+        Button6.Name = "Button6"
+        Button6.Size = New Size(89, 55)
+        Button6.TabIndex = 105
+        Button6.Text = "Go to Individual"
+        Button6.UseVisualStyleBackColor = True
         ' 
         ' picLoading
         ' 
@@ -1895,15 +1905,6 @@ Partial Class Search
         lblFacility.Size = New Size(128, 21)
         lblFacility.TabIndex = 5
         lblFacility.Text = "Type of Facility"
-        ' 
-        ' Button6
-        ' 
-        Button6.Location = New Point(574, 620)
-        Button6.Name = "Button6"
-        Button6.Size = New Size(89, 55)
-        Button6.TabIndex = 105
-        Button6.Text = "Go to Individual"
-        Button6.UseVisualStyleBackColor = True
         ' 
         ' Search
         ' 

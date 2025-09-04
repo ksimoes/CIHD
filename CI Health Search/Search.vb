@@ -367,7 +367,7 @@ Public Class Search
 
             Dim popup As New HCPCSCodeResultsForm(codeInput, stateFilter)
             popup.Owner = Me
-            popup.ShowDialog()
+            popup.Show() ' <-- Modeless, allows simultaneous use
         Catch ex As TaskCanceledException
             MessageBox.Show("HCPCS API request timed out.")
         Catch ex As Exception

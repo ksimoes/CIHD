@@ -140,7 +140,7 @@ NextPath:
             .Text = text
         }
         frm.Controls.Add(txt)
-        frm.ShowDialog()
+        frm.Show()
     End Sub
 
     Private Sub DataGridView1_CellDoubleClick(sender As Object, e As DataGridViewCellEventArgs) Handles DataGridView1.CellDoubleClick
