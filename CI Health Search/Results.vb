@@ -43,6 +43,10 @@ Public Class Results
         End If
         dgvResults.Rows.Clear()
 
+
+        dgvResults.AlternatingRowsDefaultCellStyle.BackColor = Color.LightYellow
+        dgvResults.DefaultCellStyle.BackColor = Color.White
+
         ' Determine which column to use for display
         Dim displayCol As String = ""
         If dt.Columns.Contains("FAC_NAME") Then

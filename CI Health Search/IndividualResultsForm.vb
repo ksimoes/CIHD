@@ -29,6 +29,12 @@ Public Class IndividualResultsForm
         DataGridView1.Columns.Clear()
 
         Dim dt As New DataTable()
+        ' After setting DataSource:
+        DataGridView1.DataSource = dt
+
+        ' Add these lines for alternating row colors:
+        DataGridView1.AlternatingRowsDefaultCellStyle.BackColor = Color.LightYellow
+        DataGridView1.DefaultCellStyle.BackColor = Color.White
         Dim isDrug = showDrugColumns OrElse (results.Count > 0 AndAlso CType(results(0), JObject).ContainsKey("Brnd_Name"))
         Dim isHCPCS = (results.Count > 0 AndAlso CType(results(0), JObject).ContainsKey("Rndrng_NPI"))
 
@@ -150,4 +156,6 @@ NextPath:
             Me.Close()
         End If
     End Sub
+
+
 End Class

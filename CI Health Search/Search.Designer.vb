@@ -193,6 +193,8 @@ Partial Class Search
         lblService = New Label()
         lblMedicare = New Label()
         lblFacility = New Label()
+        Label2 = New Label()
+        Label3 = New Label()
         TabControl1.SuspendLayout()
         TabPage5.SuspendLayout()
         CType(picLoading, ComponentModel.ISupportInitialize).BeginInit()
@@ -281,25 +283,29 @@ Partial Class Search
         ' 
         ' Button1
         ' 
+        Button1.BackColor = Color.Red
         Button1.Location = New Point(574, 517)
         Button1.Name = "Button1"
         Button1.Size = New Size(294, 55)
         Button1.TabIndex = 95
         Button1.Text = "Clear"
-        Button1.UseVisualStyleBackColor = True
+        Button1.UseVisualStyleBackColor = False
         ' 
         ' btnSearchAll
         ' 
+        btnSearchAll.BackColor = Color.Green
         btnSearchAll.Location = New Point(574, 449)
         btnSearchAll.Name = "btnSearchAll"
         btnSearchAll.Size = New Size(294, 55)
         btnSearchAll.TabIndex = 94
         btnSearchAll.Text = "Search!"
-        btnSearchAll.UseVisualStyleBackColor = True
+        btnSearchAll.UseVisualStyleBackColor = False
         ' 
         ' GroupBox5
         ' 
         GroupBox5.BackColor = Color.Red
+        GroupBox5.Controls.Add(Label3)
+        GroupBox5.Controls.Add(Label2)
         GroupBox5.Controls.Add(txtMaxTotPatRevAll)
         GroupBox5.Controls.Add(lblRoutineAll)
         GroupBox5.Controls.Add(txtMaxAnnualDisAll)
@@ -336,7 +342,7 @@ Partial Class Search
         ' 
         txtMaxTotPatRevAll.Location = New Point(454, 214)
         txtMaxTotPatRevAll.Name = "txtMaxTotPatRevAll"
-        txtMaxTotPatRevAll.Size = New Size(100, 23)
+        txtMaxTotPatRevAll.Size = New Size(88, 23)
         txtMaxTotPatRevAll.TabIndex = 51
         ' 
         ' lblRoutineAll
@@ -353,7 +359,7 @@ Partial Class Search
         ' 
         txtMaxAnnualDisAll.Location = New Point(454, 163)
         txtMaxAnnualDisAll.Name = "txtMaxAnnualDisAll"
-        txtMaxAnnualDisAll.Size = New Size(100, 23)
+        txtMaxAnnualDisAll.Size = New Size(55, 23)
         txtMaxAnnualDisAll.TabIndex = 50
         ' 
         ' lblSpecialAll
@@ -370,7 +376,7 @@ Partial Class Search
         ' 
         txtMaxTotalBedsAll.Location = New Point(454, 118)
         txtMaxTotalBedsAll.Name = "txtMaxTotalBedsAll"
-        txtMaxTotalBedsAll.Size = New Size(100, 23)
+        txtMaxTotalBedsAll.Size = New Size(55, 23)
         txtMaxTotalBedsAll.TabIndex = 49
         ' 
         ' lblTotalBedAll
@@ -387,7 +393,7 @@ Partial Class Search
         ' 
         txtMaxSpecialAll.Location = New Point(454, 66)
         txtMaxSpecialAll.Name = "txtMaxSpecialAll"
-        txtMaxSpecialAll.Size = New Size(100, 23)
+        txtMaxSpecialAll.Size = New Size(55, 23)
         txtMaxSpecialAll.TabIndex = 48
         ' 
         ' lblAnnualDisAll
@@ -404,7 +410,7 @@ Partial Class Search
         ' 
         txtMaxRoutineAll.Location = New Point(454, 17)
         txtMaxRoutineAll.Name = "txtMaxRoutineAll"
-        txtMaxRoutineAll.Size = New Size(100, 23)
+        txtMaxRoutineAll.Size = New Size(55, 23)
         txtMaxRoutineAll.TabIndex = 47
         ' 
         ' lblTotPatRevAll
@@ -421,7 +427,7 @@ Partial Class Search
         ' 
         txtMinTotPatRevAll.Location = New Point(253, 214)
         txtMinTotPatRevAll.Name = "txtMinTotPatRevAll"
-        txtMinTotPatRevAll.Size = New Size(100, 23)
+        txtMinTotPatRevAll.Size = New Size(92, 23)
         txtMinTotPatRevAll.TabIndex = 46
         ' 
         ' lblMinRoutineAll
@@ -438,7 +444,7 @@ Partial Class Search
         ' 
         txtMinAnnualDisAll.Location = New Point(253, 161)
         txtMinAnnualDisAll.Name = "txtMinAnnualDisAll"
-        txtMinAnnualDisAll.Size = New Size(100, 23)
+        txtMinAnnualDisAll.Size = New Size(57, 23)
         txtMinAnnualDisAll.TabIndex = 45
         ' 
         ' lblMinTotPatRevAll
@@ -455,7 +461,7 @@ Partial Class Search
         ' 
         txtMinTotalBedsAll.Location = New Point(253, 115)
         txtMinTotalBedsAll.Name = "txtMinTotalBedsAll"
-        txtMinTotalBedsAll.Size = New Size(100, 23)
+        txtMinTotalBedsAll.Size = New Size(57, 23)
         txtMinTotalBedsAll.TabIndex = 44
         ' 
         ' lblMinAnnualDisAll
@@ -472,7 +478,7 @@ Partial Class Search
         ' 
         txtMinSpecialAll.Location = New Point(253, 63)
         txtMinSpecialAll.Name = "txtMinSpecialAll"
-        txtMinSpecialAll.Size = New Size(100, 23)
+        txtMinSpecialAll.Size = New Size(57, 23)
         txtMinSpecialAll.TabIndex = 43
         ' 
         ' lblMinTotalBedsAll
@@ -489,7 +495,7 @@ Partial Class Search
         ' 
         txtMinRoutineAll.Location = New Point(253, 17)
         txtMinRoutineAll.Name = "txtMinRoutineAll"
-        txtMinRoutineAll.Size = New Size(100, 23)
+        txtMinRoutineAll.Size = New Size(57, 23)
         txtMinRoutineAll.TabIndex = 42
         ' 
         ' lblMinSpecialAll
@@ -603,7 +609,7 @@ Partial Class Search
         ' 
         Label1.AutoSize = True
         Label1.Font = New Font("Times New Roman", 14.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        Label1.Location = New Point(7, 263)
+        Label1.Location = New Point(13, 263)
         Label1.Name = "Label1"
         Label1.Size = New Size(117, 21)
         Label1.TabIndex = 92
@@ -1906,6 +1912,26 @@ Partial Class Search
         lblFacility.TabIndex = 5
         lblFacility.Text = "Type of Facility"
         ' 
+        ' Label2
+        ' 
+        Label2.AutoSize = True
+        Label2.Font = New Font("Times New Roman", 14.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        Label2.Location = New Point(351, 214)
+        Label2.Name = "Label2"
+        Label2.Size = New Size(19, 21)
+        Label2.TabIndex = 52
+        Label2.Text = "$"
+        ' 
+        ' Label3
+        ' 
+        Label3.AutoSize = True
+        Label3.Font = New Font("Times New Roman", 14.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        Label3.Location = New Point(546, 214)
+        Label3.Name = "Label3"
+        Label3.Size = New Size(19, 21)
+        Label3.TabIndex = 53
+        Label3.Text = "$"
+        ' 
         ' Search
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
@@ -2111,4 +2137,6 @@ Partial Class Search
     Friend WithEvents txtMinSpecialBedsUtil As TextBox
     Friend WithEvents picLoading As PictureBox
     Friend WithEvents Button6 As Button
+    Friend WithEvents Label3 As Label
+    Friend WithEvents Label2 As Label
 End Class

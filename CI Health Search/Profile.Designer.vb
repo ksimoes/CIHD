@@ -206,9 +206,9 @@ Partial Class Profile
         lblMedicareCertifiedBedsResult.Font = New Font("Segoe UI", 9.75F)
         lblMedicareCertifiedBedsResult.Location = New Point(370, 904)
         lblMedicareCertifiedBedsResult.Name = "lblMedicareCertifiedBedsResult"
-        lblMedicareCertifiedBedsResult.Size = New Size(43, 17)
+        lblMedicareCertifiedBedsResult.Size = New Size(11, 17)
         lblMedicareCertifiedBedsResult.TabIndex = 76
-        lblMedicareCertifiedBedsResult.Text = "Result"
+        lblMedicareCertifiedBedsResult.Text = "."
         ' 
         ' lblCmsUrbRurDesigResult
         ' 
@@ -216,9 +216,9 @@ Partial Class Profile
         lblCmsUrbRurDesigResult.Font = New Font("Segoe UI", 9.75F)
         lblCmsUrbRurDesigResult.Location = New Point(369, 875)
         lblCmsUrbRurDesigResult.Name = "lblCmsUrbRurDesigResult"
-        lblCmsUrbRurDesigResult.Size = New Size(53, 17)
+        lblCmsUrbRurDesigResult.Size = New Size(11, 17)
         lblCmsUrbRurDesigResult.TabIndex = 75
-        lblCmsUrbRurDesigResult.Text = "Label24"
+        lblCmsUrbRurDesigResult.Text = "."
         ' 
         ' lblMedicareAdministrativeContractResult
         ' 
@@ -226,9 +226,9 @@ Partial Class Profile
         lblMedicareAdministrativeContractResult.Font = New Font("Segoe UI", 9.75F)
         lblMedicareAdministrativeContractResult.Location = New Point(369, 848)
         lblMedicareAdministrativeContractResult.Name = "lblMedicareAdministrativeContractResult"
-        lblMedicareAdministrativeContractResult.Size = New Size(53, 17)
+        lblMedicareAdministrativeContractResult.Size = New Size(11, 17)
         lblMedicareAdministrativeContractResult.TabIndex = 74
-        lblMedicareAdministrativeContractResult.Text = "Label23"
+        lblMedicareAdministrativeContractResult.Text = "."
         ' 
         ' lblHelipadResult
         ' 
@@ -236,9 +236,9 @@ Partial Class Profile
         lblHelipadResult.Font = New Font("Segoe UI", 9.75F)
         lblHelipadResult.Location = New Point(369, 822)
         lblHelipadResult.Name = "lblHelipadResult"
-        lblHelipadResult.Size = New Size(53, 17)
+        lblHelipadResult.Size = New Size(11, 17)
         lblHelipadResult.TabIndex = 73
-        lblHelipadResult.Text = "Label22"
+        lblHelipadResult.Text = "."
         ' 
         ' lblLatLongResult
         ' 
@@ -246,9 +246,9 @@ Partial Class Profile
         lblLatLongResult.Font = New Font("Segoe UI", 9.75F)
         lblLatLongResult.Location = New Point(369, 793)
         lblLatLongResult.Name = "lblLatLongResult"
-        lblLatLongResult.Size = New Size(53, 17)
+        lblLatLongResult.Size = New Size(11, 17)
         lblLatLongResult.TabIndex = 72
-        lblLatLongResult.Text = "Label20"
+        lblLatLongResult.Text = "."
         ' 
         ' lblHealthCareSystemResult
         ' 
@@ -267,9 +267,9 @@ Partial Class Profile
         lblCbsaResult.Font = New Font("Segoe UI", 9.75F)
         lblCbsaResult.Location = New Point(369, 757)
         lblCbsaResult.Name = "lblCbsaResult"
-        lblCbsaResult.Size = New Size(53, 17)
+        lblCbsaResult.Size = New Size(11, 17)
         lblCbsaResult.TabIndex = 71
-        lblCbsaResult.Text = "Label19"
+        lblCbsaResult.Text = "."
         ' 
         ' lblCountyFipsResult
         ' 
@@ -277,9 +277,9 @@ Partial Class Profile
         lblCountyFipsResult.Font = New Font("Segoe UI", 9.75F)
         lblCountyFipsResult.Location = New Point(369, 726)
         lblCountyFipsResult.Name = "lblCountyFipsResult"
-        lblCountyFipsResult.Size = New Size(53, 17)
+        lblCountyFipsResult.Size = New Size(11, 17)
         lblCountyFipsResult.TabIndex = 70
-        lblCountyFipsResult.Text = "Label18"
+        lblCountyFipsResult.Text = "."
         ' 
         ' lblTotalPatientRevenueResult
         ' 
@@ -740,9 +740,9 @@ Partial Class Profile
         ' btnOutpatientProfile
         ' 
         btnOutpatientProfile.BackColor = Color.GhostWhite
-        btnOutpatientProfile.Location = New Point(956, 3)
+        btnOutpatientProfile.Location = New Point(1061, 11)
         btnOutpatientProfile.Name = "btnOutpatientProfile"
-        btnOutpatientProfile.Size = New Size(53, 24)
+        btnOutpatientProfile.Size = New Size(57, 24)
         btnOutpatientProfile.TabIndex = 20
         btnOutpatientProfile.Text = "Outp"
         btnOutpatientProfile.UseVisualStyleBackColor = False
@@ -750,9 +750,9 @@ Partial Class Profile
         ' btnInpatientProfile
         ' 
         btnInpatientProfile.BackColor = Color.GhostWhite
-        btnInpatientProfile.Location = New Point(897, 3)
+        btnInpatientProfile.Location = New Point(991, 12)
         btnInpatientProfile.Name = "btnInpatientProfile"
-        btnInpatientProfile.Size = New Size(53, 24)
+        btnInpatientProfile.Size = New Size(64, 24)
         btnInpatientProfile.TabIndex = 19
         btnInpatientProfile.Text = "Inp"
         btnInpatientProfile.UseVisualStyleBackColor = False
@@ -760,9 +760,9 @@ Partial Class Profile
         ' btnQualityProfile
         ' 
         btnQualityProfile.BackColor = Color.GhostWhite
-        btnQualityProfile.Location = New Point(838, 3)
+        btnQualityProfile.Location = New Point(910, 13)
         btnQualityProfile.Name = "btnQualityProfile"
-        btnQualityProfile.Size = New Size(53, 23)
+        btnQualityProfile.Size = New Size(75, 23)
         btnQualityProfile.TabIndex = 18
         btnQualityProfile.Text = "Quality"
         btnQualityProfile.UseVisualStyleBackColor = False
@@ -770,9 +770,9 @@ Partial Class Profile
         ' btnFinIndProfile
         ' 
         btnFinIndProfile.BackColor = Color.GhostWhite
-        btnFinIndProfile.Location = New Point(779, 3)
+        btnFinIndProfile.Location = New Point(830, 12)
         btnFinIndProfile.Name = "btnFinIndProfile"
-        btnFinIndProfile.Size = New Size(53, 23)
+        btnFinIndProfile.Size = New Size(74, 23)
         btnFinIndProfile.TabIndex = 17
         btnFinIndProfile.Text = "Fin Ind"
         btnFinIndProfile.UseVisualStyleBackColor = False
@@ -780,9 +780,9 @@ Partial Class Profile
         ' btnFinancialProfile
         ' 
         btnFinancialProfile.BackColor = Color.GhostWhite
-        btnFinancialProfile.Location = New Point(720, 3)
+        btnFinancialProfile.Location = New Point(753, 12)
         btnFinancialProfile.Name = "btnFinancialProfile"
-        btnFinancialProfile.Size = New Size(53, 24)
+        btnFinancialProfile.Size = New Size(71, 24)
         btnFinancialProfile.TabIndex = 16
         btnFinancialProfile.Text = "Financial"
         btnFinancialProfile.UseVisualStyleBackColor = False
@@ -790,9 +790,9 @@ Partial Class Profile
         ' btnDepartmentProfile
         ' 
         btnDepartmentProfile.BackColor = Color.GhostWhite
-        btnDepartmentProfile.Location = New Point(661, 3)
+        btnDepartmentProfile.Location = New Point(661, 12)
         btnDepartmentProfile.Name = "btnDepartmentProfile"
-        btnDepartmentProfile.Size = New Size(53, 24)
+        btnDepartmentProfile.Size = New Size(86, 24)
         btnDepartmentProfile.TabIndex = 15
         btnDepartmentProfile.Text = "Departments"
         btnDepartmentProfile.UseVisualStyleBackColor = False
@@ -1060,6 +1060,7 @@ Partial Class Profile
         ' 
         ' dgvProviders
         ' 
+        dgvProviders.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
         dgvProviders.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
         dgvProviders.Location = New Point(664, 181)
         dgvProviders.Name = "dgvProviders"
@@ -1222,7 +1223,7 @@ Partial Class Profile
         GroupBox1.Size = New Size(652, 936)
         GroupBox1.TabIndex = 91
         GroupBox1.TabStop = False
-        GroupBox1.Text = "GroupBox1"
+        GroupBox1.Text = "."
         ' 
         ' lblDBA
         ' 
@@ -1450,7 +1451,7 @@ Partial Class Profile
         ' 
         ' Profile
         ' 
-        AutoScaleDimensions = New SizeF(7.0F, 15.0F)
+        AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         AutoScroll = True
         BackColor = SystemColors.HighlightText

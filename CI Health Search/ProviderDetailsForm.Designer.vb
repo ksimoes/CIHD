@@ -28,6 +28,7 @@ Partial Class ProviderDetailsForm
         ' 
         ' dgvDetails
         ' 
+        dgvDetails.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
         dgvDetails.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
         dgvDetails.Location = New Point(40, 98)
         dgvDetails.Name = "dgvDetails"

@@ -102,6 +102,7 @@ Partial Class Outpatient
         ' 
         ' dgvAPC
         ' 
+        dgvAPC.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
         dgvAPC.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
         dgvAPC.Location = New Point(37, 121)
         dgvAPC.Name = "dgvAPC"

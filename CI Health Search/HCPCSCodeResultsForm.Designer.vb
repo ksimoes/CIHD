@@ -4,110 +4,110 @@ Partial Class HCPCSCodeResultsForm
 
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Me.dgvCodeResults = New System.Windows.Forms.DataGridView()
-        Me.lblHCPCSDescription = New System.Windows.Forms.Label()
-        Me.linkMoreInfo = New System.Windows.Forms.LinkLabel()
-        Me.btnPrevPage = New System.Windows.Forms.Button()
-        Me.btnNextPage = New System.Windows.Forms.Button()
-        Me.lblStatus = New System.Windows.Forms.Label()
-        Me.txtPageNumber = New System.Windows.Forms.TextBox()
-        Me.btnGoToPage = New System.Windows.Forms.Button()
-        CType(Me.dgvCodeResults, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.SuspendLayout()
-        '
+        dgvCodeResults = New DataGridView()
+        lblHCPCSDescription = New Label()
+        linkMoreInfo = New LinkLabel()
+        btnPrevPage = New Button()
+        btnNextPage = New Button()
+        lblStatus = New Label()
+        txtPageNumber = New TextBox()
+        btnGoToPage = New Button()
+        CType(dgvCodeResults, ComponentModel.ISupportInitialize).BeginInit()
+        SuspendLayout()
+        ' 
         ' dgvCodeResults
-        '
-        Me.dgvCodeResults.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.dgvCodeResults.Dock = System.Windows.Forms.DockStyle.None
-        Me.dgvCodeResults.Location = New System.Drawing.Point(0, 44)
-        Me.dgvCodeResults.Name = "dgvCodeResults"
-        Me.dgvCodeResults.Size = New System.Drawing.Size(1448, 553)
-        Me.dgvCodeResults.TabIndex = 0
-        '
+        ' 
+        dgvCodeResults.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
+        dgvCodeResults.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        dgvCodeResults.Location = New Point(0, 44)
+        dgvCodeResults.Name = "dgvCodeResults"
+        dgvCodeResults.Size = New Size(1448, 553)
+        dgvCodeResults.TabIndex = 0
+        ' 
         ' lblHCPCSDescription
-        '
-        Me.lblHCPCSDescription.AutoSize = True
-        Me.lblHCPCSDescription.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Italic)
-        Me.lblHCPCSDescription.ForeColor = System.Drawing.Color.DimGray
-        Me.lblHCPCSDescription.Location = New System.Drawing.Point(12, 320)
-        Me.lblHCPCSDescription.Name = "lblHCPCSDescription"
-        Me.lblHCPCSDescription.Size = New System.Drawing.Size(0, 17)
-        Me.lblHCPCSDescription.TabIndex = 2
-        Me.lblHCPCSDescription.Visible = False
-        '
+        ' 
+        lblHCPCSDescription.AutoSize = True
+        lblHCPCSDescription.Font = New Font("Segoe UI", 9.75F, FontStyle.Italic)
+        lblHCPCSDescription.ForeColor = Color.DimGray
+        lblHCPCSDescription.Location = New Point(12, 320)
+        lblHCPCSDescription.Name = "lblHCPCSDescription"
+        lblHCPCSDescription.Size = New Size(0, 17)
+        lblHCPCSDescription.TabIndex = 2
+        lblHCPCSDescription.Visible = False
+        ' 
         ' linkMoreInfo
-        '
-        Me.linkMoreInfo.AutoSize = True
-        Me.linkMoreInfo.Font = New System.Drawing.Font("Segoe UI", 9.75!)
-        Me.linkMoreInfo.Location = New System.Drawing.Point(12, 350)
-        Me.linkMoreInfo.Name = "linkMoreInfo"
-        Me.linkMoreInfo.Size = New System.Drawing.Size(121, 17)
-        Me.linkMoreInfo.TabIndex = 3
-        Me.linkMoreInfo.TabStop = True
-        Me.linkMoreInfo.Text = "More about HCPCS"
-        Me.linkMoreInfo.Visible = False
-        '
+        ' 
+        linkMoreInfo.AutoSize = True
+        linkMoreInfo.Font = New Font("Segoe UI", 9.75F)
+        linkMoreInfo.Location = New Point(12, 350)
+        linkMoreInfo.Name = "linkMoreInfo"
+        linkMoreInfo.Size = New Size(121, 17)
+        linkMoreInfo.TabIndex = 3
+        linkMoreInfo.TabStop = True
+        linkMoreInfo.Text = "More about HCPCS"
+        linkMoreInfo.Visible = False
+        ' 
         ' btnPrevPage
-        '
-        Me.btnPrevPage.Location = New System.Drawing.Point(10, 610)
-        Me.btnPrevPage.Name = "btnPrevPage"
-        Me.btnPrevPage.Size = New System.Drawing.Size(90, 27)
-        Me.btnPrevPage.TabIndex = 4
-        Me.btnPrevPage.Text = "Previous"
-        Me.btnPrevPage.UseVisualStyleBackColor = True
-        '
+        ' 
+        btnPrevPage.Location = New Point(10, 610)
+        btnPrevPage.Name = "btnPrevPage"
+        btnPrevPage.Size = New Size(90, 27)
+        btnPrevPage.TabIndex = 4
+        btnPrevPage.Text = "Previous"
+        btnPrevPage.UseVisualStyleBackColor = True
+        ' 
         ' btnNextPage
-        '
-        Me.btnNextPage.Location = New System.Drawing.Point(110, 610)
-        Me.btnNextPage.Name = "btnNextPage"
-        Me.btnNextPage.Size = New System.Drawing.Size(90, 27)
-        Me.btnNextPage.TabIndex = 5
-        Me.btnNextPage.Text = "Next"
-        Me.btnNextPage.UseVisualStyleBackColor = True
-        '
+        ' 
+        btnNextPage.Location = New Point(110, 610)
+        btnNextPage.Name = "btnNextPage"
+        btnNextPage.Size = New Size(90, 27)
+        btnNextPage.TabIndex = 5
+        btnNextPage.Text = "Next"
+        btnNextPage.UseVisualStyleBackColor = True
+        ' 
         ' lblStatus
-        '
-        Me.lblStatus.AutoSize = True
-        Me.lblStatus.Location = New System.Drawing.Point(220, 616)
-        Me.lblStatus.Name = "lblStatus"
-        Me.lblStatus.Size = New System.Drawing.Size(39, 15)
-        Me.lblStatus.TabIndex = 6
-        Me.lblStatus.Text = "Status"
-        '
+        ' 
+        lblStatus.AutoSize = True
+        lblStatus.Location = New Point(220, 616)
+        lblStatus.Name = "lblStatus"
+        lblStatus.Size = New Size(39, 15)
+        lblStatus.TabIndex = 6
+        lblStatus.Text = "Status"
+        ' 
         ' txtPageNumber
-        '
-        Me.txtPageNumber.Location = New System.Drawing.Point(420, 613)
-        Me.txtPageNumber.Name = "txtPageNumber"
-        Me.txtPageNumber.Size = New System.Drawing.Size(50, 23)
-        Me.txtPageNumber.TabIndex = 7
-        '
+        ' 
+        txtPageNumber.Location = New Point(420, 613)
+        txtPageNumber.Name = "txtPageNumber"
+        txtPageNumber.Size = New Size(50, 23)
+        txtPageNumber.TabIndex = 7
+        ' 
         ' btnGoToPage
-        '
-        Me.btnGoToPage.Location = New System.Drawing.Point(480, 610)
-        Me.btnGoToPage.Name = "btnGoToPage"
-        Me.btnGoToPage.Size = New System.Drawing.Size(50, 27)
-        Me.btnGoToPage.TabIndex = 8
-        Me.btnGoToPage.Text = "Go"
-        Me.btnGoToPage.UseVisualStyleBackColor = True
-        '
+        ' 
+        btnGoToPage.Location = New Point(480, 610)
+        btnGoToPage.Name = "btnGoToPage"
+        btnGoToPage.Size = New Size(50, 27)
+        btnGoToPage.TabIndex = 8
+        btnGoToPage.Text = "Go"
+        btnGoToPage.UseVisualStyleBackColor = True
+        ' 
         ' HCPCSCodeResultsForm
-        '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 15.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1448, 650)
-        Me.Controls.Add(Me.btnGoToPage)
-        Me.Controls.Add(Me.txtPageNumber)
-        Me.Controls.Add(Me.lblStatus)
-        Me.Controls.Add(Me.btnNextPage)
-        Me.Controls.Add(Me.btnPrevPage)
-        Me.Controls.Add(Me.dgvCodeResults)
-        Me.Controls.Add(Me.lblHCPCSDescription)
-        Me.Controls.Add(Me.linkMoreInfo)
-        Me.Name = "HCPCSCodeResultsForm"
-        Me.Text = "HCPCS Code Results"
-        CType(Me.dgvCodeResults, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.ResumeLayout(False)
-        Me.PerformLayout()
+        ' 
+        AutoScaleDimensions = New SizeF(7F, 15F)
+        AutoScaleMode = AutoScaleMode.Font
+        ClientSize = New Size(1448, 650)
+        Controls.Add(btnGoToPage)
+        Controls.Add(txtPageNumber)
+        Controls.Add(lblStatus)
+        Controls.Add(btnNextPage)
+        Controls.Add(btnPrevPage)
+        Controls.Add(dgvCodeResults)
+        Controls.Add(lblHCPCSDescription)
+        Controls.Add(linkMoreInfo)
+        Name = "HCPCSCodeResultsForm"
+        Text = "HCPCS Code Results"
+        CType(dgvCodeResults, ComponentModel.ISupportInitialize).EndInit()
+        ResumeLayout(False)
+        PerformLayout()
     End Sub
 
     Friend WithEvents dgvCodeResults As System.Windows.Forms.DataGridView

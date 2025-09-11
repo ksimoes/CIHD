@@ -128,6 +128,7 @@ Partial Class Inpatient
         ' 
         ' dgvCeo
         ' 
+        dgvCeo.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
         dgvCeo.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
         dgvCeo.Dock = DockStyle.Fill
         dgvCeo.Location = New Point(3, 19)
@@ -159,6 +160,7 @@ Partial Class Inpatient
         ' 
         ' dgvPatientOrigin
         ' 
+        dgvPatientOrigin.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
         dgvPatientOrigin.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
         dgvPatientOrigin.Dock = DockStyle.Fill
         dgvPatientOrigin.Location = New Point(3, 19)
@@ -177,6 +179,7 @@ Partial Class Inpatient
         ' 
         ' dgvNewApiTable
         ' 
+        dgvNewApiTable.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
         dgvNewApiTable.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
         dgvNewApiTable.Location = New Point(1, 697)
         dgvNewApiTable.Name = "dgvNewApiTable"

@@ -115,6 +115,7 @@ Partial Class Results
         ' 
         ' dgvResults
         ' 
+        dgvResults.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
         dgvResults.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
         dgvResults.Location = New Point(129, 104)
         dgvResults.Name = "dgvResults"

@@ -23,150 +23,481 @@ Partial Class Individual_Search
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         GroupBox1 = New GroupBox()
+        GroupBox4 = New GroupBox()
         tbDrugGeneric = New TextBox()
+        tbHCPCS = New TextBox()
+        tbStLic = New TextBox()
+        tbStLicNum = New TextBox()
         tbDrug = New TextBox()
+        Label16 = New Label()
         Label20 = New Label()
+        Label15 = New Label()
         lblBrand = New Label()
+        Label14 = New Label()
+        Label13 = New Label()
+        Label12 = New Label()
+        tbProvEnroll = New TextBox()
+        tbFacilityTyp = New TextBox()
+        GroupBox3 = New GroupBox()
+        Label1 = New Label()
+        Label2 = New Label()
+        Label3 = New Label()
+        Label4 = New Label()
+        Label5 = New Label()
+        Label8 = New Label()
+        tbNpi = New TextBox()
+        tbTS = New TextBox()
+        tbFirst = New TextBox()
+        tbMedSchool = New TextBox()
+        tbMiddle = New TextBox()
+        tbGradYear = New TextBox()
+        tbLast = New TextBox()
+        tbState = New TextBox()
+        Label18 = New Label()
+        tbGender = New TextBox()
+        Label17 = New Label()
+        Label11 = New Label()
+        GroupBox2 = New GroupBox()
+        tbAT = New TextBox()
+        Label6 = New Label()
+        Label7 = New Label()
+        Label9 = New Label()
+        Label10 = New Label()
+        tbAddress = New TextBox()
+        tbCity = New TextBox()
+        tbZip = New TextBox()
         Button1 = New Button()
         btnOrgSearch = New Button()
         btnSearch = New Button()
-        tbMedSchool = New TextBox()
-        tbGradYear = New TextBox()
-        tbFacilityTyp = New TextBox()
-        tbProvEnroll = New TextBox()
-        Label18 = New Label()
-        Label17 = New Label()
-        Label12 = New Label()
-        Label13 = New Label()
-        Label14 = New Label()
-        Label15 = New Label()
-        Label16 = New Label()
-        tbStLicNum = New TextBox()
-        tbStLic = New TextBox()
-        tbHCPCS = New TextBox()
-        tbGender = New TextBox()
-        tbAT = New TextBox()
-        tbZip = New TextBox()
-        tbState = New TextBox()
-        tbCity = New TextBox()
-        tbAddress = New TextBox()
-        tbLast = New TextBox()
-        tbMiddle = New TextBox()
-        tbFirst = New TextBox()
-        tbTS = New TextBox()
-        tbNpi = New TextBox()
-        Label11 = New Label()
-        Label10 = New Label()
-        Label9 = New Label()
-        Label8 = New Label()
-        Label7 = New Label()
-        Label6 = New Label()
-        Label5 = New Label()
-        Label4 = New Label()
-        Label3 = New Label()
-        Label2 = New Label()
-        Label1 = New Label()
         GroupBox1.SuspendLayout()
+        GroupBox4.SuspendLayout()
+        GroupBox3.SuspendLayout()
+        GroupBox2.SuspendLayout()
         SuspendLayout()
         ' 
         ' GroupBox1
         ' 
-        GroupBox1.Controls.Add(tbDrugGeneric)
-        GroupBox1.Controls.Add(tbDrug)
-        GroupBox1.Controls.Add(Label20)
-        GroupBox1.Controls.Add(lblBrand)
+        GroupBox1.Controls.Add(GroupBox4)
+        GroupBox1.Controls.Add(GroupBox3)
+        GroupBox1.Controls.Add(GroupBox2)
         GroupBox1.Controls.Add(Button1)
         GroupBox1.Controls.Add(btnOrgSearch)
         GroupBox1.Controls.Add(btnSearch)
-        GroupBox1.Controls.Add(tbMedSchool)
-        GroupBox1.Controls.Add(tbGradYear)
-        GroupBox1.Controls.Add(tbFacilityTyp)
-        GroupBox1.Controls.Add(tbProvEnroll)
-        GroupBox1.Controls.Add(Label18)
-        GroupBox1.Controls.Add(Label17)
-        GroupBox1.Controls.Add(Label12)
-        GroupBox1.Controls.Add(Label13)
-        GroupBox1.Controls.Add(Label14)
-        GroupBox1.Controls.Add(Label15)
-        GroupBox1.Controls.Add(Label16)
-        GroupBox1.Controls.Add(tbStLicNum)
-        GroupBox1.Controls.Add(tbStLic)
-        GroupBox1.Controls.Add(tbHCPCS)
-        GroupBox1.Controls.Add(tbGender)
-        GroupBox1.Controls.Add(tbAT)
-        GroupBox1.Controls.Add(tbZip)
-        GroupBox1.Controls.Add(tbState)
-        GroupBox1.Controls.Add(tbCity)
-        GroupBox1.Controls.Add(tbAddress)
-        GroupBox1.Controls.Add(tbLast)
-        GroupBox1.Controls.Add(tbMiddle)
-        GroupBox1.Controls.Add(tbFirst)
-        GroupBox1.Controls.Add(tbTS)
-        GroupBox1.Controls.Add(tbNpi)
-        GroupBox1.Controls.Add(Label11)
-        GroupBox1.Controls.Add(Label10)
-        GroupBox1.Controls.Add(Label9)
-        GroupBox1.Controls.Add(Label8)
-        GroupBox1.Controls.Add(Label7)
-        GroupBox1.Controls.Add(Label6)
-        GroupBox1.Controls.Add(Label5)
-        GroupBox1.Controls.Add(Label4)
-        GroupBox1.Controls.Add(Label3)
-        GroupBox1.Controls.Add(Label2)
-        GroupBox1.Controls.Add(Label1)
         GroupBox1.Location = New Point(12, 12)
         GroupBox1.Name = "GroupBox1"
-        GroupBox1.Size = New Size(1290, 686)
+        GroupBox1.Size = New Size(1290, 484)
         GroupBox1.TabIndex = 0
         GroupBox1.TabStop = False
         GroupBox1.Text = "GroupBox1"
         ' 
+        ' GroupBox4
+        ' 
+        GroupBox4.BackColor = Color.DarkOrchid
+        GroupBox4.Controls.Add(tbDrugGeneric)
+        GroupBox4.Controls.Add(tbHCPCS)
+        GroupBox4.Controls.Add(tbStLic)
+        GroupBox4.Controls.Add(tbStLicNum)
+        GroupBox4.Controls.Add(tbDrug)
+        GroupBox4.Controls.Add(Label16)
+        GroupBox4.Controls.Add(Label20)
+        GroupBox4.Controls.Add(Label15)
+        GroupBox4.Controls.Add(lblBrand)
+        GroupBox4.Controls.Add(Label14)
+        GroupBox4.Controls.Add(Label13)
+        GroupBox4.Controls.Add(Label12)
+        GroupBox4.Controls.Add(tbProvEnroll)
+        GroupBox4.Controls.Add(tbFacilityTyp)
+        GroupBox4.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
+        GroupBox4.Location = New Point(852, 22)
+        GroupBox4.Name = "GroupBox4"
+        GroupBox4.Size = New Size(435, 330)
+        GroupBox4.TabIndex = 46
+        GroupBox4.TabStop = False
+        GroupBox4.Text = "Other"
+        ' 
         ' tbDrugGeneric
         ' 
-        tbDrugGeneric.Location = New Point(631, 55)
+        tbDrugGeneric.Location = New Point(179, 220)
         tbDrugGeneric.Name = "tbDrugGeneric"
         tbDrugGeneric.Size = New Size(180, 23)
         tbDrugGeneric.TabIndex = 43
         ' 
+        ' tbHCPCS
+        ' 
+        tbHCPCS.Location = New Point(179, 17)
+        tbHCPCS.Name = "tbHCPCS"
+        tbHCPCS.Size = New Size(180, 23)
+        tbHCPCS.TabIndex = 22
+        ' 
+        ' tbStLic
+        ' 
+        tbStLic.Location = New Point(179, 52)
+        tbStLic.Name = "tbStLic"
+        tbStLic.Size = New Size(180, 23)
+        tbStLic.TabIndex = 23
+        ' 
+        ' tbStLicNum
+        ' 
+        tbStLicNum.Location = New Point(179, 87)
+        tbStLicNum.Name = "tbStLicNum"
+        tbStLicNum.Size = New Size(180, 23)
+        tbStLicNum.TabIndex = 24
+        ' 
         ' tbDrug
         ' 
-        tbDrug.Location = New Point(631, 26)
+        tbDrug.Location = New Point(179, 191)
         tbDrug.Name = "tbDrug"
         tbDrug.Size = New Size(180, 23)
         tbDrug.TabIndex = 42
         ' 
+        ' Label16
+        ' 
+        Label16.AutoSize = True
+        Label16.Location = New Point(9, 25)
+        Label16.Name = "Label16"
+        Label16.Size = New Size(75, 15)
+        Label16.TabIndex = 25
+        Label16.Text = "HCPCS Code"
+        ' 
         ' Label20
         ' 
         Label20.AutoSize = True
-        Label20.Location = New Point(510, 61)
+        Label20.Location = New Point(8, 231)
         Label20.Name = "Label20"
-        Label20.Size = New Size(116, 15)
+        Label20.Size = New Size(123, 15)
         Label20.TabIndex = 41
         Label20.Text = "Drug Name(Generic)"
+        ' 
+        ' Label15
+        ' 
+        Label15.AutoSize = True
+        Label15.Location = New Point(9, 60)
+        Label15.Name = "Label15"
+        Label15.Size = New Size(55, 15)
+        Label15.TabIndex = 26
+        Label15.Text = "State Lic"
         ' 
         ' lblBrand
         ' 
         lblBrand.AutoSize = True
-        lblBrand.Location = New Point(510, 29)
+        lblBrand.Location = New Point(8, 199)
         lblBrand.Name = "lblBrand"
-        lblBrand.Size = New Size(102, 15)
+        lblBrand.Size = New Size(107, 15)
         lblBrand.TabIndex = 40
         lblBrand.Text = "Drug Brand Name"
+        ' 
+        ' Label14
+        ' 
+        Label14.AutoSize = True
+        Label14.Location = New Point(9, 95)
+        Label14.Name = "Label14"
+        Label14.Size = New Size(65, 15)
+        Label14.TabIndex = 27
+        Label14.Text = "State Lic #"
+        ' 
+        ' Label13
+        ' 
+        Label13.AutoSize = True
+        Label13.Location = New Point(9, 130)
+        Label13.Name = "Label13"
+        Label13.Size = New Size(119, 15)
+        Label13.TabIndex = 28
+        Label13.Text = "Provider Enrollment"
+        ' 
+        ' Label12
+        ' 
+        Label12.AutoSize = True
+        Label12.Location = New Point(9, 165)
+        Label12.Name = "Label12"
+        Label12.Size = New Size(74, 15)
+        Label12.TabIndex = 29
+        Label12.Text = "Facility Type"
+        ' 
+        ' tbProvEnroll
+        ' 
+        tbProvEnroll.Location = New Point(179, 122)
+        tbProvEnroll.Name = "tbProvEnroll"
+        tbProvEnroll.Size = New Size(180, 23)
+        tbProvEnroll.TabIndex = 32
+        ' 
+        ' tbFacilityTyp
+        ' 
+        tbFacilityTyp.Location = New Point(179, 154)
+        tbFacilityTyp.Name = "tbFacilityTyp"
+        tbFacilityTyp.Size = New Size(180, 23)
+        tbFacilityTyp.TabIndex = 33
+        ' 
+        ' GroupBox3
+        ' 
+        GroupBox3.BackColor = Color.DarkTurquoise
+        GroupBox3.Controls.Add(Label1)
+        GroupBox3.Controls.Add(Label2)
+        GroupBox3.Controls.Add(Label3)
+        GroupBox3.Controls.Add(Label4)
+        GroupBox3.Controls.Add(Label5)
+        GroupBox3.Controls.Add(Label8)
+        GroupBox3.Controls.Add(tbNpi)
+        GroupBox3.Controls.Add(tbTS)
+        GroupBox3.Controls.Add(tbFirst)
+        GroupBox3.Controls.Add(tbMedSchool)
+        GroupBox3.Controls.Add(tbMiddle)
+        GroupBox3.Controls.Add(tbGradYear)
+        GroupBox3.Controls.Add(tbLast)
+        GroupBox3.Controls.Add(tbState)
+        GroupBox3.Controls.Add(Label18)
+        GroupBox3.Controls.Add(tbGender)
+        GroupBox3.Controls.Add(Label17)
+        GroupBox3.Controls.Add(Label11)
+        GroupBox3.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
+        GroupBox3.Location = New Point(0, 22)
+        GroupBox3.Name = "GroupBox3"
+        GroupBox3.Size = New Size(396, 330)
+        GroupBox3.TabIndex = 45
+        GroupBox3.TabStop = False
+        GroupBox3.Text = "Personal Information"
+        ' 
+        ' Label1
+        ' 
+        Label1.AutoSize = True
+        Label1.Location = New Point(6, 31)
+        Label1.Name = "Label1"
+        Label1.Size = New Size(76, 15)
+        Label1.TabIndex = 0
+        Label1.Text = "NPI Number"
+        ' 
+        ' Label2
+        ' 
+        Label2.AutoSize = True
+        Label2.Location = New Point(6, 66)
+        Label2.Name = "Label2"
+        Label2.Size = New Size(119, 15)
+        Label2.TabIndex = 1
+        Label2.Text = "Taxonomy/Specialty"
+        ' 
+        ' Label3
+        ' 
+        Label3.AutoSize = True
+        Label3.Location = New Point(6, 130)
+        Label3.Name = "Label3"
+        Label3.Size = New Size(67, 15)
+        Label3.TabIndex = 2
+        Label3.Text = "First Name"
+        ' 
+        ' Label4
+        ' 
+        Label4.AutoSize = True
+        Label4.Location = New Point(6, 165)
+        Label4.Name = "Label4"
+        Label4.Size = New Size(81, 15)
+        Label4.TabIndex = 3
+        Label4.Text = "Middle Name"
+        ' 
+        ' Label5
+        ' 
+        Label5.AutoSize = True
+        Label5.Location = New Point(6, 200)
+        Label5.Name = "Label5"
+        Label5.Size = New Size(65, 15)
+        Label5.TabIndex = 4
+        Label5.Text = "Last Name"
+        ' 
+        ' Label8
+        ' 
+        Label8.AutoSize = True
+        Label8.Location = New Point(6, 229)
+        Label8.Name = "Label8"
+        Label8.Size = New Size(37, 15)
+        Label8.TabIndex = 7
+        Label8.Text = "State"
+        ' 
+        ' tbNpi
+        ' 
+        tbNpi.Location = New Point(176, 31)
+        tbNpi.Name = "tbNpi"
+        tbNpi.Size = New Size(180, 23)
+        tbNpi.TabIndex = 11
+        ' 
+        ' tbTS
+        ' 
+        tbTS.Location = New Point(176, 63)
+        tbTS.Name = "tbTS"
+        tbTS.Size = New Size(180, 23)
+        tbTS.TabIndex = 12
+        ' 
+        ' tbFirst
+        ' 
+        tbFirst.Location = New Point(176, 121)
+        tbFirst.Name = "tbFirst"
+        tbFirst.Size = New Size(180, 23)
+        tbFirst.TabIndex = 13
+        ' 
+        ' tbMedSchool
+        ' 
+        tbMedSchool.Location = New Point(176, 285)
+        tbMedSchool.Name = "tbMedSchool"
+        tbMedSchool.Size = New Size(180, 23)
+        tbMedSchool.TabIndex = 35
+        ' 
+        ' tbMiddle
+        ' 
+        tbMiddle.Location = New Point(176, 157)
+        tbMiddle.Name = "tbMiddle"
+        tbMiddle.Size = New Size(180, 23)
+        tbMiddle.TabIndex = 14
+        ' 
+        ' tbGradYear
+        ' 
+        tbGradYear.Location = New Point(176, 250)
+        tbGradYear.Name = "tbGradYear"
+        tbGradYear.Size = New Size(180, 23)
+        tbGradYear.TabIndex = 34
+        ' 
+        ' tbLast
+        ' 
+        tbLast.Location = New Point(176, 192)
+        tbLast.Name = "tbLast"
+        tbLast.Size = New Size(180, 23)
+        tbLast.TabIndex = 15
+        ' 
+        ' tbState
+        ' 
+        tbState.Location = New Point(176, 221)
+        tbState.Name = "tbState"
+        tbState.Size = New Size(180, 23)
+        tbState.TabIndex = 18
+        ' 
+        ' Label18
+        ' 
+        Label18.AutoSize = True
+        Label18.Location = New Point(6, 297)
+        Label18.Name = "Label18"
+        Label18.Size = New Size(90, 15)
+        Label18.TabIndex = 31
+        Label18.Text = "Medical School"
+        ' 
+        ' tbGender
+        ' 
+        tbGender.Location = New Point(176, 92)
+        tbGender.Name = "tbGender"
+        tbGender.Size = New Size(180, 23)
+        tbGender.TabIndex = 21
+        ' 
+        ' Label17
+        ' 
+        Label17.AutoSize = True
+        Label17.Location = New Point(6, 260)
+        Label17.Name = "Label17"
+        Label17.Size = New Size(96, 15)
+        Label17.TabIndex = 30
+        Label17.Text = "Graduation Year"
+        ' 
+        ' Label11
+        ' 
+        Label11.AutoSize = True
+        Label11.Location = New Point(6, 95)
+        Label11.Name = "Label11"
+        Label11.Size = New Size(49, 15)
+        Label11.TabIndex = 10
+        Label11.Text = "Gender"
+        ' 
+        ' GroupBox2
+        ' 
+        GroupBox2.BackColor = Color.LimeGreen
+        GroupBox2.Controls.Add(tbAT)
+        GroupBox2.Controls.Add(Label6)
+        GroupBox2.Controls.Add(Label7)
+        GroupBox2.Controls.Add(Label9)
+        GroupBox2.Controls.Add(Label10)
+        GroupBox2.Controls.Add(tbAddress)
+        GroupBox2.Controls.Add(tbCity)
+        GroupBox2.Controls.Add(tbZip)
+        GroupBox2.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
+        GroupBox2.Location = New Point(412, 22)
+        GroupBox2.Name = "GroupBox2"
+        GroupBox2.Size = New Size(434, 330)
+        GroupBox2.TabIndex = 44
+        GroupBox2.TabStop = False
+        GroupBox2.Text = "Address Info"
+        ' 
+        ' tbAT
+        ' 
+        tbAT.Location = New Point(176, 122)
+        tbAT.Name = "tbAT"
+        tbAT.Size = New Size(180, 23)
+        tbAT.TabIndex = 20
+        ' 
+        ' Label6
+        ' 
+        Label6.AutoSize = True
+        Label6.Location = New Point(6, 27)
+        Label6.Name = "Label6"
+        Label6.Size = New Size(90, 15)
+        Label6.TabIndex = 5
+        Label6.Text = "Street Address"
+        ' 
+        ' Label7
+        ' 
+        Label7.AutoSize = True
+        Label7.Location = New Point(6, 62)
+        Label7.Name = "Label7"
+        Label7.Size = New Size(28, 15)
+        Label7.TabIndex = 6
+        Label7.Text = "City"
+        ' 
+        ' Label9
+        ' 
+        Label9.AutoSize = True
+        Label9.Location = New Point(7, 95)
+        Label9.Name = "Label9"
+        Label9.Size = New Size(55, 15)
+        Label9.TabIndex = 8
+        Label9.Text = "Zip Code"
+        ' 
+        ' Label10
+        ' 
+        Label10.AutoSize = True
+        Label10.Location = New Point(6, 130)
+        Label10.Name = "Label10"
+        Label10.Size = New Size(80, 15)
+        Label10.TabIndex = 9
+        Label10.Text = "Address Type"
+        ' 
+        ' tbAddress
+        ' 
+        tbAddress.Location = New Point(176, 19)
+        tbAddress.Name = "tbAddress"
+        tbAddress.Size = New Size(180, 23)
+        tbAddress.TabIndex = 16
+        ' 
+        ' tbCity
+        ' 
+        tbCity.Location = New Point(176, 54)
+        tbCity.Name = "tbCity"
+        tbCity.Size = New Size(180, 23)
+        tbCity.TabIndex = 17
+        ' 
+        ' tbZip
+        ' 
+        tbZip.Location = New Point(176, 87)
+        tbZip.Name = "tbZip"
+        tbZip.Size = New Size(180, 23)
+        tbZip.TabIndex = 19
         ' 
         ' Button1
         ' 
         Button1.Anchor = AnchorStyles.Bottom Or AnchorStyles.Right
-        Button1.Location = New Point(830, 554)
+        Button1.BackColor = Color.Red
+        Button1.Location = New Point(745, 401)
         Button1.Name = "Button1"
         Button1.Size = New Size(167, 77)
         Button1.TabIndex = 39
         Button1.Text = "Clear"
-        Button1.UseVisualStyleBackColor = True
+        Button1.UseVisualStyleBackColor = False
         ' 
         ' btnOrgSearch
         ' 
         btnOrgSearch.Anchor = AnchorStyles.Bottom Or AnchorStyles.Right
-        btnOrgSearch.Location = New Point(639, 554)
+        btnOrgSearch.Location = New Point(554, 401)
         btnOrgSearch.Name = "btnOrgSearch"
         btnOrgSearch.Size = New Size(166, 77)
         btnOrgSearch.TabIndex = 38
@@ -176,300 +507,13 @@ Partial Class Individual_Search
         ' btnSearch
         ' 
         btnSearch.Anchor = AnchorStyles.Bottom Or AnchorStyles.Right
-        btnSearch.Location = New Point(419, 554)
+        btnSearch.BackColor = Color.Green
+        btnSearch.Location = New Point(357, 401)
         btnSearch.Name = "btnSearch"
         btnSearch.Size = New Size(167, 77)
         btnSearch.TabIndex = 37
         btnSearch.Text = "Search!"
-        btnSearch.UseVisualStyleBackColor = True
-        ' 
-        ' tbMedSchool
-        ' 
-        tbMedSchool.Location = New Point(185, 610)
-        tbMedSchool.Name = "tbMedSchool"
-        tbMedSchool.Size = New Size(180, 23)
-        tbMedSchool.TabIndex = 35
-        ' 
-        ' tbGradYear
-        ' 
-        tbGradYear.Location = New Point(185, 575)
-        tbGradYear.Name = "tbGradYear"
-        tbGradYear.Size = New Size(180, 23)
-        tbGradYear.TabIndex = 34
-        ' 
-        ' tbFacilityTyp
-        ' 
-        tbFacilityTyp.Location = New Point(185, 540)
-        tbFacilityTyp.Name = "tbFacilityTyp"
-        tbFacilityTyp.Size = New Size(180, 23)
-        tbFacilityTyp.TabIndex = 33
-        ' 
-        ' tbProvEnroll
-        ' 
-        tbProvEnroll.Location = New Point(185, 508)
-        tbProvEnroll.Name = "tbProvEnroll"
-        tbProvEnroll.Size = New Size(180, 23)
-        tbProvEnroll.TabIndex = 32
-        ' 
-        ' Label18
-        ' 
-        Label18.AutoSize = True
-        Label18.Location = New Point(15, 622)
-        Label18.Name = "Label18"
-        Label18.Size = New Size(88, 15)
-        Label18.TabIndex = 31
-        Label18.Text = "Medical School"
-        ' 
-        ' Label17
-        ' 
-        Label17.AutoSize = True
-        Label17.Location = New Point(15, 585)
-        Label17.Name = "Label17"
-        Label17.Size = New Size(91, 15)
-        Label17.TabIndex = 30
-        Label17.Text = "Graduation Year"
-        ' 
-        ' Label12
-        ' 
-        Label12.AutoSize = True
-        Label12.Location = New Point(15, 551)
-        Label12.Name = "Label12"
-        Label12.Size = New Size(72, 15)
-        Label12.TabIndex = 29
-        Label12.Text = "Facility Type"
-        ' 
-        ' Label13
-        ' 
-        Label13.AutoSize = True
-        Label13.Location = New Point(15, 516)
-        Label13.Name = "Label13"
-        Label13.Size = New Size(112, 15)
-        Label13.TabIndex = 28
-        Label13.Text = "Provider Enrollment"
-        ' 
-        ' Label14
-        ' 
-        Label14.AutoSize = True
-        Label14.Location = New Point(15, 481)
-        Label14.Name = "Label14"
-        Label14.Size = New Size(61, 15)
-        Label14.TabIndex = 27
-        Label14.Text = "State Lic #"
-        ' 
-        ' Label15
-        ' 
-        Label15.AutoSize = True
-        Label15.Location = New Point(15, 446)
-        Label15.Name = "Label15"
-        Label15.Size = New Size(51, 15)
-        Label15.TabIndex = 26
-        Label15.Text = "State Lic"
-        ' 
-        ' Label16
-        ' 
-        Label16.AutoSize = True
-        Label16.Location = New Point(15, 411)
-        Label16.Name = "Label16"
-        Label16.Size = New Size(76, 15)
-        Label16.TabIndex = 25
-        Label16.Text = "HCPCS Code"
-        ' 
-        ' tbStLicNum
-        ' 
-        tbStLicNum.Location = New Point(185, 473)
-        tbStLicNum.Name = "tbStLicNum"
-        tbStLicNum.Size = New Size(180, 23)
-        tbStLicNum.TabIndex = 24
-        ' 
-        ' tbStLic
-        ' 
-        tbStLic.Location = New Point(185, 438)
-        tbStLic.Name = "tbStLic"
-        tbStLic.Size = New Size(180, 23)
-        tbStLic.TabIndex = 23
-        ' 
-        ' tbHCPCS
-        ' 
-        tbHCPCS.Location = New Point(185, 403)
-        tbHCPCS.Name = "tbHCPCS"
-        tbHCPCS.Size = New Size(180, 23)
-        tbHCPCS.TabIndex = 22
-        ' 
-        ' tbGender
-        ' 
-        tbGender.Location = New Point(185, 371)
-        tbGender.Name = "tbGender"
-        tbGender.Size = New Size(180, 23)
-        tbGender.TabIndex = 21
-        ' 
-        ' tbAT
-        ' 
-        tbAT.Location = New Point(185, 336)
-        tbAT.Name = "tbAT"
-        tbAT.Size = New Size(180, 23)
-        tbAT.TabIndex = 20
-        ' 
-        ' tbZip
-        ' 
-        tbZip.Location = New Point(185, 301)
-        tbZip.Name = "tbZip"
-        tbZip.Size = New Size(180, 23)
-        tbZip.TabIndex = 19
-        ' 
-        ' tbState
-        ' 
-        tbState.Location = New Point(185, 266)
-        tbState.Name = "tbState"
-        tbState.Size = New Size(180, 23)
-        tbState.TabIndex = 18
-        ' 
-        ' tbCity
-        ' 
-        tbCity.Location = New Point(185, 231)
-        tbCity.Name = "tbCity"
-        tbCity.Size = New Size(180, 23)
-        tbCity.TabIndex = 17
-        ' 
-        ' tbAddress
-        ' 
-        tbAddress.Location = New Point(185, 196)
-        tbAddress.Name = "tbAddress"
-        tbAddress.Size = New Size(180, 23)
-        tbAddress.TabIndex = 16
-        ' 
-        ' tbLast
-        ' 
-        tbLast.Location = New Point(185, 161)
-        tbLast.Name = "tbLast"
-        tbLast.Size = New Size(180, 23)
-        tbLast.TabIndex = 15
-        ' 
-        ' tbMiddle
-        ' 
-        tbMiddle.Location = New Point(185, 126)
-        tbMiddle.Name = "tbMiddle"
-        tbMiddle.Size = New Size(180, 23)
-        tbMiddle.TabIndex = 14
-        ' 
-        ' tbFirst
-        ' 
-        tbFirst.Location = New Point(185, 90)
-        tbFirst.Name = "tbFirst"
-        tbFirst.Size = New Size(180, 23)
-        tbFirst.TabIndex = 13
-        ' 
-        ' tbTS
-        ' 
-        tbTS.Location = New Point(185, 61)
-        tbTS.Name = "tbTS"
-        tbTS.Size = New Size(180, 23)
-        tbTS.TabIndex = 12
-        ' 
-        ' tbNpi
-        ' 
-        tbNpi.Location = New Point(185, 29)
-        tbNpi.Name = "tbNpi"
-        tbNpi.Size = New Size(180, 23)
-        tbNpi.TabIndex = 11
-        ' 
-        ' Label11
-        ' 
-        Label11.AutoSize = True
-        Label11.Location = New Point(15, 379)
-        Label11.Name = "Label11"
-        Label11.Size = New Size(45, 15)
-        Label11.TabIndex = 10
-        Label11.Text = "Gender"
-        ' 
-        ' Label10
-        ' 
-        Label10.AutoSize = True
-        Label10.Location = New Point(15, 344)
-        Label10.Name = "Label10"
-        Label10.Size = New Size(77, 15)
-        Label10.TabIndex = 9
-        Label10.Text = "Address Type"
-        ' 
-        ' Label9
-        ' 
-        Label9.AutoSize = True
-        Label9.Location = New Point(15, 309)
-        Label9.Name = "Label9"
-        Label9.Size = New Size(55, 15)
-        Label9.TabIndex = 8
-        Label9.Text = "Zip Code"
-        ' 
-        ' Label8
-        ' 
-        Label8.AutoSize = True
-        Label8.Location = New Point(15, 274)
-        Label8.Name = "Label8"
-        Label8.Size = New Size(33, 15)
-        Label8.TabIndex = 7
-        Label8.Text = "State"
-        ' 
-        ' Label7
-        ' 
-        Label7.AutoSize = True
-        Label7.Location = New Point(15, 239)
-        Label7.Name = "Label7"
-        Label7.Size = New Size(28, 15)
-        Label7.TabIndex = 6
-        Label7.Text = "City"
-        ' 
-        ' Label6
-        ' 
-        Label6.AutoSize = True
-        Label6.Location = New Point(15, 204)
-        Label6.Name = "Label6"
-        Label6.Size = New Size(82, 15)
-        Label6.TabIndex = 5
-        Label6.Text = "Street Address"
-        ' 
-        ' Label5
-        ' 
-        Label5.AutoSize = True
-        Label5.Location = New Point(15, 169)
-        Label5.Name = "Label5"
-        Label5.Size = New Size(63, 15)
-        Label5.TabIndex = 4
-        Label5.Text = "Last Name"
-        ' 
-        ' Label4
-        ' 
-        Label4.AutoSize = True
-        Label4.Location = New Point(15, 134)
-        Label4.Name = "Label4"
-        Label4.Size = New Size(79, 15)
-        Label4.TabIndex = 3
-        Label4.Text = "Middle Name"
-        ' 
-        ' Label3
-        ' 
-        Label3.AutoSize = True
-        Label3.Location = New Point(15, 99)
-        Label3.Name = "Label3"
-        Label3.Size = New Size(64, 15)
-        Label3.TabIndex = 2
-        Label3.Text = "First Name"
-        ' 
-        ' Label2
-        ' 
-        Label2.AutoSize = True
-        Label2.Location = New Point(15, 64)
-        Label2.Name = "Label2"
-        Label2.Size = New Size(114, 15)
-        Label2.TabIndex = 1
-        Label2.Text = "Taxonomy/Specialty"
-        ' 
-        ' Label1
-        ' 
-        Label1.AutoSize = True
-        Label1.Location = New Point(15, 29)
-        Label1.Name = "Label1"
-        Label1.Size = New Size(73, 15)
-        Label1.TabIndex = 0
-        Label1.Text = "NPI Number"
+        btnSearch.UseVisualStyleBackColor = False
         ' 
         ' Individual_Search
         ' 
@@ -482,7 +526,12 @@ Partial Class Individual_Search
         StartPosition = FormStartPosition.CenterScreen
         Text = "Individual_Search"
         GroupBox1.ResumeLayout(False)
-        GroupBox1.PerformLayout()
+        GroupBox4.ResumeLayout(False)
+        GroupBox4.PerformLayout()
+        GroupBox3.ResumeLayout(False)
+        GroupBox3.PerformLayout()
+        GroupBox2.ResumeLayout(False)
+        GroupBox2.PerformLayout()
         ResumeLayout(False)
     End Sub
 
@@ -530,4 +579,7 @@ Partial Class Individual_Search
     Friend WithEvents tbDrug As TextBox
     Friend WithEvents Label20 As Label
     Friend WithEvents lblBrand As Label
+    Friend WithEvents GroupBox3 As GroupBox
+    Friend WithEvents GroupBox2 As GroupBox
+    Friend WithEvents GroupBox4 As GroupBox
 End Class

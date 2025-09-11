@@ -66,6 +66,7 @@ Partial Class Departments
         ' 
         ' gbInpatientRoutineCostCenters
         ' 
+        gbInpatientRoutineCostCenters.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         gbInpatientRoutineCostCenters.Location = New Point(12, 12)
         gbInpatientRoutineCostCenters.Name = "gbInpatientRoutineCostCenters"
         gbInpatientRoutineCostCenters.Size = New Size(396, 281)
@@ -75,6 +76,7 @@ Partial Class Departments
         ' 
         ' gbAncillaryServiceCost
         ' 
+        gbAncillaryServiceCost.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         gbAncillaryServiceCost.Location = New Point(12, 299)
         gbAncillaryServiceCost.Name = "gbAncillaryServiceCost"
         gbAncillaryServiceCost.Size = New Size(396, 291)
@@ -84,6 +86,7 @@ Partial Class Departments
         ' 
         ' gbOtherReimburse
         ' 
+        gbOtherReimburse.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         gbOtherReimburse.Location = New Point(424, 299)
         gbOtherReimburse.Name = "gbOtherReimburse"
         gbOtherReimburse.Size = New Size(410, 291)
@@ -93,6 +96,7 @@ Partial Class Departments
         ' 
         ' gbOutpatientServiceCost
         ' 
+        gbOutpatientServiceCost.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         gbOutpatientServiceCost.Location = New Point(424, 12)
         gbOutpatientServiceCost.Name = "gbOutpatientServiceCost"
         gbOutpatientServiceCost.Size = New Size(410, 281)
@@ -102,6 +106,7 @@ Partial Class Departments
         ' 
         ' gbOverallCosttoCharge
         ' 
+        gbOverallCosttoCharge.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         gbOverallCosttoCharge.Location = New Point(854, 24)
         gbOverallCosttoCharge.Name = "gbOverallCosttoCharge"
         gbOverallCosttoCharge.Size = New Size(375, 269)
@@ -111,6 +116,7 @@ Partial Class Departments
         ' 
         ' gbSalariesandOther
         ' 
+        gbSalariesandOther.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         gbSalariesandOther.Location = New Point(854, 299)
         gbSalariesandOther.Name = "gbSalariesandOther"
         gbSalariesandOther.Size = New Size(375, 281)

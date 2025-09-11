@@ -175,4 +175,8 @@ Public Class Individual_Search
         tbDrug.Clear()
         tbDrugGeneric.Clear()
     End Sub
+
+    Private Sub GroupBox1_Enter(sender As Object, e As EventArgs) Handles GroupBox1.Enter
+
+    End Sub
 End Class
