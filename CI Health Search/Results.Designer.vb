@@ -36,6 +36,7 @@ Partial Class Results
         lblMatches = New Label()
         lblyuh = New Label()
         lblFilters = New Label()
+        btnNavigation = New Button()
         CType(dgvResults, ComponentModel.ISupportInitialize).BeginInit()
         SuspendLayout()
         ' 
@@ -168,11 +169,21 @@ Partial Class Results
         lblFilters.TabIndex = 22
         lblFilters.Text = "."
         ' 
+        ' btnNavigation
+        ' 
+        btnNavigation.Location = New Point(1238, 119)
+        btnNavigation.Name = "btnNavigation"
+        btnNavigation.Size = New Size(75, 23)
+        btnNavigation.TabIndex = 23
+        btnNavigation.Text = "Navigation"
+        btnNavigation.UseVisualStyleBackColor = True
+        ' 
         ' Results
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(1423, 552)
+        Controls.Add(btnNavigation)
         Controls.Add(lblFilters)
         Controls.Add(lblyuh)
         Controls.Add(lblMatches)
@@ -209,4 +220,5 @@ Partial Class Results
     Friend WithEvents lblMatches As Label
     Friend WithEvents lblyuh As Label
     Friend WithEvents lblFilters As Label
+    Friend WithEvents btnNavigation As Button
 End Class

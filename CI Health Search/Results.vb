@@ -218,7 +218,14 @@ Public Class Results
 
         Results.SelectedHospital = hosp
         Return hosp
+
+
+
+
+
     End Function
+
+
 
     ' Profile button click
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
@@ -228,6 +235,8 @@ Public Class Results
         Dim profileForm As New Profile(hosp)
         profileForm.Show()
     End Sub
+
+
 
 
 
@@ -302,6 +311,13 @@ Public Class Results
         deptForm.Show()
     End Sub
 
+    Private Sub btnNavigation_Click(sender As Object, e As EventArgs) Handles btnNavigation.Click
+        Dim hosp = GetSelectedHospitalContext()
+        If hosp Is Nothing Then Return
+        Dim navPopup As New NavigationPopupForm(hosp)
+        navPopup.Show()
+    End Sub
+
     Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
         Dim hosp = GetSelectedHospitalContext()
         If hosp Is Nothing Then Return
@@ -331,6 +347,8 @@ Public Class Results
         Me.Hide()
         Search.Show()
     End Sub
+
+
 
     ' Add similar selection logic to Button6_Click (Inpatient) if needed
 
