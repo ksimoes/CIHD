@@ -12,23 +12,24 @@ Public Class Individual_Search
     End Sub
 
     Private Async Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
-        Dim npi = tbNpi.Text.Trim()
-        Dim hcpcs = tbHCPCS.Text.Trim()
-        Dim firstName = tbFirst.Text.Trim()
-        Dim lastName = tbLast.Text.Trim()
-        Dim state = tbState.Text.Trim().ToUpper()
-        Dim stLic = tbStLic.Text.Trim().ToUpper()
-        Dim provEnroll = tbProvEnroll.Text.Trim()
-        Dim facilityTyp = tbFacilityTyp.Text.Trim()
-        Dim gradYear = tbGradYear.Text.Trim()
-        Dim medSchool = tbMedSchool.Text.Trim()
-        Dim brandName = tbDrug.Text.Trim()
-        Dim stLicNum = tbStLicNum.Text.Trim()
-        Dim genericName = tbDrugGeneric.Text.Trim()
-        Dim middleName = tbMiddle.Text.Trim()
-        Dim city = tbCity.Text.Trim()
-        Dim zip = tbZip.Text.Trim()
-        Dim gender = tbGender.Text.Trim()
+        Dim npi As String = tbNpi.Text.Trim()
+        Dim hcpcs As String = tbHCPCS.Text.Trim()
+        Dim firstName As String = tbFirst.Text.Trim()
+        Dim lastName As String = tbLast.Text.Trim()
+        Dim state As String = tbState.Text.Trim().ToUpper()
+        Dim stLic As String = tbStLic.Text.Trim().ToUpper()
+        Dim provEnroll As String = tbProvEnroll.Text.Trim()
+        Dim facilityTyp As String = tbFacilityTyp.Text.Trim()
+        Dim gradYear As String = tbGradYear.Text.Trim()
+        Dim medSchool As String = tbMedSchool.Text.Trim()
+        Dim brandName As String = tbDrug.Text.Trim()
+        Dim stLicNum As String = tbStLicNum.Text.Trim()
+        Dim genericName As String = tbDrugGeneric.Text.Trim()
+        Dim middleName As String = tbMiddle.Text.Trim()
+        Dim city As String = tbCity.Text.Trim()
+        Dim zip As String = tbZip.Text.Trim()
+        Dim gender As String = tbGender.Text.Trim()
+        Dim taxonomy As String = cboTaxonomy.Text.Trim()
 
         ' Build a summary of the search criteria
         Dim filters As New List(Of String)
@@ -49,24 +50,17 @@ Public Class Individual_Search
         If Not String.IsNullOrWhiteSpace(medSchool) Then filters.Add($"Med School: {medSchool}")
         If Not String.IsNullOrWhiteSpace(brandName) Then filters.Add($"Brand: {brandName}")
         If Not String.IsNullOrWhiteSpace(genericName) Then filters.Add($"Generic: {genericName}")
+        If Not String.IsNullOrWhiteSpace(taxonomy) Then filters.Add($"pri_spec: {taxonomy}")
+
         Dim searchSummary As String = "Search Filters: " & String.Join(" | ", filters)
 
-        ' 1. If both NPI and HCPCS are provided, go straight to profile
-        If Not String.IsNullOrWhiteSpace(npi) AndAlso Not String.IsNullOrWhiteSpace(hcpcs) Then
+        ' 1. If both NPI and HCPCS are provided, go straight to profile or  If only NPI is provided, go straight to profile
+        If Not String.IsNullOrWhiteSpace(npi) AndAlso Not String.IsNullOrWhiteSpace(hcpcs) Or Not String.IsNullOrWhiteSpace(npi) Then
             Dim profileForm As New IndividualProfileForm(npi)
             profileForm.Show()
             Return
-        End If
 
-        ' 2. If only NPI is provided, go straight to profile
-        If Not String.IsNullOrWhiteSpace(npi) Then
-            Dim profileForm As New IndividualProfileForm(npi)
-            profileForm.Show()
-            Return
-        End If
-
-        ' 3. If HCPCS is provided, search by code and show results (with state filter)
-        If Not String.IsNullOrWhiteSpace(hcpcs) Then
+        ElseIf Not String.IsNullOrWhiteSpace(hcpcs) Then ' 3. If HCPCS is provided, search by code and show results (with state filter)
             Dim results = Await IndividualApiHelper.SearchByHCPCSAsync(hcpcs, state)
             If results Is Nothing OrElse results.Count = 0 Then
                 MessageBox.Show("No individuals found for this HCPCS code.")
@@ -75,10 +69,8 @@ Public Class Individual_Search
             Dim resultsForm As New IndividualResultsForm(results, showDrugColumns:=False, searchSummary:=searchSummary)
             resultsForm.Show()
             Return
-        End If
+        ElseIf Not String.IsNullOrWhiteSpace(brandName) OrElse Not String.IsNullOrWhiteSpace(genericName) Then ' 4. If searching by drug brand or generic name
 
-        ' 4. If searching by drug brand or generic name
-        If Not String.IsNullOrWhiteSpace(brandName) OrElse Not String.IsNullOrWhiteSpace(genericName) Then
             Dim results = Await IndividualApiHelper.SearchByDrugAsync(brandName, genericName)
             If results Is Nothing OrElse results.Count = 0 Then
                 MessageBox.Show("No individuals found for this drug.")
@@ -87,6 +79,8 @@ Public Class Individual_Search
             Dim resultsForm As New IndividualResultsForm(results, showDrugColumns:=True, searchSummary:=searchSummary)
             resultsForm.Show()
             Return
+        ElseIf cboTaxonomy.SelectedIndex > 0 Then ' If taxonomy selected from dropdown
+            taxonomy = cboTaxonomy.SelectedItem.ToString()
         End If
 
         ' 5. Otherwise, search by name/state/etc.
@@ -116,7 +110,7 @@ Public Class Individual_Search
 
         ' --- KEY CHANGE: Use NDF if searching by grad year or med school ---
         Dim results2 As JArray = Nothing
-        If Not String.IsNullOrWhiteSpace(gradYear) OrElse Not String.IsNullOrWhiteSpace(medSchool) Then
+        If Not String.IsNullOrWhiteSpace(gradYear) OrElse Not String.IsNullOrWhiteSpace(medSchool) OrElse Not String.IsNullOrWhiteSpace(taxonomy) Then
             results2 = Await IndividualApiHelper.SearchNationalDownloadableFileAsync(
                 npi:=npi,
                 firstName:=firstName,
@@ -124,7 +118,8 @@ Public Class Individual_Search
                 gradYear:=gradYear,
                 medSchool:=medSchool,
                 state:=state,
-                limit:=25
+                taxonomy:=taxonomy,
+                limit:=75
             )
         Else
             results2 = Await IndividualApiHelper.SearchNpiRegistryAsync(
@@ -141,7 +136,7 @@ Public Class Individual_Search
                 taxonomyDescription:=facilityTyp,
                 graduationYear:=gradYear,
                 medicalSchool:=medSchool,
-                limit:=25
+                limit:=75
             )
         End If
 
@@ -158,7 +153,7 @@ Public Class Individual_Search
         tbLast.Clear()
         tbNpi.Clear()
         tbState.Clear()
-        tbTS.Clear()
+        'tbTS.Clear()
         tbMiddle.Clear()
         tbAddress.Clear()
         tbCity.Clear()

@@ -39,6 +39,7 @@ Partial Class Individual_Search
         tbProvEnroll = New TextBox()
         tbFacilityTyp = New TextBox()
         GroupBox3 = New GroupBox()
+        cboTaxonomy = New ComboBox()
         Label1 = New Label()
         Label2 = New Label()
         Label3 = New Label()
@@ -46,7 +47,6 @@ Partial Class Individual_Search
         Label5 = New Label()
         Label8 = New Label()
         tbNpi = New TextBox()
-        tbTS = New TextBox()
         tbFirst = New TextBox()
         tbMedSchool = New TextBox()
         tbMiddle = New TextBox()
@@ -107,7 +107,7 @@ Partial Class Individual_Search
         GroupBox4.Controls.Add(Label12)
         GroupBox4.Controls.Add(tbProvEnroll)
         GroupBox4.Controls.Add(tbFacilityTyp)
-        GroupBox4.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
+        GroupBox4.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
         GroupBox4.Location = New Point(852, 22)
         GroupBox4.Name = "GroupBox4"
         GroupBox4.Size = New Size(435, 330)
@@ -230,6 +230,7 @@ Partial Class Individual_Search
         ' GroupBox3
         ' 
         GroupBox3.BackColor = Color.DarkTurquoise
+        GroupBox3.Controls.Add(cboTaxonomy)
         GroupBox3.Controls.Add(Label1)
         GroupBox3.Controls.Add(Label2)
         GroupBox3.Controls.Add(Label3)
@@ -237,7 +238,6 @@ Partial Class Individual_Search
         GroupBox3.Controls.Add(Label5)
         GroupBox3.Controls.Add(Label8)
         GroupBox3.Controls.Add(tbNpi)
-        GroupBox3.Controls.Add(tbTS)
         GroupBox3.Controls.Add(tbFirst)
         GroupBox3.Controls.Add(tbMedSchool)
         GroupBox3.Controls.Add(tbMiddle)
@@ -248,13 +248,22 @@ Partial Class Individual_Search
         GroupBox3.Controls.Add(tbGender)
         GroupBox3.Controls.Add(Label17)
         GroupBox3.Controls.Add(Label11)
-        GroupBox3.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
+        GroupBox3.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
         GroupBox3.Location = New Point(0, 22)
         GroupBox3.Name = "GroupBox3"
         GroupBox3.Size = New Size(396, 330)
         GroupBox3.TabIndex = 45
         GroupBox3.TabStop = False
         GroupBox3.Text = "Personal Information"
+        ' 
+        ' cboTaxonomy
+        ' 
+        cboTaxonomy.FormattingEnabled = True
+        cboTaxonomy.Items.AddRange(New Object() {"Advanced Practice Midwife", "Allergy & Immunology", "Anesthesiologist Assistant", "Anesthesiology", "Audiologist", "Audiologist-Hearing Aid Fitter", "Cardiology", "Case Manager/Care Coordinator", "Chiropractic", "Chiropractor", "Clinical Neuropsychologist", "Clinical Nurse Specialist", "Clinical Pharmacology", "Colon & Rectal Surgery", "Colorectal Surgery", "Community Health Worker", "Dentist", "Dermatology", "Diagnostic Radiology", "Drama Therapist", "Electrodiagnostic Medicine", "Emergency Medical Technician, Basic", "Emergency Medical Technician, Intermediate", "Emergency Medical Technician, Paramedic", "Emergency Medicine", "Family Medicine", "Family Practice", "Funeral Director", "Gastroenterology", "General Practice", "General Surgery", "Genetic Counselor, MS", "Geriatric Medicine", "Hand Surgery", "Health & Wellness Coach", "Health Educator", "Homeopath", "Hospitalist", "Independent Medical Examiner", "Integrative Medicine", "Internal Medicine", "Interpreter", "Interventional Pain Management", "Lactation Consultant, Non-RN", "Legal Medicine", "Marriage & Family Therapist", "Mechanotherapist", "Medical Genetics", "Medical Genetics, Ph.D. Medical Genetics", "Midwife", "Midwife, Lay", "Military Health Care Provider", "Multi-Specialty", "Naprapath", "Naturopath", "Nephrology", "Neurological Surgery", "Neurology", "Neuromusculoskeletal Medicine & OMM", "Neuromusculoskeletal Medicine, Sports Medicine", "Neurosurgery", "Nuclear Medicine", "Nurse Anesthetist, Certified Registered", "Nurse Practitioner", "Obstetrics & Gynecology", "Obstetrics Gynecology", "Occupational Therapist", "Occupational Therapy Assistant", "Ophthalmology", "Optometrist", "Oral & Maxillofacial Surgery", "Oral Surgery (dental only)", "Orthopaedic Surgery", "Orthopedic Surgery", "Osteopathic Manipulative", "Otolaryngology", "Pain Medicine", "Pathology", "Pediatric Medicine", "Pediatrics", "Peer Specialist", "Personal Emergency Response Attendant", "Phlebology", "Physical Medicine & Rehabilitation", "Physical Medicine and Rehabilitation", "Physical Therapist", "Physician Assistant", "Plastic and Reconstructive", "Plastic Surgery", "Podiatrist", "Poetry Therapist", "Prevention Professional", "Preventive Medicine", "Psychiatry", "Psychiatry & Neurology", "Psychoanalyst", "Psychologist", "Pulmonary Disease", "Radiology", "Reflexologist", "Single Specialty", "Sleep Specialist, PhD", "Social Worker", "Specialist", "Student in an Organized Health Care Education/Training Program", "Surgery", "Therapy (OMM)", "Thoracic Surgery", "Thoracic Surgery (Cardiothoracic Vascular Surgery)", "Transplant Surgery", "Urology", ""})
+        cboTaxonomy.Location = New Point(174, 59)
+        cboTaxonomy.Name = "cboTaxonomy"
+        cboTaxonomy.Size = New Size(182, 23)
+        cboTaxonomy.TabIndex = 36
         ' 
         ' Label1
         ' 
@@ -316,13 +325,6 @@ Partial Class Individual_Search
         tbNpi.Name = "tbNpi"
         tbNpi.Size = New Size(180, 23)
         tbNpi.TabIndex = 11
-        ' 
-        ' tbTS
-        ' 
-        tbTS.Location = New Point(176, 63)
-        tbTS.Name = "tbTS"
-        tbTS.Size = New Size(180, 23)
-        tbTS.TabIndex = 12
         ' 
         ' tbFirst
         ' 
@@ -411,7 +413,7 @@ Partial Class Individual_Search
         GroupBox2.Controls.Add(tbAddress)
         GroupBox2.Controls.Add(tbCity)
         GroupBox2.Controls.Add(tbZip)
-        GroupBox2.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
+        GroupBox2.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
         GroupBox2.Location = New Point(412, 22)
         GroupBox2.Name = "GroupBox2"
         GroupBox2.Size = New Size(434, 330)
@@ -517,7 +519,7 @@ Partial Class Individual_Search
         ' 
         ' Individual_Search
         ' 
-        AutoScaleDimensions = New SizeF(7F, 15F)
+        AutoScaleDimensions = New SizeF(7.0F, 15.0F)
         AutoScaleMode = AutoScaleMode.Font
         AutoScroll = True
         ClientSize = New Size(1314, 710)
@@ -582,4 +584,6 @@ Partial Class Individual_Search
     Friend WithEvents GroupBox3 As GroupBox
     Friend WithEvents GroupBox2 As GroupBox
     Friend WithEvents GroupBox4 As GroupBox
+    Friend WithEvents cboTaxonomy As ComboBox
+    'Friend WithEvents tbTS As ComboBox
 End Class
