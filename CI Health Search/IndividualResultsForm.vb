@@ -103,6 +103,7 @@ Public Class IndividualResultsForm
         dgvFilterHelper = New DataGridViewFilterHelper(DataGridView1, Me)
         DataGridView1.Top = DataGridView1.Top + dgvFilterHelper.FilterPanel.Height
         DataGridView1.Height = DataGridView1.Height - dgvFilterHelper.FilterPanel.Height
+        txtNumResults.Text = dt.Rows.Count
     End Sub
 
     Private Function GetJsonValue(obj As JObject, path As String) As String

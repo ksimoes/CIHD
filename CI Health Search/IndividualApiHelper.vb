@@ -1,301 +1,442 @@
 ﻿Imports System.Net.Http
+Imports System.Text
+Imports System.Threading.Tasks
 Imports Newtonsoft.Json.Linq
 
+''' <summary>
+''' Provides access to CMS Provider APIs for individual healthcare provider searches.
+''' This module simplifies interaction with multiple CMS data sources including NPI Registry,
+''' National Downloadable Files, and various provider datasets.
+''' 
+''' Usage Examples:
+''' - Search by NPI: SearchNpiRegistryAsync(npi:="1234567890")
+''' - Search by name: SearchNpiRegistryAsync(firstName:="John", lastName:="Smith", state:="CA")
+''' - Search by HCPCS: SearchByHCPCSAsync("99213", "CA")
+''' - Search by drug: SearchByDrugAsync(brandName:="Lipitor")
+''' </summary>
 Module IndividualApiHelper
-    ' NPI Registry API (search and details)
+
+#Region "Configuration and Constants"
+
+    ' Shared HttpClient for connection reuse and better performance
+    Private ReadOnly _httpClient As New HttpClient() With {
+        .Timeout = TimeSpan.FromSeconds(30)
+    }
+
+    ' API Base URLs - centralized for easy maintenance
+    Private Const NPI_REGISTRY_BASE_URL As String = "https://npiregistry.cms.hhs.gov/api/?version=2.1"
+    Private Const CMS_PROVIDER_DATA_BASE_URL As String = "https://data.cms.gov/provider-data/api/1/datastore/query"
+    Private Const CMS_DATA_API_BASE_URL As String = "https://data.cms.gov/data-api/v1/dataset"
+
+    ' Dataset IDs for different CMS data sources
+    Private Const NATIONAL_DOWNLOADABLE_FILE_ID As String = "mj5m-pzi6"
+    Private Const FACILITY_AFFILIATIONS_ID As String = "27ea-46a8"
+    Private Const UTILIZATION_DATA_ID As String = "n0yb-util"
+    Private Const ORDER_REFERRING_ID As String = "c99b5865-1119-4436-bb80-c5af2773ea1f"
+    Private Const REVALIDATION_DUE_DATES_ID As String = "3746498e-874d-45d8-9c69-68603cafea60"
+    Private Const REVALIDATION_REASSIGNMENTS_ID As String = "20f51cff-4137-4f3a-b6b7-bfc9ad57983b"
+    Private Const MEDICARE_ENROLLMENT_ID As String = "2457ea29-fc82-48b0-86ec-3b0755de7515"
+    Private Const HCPCS_DATASET_ID As String = "92396110-2aed-4d63-a6a2-5d6207d46a29"
+    Private Const DRUG_DATASET_ID As String = "9552739e-3d05-4c1b-8eff-ecabf391e2e5"
+
+#End Region
+
+#Region "Primary Search Methods"
+
+    ''' <summary>
+    ''' Searches the NPI Registry with comprehensive filtering options.
+    ''' This is the main method for searching providers by demographics and professional info.
+    ''' </summary>
     Public Async Function SearchNpiRegistryAsync(
-    Optional npi As String = "",
-    Optional firstName As String = "",
-    Optional middleName As String = "",
-    Optional lastName As String = "",
-    Optional city As String = "",
-    Optional state As String = "",
-    Optional zip As String = "",
-    Optional gender As String = "",
-    Optional licenseState As String = "",
-    Optional licenseNumber As String = "",
-    Optional enumerationType As String = "",
-    Optional taxonomyDescription As String = "",
-    Optional graduationYear As String = "",
-    Optional medicalSchool As String = "",
-    Optional limit As Integer = 10,
-    Optional skip As Integer = 0
-) As Task(Of JArray)
-        Dim baseUrl As String = "https://npiregistry.cms.hhs.gov/api/?version=2.1"
-        Dim query As New List(Of String)
+        Optional npi As String = "",
+        Optional firstName As String = "",
+        Optional middleName As String = "",
+        Optional lastName As String = "",
+        Optional city As String = "",
+        Optional state As String = "",
+        Optional zip As String = "",
+        Optional gender As String = "",
+        Optional licenseState As String = "",
+        Optional licenseNumber As String = "",
+        Optional enumerationType As String = "",
+        Optional taxonomyDescription As String = "",
+        Optional graduationYear As String = "",
+        Optional medicalSchool As String = "",
+        Optional limit As Integer = 10,
+        Optional skip As Integer = 0
+    ) As Task(Of JArray)
 
-        If Not String.IsNullOrWhiteSpace(npi) Then query.Add("number=" & Uri.EscapeDataString(npi))
-        If Not String.IsNullOrWhiteSpace(firstName) Then query.Add("first_name=" & Uri.EscapeDataString(firstName))
-        If Not String.IsNullOrWhiteSpace(middleName) Then query.Add("middle_name=" & Uri.EscapeDataString(middleName))
-        If Not String.IsNullOrWhiteSpace(lastName) Then query.Add("last_name=" & Uri.EscapeDataString(lastName))
-        If Not String.IsNullOrWhiteSpace(city) Then query.Add("city=" & Uri.EscapeDataString(city))
-        If Not String.IsNullOrWhiteSpace(state) Then query.Add("state=" & Uri.EscapeDataString(state))
-        If Not String.IsNullOrWhiteSpace(zip) Then query.Add("postal_code=" & Uri.EscapeDataString(zip))
-        If Not String.IsNullOrWhiteSpace(gender) Then query.Add("gender=" & Uri.EscapeDataString(gender))
-        If Not String.IsNullOrWhiteSpace(licenseState) Then query.Add("license_state=" & Uri.EscapeDataString(licenseState))
-        If Not String.IsNullOrWhiteSpace(licenseNumber) Then query.Add("license_number=" & Uri.EscapeDataString(licenseNumber))
-        If Not String.IsNullOrWhiteSpace(enumerationType) Then query.Add("enumeration_type=" & Uri.EscapeDataString(enumerationType))
-        If Not String.IsNullOrWhiteSpace(taxonomyDescription) Then query.Add("taxonomy_description=" & Uri.EscapeDataString(taxonomyDescription))
-        If Not String.IsNullOrWhiteSpace(graduationYear) Then query.Add("graduation_year=" & Uri.EscapeDataString(graduationYear))
-        If Not String.IsNullOrWhiteSpace(medicalSchool) Then query.Add("medical_school=" & Uri.EscapeDataString(medicalSchool))
-        query.Add("limit=" & limit.ToString())
-        query.Add("skip=" & skip.ToString())
+        Try
+            ' Input validation
+            If limit <= 0 OrElse limit > 200 Then limit = 50
+            If skip < 0 Then skip = 0
 
-        Dim url As String = baseUrl & "&" & String.Join("&", query)
-        Using client As New HttpClient()
-            Dim response = Await client.GetAsync(url)
-            If response.IsSuccessStatusCode Then
-                Dim json = Await response.Content.ReadAsStringAsync()
-                Dim obj = JObject.Parse(json)
-                Return TryCast(obj("results"), JArray)
-            End If
-        End Using
-        Return Nothing
+            Dim queryParams As New Dictionary(Of String, String) From {
+                {"limit", limit.ToString()},
+                {"skip", skip.ToString()}
+            }
+
+            ' Build query parameters efficiently
+            AddParameterIfNotEmpty(queryParams, "number", npi)
+            AddParameterIfNotEmpty(queryParams, "first_name", firstName)
+            AddParameterIfNotEmpty(queryParams, "middle_name", middleName)
+            AddParameterIfNotEmpty(queryParams, "last_name", lastName)
+            AddParameterIfNotEmpty(queryParams, "city", city)
+            AddParameterIfNotEmpty(queryParams, "state", state)
+            AddParameterIfNotEmpty(queryParams, "postal_code", zip)
+            AddParameterIfNotEmpty(queryParams, "gender", gender)
+            AddParameterIfNotEmpty(queryParams, "license_state", licenseState)
+            AddParameterIfNotEmpty(queryParams, "license_number", licenseNumber)
+            AddParameterIfNotEmpty(queryParams, "enumeration_type", If(String.IsNullOrWhiteSpace(enumerationType), "NPI-1", enumerationType))
+            AddParameterIfNotEmpty(queryParams, "taxonomy_description", taxonomyDescription)
+            AddParameterIfNotEmpty(queryParams, "graduation_year", graduationYear)
+            AddParameterIfNotEmpty(queryParams, "medical_school", medicalSchool)
+
+            Dim url As String = BuildUrlWithQuery(NPI_REGISTRY_BASE_URL, queryParams)
+            Return Await ExecuteGetRequestAsync(url, "results")
+
+        Catch ex As Exception
+            ' Return empty array on error rather than throwing
+            Return New JArray()
+        End Try
     End Function
 
+    ''' <summary>
+    ''' Searches the National Downloadable File with filtering.
+    ''' Best for searches involving graduation year, medical school, or taxonomy.
+    ''' </summary>
     Public Async Function SearchNationalDownloadableFileAsync(
-    Optional npi As String = "",
-    Optional firstName As String = "",
-    Optional lastName As String = "",
-    Optional gradYear As String = "",
-    Optional medSchool As String = "",
-    Optional state As String = "",
-    Optional limit As Integer = 10
-) As Task(Of JArray)
-        Dim url As String = "https://data.cms.gov/provider-data/api/1/datastore/query/mj5m-pzi6/0"
-        Dim conditions As New List(Of JObject)
-        If Not String.IsNullOrWhiteSpace(npi) Then
-            conditions.Add(New JObject(
-            New JProperty("resource", "t"),
-            New JProperty("property", "npi"),
-            New JProperty("value", npi),
-            New JProperty("operator", "=")
-        ))
-        End If
-        If Not String.IsNullOrWhiteSpace(firstName) Then
-            conditions.Add(New JObject(
-            New JProperty("resource", "t"),
-            New JProperty("property", "provider_first_name"),
-            New JProperty("value", firstName),
-            New JProperty("operator", "=")
-        ))
-        End If
-        If Not String.IsNullOrWhiteSpace(lastName) Then
-            conditions.Add(New JObject(
-            New JProperty("resource", "t"),
-            New JProperty("property", "provider_last_name"),
-            New JProperty("value", lastName),
-            New JProperty("operator", "=")
-        ))
-        End If
-        If Not String.IsNullOrWhiteSpace(gradYear) Then
-            conditions.Add(New JObject(
-            New JProperty("resource", "t"),
-            New JProperty("property", "grd_yr"),
-            New JProperty("value", gradYear),
-            New JProperty("operator", "=")
-        ))
-        End If
-        If Not String.IsNullOrWhiteSpace(medSchool) Then
-            conditions.Add(New JObject(
-            New JProperty("resource", "t"),
-            New JProperty("property", "med_sch"),
-            New JProperty("value", medSchool),
-            New JProperty("operator", "=")
-        ))
-        End If
-        If Not String.IsNullOrWhiteSpace(state) Then
-            conditions.Add(New JObject(
-            New JProperty("resource", "t"),
-            New JProperty("property", "state"),
-            New JProperty("value", state),
-            New JProperty("operator", "=")
-        ))
-        End If
+        Optional npi As String = "",
+        Optional firstName As String = "",
+        Optional lastName As String = "",
+        Optional gradYear As String = "",
+        Optional medSchool As String = "",
+        Optional state As String = "",
+        Optional limit As Integer = 10
+    ) As Task(Of JArray)
 
-        Dim postBody As New JObject(
-        New JProperty("conditions", New JArray(conditions)),
-        New JProperty("limit", limit)
-    )
+        Try
+            Dim conditions As New List(Of JObject)
 
-        Using client As New HttpClient()
-            Dim content = New StringContent(postBody.ToString(), Text.Encoding.UTF8, "application/json")
-            Dim response = Await client.PostAsync(url, content)
-            If response.IsSuccessStatusCode Then
-                Dim json = Await response.Content.ReadAsStringAsync()
-                Dim obj = JObject.Parse(json)
-                Return TryCast(obj("results"), JArray)
-            End If
-        End Using
-        Return Nothing
+            AddConditionIfNotEmpty(conditions, "npi", npi)
+            AddConditionIfNotEmpty(conditions, "provider_first_name", firstName)
+            AddConditionIfNotEmpty(conditions, "provider_last_name", lastName)
+            AddConditionIfNotEmpty(conditions, "grd_yr", gradYear)
+            AddConditionIfNotEmpty(conditions, "med_sch", medSchool)
+            AddConditionIfNotEmpty(conditions, "state", state)
+
+            Return Await ExecuteCmsPostRequestAsync(NATIONAL_DOWNLOADABLE_FILE_ID, conditions, limit, "results")
+
+        Catch ex As Exception
+            Return New JArray()
+        End Try
     End Function
 
-    ' National Downloadable File
-    Public Async Function GetNationalDownloadableFileAsync(Optional limit As Integer = 3) As Task(Of JArray)
-        Dim url As String = "https://data.cms.gov/provider-data/api/1/datastore/query/mj5m-pzi6/0"
-        Dim body = $"{{""conditions"":[{{""resource"":""t"",""property"":""record_number"",""value"":1,""operator"":"">""}}],""limit"":{limit}}}"
-        Using client As New HttpClient()
-            Dim content = New StringContent(body, Text.Encoding.UTF8, "application/json")
-            Dim response = Await client.PostAsync(url, content)
-            If response.IsSuccessStatusCode Then
-                Dim json = Await response.Content.ReadAsStringAsync()
-                Dim obj = JObject.Parse(json)
-                Return TryCast(obj("results"), JArray)
-            End If
-        End Using
-        Return Nothing
-    End Function
-
-    ' Facility Affiliations Data
-    Public Async Function GetFacilityAffiliationsAsync(Optional limit As Integer = 3) As Task(Of JArray)
-        Dim url As String = "https://data.cms.gov/provider-data/api/1/datastore/query/27ea-46a8/0"
-        Dim body = $"{{""conditions"":[{{""resource"":""t"",""property"":""record_number"",""value"":1,""operator"":"">""}}],""limit"":{limit}}}"
-        Using client As New HttpClient()
-            Dim content = New StringContent(body, Text.Encoding.UTF8, "application/json")
-            Dim response = Await client.PostAsync(url, content)
-            If response.IsSuccessStatusCode Then
-                Dim json = Await response.Content.ReadAsStringAsync()
-                Dim obj = JObject.Parse(json)
-                Return TryCast(obj("data"), JArray)
-            End If
-        End Using
-        Return Nothing
-    End Function
-
-    ' Utilization Data
-    Public Async Function GetUtilizationDataAsync(Optional limit As Integer = 3) As Task(Of JArray)
-        Dim url As String = "https://data.cms.gov/provider-data/api/1/datastore/query/n0yb-util/0"
-        Dim body = $"{{""conditions"":[{{""resource"":""t"",""property"":""record_number"",""value"":1,""operator"":"">""}}],""limit"":{limit}}}"
-        Using client As New HttpClient()
-            Dim content = New StringContent(body, Text.Encoding.UTF8, "application/json")
-            Dim response = Await client.PostAsync(url, content)
-            If response.IsSuccessStatusCode Then
-                Dim json = Await response.Content.ReadAsStringAsync()
-                Dim obj = JObject.Parse(json)
-                Return TryCast(obj("data"), JArray)
-            End If
-        End Using
-        Return Nothing
-    End Function
-
-    ' Order and Referring
-    Public Async Function GetOrderAndReferringAsync(Optional offset As Integer = 0, Optional size As Integer = 10) As Task(Of JArray)
-        Dim url As String = $"https://data.cms.gov/data-api/v1/dataset/c99b5865-1119-4436-bb80-c5af2773ea1f/data?offset={offset}&size={size}"
-        Using client As New HttpClient()
-            Dim response = Await client.GetAsync(url)
-            If response.IsSuccessStatusCode Then
-                Dim json = Await response.Content.ReadAsStringAsync()
-                Return JArray.Parse(json)
-            End If
-        End Using
-        Return Nothing
-    End Function
-
-    ' Revalidation Due Date List
-    Public Async Function GetRevalidationDueDatesAsync(Optional offset As Integer = 0, Optional size As Integer = 10) As Task(Of JArray)
-        Dim url As String = $"https://data.cms.gov/data-api/v1/dataset/3746498e-874d-45d8-9c69-68603cafea60/data?offset={offset}&size={size}"
-        Using client As New HttpClient()
-            Dim response = Await client.GetAsync(url)
-            If response.IsSuccessStatusCode Then
-                Dim json = Await response.Content.ReadAsStringAsync()
-                Return JArray.Parse(json)
-            End If
-        End Using
-        Return Nothing
-    End Function
-
-    ' Revalidation Reassignments
-    Public Async Function GetRevalidationReassignmentsAsync(Optional offset As Integer = 0, Optional size As Integer = 10) As Task(Of JArray)
-        Dim url As String = $"https://data.cms.gov/data-api/v1/dataset/20f51cff-4137-4f3a-b6b7-bfc9ad57983b/data?offset={offset}&size={size}"
-        Using client As New HttpClient()
-            Dim response = Await client.GetAsync(url)
-            If response.IsSuccessStatusCode Then
-                Dim json = Await response.Content.ReadAsStringAsync()
-                Return JArray.Parse(json)
-            End If
-        End Using
-        Return Nothing
-    End Function
-
-    ' Medicare Fee-for-service public enrollment
-    Public Async Function GetMedicareEnrollmentAsync(Optional offset As Integer = 0, Optional size As Integer = 10) As Task(Of JArray)
-        Dim url As String = $"https://data.cms.gov/data-api/v1/dataset/2457ea29-fc82-48b0-86ec-3b0755de7515/data?offset={offset}&size={size}"
-        Using client As New HttpClient()
-            Dim response = Await client.GetAsync(url)
-            If response.IsSuccessStatusCode Then
-                Dim json = Await response.Content.ReadAsStringAsync()
-                Return JArray.Parse(json)
-            End If
-        End Using
-        Return Nothing
-    End Function
-
-    ' Fetch National Downloadable File by NPI
-    Public Async Function GetNationalDownloadableFileByNpiAsync(npi As String) As Task(Of JArray)
-        Dim url As String = "https://data.cms.gov/provider-data/api/1/datastore/query/mj5m-pzi6/0"
-        Dim body = $"{{""conditions"":[{{""resource"":""t"",""property"":""npi"",""value"":""{npi}"",""operator"":""=""}}],""limit"":1}}"
-        Using client As New HttpClient()
-            Dim content = New StringContent(body, Text.Encoding.UTF8, "application/json")
-            Dim response = Await client.PostAsync(url, content)
-            If response.IsSuccessStatusCode Then
-                Dim json = Await response.Content.ReadAsStringAsync()
-                Dim obj = JObject.Parse(json)
-                Return TryCast(obj("results"), JArray)
-            End If
-        End Using
-        Return Nothing
-    End Function
-
+    ''' <summary>
+    ''' Searches by HCPCS procedure codes.
+    ''' Use when looking for providers who perform specific procedures.
+    ''' </summary>
     Public Async Function SearchByHCPCSAsync(hcpcsCode As String, Optional state As String = "") As Task(Of JArray)
-        Dim url As String = $"https://data.cms.gov/data-api/v1/dataset/92396110-2aed-4d63-a6a2-5d6207d46a29/data?filter[HCPCS_Cd]={Uri.EscapeDataString(hcpcsCode)}"
-        If Not String.IsNullOrWhiteSpace(state) Then
-            url &= $"&filter[Rndrng_Prvdr_State_Abrvtn]={Uri.EscapeDataString(state)}"
-        End If
-        url &= "&size=100"
-        Using client As New HttpClient()
-            Dim response = Await client.GetAsync(url)
-            If response.IsSuccessStatusCode Then
-                Dim json = Await response.Content.ReadAsStringAsync()
-                Return JArray.Parse(json)
+        Try
+            If String.IsNullOrWhiteSpace(hcpcsCode) Then
+                Return New JArray()
             End If
-        End Using
-        Return Nothing
+
+            Dim filters As New Dictionary(Of String, String) From {
+                {"filter[HCPCS_Cd]", hcpcsCode},
+                {"size", "100"}
+            }
+
+            If Not String.IsNullOrWhiteSpace(state) Then
+                filters.Add("filter[Rndrng_Prvdr_State_Abrvtn]", state)
+            End If
+
+            Dim url As String = BuildUrlWithQuery($"{CMS_DATA_API_BASE_URL}/{HCPCS_DATASET_ID}/data", filters)
+            Return Await ExecuteGetRequestAsync(url)
+
+        Catch ex As Exception
+            Return New JArray()
+        End Try
     End Function
 
-    ' Fetch Facility Affiliations by NPI
+    ''' <summary>
+    ''' Searches by drug name (brand or generic).
+    ''' Use when looking for providers who prescribe specific medications.
+    ''' </summary>
+    Public Async Function SearchByDrugAsync(Optional brandName As String = "", Optional genericName As String = "") As Task(Of JArray)
+        Try
+            If String.IsNullOrWhiteSpace(brandName) AndAlso String.IsNullOrWhiteSpace(genericName) Then
+                Return New JArray()
+            End If
+
+            Dim filters As New Dictionary(Of String, String) From {{"size", "100"}}
+
+            If Not String.IsNullOrWhiteSpace(brandName) Then
+                filters.Add("filter[Brnd_Name]", brandName)
+            End If
+            If Not String.IsNullOrWhiteSpace(genericName) Then
+                filters.Add("filter[Gnrc_Name]", genericName)
+            End If
+
+            Dim url As String = BuildUrlWithQuery($"{CMS_DATA_API_BASE_URL}/{DRUG_DATASET_ID}/data", filters)
+            Return Await ExecuteGetRequestAsync(url)
+
+        Catch ex As Exception
+            Return New JArray()
+        End Try
+    End Function
+
+    ''' <summary>
+    ''' Gets detailed provider information by specific NPI.
+    ''' </summary>
+    Public Async Function GetNationalDownloadableFileByNpiAsync(npi As String) As Task(Of JArray)
+        Try
+            If String.IsNullOrWhiteSpace(npi) Then
+                Return New JArray()
+            End If
+
+            Dim conditions As New List(Of JObject) From {
+                CreateCondition("npi", npi, "=")
+            }
+
+            Return Await ExecuteCmsPostRequestAsync(NATIONAL_DOWNLOADABLE_FILE_ID, conditions, 1, "results")
+
+        Catch ex As Exception
+            Return New JArray()
+        End Try
+    End Function
+
+#End Region
+
+#Region "Specialized Data Retrieval Methods"
+
+    ''' <summary>
+    ''' Gets facility affiliations for a specific provider.
+    ''' </summary>
     Public Async Function GetFacilityAffiliationsByNpiAsync(npi As String) As Task(Of JArray)
-        Dim url As String = "https://data.cms.gov/provider-data/api/1/datastore/query/27ea-46a8/0"
-        Dim body = $"{{""conditions"":[{{""resource"":""t"",""property"":""NPI"",""value"":""{npi}"",""operator"":""=""}}],""limit"":100}}"
-        Using client As New HttpClient()
-            Dim content = New StringContent(body, Text.Encoding.UTF8, "application/json")
-            Dim response = Await client.PostAsync(url, content)
-            If response.IsSuccessStatusCode Then
+        Try
+            If String.IsNullOrWhiteSpace(npi) Then
+                Return New JArray()
+            End If
+
+            Dim conditions As New List(Of JObject) From {
+                CreateCondition("NPI", npi, "=")
+            }
+
+            Return Await ExecuteCmsPostRequestAsync(FACILITY_AFFILIATIONS_ID, conditions, 100, "data")
+
+        Catch ex As Exception
+            Return New JArray()
+        End Try
+    End Function
+
+    ''' <summary>
+    ''' Gets general facility affiliations data with pagination.
+    ''' </summary>
+    Public Async Function GetFacilityAffiliationsAsync(Optional limit As Integer = 10) As Task(Of JArray)
+        Try
+            Dim conditions As New List(Of JObject) From {
+                CreateCondition("record_number", 1, ">")
+            }
+            Return Await ExecuteCmsPostRequestAsync(FACILITY_AFFILIATIONS_ID, conditions, limit, "data")
+
+        Catch ex As Exception
+            Return New JArray()
+        End Try
+    End Function
+
+    ''' <summary>
+    ''' Gets utilization data with pagination.
+    ''' </summary>
+    Public Async Function GetUtilizationDataAsync(Optional limit As Integer = 10) As Task(Of JArray)
+        Try
+            Dim conditions As New List(Of JObject) From {
+                CreateCondition("record_number", 1, ">")
+            }
+            Return Await ExecuteCmsPostRequestAsync(UTILIZATION_DATA_ID, conditions, limit, "data")
+
+        Catch ex As Exception
+            Return New JArray()
+        End Try
+    End Function
+
+    ''' <summary>
+    ''' Gets order and referring data with pagination.
+    ''' </summary>
+    Public Async Function GetOrderAndReferringAsync(Optional offset As Integer = 0, Optional size As Integer = 10) As Task(Of JArray)
+        Try
+            Dim url As String = $"{CMS_DATA_API_BASE_URL}/{ORDER_REFERRING_ID}/data?offset={offset}&size={size}"
+            Return Await ExecuteGetRequestAsync(url)
+
+        Catch ex As Exception
+            Return New JArray()
+        End Try
+    End Function
+
+    ''' <summary>
+    ''' Gets revalidation due dates with pagination.
+    ''' </summary>
+    Public Async Function GetRevalidationDueDatesAsync(Optional offset As Integer = 0, Optional size As Integer = 10) As Task(Of JArray)
+        Try
+            Dim url As String = $"{CMS_DATA_API_BASE_URL}/{REVALIDATION_DUE_DATES_ID}/data?offset={offset}&size={size}"
+            Return Await ExecuteGetRequestAsync(url)
+
+        Catch ex As Exception
+            Return New JArray()
+        End Try
+    End Function
+
+    ''' <summary>
+    ''' Gets revalidation reassignments with pagination.
+    ''' </summary>
+    Public Async Function GetRevalidationReassignmentsAsync(Optional offset As Integer = 0, Optional size As Integer = 10) As Task(Of JArray)
+        Try
+            Dim url As String = $"{CMS_DATA_API_BASE_URL}/{REVALIDATION_REASSIGNMENTS_ID}/data?offset={offset}&size={size}"
+            Return Await ExecuteGetRequestAsync(url)
+
+        Catch ex As Exception
+            Return New JArray()
+        End Try
+    End Function
+
+    ''' <summary>
+    ''' Gets Medicare enrollment data with pagination.
+    ''' </summary>
+    Public Async Function GetMedicareEnrollmentAsync(Optional offset As Integer = 0, Optional size As Integer = 10) As Task(Of JArray)
+        Try
+            Dim url As String = $"{CMS_DATA_API_BASE_URL}/{MEDICARE_ENROLLMENT_ID}/data?offset={offset}&size={size}"
+            Return Await ExecuteGetRequestAsync(url)
+
+        Catch ex As Exception
+            Return New JArray()
+        End Try
+    End Function
+
+    ''' <summary>
+    ''' Gets National Downloadable File data with pagination.
+    ''' </summary>
+    Public Async Function GetNationalDownloadableFileAsync(Optional limit As Integer = 10) As Task(Of JArray)
+        Try
+            Dim conditions As New List(Of JObject) From {
+                CreateCondition("record_number", 1, ">")
+            }
+            Return Await ExecuteCmsPostRequestAsync(NATIONAL_DOWNLOADABLE_FILE_ID, conditions, limit, "results")
+
+        Catch ex As Exception
+            Return New JArray()
+        End Try
+    End Function
+
+#End Region
+
+#Region "Internal Helper Methods"
+
+    ''' <summary>
+    ''' Executes GET requests to CMS APIs.
+    ''' </summary>
+    Private Async Function ExecuteGetRequestAsync(url As String, Optional resultProperty As String = Nothing) As Task(Of JArray)
+        Try
+            Dim response = Await _httpClient.GetAsync(url)
+
+            If Not response.IsSuccessStatusCode Then
+                Return New JArray()
+            End If
+
+            Dim json = Await response.Content.ReadAsStringAsync()
+
+            If String.IsNullOrEmpty(resultProperty) Then
+                Return JArray.Parse(json)
+            Else
+                Dim obj = JObject.Parse(json)
+                Dim resultArray = TryCast(obj(resultProperty), JArray)
+                Return If(resultArray, New JArray())
+            End If
+
+        Catch ex As Exception
+            Return New JArray()
+        End Try
+    End Function
+
+    ''' <summary>
+    ''' Executes POST requests to CMS Provider Data APIs.
+    ''' </summary>
+    Private Async Function ExecuteCmsPostRequestAsync(datasetId As String, conditions As List(Of JObject), limit As Integer, resultProperty As String) As Task(Of JArray)
+        Try
+            Dim url As String = $"{CMS_PROVIDER_DATA_BASE_URL}/{datasetId}/0"
+
+            Dim requestBody As New JObject(
+                New JProperty("conditions", New JArray(conditions)),
+                New JProperty("limit", Math.Min(limit, 200))
+            )
+
+            Using content = New StringContent(requestBody.ToString(), Encoding.UTF8, "application/json")
+                Dim response = Await _httpClient.PostAsync(url, content)
+
+                If Not response.IsSuccessStatusCode Then
+                    Return New JArray()
+                End If
+
                 Dim json = Await response.Content.ReadAsStringAsync()
                 Dim obj = JObject.Parse(json)
-                Return TryCast(obj("data"), JArray)
-            End If
-        End Using
-        Return Nothing
+                Dim resultArray = TryCast(obj(resultProperty), JArray)
+                Return If(resultArray, New JArray())
+            End Using
+
+        Catch ex As Exception
+            Return New JArray()
+        End Try
     End Function
 
-    Public Async Function SearchByDrugAsync(Optional brandName As String = "", Optional genericName As String = "") As Task(Of JArray)
-        Dim baseUrl As String = "https://data.cms.gov/data-api/v1/dataset/9552739e-3d05-4c1b-8eff-ecabf391e2e5/data?"
-        Dim filters As New List(Of String)
-        If Not String.IsNullOrWhiteSpace(brandName) Then
-            filters.Add($"filter[Brnd_Name]={Uri.EscapeDataString(brandName)}")
+    ''' <summary>
+    ''' Builds complete URL with query parameters.
+    ''' </summary>
+    Private Function BuildUrlWithQuery(baseUrl As String, parameters As Dictionary(Of String, String)) As String
+        If parameters Is Nothing OrElse parameters.Count = 0 Then
+            Return baseUrl
         End If
-        If Not String.IsNullOrWhiteSpace(genericName) Then
-            filters.Add($"filter[Gnrc_Name]={Uri.EscapeDataString(genericName)}")
-        End If
-        filters.Add("size=100")
-        Dim url As String = baseUrl & String.Join("&", filters)
-        Using client As New HttpClient()
-            Dim response = Await client.GetAsync(url)
-            If response.IsSuccessStatusCode Then
-                Dim json = Await response.Content.ReadAsStringAsync()
-                Return JArray.Parse(json)
-            End If
-        End Using
-        Return Nothing
+
+        Dim queryString = String.Join("&", parameters.Select(Function(kvp) $"{kvp.Key}={Uri.EscapeDataString(kvp.Value)}"))
+        Dim separator = If(baseUrl.Contains("?"), "&", "?")
+        Return $"{baseUrl}{separator}{queryString}"
     End Function
+
+    ''' <summary>
+    ''' Adds parameter to dictionary if value is not empty.
+    ''' </summary>
+    Private Sub AddParameterIfNotEmpty(parameters As Dictionary(Of String, String), key As String, value As String)
+        If Not String.IsNullOrWhiteSpace(value) Then
+            parameters.Add(key, value)
+        End If
+    End Sub
+
+    ''' <summary>
+    ''' Adds condition to list if value is not empty.
+    ''' </summary>
+    Private Sub AddConditionIfNotEmpty(conditions As List(Of JObject), propertyName As String, value As String)
+        If Not String.IsNullOrWhiteSpace(value) Then
+            conditions.Add(CreateCondition(propertyName, value, "="))
+        End If
+    End Sub
+
+    ''' <summary>
+    ''' Creates a condition object for CMS API queries.
+    ''' </summary>
+    Private Function CreateCondition(propertyName As String, value As Object, MyOperator As String) As JObject
+        Return New JObject(
+            New JProperty("resource", "t"),
+            New JProperty("property", propertyName),
+            New JProperty("value", value),
+            New JProperty("operator", MyOperator)
+        )
+    End Function
+
+    ''' <summary>
+    ''' Disposes the shared HttpClient when module is unloaded.
+    ''' </summary>
+    Public Sub Dispose()
+        _httpClient?.Dispose()
+    End Sub
+
+#End Region
+
 End Module
