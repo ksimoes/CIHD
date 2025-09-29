@@ -39,6 +39,8 @@ Partial Class Individual_Search
         tbProvEnroll = New TextBox()
         tbFacilityTyp = New TextBox()
         GroupBox3 = New GroupBox()
+        rdoFemale = New RadioButton()
+        rdoMale = New RadioButton()
         cboTaxonomy = New ComboBox()
         Label1 = New Label()
         Label2 = New Label()
@@ -54,7 +56,6 @@ Partial Class Individual_Search
         tbLast = New TextBox()
         tbState = New TextBox()
         Label18 = New Label()
-        tbGender = New TextBox()
         Label17 = New Label()
         Label11 = New Label()
         GroupBox2 = New GroupBox()
@@ -107,7 +108,7 @@ Partial Class Individual_Search
         GroupBox4.Controls.Add(Label12)
         GroupBox4.Controls.Add(tbProvEnroll)
         GroupBox4.Controls.Add(tbFacilityTyp)
-        GroupBox4.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        GroupBox4.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         GroupBox4.Location = New Point(852, 22)
         GroupBox4.Name = "GroupBox4"
         GroupBox4.Size = New Size(435, 330)
@@ -230,6 +231,8 @@ Partial Class Individual_Search
         ' GroupBox3
         ' 
         GroupBox3.BackColor = Color.DarkTurquoise
+        GroupBox3.Controls.Add(rdoFemale)
+        GroupBox3.Controls.Add(rdoMale)
         GroupBox3.Controls.Add(cboTaxonomy)
         GroupBox3.Controls.Add(Label1)
         GroupBox3.Controls.Add(Label2)
@@ -245,10 +248,9 @@ Partial Class Individual_Search
         GroupBox3.Controls.Add(tbLast)
         GroupBox3.Controls.Add(tbState)
         GroupBox3.Controls.Add(Label18)
-        GroupBox3.Controls.Add(tbGender)
         GroupBox3.Controls.Add(Label17)
         GroupBox3.Controls.Add(Label11)
-        GroupBox3.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        GroupBox3.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         GroupBox3.Location = New Point(0, 22)
         GroupBox3.Name = "GroupBox3"
         GroupBox3.Size = New Size(396, 330)
@@ -256,10 +258,32 @@ Partial Class Individual_Search
         GroupBox3.TabStop = False
         GroupBox3.Text = "Personal Information"
         ' 
+        ' rdoFemale
+        ' 
+        rdoFemale.AutoSize = True
+        rdoFemale.Location = New Point(200, 93)
+        rdoFemale.Name = "rdoFemale"
+        rdoFemale.Size = New Size(65, 19)
+        rdoFemale.TabIndex = 38
+        rdoFemale.TabStop = True
+        rdoFemale.Text = "Female"
+        rdoFemale.UseVisualStyleBackColor = True
+        ' 
+        ' rdoMale
+        ' 
+        rdoMale.AutoSize = True
+        rdoMale.Location = New Point(271, 93)
+        rdoMale.Name = "rdoMale"
+        rdoMale.Size = New Size(52, 19)
+        rdoMale.TabIndex = 37
+        rdoMale.TabStop = True
+        rdoMale.Text = "Male"
+        rdoMale.UseVisualStyleBackColor = True
+        ' 
         ' cboTaxonomy
         ' 
         cboTaxonomy.FormattingEnabled = True
-        cboTaxonomy.Items.AddRange(New Object() {"Advanced Practice Midwife", "Allergy & Immunology", "Anesthesiologist Assistant", "Anesthesiology", "Audiologist", "Audiologist-Hearing Aid Fitter", "Cardiology", "Case Manager/Care Coordinator", "Chiropractic", "Chiropractor", "Clinical Neuropsychologist", "Clinical Nurse Specialist", "Clinical Pharmacology", "Colon & Rectal Surgery", "Colorectal Surgery", "Community Health Worker", "Dentist", "Dermatology", "Diagnostic Radiology", "Drama Therapist", "Electrodiagnostic Medicine", "Emergency Medical Technician, Basic", "Emergency Medical Technician, Intermediate", "Emergency Medical Technician, Paramedic", "Emergency Medicine", "Family Medicine", "Family Practice", "Funeral Director", "Gastroenterology", "General Practice", "General Surgery", "Genetic Counselor, MS", "Geriatric Medicine", "Hand Surgery", "Health & Wellness Coach", "Health Educator", "Homeopath", "Hospitalist", "Independent Medical Examiner", "Integrative Medicine", "Internal Medicine", "Interpreter", "Interventional Pain Management", "Lactation Consultant, Non-RN", "Legal Medicine", "Marriage & Family Therapist", "Mechanotherapist", "Medical Genetics", "Medical Genetics, Ph.D. Medical Genetics", "Midwife", "Midwife, Lay", "Military Health Care Provider", "Multi-Specialty", "Naprapath", "Naturopath", "Nephrology", "Neurological Surgery", "Neurology", "Neuromusculoskeletal Medicine & OMM", "Neuromusculoskeletal Medicine, Sports Medicine", "Neurosurgery", "Nuclear Medicine", "Nurse Anesthetist, Certified Registered", "Nurse Practitioner", "Obstetrics & Gynecology", "Obstetrics Gynecology", "Occupational Therapist", "Occupational Therapy Assistant", "Ophthalmology", "Optometrist", "Oral & Maxillofacial Surgery", "Oral Surgery (dental only)", "Orthopaedic Surgery", "Orthopedic Surgery", "Osteopathic Manipulative", "Otolaryngology", "Pain Medicine", "Pathology", "Pediatric Medicine", "Pediatrics", "Peer Specialist", "Personal Emergency Response Attendant", "Phlebology", "Physical Medicine & Rehabilitation", "Physical Medicine and Rehabilitation", "Physical Therapist", "Physician Assistant", "Plastic and Reconstructive", "Plastic Surgery", "Podiatrist", "Poetry Therapist", "Prevention Professional", "Preventive Medicine", "Psychiatry", "Psychiatry & Neurology", "Psychoanalyst", "Psychologist", "Pulmonary Disease", "Radiology", "Reflexologist", "Single Specialty", "Sleep Specialist, PhD", "Social Worker", "Specialist", "Student in an Organized Health Care Education/Training Program", "Surgery", "Therapy (OMM)", "Thoracic Surgery", "Thoracic Surgery (Cardiothoracic Vascular Surgery)", "Transplant Surgery", "Urology", ""})
+        cboTaxonomy.Items.AddRange(New Object() {"Addiction Medicine", "Advanced Practice Midwife", "Allergy & Immunology", "ALLERGY IMMUNOLOGY", "Anesthesiologist Assistant", "Anesthesiology", "Audiologist", "Audiologist-Hearing Aid Fitter", "CARDIAC SURGERY", "Cardiology", "Cardiovascualar Disease (Cardiology)", "Case Manager/Care Coordinator", "CERTIFIED CLINICAL NURSE SPECIALIST", "CERTIFIED NURSE MIDWIFE", "CERTIFIED REGISTERED NURSE ASSISTANT (CRNA)", "Chiropractic", "Chiropractor", "Clinical Neuropsychologist", "Clinical Nurse Specialist", "Clinical Pharmacology", "CLINICAL PSYCHOLOGIST", "Clinical Social Worker", "Colon & Rectal Surgery", "Colorectal Surgery", "Community Health Worker", "CRITICAL CARE (INTENSIVISTS)", "Dentist", "Dermatology", "Diagnostic Radiology", "Drama Therapist", "Electrodiagnostic Medicine", "Emergency Medical Technician, Basic", "Emergency Medical Technician, Intermediate", "Emergency Medical Technician, Paramedic", "Emergency Medicine", "ENDOCRINOLOGY", "Family Medicine", "Family Practice", "Funeral Director", "Gastroenterology", "General Practice", "General Surgery", "Genetic Counselor, MS", "Geriatric Medicine", "GYNECOLOGICAL/ONCOLOGY", "Hand Surgery", "Health & Wellness Coach", "Health Educator", "HEMATOLOGY", "HEMATOLOGY/ONCOLOGY", "Homeopath", "Hospitalist", "Independent Medical Examiner", "INFECTIOUS DISEASE", "Integrative Medicine", "Internal Medicine", "Interpreter", "Interventional Pain Management", "INTERVENTIONAL RADIOLOGY", "Lactation Consultant, Non-RN", "Legal Medicine", "LICENSED CLINICAL SOCIAL WORKER", "Marriage & Family Therapist", "MAXILLOFACIAL SURGERY", "Mechanotherapist", "Medical Genetics", "Medical Genetics, Ph.D. Medical Genetics", "MEDICAL ONCOLOGY", "Midwife", "Midwife, Lay", "Military Health Care Provider", "Multi-Specialty", "Naprapath", "Naturopath", "Nephrology", "Neurological Surgery", "Neurology", "Neuromusculoskeletal Medicine & OMM", "Neuromusculoskeletal Medicine, Sports Medicine", "NEUROPSYCHIATRY", "Neurosurgery", "Nuclear Medicine", "Nurse Anesthetist, Certified Registered", "Nurse Practitioner", "Obstetrics & Gynecology", "Obstetrics Gynecology", "Obstetrics/Gynecology", "Occupational Therapist", "Occupational Therapy Assistant", "Ophthalmology", "Optometrist", "OPTOMETRY", "Oral & Maxillofacial Surgery", "Oral Surgery (dental only)", "Orthopaedic Surgery", "Orthopedic Surgery", "Osteopathic Manipulative", "Otolaryngology", "PAIN MANAGEMENT", "Pain Medicine", "Pathology", "Pediatric Medicine", "Pediatrics", "Peer Specialist", "Personal Emergency Response Attendant", "Phlebology", "Physical Medicine & Rehabilitation", "Physical Medicine and Rehabilitation", "Physical Therapist", "Physical Therapist in Private Practice", "Physician Assistant", "Plastic and Reconstructive Surgery", "Plastic Surgery", "Podiatrist", "PODIATRY", "Poetry Therapist", "Prevention Professional", "Preventive Medicine", "Psychiatry", "Psychiatry & Neurology", "Psychoanalyst", "Psychologist", "Pulmonary Disease", "RADIATION ONCOLOGY", "Radiology", "Reflexologist", "REGISTERED DIETITIAN/NUTRITION PROFESSIONAL", "RHEUMATOLOGY", "Single Specialty", "Sleep Specialist, PhD", "Social Worker", "Specialist", "Student in an Organized Health Care Education/Training Program", "Surgery", "SURGICAL ONCOLOGY", "Therapy (OMM)", "Thoracic Surgery", "Thoracic Surgery (Cardiothoracic Vascular Surgery)", "Transplant Surgery", "Urology", "VASCULAR SURGERY"})
         cboTaxonomy.Location = New Point(174, 59)
         cboTaxonomy.Name = "cboTaxonomy"
         cboTaxonomy.Size = New Size(182, 23)
@@ -377,13 +401,6 @@ Partial Class Individual_Search
         Label18.TabIndex = 31
         Label18.Text = "Medical School"
         ' 
-        ' tbGender
-        ' 
-        tbGender.Location = New Point(176, 92)
-        tbGender.Name = "tbGender"
-        tbGender.Size = New Size(180, 23)
-        tbGender.TabIndex = 21
-        ' 
         ' Label17
         ' 
         Label17.AutoSize = True
@@ -413,7 +430,7 @@ Partial Class Individual_Search
         GroupBox2.Controls.Add(tbAddress)
         GroupBox2.Controls.Add(tbCity)
         GroupBox2.Controls.Add(tbZip)
-        GroupBox2.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        GroupBox2.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         GroupBox2.Location = New Point(412, 22)
         GroupBox2.Name = "GroupBox2"
         GroupBox2.Size = New Size(434, 330)
@@ -519,7 +536,7 @@ Partial Class Individual_Search
         ' 
         ' Individual_Search
         ' 
-        AutoScaleDimensions = New SizeF(7.0F, 15.0F)
+        AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         AutoScroll = True
         ClientSize = New Size(1314, 710)
@@ -552,7 +569,6 @@ Partial Class Individual_Search
     Friend WithEvents tbStLicNum As TextBox
     Friend WithEvents tbStLic As TextBox
     Friend WithEvents tbHCPCS As TextBox
-    Friend WithEvents tbGender As TextBox
     Friend WithEvents tbAT As TextBox
     Friend WithEvents tbZip As TextBox
     Friend WithEvents tbState As TextBox
@@ -585,5 +601,7 @@ Partial Class Individual_Search
     Friend WithEvents GroupBox2 As GroupBox
     Friend WithEvents GroupBox4 As GroupBox
     Friend WithEvents cboTaxonomy As ComboBox
+    Friend WithEvents rdoFemale As RadioButton
+    Friend WithEvents rdoMale As RadioButton
     'Friend WithEvents tbTS As ComboBox
 End Class

@@ -192,9 +192,11 @@ Public Class Individual_Search
                 npi:=params.NPI,
                 firstName:=params.FirstName,
                 lastName:=params.LastName,
+                gender:=params.Gender,
                 gradYear:=params.GradYear,
                 medSchool:=params.MedSchool,
                 state:=params.State,
+                taxonomy:=params.Taxonomy,
                 limit:=1000
             )
         Else
@@ -243,7 +245,7 @@ Public Class Individual_Search
             .City = GetTrimmedText(tbCity),
             .State = GetTrimmedText(tbState).ToUpper(),
             .ZipCode = GetTrimmedText(tbZip),
-            .Gender = GetTrimmedText(tbGender),
+            .Gender = GetTrimmedText(rdoMale),
             .LicenseState = GetTrimmedText(tbStLic).ToUpper(),
             .LicenseNumber = GetTrimmedText(tbStLicNum),
             .Specialty = GetTrimmedText(tbFacilityTyp),
@@ -251,14 +253,25 @@ Public Class Individual_Search
             .MedSchool = GetTrimmedText(tbMedSchool),
             .BrandDrug = GetTrimmedText(tbDrug),
             .GenericDrug = GetTrimmedText(tbDrugGeneric),
-            .Taxonomy = GetTrimmedText(cboTaxonomy)
+            .Taxonomy = GetTrimmedText(cboTaxonomy, True)
         }
     End Function
 
     ''' <summary>
     ''' Safely gets trimmed text from a control
     ''' </summary>
-    Private Function GetTrimmedText(control As Control) As String
+    Private Function GetTrimmedText(control As Control, Optional isTaxonomy As Boolean = False) As String
+        Select Case True
+            Case TypeOf control Is RadioButton
+                If rdoMale.Checked Then Return "M"
+                If rdoFemale.Checked Then Return "F"
+        End Select
+        If isTaxonomy Then
+            Select Case control.Text
+                Case "Cardiology"
+                    Return "CARDIOVASCULAR DISEASE (CARDIOLOGY)"
+            End Select
+        End If
         If control Is Nothing Then Return ""
         Return control.Text.Trim()
     End Function
@@ -353,7 +366,7 @@ Public Class Individual_Search
         AddToSummaryIfNotEmpty(filters, "State", tbState)
         AddToSummaryIfNotEmpty(filters, "City", tbCity)
         AddToSummaryIfNotEmpty(filters, "ZIP", tbZip)
-        AddToSummaryIfNotEmpty(filters, "Gender", tbGender)
+        AddToSummaryIfNotEmpty(filters, "Gender", rdoMale)
         AddToSummaryIfNotEmpty(filters, "License State", tbStLic)
         AddToSummaryIfNotEmpty(filters, "License Number", tbStLicNum)
         AddToSummaryIfNotEmpty(filters, "Specialty", tbFacilityTyp)
@@ -370,8 +383,16 @@ Public Class Individual_Search
     ''' Helper to add non-empty values to search summary
     ''' </summary>
     Private Sub AddToSummaryIfNotEmpty(filters As List(Of String), label As String, control As Control)
-        If control IsNot Nothing AndAlso Not String.IsNullOrWhiteSpace(control.Text) Then
-            filters.Add($"{label}: {control.Text.Trim()}")
+        If control Is Nothing Then Return
+        Dim value As String = ""
+        ' Handle RadioButton specially
+        If TypeOf control Is RadioButton Then
+            value = GetTrimmedText(control)
+        Else
+            value = control.Text.Trim()
+        End If
+        If Not String.IsNullOrWhiteSpace(value) Then
+            filters.Add($"{label}: {value}")
         End If
     End Sub
 
@@ -390,7 +411,7 @@ Public Class Individual_Search
             ' Clear all text boxes
             Dim textBoxesToClear() As TextBox = {
                 tbFirst, tbLast, tbNpi, tbState, tbMiddle, tbAddress,
-                tbCity, tbZip, tbAT, tbGender, tbHCPCS, tbStLic,
+                tbCity, tbZip, tbAT, tbHCPCS, tbStLic,
                 tbStLicNum, tbProvEnroll, tbFacilityTyp, tbGradYear,
                 tbMedSchool, tbDrug, tbDrugGeneric
             }
@@ -405,6 +426,8 @@ Public Class Individual_Search
             If cboTaxonomy IsNot Nothing Then
                 cboTaxonomy.SelectedIndex = -1
             End If
+            rdoMale.Checked = False
+            rdoFemale.Checked = False
 
         Catch ex As Exception
             ShowMessage($"Error clearing fields: {ex.Message}", "Clear Error", MessageBoxIcon.Warning)

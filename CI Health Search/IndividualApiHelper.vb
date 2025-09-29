@@ -109,8 +109,10 @@ Module IndividualApiHelper
         Optional npi As String = "",
         Optional firstName As String = "",
         Optional lastName As String = "",
+        Optional gender As String = "",
         Optional gradYear As String = "",
         Optional medSchool As String = "",
+        Optional taxonomy As String = "",
         Optional state As String = "",
         Optional limit As Integer = 10
     ) As Task(Of JArray)
@@ -121,9 +123,15 @@ Module IndividualApiHelper
             AddConditionIfNotEmpty(conditions, "npi", npi)
             AddConditionIfNotEmpty(conditions, "provider_first_name", firstName)
             AddConditionIfNotEmpty(conditions, "provider_last_name", lastName)
+            AddConditionIfNotEmpty(conditions, "gndr", gender)
             AddConditionIfNotEmpty(conditions, "grd_yr", gradYear)
             AddConditionIfNotEmpty(conditions, "med_sch", medSchool)
             AddConditionIfNotEmpty(conditions, "state", state)
+            AddConditionIfNotEmpty(conditions, "pri_spec", taxonomy)
+            'For i As Integer = 1 To 4
+            '    AddConditionIfNotEmpty(conditions, "sec_spec" + i.ToString, taxonomy.ToUpper)
+            'Next
+            'AddConditionIfNotEmpty(conditions, "sec_spec_all", taxonomy.ToUpper)
 
             Return Await ExecuteCmsPostRequestAsync(NATIONAL_DOWNLOADABLE_FILE_ID, conditions, limit, "results")
 
