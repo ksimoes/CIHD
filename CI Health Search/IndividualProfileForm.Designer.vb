@@ -23,6 +23,7 @@ Partial Class IndividualProfileForm
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Panel1 = New Panel()
+        Button1 = New Button()
         Label24 = New Label()
         Label1 = New Label()
         dgvOwner = New DataGridView()
@@ -81,7 +82,6 @@ Partial Class IndividualProfileForm
         Label4 = New Label()
         Label3 = New Label()
         Label2 = New Label()
-        Button1 = New Button()
         Panel1.SuspendLayout()
         CType(dgvOwner, ComponentModel.ISupportInitialize).BeginInit()
         CType(dgvGenPay, ComponentModel.ISupportInitialize).BeginInit()
@@ -122,6 +122,15 @@ Partial Class IndividualProfileForm
         Panel1.Name = "Panel1"
         Panel1.Size = New Size(1222, 1061)
         Panel1.TabIndex = 0
+        ' 
+        ' Button1
+        ' 
+        Button1.Location = New Point(1022, 961)
+        Button1.Name = "Button1"
+        Button1.Size = New Size(164, 88)
+        Button1.TabIndex = 28
+        Button1.Text = "Back to Search!"
+        Button1.UseVisualStyleBackColor = True
         ' 
         ' Label24
         ' 
@@ -237,7 +246,7 @@ Partial Class IndividualProfileForm
         dgvMain.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
         dgvMain.Location = New Point(605, 3)
         dgvMain.Name = "dgvMain"
-        dgvMain.Size = New Size(602, 561)
+        dgvMain.Size = New Size(367, 249)
         dgvMain.TabIndex = 15
         ' 
         ' Label15
@@ -329,7 +338,7 @@ Partial Class IndividualProfileForm
         ' lblMailingZip
         ' 
         lblMailingZip.AutoSize = True
-        lblMailingZip.Location = New Point(267, 234)
+        lblMailingZip.Location = New Point(230, 234)
         lblMailingZip.Name = "lblMailingZip"
         lblMailingZip.Size = New Size(10, 15)
         lblMailingZip.TabIndex = 40
@@ -338,7 +347,7 @@ Partial Class IndividualProfileForm
         ' lblMailingState
         ' 
         lblMailingState.AutoSize = True
-        lblMailingState.Location = New Point(267, 206)
+        lblMailingState.Location = New Point(230, 206)
         lblMailingState.Name = "lblMailingState"
         lblMailingState.Size = New Size(10, 15)
         lblMailingState.TabIndex = 39
@@ -387,7 +396,7 @@ Partial Class IndividualProfileForm
         ' lblPracticeStreet
         ' 
         lblPracticeStreet.AutoSize = True
-        lblPracticeStreet.Location = New Point(267, 282)
+        lblPracticeStreet.Location = New Point(230, 282)
         lblPracticeStreet.Name = "lblPracticeStreet"
         lblPracticeStreet.Size = New Size(10, 15)
         lblPracticeStreet.TabIndex = 34
@@ -417,7 +426,7 @@ Partial Class IndividualProfileForm
         ' 
         lblFacility.AutoSize = True
         lblFacility.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
-        lblFacility.Location = New Point(267, 542)
+        lblFacility.Location = New Point(230, 542)
         lblFacility.Name = "lblFacility"
         lblFacility.Size = New Size(10, 15)
         lblFacility.TabIndex = 31
@@ -426,7 +435,7 @@ Partial Class IndividualProfileForm
         ' lblGradYear
         ' 
         lblGradYear.AutoSize = True
-        lblGradYear.Location = New Point(267, 516)
+        lblGradYear.Location = New Point(230, 516)
         lblGradYear.Name = "lblGradYear"
         lblGradYear.Size = New Size(10, 15)
         lblGradYear.TabIndex = 30
@@ -445,7 +454,7 @@ Partial Class IndividualProfileForm
         ' lblMedSchool
         ' 
         lblMedSchool.AutoSize = True
-        lblMedSchool.Location = New Point(267, 490)
+        lblMedSchool.Location = New Point(230, 490)
         lblMedSchool.Name = "lblMedSchool"
         lblMedSchool.Size = New Size(10, 15)
         lblMedSchool.TabIndex = 28
@@ -464,7 +473,7 @@ Partial Class IndividualProfileForm
         ' lblPhone
         ' 
         lblPhone.AutoSize = True
-        lblPhone.Location = New Point(267, 464)
+        lblPhone.Location = New Point(230, 464)
         lblPhone.Name = "lblPhone"
         lblPhone.Size = New Size(10, 15)
         lblPhone.TabIndex = 26
@@ -483,7 +492,7 @@ Partial Class IndividualProfileForm
         ' lblLicNum
         ' 
         lblLicNum.AutoSize = True
-        lblLicNum.Location = New Point(267, 438)
+        lblLicNum.Location = New Point(230, 438)
         lblLicNum.Name = "lblLicNum"
         lblLicNum.Size = New Size(10, 15)
         lblLicNum.TabIndex = 24
@@ -502,7 +511,7 @@ Partial Class IndividualProfileForm
         ' lblTax
         ' 
         lblTax.AutoSize = True
-        lblTax.Location = New Point(267, 412)
+        lblTax.Location = New Point(230, 412)
         lblTax.Name = "lblTax"
         lblTax.Size = New Size(10, 15)
         lblTax.TabIndex = 22
@@ -521,7 +530,7 @@ Partial Class IndividualProfileForm
         ' lblGender
         ' 
         lblGender.AutoSize = True
-        lblGender.Location = New Point(267, 386)
+        lblGender.Location = New Point(230, 386)
         lblGender.Name = "lblGender"
         lblGender.Size = New Size(10, 15)
         lblGender.TabIndex = 20
@@ -530,7 +539,7 @@ Partial Class IndividualProfileForm
         ' lblMailingCity
         ' 
         lblMailingCity.AutoSize = True
-        lblMailingCity.Location = New Point(267, 178)
+        lblMailingCity.Location = New Point(230, 178)
         lblMailingCity.Name = "lblMailingCity"
         lblMailingCity.Size = New Size(10, 15)
         lblMailingCity.TabIndex = 19
@@ -539,7 +548,7 @@ Partial Class IndividualProfileForm
         ' lblPracticeZip
         ' 
         lblPracticeZip.AutoSize = True
-        lblPracticeZip.Location = New Point(267, 360)
+        lblPracticeZip.Location = New Point(230, 360)
         lblPracticeZip.Name = "lblPracticeZip"
         lblPracticeZip.Size = New Size(10, 15)
         lblPracticeZip.TabIndex = 18
@@ -548,7 +557,7 @@ Partial Class IndividualProfileForm
         ' lblPracticeState
         ' 
         lblPracticeState.AutoSize = True
-        lblPracticeState.Location = New Point(267, 334)
+        lblPracticeState.Location = New Point(230, 334)
         lblPracticeState.Name = "lblPracticeState"
         lblPracticeState.Size = New Size(10, 15)
         lblPracticeState.TabIndex = 17
@@ -557,7 +566,7 @@ Partial Class IndividualProfileForm
         ' lblPCity
         ' 
         lblPCity.AutoSize = True
-        lblPCity.Location = New Point(267, 308)
+        lblPCity.Location = New Point(230, 308)
         lblPCity.Name = "lblPCity"
         lblPCity.Size = New Size(10, 15)
         lblPCity.TabIndex = 16
@@ -566,7 +575,7 @@ Partial Class IndividualProfileForm
         ' lblMailingStreet
         ' 
         lblMailingStreet.AutoSize = True
-        lblMailingStreet.Location = New Point(267, 152)
+        lblMailingStreet.Location = New Point(230, 152)
         lblMailingStreet.Name = "lblMailingStreet"
         lblMailingStreet.Size = New Size(10, 15)
         lblMailingStreet.TabIndex = 15
@@ -575,7 +584,7 @@ Partial Class IndividualProfileForm
         ' lblLast
         ' 
         lblLast.AutoSize = True
-        lblLast.Location = New Point(267, 100)
+        lblLast.Location = New Point(230, 100)
         lblLast.Name = "lblLast"
         lblLast.Size = New Size(10, 15)
         lblLast.TabIndex = 14
@@ -584,7 +593,7 @@ Partial Class IndividualProfileForm
         ' lblMiddle
         ' 
         lblMiddle.AutoSize = True
-        lblMiddle.Location = New Point(267, 74)
+        lblMiddle.Location = New Point(230, 74)
         lblMiddle.Name = "lblMiddle"
         lblMiddle.Size = New Size(10, 15)
         lblMiddle.TabIndex = 13
@@ -593,7 +602,7 @@ Partial Class IndividualProfileForm
         ' lblFirst
         ' 
         lblFirst.AutoSize = True
-        lblFirst.Location = New Point(267, 48)
+        lblFirst.Location = New Point(230, 48)
         lblFirst.Name = "lblFirst"
         lblFirst.Size = New Size(10, 15)
         lblFirst.TabIndex = 12
@@ -601,7 +610,7 @@ Partial Class IndividualProfileForm
         ' 
         ' tbNpiResult
         ' 
-        tbNpiResult.Location = New Point(267, 19)
+        tbNpiResult.Location = New Point(230, 19)
         tbNpiResult.Name = "tbNpiResult"
         tbNpiResult.Size = New Size(100, 23)
         tbNpiResult.TabIndex = 11
@@ -705,15 +714,6 @@ Partial Class IndividualProfileForm
         Label2.Size = New Size(67, 15)
         Label2.TabIndex = 1
         Label2.Text = "First Name"
-        ' 
-        ' Button1
-        ' 
-        Button1.Location = New Point(1040, 570)
-        Button1.Name = "Button1"
-        Button1.Size = New Size(164, 88)
-        Button1.TabIndex = 28
-        Button1.Text = "Back to Search!"
-        Button1.UseVisualStyleBackColor = True
         ' 
         ' IndividualProfileForm
         ' 

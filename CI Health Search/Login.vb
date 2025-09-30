@@ -20,6 +20,8 @@
                     If dlg.SelectedType = "Individual" Then
                         Dim indForm As New Individual_Search()
                         indForm.Show()
+                        indForm.cboSearchType.SelectedIndex = 0
+                        indForm.LoadTaxonomyCombo()
                     ElseIf dlg.SelectedType = "Organization" Then
                         Search.Show()
                     End If

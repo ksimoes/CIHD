@@ -1,7 +1,9 @@
 ﻿Imports System.ComponentModel
+Imports System.Data.SqlClient
 Imports System.Threading
+Imports System.Windows.Forms.VisualStyles.VisualStyleElement
 Imports Newtonsoft.Json.Linq
-
+Imports System.Windows.Forms.VisualStyles
 ''' <summary>
 ''' Individual Provider Search Form
 ''' 
@@ -68,7 +70,7 @@ Public Class Individual_Search
     End Sub
 
     ' Event handlers that can be removed if not needed
-    Private Sub Label3_Click(sender As Object, e As EventArgs) Handles Label3.Click
+    Private Sub Label3_Click(sender As Object, e As EventArgs) Handles lblFirst.Click
     End Sub
 
     Private Sub GroupBox1_Enter(sender As Object, e As EventArgs) Handles GroupBox1.Enter
@@ -109,25 +111,23 @@ Public Class Individual_Search
     ''' </summary>
     Private Async Function RouteSearch(params As SearchParameters) As Task
         ' Priority 1: Direct NPI lookup
-        If Not String.IsNullOrWhiteSpace(params.NPI) Then
-            HandleDirectNpiLookup(params.NPI)
-            Return
-        End If
+        Select Case cboSearchType.SelectedItem.ToString
+            Case "NPI Registry"
+                Await HandleGeneralSearch(params)
+            Case "NPI Downloadable Update"
+                If Not String.IsNullOrWhiteSpace(params.NPI) Then HandleDirectNpiLookup(params.NPI)
+            Case "Healthcare Common Procedure Code"
+                If Not String.IsNullOrWhiteSpace(params.HCPCS) Then Await HandleHCPCSSearch(params.HCPCS, params.State)
+            Case "Drugs Prescribed"
+                If Not String.IsNullOrWhiteSpace(params.BrandDrug) OrElse Not String.IsNullOrWhiteSpace(params.GenericDrug) Then Await HandleMedicationSearch(params.BrandDrug, params.GenericDrug)
+            Case "Medical School"
+                Await HandleGeneralSearch(params)
+        End Select
 
         ' Priority 2: HCPCS procedure code search
-        If Not String.IsNullOrWhiteSpace(params.HCPCS) Then
-            Await HandleHCPCSSearch(params.HCPCS, params.State)
-            Return
-        End If
-
         ' Priority 3: Medication search
-        If Not String.IsNullOrWhiteSpace(params.BrandDrug) OrElse Not String.IsNullOrWhiteSpace(params.GenericDrug) Then
-            Await HandleMedicationSearch(params.BrandDrug, params.GenericDrug)
-            Return
-        End If
-
         ' Priority 4: General provider search
-        Await HandleGeneralSearch(params)
+
     End Function
 
 #End Region
@@ -141,8 +141,9 @@ Public Class Individual_Search
         Try
             Dim profileForm As New IndividualProfileForm(npi)
             profileForm.Show()
+            profileForm.tbNpiResult.Text = npi
         Catch ex As Exception
-            ShowMessage($"Could not open provider profile for NPI {npi}: {ex.Message}",
+            ShowMessage($"Could Not open provider profile for NPI {npi}:  {ex.Message}",
                       "Profile Error", MessageBoxIcon.Error)
         End Try
     End Sub
@@ -162,6 +163,64 @@ Public Class Individual_Search
 
         ShowResults(results, False)
     End Function
+
+    Public Sub LoadTaxonomyCombo()
+        Dim connectionString As String = "Server=tcp:cihg-sql1.database.windows.net,1433;Initial Catalog=PapaSmurf;Persist Security Info=False;User ID=cihgadmin;Password=P!bxbFrHw4-jCvU*;MultipleActiveResultSets=True;Encrypt=True;TrustServerCertificate=False;Connection Timeout=400000;"
+
+        ' Fixed query - removed extra space after comma in server name
+        Dim query As String = "SELECT DISTINCT [Provider Taxonomy Description Type] FROM dbo.TaxonomyCodes ORDER BY [Provider Taxonomy Description Type]"
+
+        Using connection As New SqlConnection(connectionString)
+            Using command As New SqlCommand(query, connection)
+                Try
+                    connection.Open()
+
+                    Using reader As SqlDataReader = command.ExecuteReader()
+                        cboTaxonomy.Items.Clear()
+
+                        ' Add a default item
+                        cboTaxonomy.Items.Add("-- Select Taxonomy --")
+
+                        Dim count As Integer = 0
+                        While reader.Read()
+                            ' FIX: Use column name without brackets in reader, or use ordinal position
+                            ' Method 1: Use column name without brackets
+                            If Not reader.IsDBNull(0) Then
+                                Dim taxonomyValue As String = reader("Provider Taxonomy Description Type").ToString()
+                                If Not String.IsNullOrWhiteSpace(taxonomyValue) Then
+                                    cboTaxonomy.Items.Add(taxonomyValue)
+                                    count += 1
+                                End If
+                            End If
+                            If count > 400 Then Exit While
+                        End While
+
+                        ' Set default selection
+                        If cboTaxonomy.Items.Count > 0 Then
+                            cboTaxonomy.SelectedIndex = 0
+                        End If
+
+                        ' Show success message
+                        If count > 0 Then
+                            MessageBox.Show($"Successfully loaded {count} taxonomy codes!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                        Else
+                            MessageBox.Show("No taxonomy codes found in the database.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                        End If
+                    End Using
+
+                Catch ex As SqlException
+                    MessageBox.Show("SQL Error loading taxonomy: " & ex.Message & vbCrLf &
+                               "Error Number: " & ex.Number.ToString() & vbCrLf &
+                               "Server: " & ex.Server,
+                               "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                Catch ex As Exception
+                    MessageBox.Show("Error loading taxonomy: " & ex.Message & vbCrLf &
+                               "Type: " & ex.GetType().Name,
+                               "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                End Try
+            End Using
+        End Using
+    End Sub
 
     ''' <summary>
     ''' Handles medication searches (brand or generic)
@@ -191,17 +250,19 @@ Public Class Individual_Search
             results = Await IndividualApiHelper.SearchNationalDownloadableFileAsync(
                 npi:=params.NPI,
                 firstName:=params.FirstName,
+                middleName:=params.MiddleName,
                 lastName:=params.LastName,
                 gender:=params.Gender,
                 gradYear:=params.GradYear,
                 medSchool:=params.MedSchool,
                 state:=params.State,
                 taxonomy:=params.Taxonomy,
-                limit:=1000
+                limit:=1000, ckExact.Checked
             )
         Else
             ' Use NPI Registry for general demographic searches
             results = Await IndividualApiHelper.SearchNpiRegistryAsync(
+                npi:=params.NPI,
                 firstName:=params.FirstName,
                 middleName:=params.MiddleName,
                 lastName:=params.LastName,
@@ -211,7 +272,6 @@ Public Class Individual_Search
                 gender:=params.Gender,
                 licenseState:=params.LicenseState,
                 licenseNumber:=params.LicenseNumber,
-                enumerationType:="NPI-1",
                 taxonomyDescription:=params.Specialty,
                 graduationYear:=params.GradYear,
                 medicalSchool:=params.MedSchool,
@@ -235,6 +295,7 @@ Public Class Individual_Search
     ''' <summary>
     ''' Extracts search parameters from form controls
     ''' </summary>
+
     Private Function GetSearchParameters() As SearchParameters
         Return New SearchParameters With {
             .NPI = GetTrimmedText(tbNpi),
@@ -248,7 +309,7 @@ Public Class Individual_Search
             .Gender = GetTrimmedText(rdoMale),
             .LicenseState = GetTrimmedText(tbStLic).ToUpper(),
             .LicenseNumber = GetTrimmedText(tbStLicNum),
-            .Specialty = GetTrimmedText(tbFacilityTyp),
+            .Specialty = GetTrimmedText(cboTaxonomy, True),
             .GradYear = GetTrimmedText(tbGradYear),
             .MedSchool = GetTrimmedText(tbMedSchool),
             .BrandDrug = GetTrimmedText(tbDrug),
@@ -335,8 +396,7 @@ Public Class Individual_Search
     ''' </summary>
     Private Function ShouldUseEducationSearch(params As SearchParameters) As Boolean
         Return Not String.IsNullOrWhiteSpace(params.GradYear) OrElse
-               Not String.IsNullOrWhiteSpace(params.MedSchool) OrElse
-               Not String.IsNullOrWhiteSpace(params.Taxonomy)
+               Not String.IsNullOrWhiteSpace(params.MedSchool)
     End Function
 
     ''' <summary>
@@ -409,9 +469,9 @@ Public Class Individual_Search
     Private Sub ClearAllFields()
         Try
             ' Clear all text boxes
-            Dim textBoxesToClear() As TextBox = {
+            Dim textBoxesToClear() As System.Windows.Forms.TextBox = {
                 tbFirst, tbLast, tbNpi, tbState, tbMiddle, tbAddress,
-                tbCity, tbZip, tbAT, tbHCPCS, tbStLic,
+                tbCity, tbZip, tbAddressType, tbHCPCS, tbStLic,
                 tbStLicNum, tbProvEnroll, tbFacilityTyp, tbGradYear,
                 tbMedSchool, tbDrug, tbDrugGeneric
             }
@@ -476,6 +536,105 @@ Public Class Individual_Search
             MyBase.OnFormClosing(e)
         End Try
     End Sub
+
+
+    Private Sub cboSearchType_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboSearchType.SelectedIndexChanged
+        If cboSearchType.SelectedIndex = 0 Then
+            cboSearchType.ForeColor = Color.Gray
+        Else
+            cboSearchType.ForeColor = Color.Black
+        End If
+        Select Case cboSearchType.SelectedItem.ToString
+            Case "NPI Registry"
+                tbNpi.Visible = True
+                cboTaxonomy.Visible = True
+                tbFirst.Visible = True
+                tbMiddle.Visible = True
+                tbLast.Visible = True
+                tbState.Visible = True
+                lblTax.Visible = True
+                lblFirst.Visible = True
+                lblMiddle.Visible = True
+                lblLast.Visible = True
+                lblState.Visible = True
+                lblGender.Visible = True
+
+                groupPersonal.Visible = True
+                groupAddress.Visible = True
+                groupMedSchool.Visible = True
+                groupBoxOther.Visible = True
+                groupMeds.Visible = False
+
+            Case "NPI Downloadable Update"
+                tbNpi.Visible = True
+                cboTaxonomy.Visible = False
+                tbFirst.Visible = False
+                tbMiddle.Visible = False
+                tbLast.Visible = False
+                tbState.Visible = False
+                rdoFemale.Visible = False
+                rdoMale.Visible = False
+                ckExact.Visible = False
+                lblTax.Visible = False
+                lblFirst.Visible = False
+                lblMiddle.Visible = False
+                lblLast.Visible = False
+                lblState.Visible = False
+                lblGender.Visible = False
+
+
+                groupPersonal.Visible = True
+                groupAddress.Visible = False
+                groupMedSchool.Visible = False
+                groupBoxOther.Visible = False
+                groupMeds.Visible = False
+
+            Case "Healthcare Common Procedure Code"
+                groupPersonal.Visible = False
+                groupAddress.Visible = False
+                groupMedSchool.Visible = False
+                groupBoxOther.Visible = True
+                groupMeds.Visible = False
+            Case "Drugs Prescribed"
+                groupPersonal.Visible = False
+                groupAddress.Visible = False
+                groupMedSchool.Visible = False
+                groupBoxOther.Visible = False
+                groupMeds.Visible = True
+            Case "Medical School"
+                tbNpi.Visible = False
+                cboTaxonomy.Visible = False
+                tbFirst.Visible = False
+                tbMiddle.Visible = False
+                tbLast.Visible = False
+                tbState.Visible = False
+
+                groupPersonal.Visible = False
+                groupAddress.Visible = False
+                groupMedSchool.Visible = True
+                groupBoxOther.Visible = False
+                groupMeds.Visible = False
+
+        End Select
+    End Sub
+
+
+    Private Sub tbState_TextChanged(sender As Object, e As EventArgs) Handles tbState.TextChanged
+        If tbAddressState.Text <> tbState.Text Then
+            tbAddressState.Text = tbState.Text
+        End If
+    End Sub
+
+    Private Sub tbAddressState_TextChanged(sender As Object, e As EventArgs) Handles tbAddressState.TextChanged
+        If tbState.Text <> tbAddressState.Text Then
+            tbState.Text = tbAddressState.Text
+        End If
+    End Sub
+
+    Private Sub cboTaxonomy_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboTaxonomy.SelectedIndexChanged
+        'LoadTaxonomyCombo()
+    End Sub
+
 
 #End Region
 

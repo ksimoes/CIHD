@@ -58,11 +58,10 @@ Module IndividualApiHelper
         Optional gender As String = "",
         Optional licenseState As String = "",
         Optional licenseNumber As String = "",
-        Optional enumerationType As String = "",
         Optional taxonomyDescription As String = "",
         Optional graduationYear As String = "",
         Optional medicalSchool As String = "",
-        Optional limit As Integer = 10,
+        Optional limit As Integer = 200,
         Optional skip As Integer = 0
     ) As Task(Of JArray)
 
@@ -78,16 +77,22 @@ Module IndividualApiHelper
 
             ' Build query parameters efficiently
             AddParameterIfNotEmpty(queryParams, "number", npi)
-            AddParameterIfNotEmpty(queryParams, "first_name", firstName)
-            AddParameterIfNotEmpty(queryParams, "middle_name", middleName)
-            AddParameterIfNotEmpty(queryParams, "last_name", lastName)
+            If Not String.IsNullOrWhiteSpace(firstName) Then
+                AddParameterIfNotEmpty(queryParams, "first_name", firstName & "*")
+            End If
+            If Not String.IsNullOrWhiteSpace(middleName) Then
+                AddParameterIfNotEmpty(queryParams, "middle_name", middleName & "*")
+            End If
+            If Not String.IsNullOrWhiteSpace(lastName) Then
+                AddParameterIfNotEmpty(queryParams, "last_name", lastName & "*")
+            End If
             AddParameterIfNotEmpty(queryParams, "city", city)
             AddParameterIfNotEmpty(queryParams, "state", state)
             AddParameterIfNotEmpty(queryParams, "postal_code", zip)
             AddParameterIfNotEmpty(queryParams, "gender", gender)
             AddParameterIfNotEmpty(queryParams, "license_state", licenseState)
             AddParameterIfNotEmpty(queryParams, "license_number", licenseNumber)
-            AddParameterIfNotEmpty(queryParams, "enumeration_type", If(String.IsNullOrWhiteSpace(enumerationType), "NPI-1", enumerationType))
+            'AddParameterIfNotEmpty(queryParams, "enumeration_type", If(String.IsNullOrWhiteSpace(enumerationType), "NPI-1", enumerationType))
             AddParameterIfNotEmpty(queryParams, "taxonomy_description", taxonomyDescription)
             AddParameterIfNotEmpty(queryParams, "graduation_year", graduationYear)
             AddParameterIfNotEmpty(queryParams, "medical_school", medicalSchool)
@@ -106,39 +111,129 @@ Module IndividualApiHelper
     ''' Best for searches involving graduation year, medical school, or taxonomy.
     ''' </summary>
     Public Async Function SearchNationalDownloadableFileAsync(
-        Optional npi As String = "",
-        Optional firstName As String = "",
-        Optional lastName As String = "",
-        Optional gender As String = "",
-        Optional gradYear As String = "",
-        Optional medSchool As String = "",
-        Optional taxonomy As String = "",
-        Optional state As String = "",
-        Optional limit As Integer = 10
-    ) As Task(Of JArray)
+    Optional npi As String = "",
+    Optional firstName As String = "",
+    Optional middleName As String = "",
+    Optional lastName As String = "",
+    Optional gender As String = "",
+    Optional gradYear As String = "",
+    Optional medSchool As String = "",
+    Optional state As String = "",
+    Optional taxonomy As String = "",
+    Optional limit As Integer = 10, Optional isExact As Boolean = False) As Task(Of JArray)
 
         Try
             Dim conditions As New List(Of JObject)
 
-            AddConditionIfNotEmpty(conditions, "npi", npi)
-            AddConditionIfNotEmpty(conditions, "provider_first_name", firstName)
-            AddConditionIfNotEmpty(conditions, "provider_last_name", lastName)
-            AddConditionIfNotEmpty(conditions, "gndr", gender)
-            AddConditionIfNotEmpty(conditions, "grd_yr", gradYear)
-            AddConditionIfNotEmpty(conditions, "med_sch", medSchool)
-            AddConditionIfNotEmpty(conditions, "state", state)
-            AddConditionIfNotEmpty(conditions, "pri_spec", taxonomy)
-            'For i As Integer = 1 To 4
-            '    AddConditionIfNotEmpty(conditions, "sec_spec" + i.ToString, taxonomy.ToUpper)
-            'Next
-            'AddConditionIfNotEmpty(conditions, "sec_spec_all", taxonomy.ToUpper)
+            ' Add ALL exact-match conditions to the API query
+            AddConditionIfNotEmpty(conditions, "npi", npi, True)
+            AddConditionIfNotEmpty(conditions, "provider_first_name", firstName, isExact)
+            AddConditionIfNotEmpty(conditions, "provider_middle_name", middleName, isExact)
+            AddConditionIfNotEmpty(conditions, "provider_last_name", lastName, isExact)
+            AddConditionIfNotEmpty(conditions, "gndr", gender, True)
+            AddConditionIfNotEmpty(conditions, "grd_yr", gradYear, True)
+            AddConditionIfNotEmpty(conditions, "med_sch", medSchool, isExact)
+            AddConditionIfNotEmpty(conditions, "state", state, True)
 
-            Return Await ExecuteCmsPostRequestAsync(NATIONAL_DOWNLOADABLE_FILE_ID, conditions, limit, "results")
+            ' Validate we have at least some search criteria
+            If conditions.Count = 0 AndAlso String.IsNullOrEmpty(taxonomy) Then
+                Return New JArray() ' No search criteria provided
+            End If
+
+            ' Request maximum results
+            Dim results = Await ExecuteCmsPostRequestAsync(NATIONAL_DOWNLOADABLE_FILE_ID, conditions, 200, "results")
+
+            If results Is Nothing OrElse results.Count = 0 Then
+                Return New JArray()
+            End If
+
+            ' Apply client-side filters ONLY if needed for partial matches
+            ' (StartsWith logic for when user types "Ju" to find "Juan")
+            If Not String.IsNullOrEmpty(firstName) Then
+                results = FilterByName(results, "provider_first_name", firstName)
+            End If
+
+            If Not String.IsNullOrEmpty(middleName) Then
+                results = FilterByName(results, "provider_middle_name", middleName)
+            End If
+
+            If Not String.IsNullOrEmpty(lastName) Then
+                results = FilterByName(results, "provider_last_name", lastName)
+            End If
+
+            ' Apply client-side filter for taxonomy across all specialty fields
+            If Not String.IsNullOrEmpty(taxonomy) Then
+                results = FilterByTaxonomy(results, taxonomy)
+            End If
+
+            ' Apply limit after all filtering
+            If results.Count > limit Then
+                Return New JArray(results.Take(limit))
+            End If
+
+            Return results
 
         Catch ex As Exception
             Return New JArray()
         End Try
     End Function
+    Private Function CreateSpecialtyConditionGroup(specialty As String) As JObject
+        Return New JObject(
+        New JProperty("groupOperator", "OR"),
+        New JProperty("conditions", New JArray(
+            New JObject(
+                New JProperty("property", "pri_spec"),
+                New JProperty("value", specialty),
+                New JProperty("operator", "=")
+            ),
+            New JObject(
+                New JProperty("property", "sec_spec_1"),
+                New JProperty("value", specialty),
+                New JProperty("operator", "=")
+            ),
+            New JObject(
+                New JProperty("property", "sec_spec_2"),
+                New JProperty("value", specialty),
+                New JProperty("operator", "=")
+            ),
+            New JObject(
+                New JProperty("property", "sec_spec_3"),
+                New JProperty("value", specialty),
+                New JProperty("operator", "=")
+            ),
+            New JObject(
+                New JProperty("property", "sec_spec_4"),
+                New JProperty("value", specialty),
+                New JProperty("operator", "=")
+            )
+        ))
+    )
+    End Function
+
+    Private Function FilterByTaxonomy(results As JArray, taxonomy As String) As JArray
+        Dim filtered As New JArray()
+
+        For Each result As JObject In results
+            ' Check if taxonomy matches in any specialty field
+            Dim priSpec = result("pri_spec")?.ToString()
+            Dim secSpec1 = result("sec_spec_1")?.ToString()
+            Dim secSpec2 = result("sec_spec_2")?.ToString()
+            Dim secSpec3 = result("sec_spec_3")?.ToString()
+            Dim secSpec4 = result("sec_spec_4")?.ToString()
+
+            If taxonomy.Equals(priSpec, StringComparison.OrdinalIgnoreCase) OrElse
+           taxonomy.Equals(secSpec1, StringComparison.OrdinalIgnoreCase) OrElse
+           taxonomy.Equals(secSpec2, StringComparison.OrdinalIgnoreCase) OrElse
+           taxonomy.Equals(secSpec3, StringComparison.OrdinalIgnoreCase) OrElse
+           taxonomy.Equals(secSpec4, StringComparison.OrdinalIgnoreCase) Then
+                filtered.Add(result)
+            End If
+        Next
+
+        Return filtered
+    End Function
+
+
 
     ''' <summary>
     ''' Searches by HCPCS procedure codes.
@@ -166,6 +261,7 @@ Module IndividualApiHelper
             Return New JArray()
         End Try
     End Function
+
 
     ''' <summary>
     ''' Searches by drug name (brand or generic).
@@ -416,13 +512,33 @@ Module IndividualApiHelper
             parameters.Add(key, value)
         End If
     End Sub
+    Private Function FilterByName(results As JArray, fieldName As String, searchValue As String) As JArray
+        Dim filtered As New JArray()
+        Dim searchLower = searchValue.ToLower()
 
+        For Each result As JObject In results
+            Dim fieldValue = result(fieldName)?.ToString()
+
+            If Not String.IsNullOrEmpty(fieldValue) AndAlso
+           fieldValue.ToLower().StartsWith(searchLower) Then
+                filtered.Add(result)
+            End If
+        Next
+
+        Return filtered
+    End Function
     ''' <summary>
     ''' Adds condition to list if value is not empty.
     ''' </summary>
-    Private Sub AddConditionIfNotEmpty(conditions As List(Of JObject), propertyName As String, value As String)
+    Private Sub AddConditionIfNotEmpty(conditions As List(Of JObject), propertyName As String, value As String, Optional isExact As Boolean = False)
         If Not String.IsNullOrWhiteSpace(value) Then
-            conditions.Add(CreateCondition(propertyName, value, "="))
+            If isExact = False Then
+                value = value.Replace("*", "%")
+                conditions.Add(CreateCondition(propertyName, value, "LIKE"))
+            Else
+                conditions.Add(CreateCondition(propertyName, value, "="))
+            End If
+
         End If
     End Sub
 

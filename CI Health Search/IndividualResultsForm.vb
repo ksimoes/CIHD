@@ -51,7 +51,7 @@ Public Class IndividualResultsForm
             columns.Add(("Zip", "Prscrbr_Zip5"))
             columns.Add(("Brand Name", "Brnd_Name"))
             columns.Add(("Generic Name", "Gnrc_Name"))
-        ElseIf isHCPCS Then
+        ElseIf isHCPCS Then 'Healthcare Common Procedure Coding System
             columns.Add(("NPI", "Rndrng_NPI"))
             columns.Add(("First Name", "Rndrng_Prvdr_First_Name"))
             columns.Add(("Last Name", "Rndrng_Prvdr_Last_Org_Name"))
