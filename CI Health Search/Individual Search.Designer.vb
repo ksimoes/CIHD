@@ -376,7 +376,7 @@ Partial Class Individual_Search
         ' ckExact
         ' 
         ckExact.AutoSize = True
-        ckExact.Location = New Point(271, 96)
+        ckExact.Location = New Point(296, 305)
         ckExact.Name = "ckExact"
         ckExact.Size = New Size(94, 19)
         ckExact.TabIndex = 39
@@ -386,7 +386,7 @@ Partial Class Individual_Search
         ' rdoFemale
         ' 
         rdoFemale.AutoSize = True
-        rdoFemale.Location = New Point(142, 95)
+        rdoFemale.Location = New Point(140, 233)
         rdoFemale.Name = "rdoFemale"
         rdoFemale.Size = New Size(65, 19)
         rdoFemale.TabIndex = 38
@@ -397,7 +397,7 @@ Partial Class Individual_Search
         ' 
         rdoMale.AutoSize = True
         rdoMale.Checked = True
-        rdoMale.Location = New Point(213, 95)
+        rdoMale.Location = New Point(211, 233)
         rdoMale.Name = "rdoMale"
         rdoMale.Size = New Size(52, 19)
         rdoMale.TabIndex = 37
@@ -407,7 +407,9 @@ Partial Class Individual_Search
         ' 
         ' cboTaxonomy
         ' 
+        cboTaxonomy.DropDownHeight = 750
         cboTaxonomy.FormattingEnabled = True
+        cboTaxonomy.IntegralHeight = False
         cboTaxonomy.Items.AddRange(New Object() {"Addiction Medicine", "Advanced Practice Midwife", "Allergy & Immunology", "Allergy Immunology", "Anesthesiologist Assistant", "Anesthesiology", "Audiologist", "Audiologist-Hearing Aid Fitter", "Caridac Surgery", "Cardiology", "Cardiovascualar Disease (Cardiology)", "Case Manager/Care Coordinator", "Certified Clinical Nurse Specialist", "Certified Nurse Midwife", "Certified Registered Nurse Assistant (CRNA)", "Chiropractic", "Chiropractor", "Clinical Neuropsychologist", "Clinical Nurse Specialist", "Clinical Pharmacology", "Clinical Psychologist", "Clinical Social Worker", "Colon & Rectal Surgery", "Colorectal Surgery", "Community Health Worker", "Critical Care (Intensivists)", "Dentist", "Dermatology", "Diagnostic Radiology", "Drama Therapist", "Electrodiagnostic Medicine", "Emergency Medical Technician, Basic", "Emergency Medical Technician, Intermediate", "Emergency Medical Technician, Paramedic", "Emergency Medicine", "Endocrinology", "Family Medicine", "Family Practice", "Funeral Director", "Gastroenterology", "General Practice", "General Surgery", "Genetic Counselor, MS", "Geriatric Medicine", "Gynecological/Oncology", "Hand Surgery", "Health & Wellness Coach", "Health Educator", "Hematology", "Hematology/Oncology", "Homeopath", "Hospitalist", "Independent Medical Examiner", "Infectious Disease", "Integrative Medicine", "Internal Medicine", "Interpreter", "Interventional Pain Management", "Interventional Radiology", "Lactation Consultant, Non-RN", "Legal Medicine", "Licensed Clinical Social Worker", "Marriage & Family Therapist", "Maxillofacial Surgery", "Mechanotherapist", "Medical Genetics", "Medical Genetics, Ph.D. Medical Genetics", "Medical Oncology", "Midwife", "Midwife, Lay", "Military Health Care Provider", "Multi-Specialty", "Naprapath", "Naturopath", "Nephrology", "Neurological Surgery", "Neurology", "Neuromusculoskeletal Medicine & OMM", "Neuromusculoskeletal Medicine, Sports Medicine", "Neuropsychiatry", "Neurosurgery", "Nuclear Medicine", "Nurse Anesthetist, Certified Registered", "Nurse Practitioner", "Obstetrics/Gynecology", "Occupational Therapist", "Occupational Therapy Assistant", "Ophthalmology", "Optometrist", "Optometry", "Oral & Maxillofacial Surgery", "Oral Surgery (dental only)", "Orthopaedic Surgery", "Orthopedic Surgery", "Osteopathic Manipulative", "Otolaryngology", "Pain Management", "Pain Medicine", "Pathology", "Pediatric Medicine", "Pediatrics", "Peer Specialist", "Personal Emergency Response Attendant", "Phlebology", "Physical Medicine and Rehabilitation", "Physical Therapist", "Physical Therapist in Private Practice", "Physician Assistant", "Plastic and Reconstructive Surgery", "Plastic Surgery", "Podiatrist", "Podiatry", "Poetry Therapist", "Prevention Professional", "Preventive Medicine", "Psychiatry", "Psychiatry & Neurology", "Psychoanalyst", "Psychologist", "Pulmonary Disease", "Radiation Oncology", "Radiology", "Reflexologist", "Registered Dietitian/Nutrition Professional", "Rhuematology", "Single Specialty", "Sleep Specialist, PhD", "Social Worker", "Specialist", "Student in an Organized Health Care Education/Training Program", "Surgery", "Surgical Oncology", "Therapy (OMM)", "Thoracic Surgery", "Thoracic Surgery (Cardiothoracic Vascular Surgery)", "Transplant Surgery", "Urology", "Vascular Surgery"})
         cboTaxonomy.Location = New Point(140, 59)
         cboTaxonomy.Name = "cboTaxonomy"
@@ -435,7 +437,7 @@ Partial Class Individual_Search
         ' lblFirst
         ' 
         lblFirst.AutoSize = True
-        lblFirst.Location = New Point(6, 130)
+        lblFirst.Location = New Point(4, 99)
         lblFirst.Name = "lblFirst"
         lblFirst.Size = New Size(67, 15)
         lblFirst.TabIndex = 2
@@ -444,7 +446,7 @@ Partial Class Individual_Search
         ' lblMiddle
         ' 
         lblMiddle.AutoSize = True
-        lblMiddle.Location = New Point(6, 165)
+        lblMiddle.Location = New Point(4, 134)
         lblMiddle.Name = "lblMiddle"
         lblMiddle.Size = New Size(81, 15)
         lblMiddle.TabIndex = 3
@@ -453,7 +455,7 @@ Partial Class Individual_Search
         ' lblLast
         ' 
         lblLast.AutoSize = True
-        lblLast.Location = New Point(6, 200)
+        lblLast.Location = New Point(4, 169)
         lblLast.Name = "lblLast"
         lblLast.Size = New Size(65, 15)
         lblLast.TabIndex = 4
@@ -462,7 +464,7 @@ Partial Class Individual_Search
         ' lblState
         ' 
         lblState.AutoSize = True
-        lblState.Location = New Point(6, 229)
+        lblState.Location = New Point(4, 198)
         lblState.Name = "lblState"
         lblState.Size = New Size(37, 15)
         lblState.TabIndex = 7
@@ -477,28 +479,28 @@ Partial Class Individual_Search
         ' 
         ' tbFirst
         ' 
-        tbFirst.Location = New Point(142, 123)
+        tbFirst.Location = New Point(140, 92)
         tbFirst.Name = "tbFirst"
         tbFirst.Size = New Size(180, 23)
         tbFirst.TabIndex = 13
         ' 
         ' tbMiddle
         ' 
-        tbMiddle.Location = New Point(142, 159)
+        tbMiddle.Location = New Point(140, 128)
         tbMiddle.Name = "tbMiddle"
         tbMiddle.Size = New Size(180, 23)
         tbMiddle.TabIndex = 14
         ' 
         ' tbLast
         ' 
-        tbLast.Location = New Point(142, 194)
+        tbLast.Location = New Point(140, 163)
         tbLast.Name = "tbLast"
         tbLast.Size = New Size(180, 23)
         tbLast.TabIndex = 15
         ' 
         ' tbState
         ' 
-        tbState.Location = New Point(142, 223)
+        tbState.Location = New Point(140, 192)
         tbState.Name = "tbState"
         tbState.Size = New Size(40, 23)
         tbState.TabIndex = 18
@@ -506,7 +508,7 @@ Partial Class Individual_Search
         ' lblGender
         ' 
         lblGender.AutoSize = True
-        lblGender.Location = New Point(6, 95)
+        lblGender.Location = New Point(4, 233)
         lblGender.Name = "lblGender"
         lblGender.Size = New Size(49, 15)
         lblGender.TabIndex = 10

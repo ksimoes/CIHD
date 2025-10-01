@@ -34,20 +34,25 @@ Public Class Individual_Search
     ''' Main search button - orchestrates the entire search process
     ''' </summary>
     Private Async Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
-        ' Prevent multiple simultaneous searches
-        If _isSearchInProgress Then
-            MessageBox.Show("A search is already running. Please wait for it to complete.",
+        If Not cboSearchType.SelectedIndex = 0 Then
+            ' Prevent multiple simultaneous searches
+            If _isSearchInProgress Then
+                MessageBox.Show("A search is already running. Please wait for it to complete.",
                           "Search In Progress", MessageBoxButtons.OK, MessageBoxIcon.Information)
-            Return
+                Return
+            End If
+
+            Try
+                Await PerformSearchAsync()
+            Catch ex As OperationCanceledException
+                ShowMessage("Search was cancelled.", "Search Cancelled", MessageBoxIcon.Information)
+            Catch ex As Exception
+                ShowMessage($"Search failed: {ex.Message}", "Search Error", MessageBoxIcon.Error)
+            End Try
+        Else
+            MessageBox.Show("Please select a search type from the dropdown.", "Select Search Type", MessageBoxButtons.OK, MessageBoxIcon.Warning)
         End If
 
-        Try
-            Await PerformSearchAsync()
-        Catch ex As OperationCanceledException
-            ShowMessage("Search was cancelled.", "Search Cancelled", MessageBoxIcon.Information)
-        Catch ex As Exception
-            ShowMessage($"Search failed: {ex.Message}", "Search Error", MessageBoxIcon.Error)
-        End Try
     End Sub
 
     ''' <summary>
@@ -119,7 +124,7 @@ Public Class Individual_Search
             Case "Healthcare Common Procedure Code"
                 If Not String.IsNullOrWhiteSpace(params.HCPCS) Then Await HandleHCPCSSearch(params.HCPCS, params.State)
             Case "Drugs Prescribed"
-                If Not String.IsNullOrWhiteSpace(params.BrandDrug) OrElse Not String.IsNullOrWhiteSpace(params.GenericDrug) Then Await HandleMedicationSearch(params.BrandDrug, params.GenericDrug)
+                HandleMedicationSearch(params)
             Case "Medical School"
                 Await HandleGeneralSearch(params)
         End Select
@@ -169,6 +174,8 @@ Public Class Individual_Search
 
         ' Fixed query - removed extra space after comma in server name
         Dim query As String = "SELECT DISTINCT [Provider Taxonomy Description Type] FROM dbo.TaxonomyCodes ORDER BY [Provider Taxonomy Description Type]"
+        If cboSearchType.SelectedIndex = 4 Then query = "SELECT Distinct [Specialty] FROM [keys].[MasterTaxonomy] ORDER BY Specialty"
+
 
         Using connection As New SqlConnection(connectionString)
             Using command As New SqlCommand(query, connection)
@@ -186,7 +193,12 @@ Public Class Individual_Search
                             ' FIX: Use column name without brackets in reader, or use ordinal position
                             ' Method 1: Use column name without brackets
                             If Not reader.IsDBNull(0) Then
-                                Dim taxonomyValue As String = reader("Provider Taxonomy Description Type").ToString()
+                                Dim taxonomyValue As String
+                                If cboSearchType.SelectedIndex = 4 Then
+                                    taxonomyValue = reader("Specialty").ToString()
+                                Else
+                                    taxonomyValue = reader("Provider Taxonomy Description Type").ToString()
+                                End If
                                 If Not String.IsNullOrWhiteSpace(taxonomyValue) Then
                                     cboTaxonomy.Items.Add(taxonomyValue)
                                     count += 1
@@ -202,7 +214,7 @@ Public Class Individual_Search
 
                         ' Show success message
                         If count > 0 Then
-                            MessageBox.Show($"Successfully loaded {count} taxonomy codes!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                            'MessageBox.Show($"Successfully loaded {count} taxonomy codes!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information)
                         Else
                             MessageBox.Show("No taxonomy codes found in the database.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning)
                         End If
@@ -225,11 +237,11 @@ Public Class Individual_Search
     ''' <summary>
     ''' Handles medication searches (brand or generic)
     ''' </summary>
-    Private Async Function HandleMedicationSearch(brandName As String, genericName As String) As Task
-        Dim results = Await IndividualApiHelper.SearchByDrugAsync(brandName, genericName)
+    Private Async Function HandleMedicationSearch(params As SearchParameters) As Task
+        Dim results = Await IndividualApiHelper.SearchByDrugAsync(params)
 
         If results Is Nothing OrElse results.Count = 0 Then
-            Dim drugName = If(Not String.IsNullOrWhiteSpace(brandName), brandName, genericName)
+            Dim drugName = If(Not String.IsNullOrWhiteSpace(params.BrandDrug), params.BrandDrug, params.GenericDrug)
             ShowMessage($"No providers found who prescribe {drugName}.",
                       "No Results", MessageBoxIcon.Information)
             Return
@@ -415,7 +427,7 @@ Public Class Individual_Search
     ''' <summary>
     ''' Builds a user-friendly summary of what was searched
     ''' </summary>
-    Private Function BuildSearchSummary() As String
+    Private Function BuildSearchSummary(Optional isDrugs As Boolean = False) As String
         Dim filters As New List(Of String)
 
         AddToSummaryIfNotEmpty(filters, "NPI", tbNpi)
@@ -543,6 +555,7 @@ Public Class Individual_Search
             cboSearchType.ForeColor = Color.Gray
         Else
             cboSearchType.ForeColor = Color.Black
+            LoadTaxonomyCombo()
         End If
         Select Case cboSearchType.SelectedItem.ToString
             Case "NPI Registry"
@@ -596,18 +609,29 @@ Public Class Individual_Search
                 groupBoxOther.Visible = True
                 groupMeds.Visible = False
             Case "Drugs Prescribed"
-                groupPersonal.Visible = False
+                ShowGender(False)
+                tbNpi.Visible = True
+                tbFirst.Visible = True
+                tbLast.Visible = True
+                tbState.Visible = True
+                tbMiddle.Visible = False
+                lblMiddle.Visible = False
+
+                groupPersonal.Visible = True
                 groupAddress.Visible = False
                 groupMedSchool.Visible = False
                 groupBoxOther.Visible = False
                 groupMeds.Visible = True
+
+
             Case "Medical School"
                 tbNpi.Visible = False
                 cboTaxonomy.Visible = False
-                tbFirst.Visible = False
+                tbFirst.Visible = True
                 tbMiddle.Visible = False
                 tbLast.Visible = False
                 tbState.Visible = False
+
 
                 groupPersonal.Visible = False
                 groupAddress.Visible = False
@@ -618,6 +642,17 @@ Public Class Individual_Search
         End Select
     End Sub
 
+    Public Sub ShowGender(TurnOn As Boolean)
+        If TurnOn Then
+            rdoMale.Visible = True
+            rdoFemale.Visible = True
+            lblGender.Visible = True
+        Else
+            rdoMale.Visible = False
+            rdoFemale.Visible = False
+            lblGender.Visible = False
+        End If
+    End Sub
 
     Private Sub tbState_TextChanged(sender As Object, e As EventArgs) Handles tbState.TextChanged
         If tbAddressState.Text <> tbState.Text Then

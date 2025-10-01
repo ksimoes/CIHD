@@ -267,20 +267,22 @@ Module IndividualApiHelper
     ''' Searches by drug name (brand or generic).
     ''' Use when looking for providers who prescribe specific medications.
     ''' </summary>
-    Public Async Function SearchByDrugAsync(Optional brandName As String = "", Optional genericName As String = "") As Task(Of JArray)
+    Public Async Function SearchByDrugAsync(params As SearchParameters) As Task(Of JArray)
         Try
-            If String.IsNullOrWhiteSpace(brandName) AndAlso String.IsNullOrWhiteSpace(genericName) Then
-                Return New JArray()
-            End If
+            'If String.IsNullOrWhiteSpace(params.BrandDrug) AndAlso String.IsNullOrWhiteSpace(params.GenericDrug) Then
+            '    Return New JArray()
+            'End If
 
-            Dim filters As New Dictionary(Of String, String) From {{"size", "100"}}
+            Dim filters As New Dictionary(Of String, String) From {{"size", "1000"}}
 
-            If Not String.IsNullOrWhiteSpace(brandName) Then
-                filters.Add("filter[Brnd_Name]", brandName)
-            End If
-            If Not String.IsNullOrWhiteSpace(genericName) Then
-                filters.Add("filter[Gnrc_Name]", genericName)
-            End If
+            If Not String.IsNullOrWhiteSpace(params.BrandDrug) Then filters.Add("filter[Brnd_Name]", params.BrandDrug)
+            If Not String.IsNullOrWhiteSpace(params.GenericDrug) Then filters.Add("filter[Gnrc_Name]", params.GenericDrug)
+            If Not String.IsNullOrWhiteSpace(params.State) Then filters.Add("filter[Prscrbr_State_Abrvtn]", params.State)
+            If Not String.IsNullOrWhiteSpace(params.FirstName) Then filters.Add("filter[Prscrbr_First_Name]", params.FirstName & "*")
+            If Not String.IsNullOrWhiteSpace(params.LastName) Then filters.Add("filter[Prscrbr_Last_Org_Name]", params.LastName & "*")
+            If Not String.IsNullOrWhiteSpace(params.NPI) Then filters.Add("filter[Prscrbr_NPI]", params.NPI)
+            If Not String.IsNullOrWhiteSpace(params.Taxonomy) Then filters.Add("filter[Prscrbr_Type]", params.Taxonomy)
+            If Not String.IsNullOrWhiteSpace(params.City) Then filters.Add("filter[Prscrbr_City]", params.City)
 
             Dim url As String = BuildUrlWithQuery($"{CMS_DATA_API_BASE_URL}/{DRUG_DATASET_ID}/data", filters)
             Return Await ExecuteGetRequestAsync(url)

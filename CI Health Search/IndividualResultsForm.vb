@@ -43,14 +43,26 @@ Public Class IndividualResultsForm
         If isDrug Then
             columns.Add(("NPI", "Prscrbr_NPI"))
             columns.Add(("First Name", "Prscrbr_First_Name"))
-            columns.Add(("Last Name", "Prscrbr_Last_Name"))
-            columns.Add(("Gender", "Prscrbr_Gndr"))
-            columns.Add(("Street Address", "Prscrbr_Addr1"))
+            columns.Add(("Last Name", "Prscrbr_Last_Org_Name"))
+
             columns.Add(("City", "Prscrbr_City"))
             columns.Add(("State", "Prscrbr_State_Abrvtn"))
-            columns.Add(("Zip", "Prscrbr_Zip5"))
+            columns.Add(("Specialty", "Prscrbr_Type"))
+
             columns.Add(("Brand Name", "Brnd_Name"))
             columns.Add(("Generic Name", "Gnrc_Name"))
+
+            columns.Add(("Total Claims", "Tot_Clms"))
+            columns.Add(("Total 30 Day Fills", "Tot_30day_Fills"))
+            columns.Add(("Total Day Supply", "Tot_Day_Suply"))
+            columns.Add(("Total Drug Cost", "Tot_Drug_Cst"))
+            columns.Add(("Total 'Benes'", "Tot_Benes"))
+
+            columns.Add(("Total Claims <65", "GE65_Tot_Clms"))
+            columns.Add(("Total 30 Day Fills <65", "GE65_Tot_30day_Fills"))
+            columns.Add(("Total Day Supply <65", "GE65_Tot_Day_Suply"))
+            columns.Add(("Total Drug Cost <65", "GE65_Tot_Drug_Cst"))
+            columns.Add(("Total 'Benes' <65", "GE65_Tot_Benes"))
         ElseIf isHCPCS Then 'Healthcare Common Procedure Coding System
             columns.Add(("NPI", "Rndrng_NPI"))
             columns.Add(("First Name", "Rndrng_Prvdr_First_Name"))
