@@ -74,12 +74,6 @@ Public Class Individual_Search
         ClearAllFields()
     End Sub
 
-    ' Event handlers that can be removed if not needed
-    Private Sub Label3_Click(sender As Object, e As EventArgs) Handles lblFirst.Click
-    End Sub
-
-    Private Sub GroupBox1_Enter(sender As Object, e As EventArgs) Handles GroupBox1.Enter
-    End Sub
 
 #End Region
 
@@ -118,15 +112,15 @@ Public Class Individual_Search
         ' Priority 1: Direct NPI lookup
         Select Case cboSearchType.SelectedItem.ToString
             Case "NPI Registry"
-                Await HandleGeneralSearch(params)
+                Await HandleNpiRegistrySearch(params)
             Case "NPI Downloadable Update"
                 If Not String.IsNullOrWhiteSpace(params.NPI) Then HandleDirectNpiLookup(params.NPI)
             Case "Healthcare Common Procedure Code"
-                If Not String.IsNullOrWhiteSpace(params.HCPCS) Then Await HandleHCPCSSearch(params.HCPCS, params.State)
+                If Not String.IsNullOrWhiteSpace(params.HCPCS) Then Await HandleHCPCSSearch(params)
             Case "Drugs Prescribed"
-                HandleMedicationSearch(params)
+                Await HandleDrugSearch(params)
             Case "Medical School"
-                Await HandleGeneralSearch(params)
+                Await HandleMedicalSchoolSearch(params)
         End Select
 
         ' Priority 2: HCPCS procedure code search
@@ -139,9 +133,7 @@ Public Class Individual_Search
 
 #Region "Specific Search Handlers"
 
-    ''' <summary>
     ''' Handles direct NPI lookup - opens profile immediately
-    ''' </summary>
     Private Sub HandleDirectNpiLookup(npi As String)
         Try
             Dim profileForm As New IndividualProfileForm(npi)
@@ -153,15 +145,13 @@ Public Class Individual_Search
         End Try
     End Sub
 
-    ''' <summary>
     ''' Handles HCPCS procedure code searches
-    ''' </summary>
-    Private Async Function HandleHCPCSSearch(hcpcsCode As String, state As String) As Task
-        Dim results = Await IndividualApiHelper.SearchByHCPCSAsync(hcpcsCode, state)
+    Private Async Function HandleHCPCSSearch(params As SearchParameters) As Task
+        Dim results = Await IndividualApiHelper.SearchByHCPCSAsync(params)
 
         If results Is Nothing OrElse results.Count = 0 Then
-            Dim stateText = If(String.IsNullOrWhiteSpace(state), "", $" in {state}")
-            ShowMessage($"No providers found who perform procedure {hcpcsCode}{stateText}.",
+            Dim stateText = If(String.IsNullOrWhiteSpace(params.State), "", $" in {params.State}")
+            ShowMessage($"No providers found who perform procedure {params.HCPCS}{stateText}.",
                       "No Results", MessageBoxIcon.Information)
             Return
         End If
@@ -169,12 +159,49 @@ Public Class Individual_Search
         ShowResults(results, False)
     End Function
 
+    Public Async Function HandleNpiRegistrySearch(params As SearchParameters) As Task
+        Dim results = Await IndividualApiHelper.SearchNpiRegistryAsync(params, 1000)
+        ShowResultsOrNoResults(results, False, "providers matching your criteria")
+    End Function
+    Private Async Function HandleDrugSearch(params As SearchParameters) As Task
+        Dim results = Await IndividualApiHelper.SearchByDrugAsync(params)
+
+        If results Is Nothing OrElse results.Count = 0 Then
+            Dim drugName = If(Not String.IsNullOrWhiteSpace(params.BrandDrug), params.BrandDrug, params.GenericDrug)
+            ShowMessage($"No providers found who prescribe {drugName}.",
+                      "No Results", MessageBoxIcon.Information)
+            Return
+        End If
+
+        ShowResults(results, True)
+    End Function
+
+    ''' Handles medical school searches.
+    Private Async Function HandleMedicalSchoolSearch(params As SearchParameters) As Task
+        Dim results = Await IndividualApiHelper.SearchNationalDownloadableFileAsync(params, 1000, ckExact.Checked)
+        ShowResultsOrNoResults(results, False, "providers matching your criteria")
+    End Function
+
+
+
+    Private Sub ShowResultsOrNoResults(results As JArray, showDrugColumns As Boolean, searchDescription As String)
+        If results Is Nothing OrElse results.Count = 0 Then
+            ShowMessage($"No {searchDescription}. Try broadening your search.", "No Results", MessageBoxIcon.Information)
+            Return
+        End If
+
+        ShowResults(results, showDrugColumns)
+    End Sub
+
     Public Sub LoadTaxonomyCombo()
         Dim connectionString As String = "Server=tcp:cihg-sql1.database.windows.net,1433;Initial Catalog=PapaSmurf;Persist Security Info=False;User ID=cihgadmin;Password=P!bxbFrHw4-jCvU*;MultipleActiveResultSets=True;Encrypt=True;TrustServerCertificate=False;Connection Timeout=400000;"
 
         ' Fixed query - removed extra space after comma in server name
         Dim query As String = "SELECT DISTINCT [Provider Taxonomy Description Type] FROM dbo.TaxonomyCodes ORDER BY [Provider Taxonomy Description Type]"
-        If cboSearchType.SelectedIndex = 4 Then query = "SELECT Distinct [Specialty] FROM [keys].[MasterTaxonomy] ORDER BY Specialty"
+        'If cboSearchType.SelectedIndex = 4 Then
+        query = "SELECT Distinct [Specialty] FROM [keys].[MasterTaxonomy] ORDER BY Specialty"
+
+        'End If
 
 
         Using connection As New SqlConnection(connectionString)
@@ -194,11 +221,11 @@ Public Class Individual_Search
                             ' Method 1: Use column name without brackets
                             If Not reader.IsDBNull(0) Then
                                 Dim taxonomyValue As String
-                                If cboSearchType.SelectedIndex = 4 Then
-                                    taxonomyValue = reader("Specialty").ToString()
-                                Else
-                                    taxonomyValue = reader("Provider Taxonomy Description Type").ToString()
-                                End If
+                                'If cboSearchType.SelectedIndex = 4 Then
+                                taxonomyValue = reader("Specialty").ToString()
+                                'Else
+                                'taxonomyValue = reader("Provider Taxonomy Description Type").ToString()
+                                'End If
                                 If Not String.IsNullOrWhiteSpace(taxonomyValue) Then
                                     cboTaxonomy.Items.Add(taxonomyValue)
                                     count += 1
@@ -235,70 +262,8 @@ Public Class Individual_Search
     End Sub
 
     ''' <summary>
-    ''' Handles medication searches (brand or generic)
-    ''' </summary>
-    Private Async Function HandleMedicationSearch(params As SearchParameters) As Task
-        Dim results = Await IndividualApiHelper.SearchByDrugAsync(params)
-
-        If results Is Nothing OrElse results.Count = 0 Then
-            Dim drugName = If(Not String.IsNullOrWhiteSpace(params.BrandDrug), params.BrandDrug, params.GenericDrug)
-            ShowMessage($"No providers found who prescribe {drugName}.",
-                      "No Results", MessageBoxIcon.Information)
-            Return
-        End If
-
-        ShowResults(results, True)
-    End Function
-
-    ''' <summary>
     ''' Handles general provider searches by demographics/education
     ''' </summary>
-    Private Async Function HandleGeneralSearch(params As SearchParameters) As Task
-        Dim results As JArray = Nothing
-
-        ' Choose appropriate search method based on criteria
-        If ShouldUseEducationSearch(params) Then
-            ' Use National Downloadable File for education-related searches
-            results = Await IndividualApiHelper.SearchNationalDownloadableFileAsync(
-                npi:=params.NPI,
-                firstName:=params.FirstName,
-                middleName:=params.MiddleName,
-                lastName:=params.LastName,
-                gender:=params.Gender,
-                gradYear:=params.GradYear,
-                medSchool:=params.MedSchool,
-                state:=params.State,
-                taxonomy:=params.Taxonomy,
-                limit:=1000, ckExact.Checked
-            )
-        Else
-            ' Use NPI Registry for general demographic searches
-            results = Await IndividualApiHelper.SearchNpiRegistryAsync(
-                npi:=params.NPI,
-                firstName:=params.FirstName,
-                middleName:=params.MiddleName,
-                lastName:=params.LastName,
-                city:=params.City,
-                state:=params.State,
-                zip:=params.ZipCode,
-                gender:=params.Gender,
-                licenseState:=params.LicenseState,
-                licenseNumber:=params.LicenseNumber,
-                taxonomyDescription:=params.Specialty,
-                graduationYear:=params.GradYear,
-                medicalSchool:=params.MedSchool,
-                limit:=1000
-            )
-        End If
-
-        If results Is Nothing OrElse results.Count = 0 Then
-            ShowMessage("No providers found matching your criteria. Try broadening your search.",
-                      "No Results", MessageBoxIcon.Information)
-            Return
-        End If
-
-        ShowResults(results, False)
-    End Function
 
 #End Region
 
@@ -330,7 +295,21 @@ Public Class Individual_Search
         }
     End Function
 
-    ''' <summary>
+    Private Function GetControlText(ctrl As Control) As String
+        Return If(ctrl?.Text?.Trim(), "")
+    End Function
+
+    Private Function GetGender() As String
+        If rdoMale.Checked Then Return "M"
+        If rdoFemale.Checked Then Return "F"
+        Return ""
+    End Function
+
+    Private Function GetTaxonomy() As String
+        Dim text = GetControlText(cboTaxonomy)
+        If text = "Cardiology" Then Return "CARDIOVASCULAR DISEASE (CARDIOLOGY)"
+        Return text
+    End Function
     ''' Safely gets trimmed text from a control
     ''' </summary>
     Private Function GetTrimmedText(control As Control, Optional isTaxonomy As Boolean = False) As String
@@ -349,9 +328,8 @@ Public Class Individual_Search
         Return control.Text.Trim()
     End Function
 
-    ''' <summary>
     ''' Validates search parameters
-    ''' </summary>
+
     Private Function ValidateSearchParameters(params As SearchParameters) As ValidationResult
         Dim errors As New List(Of String)
 
@@ -570,7 +548,8 @@ Public Class Individual_Search
                 lblMiddle.Visible = True
                 lblLast.Visible = True
                 lblState.Visible = True
-                lblGender.Visible = True
+                ShowGender(False)
+
 
                 groupPersonal.Visible = True
                 groupAddress.Visible = True

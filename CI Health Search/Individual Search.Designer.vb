@@ -22,7 +22,6 @@ Partial Class Individual_Search
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Individual_Search))
         GroupBox1 = New GroupBox()
         groupMedSchool = New GroupBox()
         cboMedSchoolTax = New ComboBox()
@@ -90,7 +89,6 @@ Partial Class Individual_Search
         ' 
         ' GroupBox1
         ' 
-        GroupBox1.BackgroundImage = CType(resources.GetObject("GroupBox1.BackgroundImage"), Image)
         GroupBox1.BackgroundImageLayout = ImageLayout.Stretch
         GroupBox1.Controls.Add(groupMedSchool)
         GroupBox1.Controls.Add(groupMeds)

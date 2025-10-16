@@ -166,7 +166,11 @@ NextPath:
         If e.RowIndex >= 0 Then
             SelectedNpi = DataGridView1.Rows(e.RowIndex).Cells("NPI").Value.ToString()
             Me.DialogResult = DialogResult.OK
-            Me.Close()
+            'Me.Close()
+            Dim profileForm As New IndividualProfileForm(SelectedNpi)
+            profileForm.Show()
+            profileForm.tbNpiResult.Text = SelectedNpi
+
         End If
     End Sub
 
