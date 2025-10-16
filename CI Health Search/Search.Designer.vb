@@ -32,6 +32,8 @@ Partial Class Search
         Button1 = New Button()
         btnSearchAll = New Button()
         GroupBox5 = New GroupBox()
+        Label3 = New Label()
+        Label2 = New Label()
         txtMaxTotPatRevAll = New TextBox()
         lblRoutineAll = New Label()
         txtMaxAnnualDisAll = New TextBox()
@@ -193,8 +195,6 @@ Partial Class Search
         lblService = New Label()
         lblMedicare = New Label()
         lblFacility = New Label()
-        Label2 = New Label()
-        Label3 = New Label()
         TabControl1.SuspendLayout()
         TabPage5.SuspendLayout()
         CType(picLoading, ComponentModel.ISupportInitialize).BeginInit()
@@ -337,6 +337,26 @@ Partial Class Search
         GroupBox5.TabIndex = 93
         GroupBox5.TabStop = False
         GroupBox5.Text = "Utilization"
+        ' 
+        ' Label3
+        ' 
+        Label3.AutoSize = True
+        Label3.Font = New Font("Times New Roman", 14.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        Label3.Location = New Point(546, 214)
+        Label3.Name = "Label3"
+        Label3.Size = New Size(19, 21)
+        Label3.TabIndex = 53
+        Label3.Text = "$"
+        ' 
+        ' Label2
+        ' 
+        Label2.AutoSize = True
+        Label2.Font = New Font("Times New Roman", 14.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        Label2.Location = New Point(351, 214)
+        Label2.Name = "Label2"
+        Label2.Size = New Size(19, 21)
+        Label2.TabIndex = 52
+        Label2.Text = "$"
         ' 
         ' txtMaxTotPatRevAll
         ' 
@@ -591,9 +611,9 @@ Partial Class Search
         ' 
         ' btnSearchHCPCSCode
         ' 
-        btnSearchHCPCSCode.Location = New Point(234, 237)
+        btnSearchHCPCSCode.Location = New Point(234, 261)
         btnSearchHCPCSCode.Name = "btnSearchHCPCSCode"
-        btnSearchHCPCSCode.Size = New Size(90, 68)
+        btnSearchHCPCSCode.Size = New Size(90, 23)
         btnSearchHCPCSCode.TabIndex = 95
         btnSearchHCPCSCode.Text = "SearchCode!"
         btnSearchHCPCSCode.UseVisualStyleBackColor = True
@@ -1911,26 +1931,6 @@ Partial Class Search
         lblFacility.Size = New Size(128, 21)
         lblFacility.TabIndex = 5
         lblFacility.Text = "Type of Facility"
-        ' 
-        ' Label2
-        ' 
-        Label2.AutoSize = True
-        Label2.Font = New Font("Times New Roman", 14.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        Label2.Location = New Point(351, 214)
-        Label2.Name = "Label2"
-        Label2.Size = New Size(19, 21)
-        Label2.TabIndex = 52
-        Label2.Text = "$"
-        ' 
-        ' Label3
-        ' 
-        Label3.AutoSize = True
-        Label3.Font = New Font("Times New Roman", 14.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        Label3.Location = New Point(546, 214)
-        Label3.Name = "Label3"
-        Label3.Size = New Size(19, 21)
-        Label3.TabIndex = 53
-        Label3.Text = "$"
         ' 
         ' Search
         ' 

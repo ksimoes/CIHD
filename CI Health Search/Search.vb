@@ -152,43 +152,7 @@ Public Class Search
         Return Nothing
     End Function
 
-    Private Async Function SearchFacilityNpiOnlyAsync(npi As String) As Task(Of DataTable)
-        Dim apiUrl As String = $"https://data.cms.gov/provider-data/api/1/datastore/query/4jcv-atw7/0?filters=%7B%22npi%22%3A%22{Uri.EscapeDataString(npi)}%22%7D&size=100"
-        Try
-            Using client As New HttpClient()
-                client.Timeout = TimeSpan.FromSeconds(15)
-                Dim response = Await client.GetAsync(apiUrl)
-                If response.IsSuccessStatusCode Then
-                    Dim json = Await response.Content.ReadAsStringAsync()
-                    Dim obj = JObject.Parse(json)
-                    Dim data = obj("data")
-                    If data IsNot Nothing AndAlso data.HasValues Then
-                        Dim dt As New DataTable()
-                        For Each col In data(0).ToObject(Of JObject)().Properties()
-                            dt.Columns.Add(col.Name)
-                        Next
-                        For Each item In data
-                            Dim row = dt.NewRow()
-                            For Each col In dt.Columns
-                                row(col.ToString()) = item(col.ToString())
-                            Next
-                            dt.Rows.Add(row)
-                        Next
-                        Return dt
-                    End If
-                Else
-                    MessageBox.Show("Facility NPI API error: " & response.StatusCode.ToString())
-                End If
-            End Using
-        Catch ex As TaskCanceledException
-            MessageBox.Show("Facility NPI API request timed out.")
-        Catch ex As Exception
-            MessageBox.Show("Facility NPI API error: " & ex.Message)
-        End Try
-        Return Nothing
-    End Function
-
-    Private Async Function GetNpiResultsAsync(apiUrl As String) As Task(Of DataTable)
+    Private Async Function GetJsonDataAsync(apiUrl As String, Optional filterFunc As Func(Of JToken, Boolean) = Nothing, Optional errorPrefix As String = "API") As Task(Of DataTable)
         Try
             Using client As New HttpClient()
                 client.Timeout = TimeSpan.FromSeconds(15)
@@ -202,42 +166,8 @@ Public Class Search
                             dt.Columns.Add(col.Name)
                         Next
                         For Each item In data
-                            Dim row = dt.NewRow()
-                            For Each col In dt.Columns
-                                row(col.ToString()) = item(col.ToString())
-                            Next
-                            dt.Rows.Add(row)
-                        Next
-                        Return dt
-                    End If
-                Else
-                    MessageBox.Show("API error: " & response.StatusCode.ToString())
-                End If
-            End Using
-        Catch ex As TaskCanceledException
-            MessageBox.Show("API request timed out.")
-        Catch ex As Exception
-            MessageBox.Show("API error: " & ex.Message)
-        End Try
-        Return Nothing
-    End Function
-
-    Private Async Function GetFqhcsAsync() As Task(Of DataTable)
-        Dim apiUrl As String = "https://data.cms.gov/data-api/v1/dataset/8ba0f9b4-9493-4aa0-9f82-44ea9468d1b5/data?size=1000"
-        Try
-            Using client As New HttpClient()
-                client.Timeout = TimeSpan.FromSeconds(15)
-                Dim response = Await client.GetAsync(apiUrl)
-                If response.IsSuccessStatusCode Then
-                    Dim json = Await response.Content.ReadAsStringAsync()
-                    Dim data = JArray.Parse(json)
-                    If data.Count > 0 Then
-                        Dim dt As New DataTable()
-                        For Each col In data(0).ToObject(Of JObject)().Properties()
-                            dt.Columns.Add(col.Name)
-                        Next
-                        For Each item In data
-                            If item("PRVDR_CTGRY_CD") IsNot Nothing AndAlso item("PRVDR_CTGRY_CD").ToString() = "21" Then
+                            ' Apply filter if provided, otherwise include all items
+                            If filterFunc Is Nothing OrElse filterFunc(item) Then
                                 Dim row = dt.NewRow()
                                 For Each col In dt.Columns
                                     row(col.ToString()) = item(col.ToString())
@@ -248,13 +178,13 @@ Public Class Search
                         Return dt
                     End If
                 Else
-                    MessageBox.Show("FQHC API error: " & response.StatusCode.ToString())
+                    MessageBox.Show($"{errorPrefix} error: {response.StatusCode}")
                 End If
             End Using
         Catch ex As TaskCanceledException
-            MessageBox.Show("FQHC API request timed out.")
+            MessageBox.Show($"{errorPrefix} request timed out.")
         Catch ex As Exception
-            MessageBox.Show("FQHC API error: " & ex.Message)
+            MessageBox.Show($"{errorPrefix} error: {ex.Message}")
         End Try
         Return Nothing
     End Function
@@ -546,6 +476,7 @@ Public Class Search
     Private Async Sub btnSearchAll_Click(sender As Object, e As EventArgs) Handles btnSearchAll.Click
         lblstatus.Text = "Searching..."
         lblstatus.Visible = True
+        'Ask purpose         
         Dim filterSummary = BuildFilterSummary()
 
         Try
@@ -565,7 +496,7 @@ Public Class Search
             If Not String.IsNullOrWhiteSpace(txtCmsCertNumDemoAll.Text) Then
                 Dim cmsNum = txtCmsCertNumDemoAll.Text.Trim
                 Dim apiUrl = $"https://data.cms.gov/data-api/v1/dataset/8015f175-35cc-4cab-a664-b7c87d91a027/data?filter[Provider CCN]={Uri.EscapeDataString(cmsNum)}&size=1000"
-                Dim dt = Await GetNpiResultsAsync(apiUrl)
+                Dim dt As DataTable = Await GetJsonDataAsync(apiUrl)
                 If dt IsNot Nothing AndAlso dt.Rows.Count > 0 Then
                     Results.SetResults(dt, filterSummary)
                     Results.SelectedState = selectedState
@@ -585,10 +516,10 @@ Public Class Search
             If Not String.IsNullOrWhiteSpace(txtNpiAll.Text) Then
                 Dim npi = txtNpiAll.Text.Trim
                 Dim facilityUrl = $"https://data.cms.gov/data-api/v1/dataset/8015f175-35cc-4cab-a664-b7c87d91a027/data?filter[NPI]={Uri.EscapeDataString(npi)}&size=1000"
-                Dim dtFacility = Await GetNpiResultsAsync(facilityUrl)
-                Dim dtFacilityNpiOnly = Await SearchFacilityNpiOnlyAsync(npi)
+                Dim dtFacility As DataTable = Await GetJsonDataAsync(facilityUrl)
+                Dim dtFacilityNpiOnly As DataTable = Await GetJsonDataAsync(npi)
                 Dim providerUrl = $"https://data.cms.gov/data-api/v1/dataset/4bcae866-3411-439a-b762-90a6187c194b/data?filter[npi]={Uri.EscapeDataString(npi)}&size=1000"
-                Dim dtProvider = Await GetNpiResultsAsync(providerUrl)
+                Dim dtProvider As DataTable = Await GetJsonDataAsync(providerUrl)
 
                 Dim npiInfo = Await GetNpiRegistryInfoAsync(npi)
                 If npiInfo IsNot Nothing Then
@@ -599,7 +530,7 @@ Public Class Search
 
                     If Not String.IsNullOrEmpty(npiName) AndAlso Not String.IsNullOrEmpty(npiCity) AndAlso Not String.IsNullOrEmpty(npiState) Then
                         Dim apiUrl = $"https://data.cms.gov/data-api/v1/dataset/8015f175-35cc-4cab-a664-b7c87d91a027/data?filter[State Code]={Uri.EscapeDataString(npiState)}&filter[City]={Uri.EscapeDataString(npiCity)}&size=1000"
-                        Dim dtFacilities = Await GetNpiResultsAsync(apiUrl)
+                        Dim dtFacilities As DataTable = Await GetJsonDataAsync(apiUrl)
 
                         If dtFacilities IsNot Nothing AndAlso dtFacilities.Rows.Count > 0 Then
                             Dim dtMatches = dtFacilities.Clone
@@ -661,7 +592,7 @@ Public Class Search
                 fqhcFilters.Add("size=10000")
                 fqhcApiUrl &= String.Join("&", fqhcFilters)
 
-                Dim fqhcDt = Await GetNpiResultsAsync(fqhcApiUrl)
+                Dim fqhcDt As DataTable = Await GetJsonDataAsync(fqhcApiUrl)
                 If fqhcDt IsNot Nothing AndAlso fqhcDt.Rows.Count > 0 Then
                     Results.SetResults(fqhcDt, filterSummary)
                     Results.SelectedState = If(lbStateAll.SelectedItem IsNot Nothing, lbStateAll.SelectedItem.ToString.Trim, "")

@@ -67,6 +67,7 @@ Partial Class Departments
         ' 
         ' gbInpatientRoutineCostCenters
         ' 
+        gbInpatientRoutineCostCenters.BackColor = SystemColors.AppWorkspace
         gbInpatientRoutineCostCenters.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         gbInpatientRoutineCostCenters.Location = New Point(12, 12)
         gbInpatientRoutineCostCenters.Name = "gbInpatientRoutineCostCenters"
@@ -77,6 +78,7 @@ Partial Class Departments
         ' 
         ' gbAncillaryServiceCost
         ' 
+        gbAncillaryServiceCost.BackColor = SystemColors.AppWorkspace
         gbAncillaryServiceCost.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         gbAncillaryServiceCost.Location = New Point(12, 299)
         gbAncillaryServiceCost.Name = "gbAncillaryServiceCost"
@@ -87,6 +89,7 @@ Partial Class Departments
         ' 
         ' gbOtherReimburse
         ' 
+        gbOtherReimburse.BackColor = SystemColors.AppWorkspace
         gbOtherReimburse.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         gbOtherReimburse.Location = New Point(424, 299)
         gbOtherReimburse.Name = "gbOtherReimburse"
@@ -97,6 +100,7 @@ Partial Class Departments
         ' 
         ' gbOutpatientServiceCost
         ' 
+        gbOutpatientServiceCost.BackColor = SystemColors.AppWorkspace
         gbOutpatientServiceCost.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         gbOutpatientServiceCost.Location = New Point(424, 12)
         gbOutpatientServiceCost.Name = "gbOutpatientServiceCost"
@@ -107,16 +111,18 @@ Partial Class Departments
         ' 
         ' gbOverallCosttoCharge
         ' 
+        gbOverallCosttoCharge.BackColor = SystemColors.AppWorkspace
         gbOverallCosttoCharge.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
-        gbOverallCosttoCharge.Location = New Point(854, 24)
+        gbOverallCosttoCharge.Location = New Point(854, 13)
         gbOverallCosttoCharge.Name = "gbOverallCosttoCharge"
-        gbOverallCosttoCharge.Size = New Size(375, 269)
+        gbOverallCosttoCharge.Size = New Size(375, 280)
         gbOverallCosttoCharge.TabIndex = 2
         gbOverallCosttoCharge.TabStop = False
         gbOverallCosttoCharge.Text = "Overall Cost to Charge Ratio"
         ' 
         ' gbSalariesandOther
         ' 
+        gbSalariesandOther.BackColor = SystemColors.AppWorkspace
         gbSalariesandOther.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         gbSalariesandOther.Location = New Point(854, 299)
         gbSalariesandOther.Name = "gbSalariesandOther"
@@ -127,6 +133,7 @@ Partial Class Departments
         ' 
         ' gbStaffing
         ' 
+        gbStaffing.BackColor = Color.YellowGreen
         gbStaffing.Controls.Add(lblDietNumResult)
         gbStaffing.Controls.Add(lblOPNumResult)
         gbStaffing.Controls.Add(lblSWNumResult)
@@ -152,6 +159,7 @@ Partial Class Departments
         gbStaffing.Controls.Add(Label10)
         gbStaffing.Controls.Add(Label9)
         gbStaffing.Controls.Add(Label7)
+        gbStaffing.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         gbStaffing.Location = New Point(1235, 41)
         gbStaffing.Name = "gbStaffing"
         gbStaffing.Size = New Size(308, 476)
@@ -473,6 +481,7 @@ Partial Class Departments
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
+        BackColor = SystemColors.ActiveCaption
         ClientSize = New Size(1555, 670)
         Controls.Add(btnNavigation)
         Controls.Add(Button1)

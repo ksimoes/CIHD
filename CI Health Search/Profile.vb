@@ -819,13 +819,13 @@ Public Class Profile
 
     Private Sub btnInpatientProfile_Click(sender As Object, e As EventArgs) Handles btnInpatientProfile.Click
         Me.Hide()
-        Dim inpForm As New Inpatient(currentHospital)
+        Dim inpForm As New Inpatient()
         inpForm.Show()
     End Sub
 
     Private Sub btnOutpatientProfile_Click(sender As Object, e As EventArgs) Handles btnOutpatientProfile.Click
         Me.Hide()
-        Dim outpForm As New Outpatient(currentHospital)
+        Dim outpForm As New Outpatient()
         outpForm.Show()
     End Sub
 
