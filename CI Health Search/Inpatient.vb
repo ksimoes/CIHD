@@ -357,6 +357,16 @@ Public Class Inpatient
         Search.Show()
     End Sub
 
+    Private Sub btnNavigation_Click(sender As Object, e As EventArgs)
+        Dim hosp = If(currentHospital, Results.SelectedHospital)
+        If hosp Is Nothing Then
+            MessageBox.Show("No hospital selected.")
+            Return
+        End If
+        Dim navPopup As New NavigationPopupForm(hosp)
+        navPopup.Show()
+    End Sub
+
     Private Sub Label14_Click(sender As Object, e As EventArgs)
     End Sub
 

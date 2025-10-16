@@ -33,6 +33,10 @@ Partial Class Outpatient
         Panel1 = New Panel()
         lblHN = New Label()
         Label1 = New Label()
+        btnNavigation = New Button()
+        Button2 = New Button()
+        Button3 = New Button()
+        Button4 = New Button()
         CType(dgvAPC, ComponentModel.ISupportInitialize).BeginInit()
         Panel1.SuspendLayout()
         SuspendLayout()
@@ -104,7 +108,7 @@ Partial Class Outpatient
         ' 
         dgvAPC.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
         dgvAPC.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        dgvAPC.Location = New Point(37, 121)
+        dgvAPC.Location = New Point(37, 105)
         dgvAPC.Name = "dgvAPC"
         dgvAPC.Size = New Size(897, 541)
         dgvAPC.TabIndex = 21
@@ -112,6 +116,10 @@ Partial Class Outpatient
         ' Panel1
         ' 
         Panel1.AutoScroll = True
+        Panel1.Controls.Add(Button4)
+        Panel1.Controls.Add(Button3)
+        Panel1.Controls.Add(Button2)
+        Panel1.Controls.Add(btnNavigation)
         Panel1.Controls.Add(lblHN)
         Panel1.Controls.Add(Label1)
         Panel1.Controls.Add(dgvAPC)
@@ -122,9 +130,9 @@ Partial Class Outpatient
         Panel1.Controls.Add(btnQualityOutpatient)
         Panel1.Controls.Add(btnDepartmentsOutpatient)
         Panel1.Controls.Add(btnFinancialOutpatient)
-        Panel1.Location = New Point(-1, 3)
+        Panel1.Location = New Point(-1, 12)
         Panel1.Name = "Panel1"
-        Panel1.Size = New Size(2072, 2000)
+        Panel1.Size = New Size(2072, 1991)
         Panel1.TabIndex = 22
         ' 
         ' lblHN
@@ -145,6 +153,42 @@ Partial Class Outpatient
         Label1.Size = New Size(376, 15)
         Label1.TabIndex = 22
         Label1.Text = "Statistics for the Top 20 Ambulatory Payment Classifications (APCs)"
+        ' 
+        ' btnNavigation
+        ' 
+        btnNavigation.Location = New Point(999, 989)
+        btnNavigation.Name = "btnNavigation"
+        btnNavigation.Size = New Size(75, 23)
+        btnNavigation.TabIndex = 101
+        btnNavigation.Text = "Navigation"
+        btnNavigation.UseVisualStyleBackColor = True
+        ' 
+        ' Button2
+        ' 
+        Button2.Location = New Point(1007, 997)
+        Button2.Name = "Button2"
+        Button2.Size = New Size(75, 23)
+        Button2.TabIndex = 102
+        Button2.Text = "Navigation"
+        Button2.UseVisualStyleBackColor = True
+        ' 
+        ' Button3
+        ' 
+        Button3.Location = New Point(1015, 1005)
+        Button3.Name = "Button3"
+        Button3.Size = New Size(75, 23)
+        Button3.TabIndex = 103
+        Button3.Text = "Navigation"
+        Button3.UseVisualStyleBackColor = True
+        ' 
+        ' Button4
+        ' 
+        Button4.Location = New Point(1123, 96)
+        Button4.Name = "Button4"
+        Button4.Size = New Size(75, 23)
+        Button4.TabIndex = 101
+        Button4.Text = "Navigation"
+        Button4.UseVisualStyleBackColor = True
         ' 
         ' Outpatient
         ' 
@@ -171,4 +215,8 @@ Partial Class Outpatient
     Friend WithEvents Panel1 As Panel
     Friend WithEvents Label1 As Label
     Friend WithEvents lblHN As Label
+    Friend WithEvents Button4 As Button
+    Friend WithEvents Button3 As Button
+    Friend WithEvents Button2 As Button
+    Friend WithEvents btnNavigation As Button
 End Class

@@ -24,6 +24,7 @@ Partial Class FinInd
     Private Sub InitializeComponent()
         components = New ComponentModel.Container()
         Panel1 = New Panel()
+        Label83 = New Label()
         GroupBox20 = New BoldGroupBox()
         lblTotCurrentLiabilities10 = New Label()
         lblTotCurrentAssets10 = New Label()
@@ -215,7 +216,7 @@ Partial Class FinInd
         ToolTip1 = New ToolTip(components)
         ToolTip3 = New ToolTip(components)
         GroupBox18 = New BoldGroupBox()
-        Label83 = New Label()
+        btnNavigation = New Button()
         Panel1.SuspendLayout()
         GroupBox20.SuspendLayout()
         GroupBox19.SuspendLayout()
@@ -241,6 +242,7 @@ Partial Class FinInd
         ' Panel1
         ' 
         Panel1.AutoScroll = True
+        Panel1.Controls.Add(btnNavigation)
         Panel1.Controls.Add(Label83)
         Panel1.Controls.Add(GroupBox20)
         Panel1.Controls.Add(GroupBox19)
@@ -270,6 +272,16 @@ Partial Class FinInd
         Panel1.Name = "Panel1"
         Panel1.Size = New Size(1774, 2500)
         Panel1.TabIndex = 0
+        ' 
+        ' Label83
+        ' 
+        Label83.AutoSize = True
+        Label83.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
+        Label83.Location = New Point(636, 36)
+        Label83.Name = "Label83"
+        Label83.Size = New Size(236, 15)
+        Label83.TabIndex = 294
+        Label83.Text = "FYI >> in parenthesis ( ) means negative -"
         ' 
         ' GroupBox20
         ' 
@@ -348,7 +360,7 @@ Partial Class FinInd
         ' Label75
         ' 
         Label75.AutoSize = True
-        Label75.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        Label75.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         Label75.Location = New Point(0, 16)
         Label75.Name = "Label75"
         Label75.Size = New Size(125, 15)
@@ -376,7 +388,7 @@ Partial Class FinInd
         ' Label153
         ' 
         Label153.AutoSize = True
-        Label153.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        Label153.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         Label153.Location = New Point(480, 16)
         Label153.Name = "Label153"
         Label153.Size = New Size(42, 15)
@@ -422,7 +434,7 @@ Partial Class FinInd
         ' Label68
         ' 
         Label68.AutoSize = True
-        Label68.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        Label68.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         Label68.Location = New Point(-1, 15)
         Label68.Name = "Label68"
         Label68.Size = New Size(174, 15)
@@ -459,7 +471,7 @@ Partial Class FinInd
         ' lblLtdtnaResult
         ' 
         lblLtdtnaResult.AutoSize = True
-        lblLtdtnaResult.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        lblLtdtnaResult.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         lblLtdtnaResult.Location = New Point(480, 15)
         lblLtdtnaResult.Name = "lblLtdtnaResult"
         lblLtdtnaResult.Size = New Size(42, 15)
@@ -522,7 +534,7 @@ Partial Class FinInd
         ' Label64
         ' 
         Label64.AutoSize = True
-        Label64.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        Label64.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         Label64.Location = New Point(5, 21)
         Label64.Name = "Label64"
         Label64.Size = New Size(121, 15)
@@ -559,7 +571,7 @@ Partial Class FinInd
         ' Label141
         ' 
         Label141.AutoSize = True
-        Label141.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        Label141.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         Label141.Location = New Point(478, 21)
         Label141.Name = "Label141"
         Label141.Size = New Size(42, 15)
@@ -605,7 +617,7 @@ Partial Class FinInd
         ' Label60
         ' 
         Label60.AutoSize = True
-        Label60.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        Label60.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         Label60.Location = New Point(4, 19)
         Label60.Name = "Label60"
         Label60.Size = New Size(116, 15)
@@ -651,7 +663,7 @@ Partial Class FinInd
         ' Label137
         ' 
         Label137.AutoSize = True
-        Label137.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        Label137.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         Label137.Location = New Point(475, 18)
         Label137.Name = "Label137"
         Label137.Size = New Size(42, 15)
@@ -689,7 +701,7 @@ Partial Class FinInd
         ' Label55
         ' 
         Label55.AutoSize = True
-        Label55.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        Label55.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         Label55.Location = New Point(10, 24)
         Label55.Name = "Label55"
         Label55.Size = New Size(180, 15)
@@ -735,7 +747,7 @@ Partial Class FinInd
         ' Label133
         ' 
         Label133.AutoSize = True
-        Label133.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        Label133.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         Label133.Location = New Point(476, 24)
         Label133.Name = "Label133"
         Label133.Size = New Size(42, 15)
@@ -803,7 +815,7 @@ Partial Class FinInd
         ' Label49
         ' 
         Label49.AutoSize = True
-        Label49.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        Label49.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         Label49.Location = New Point(8, 21)
         Label49.Name = "Label49"
         Label49.Size = New Size(164, 15)
@@ -849,7 +861,7 @@ Partial Class FinInd
         ' Label123
         ' 
         Label123.AutoSize = True
-        Label123.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        Label123.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         Label123.Location = New Point(477, 21)
         Label123.Name = "Label123"
         Label123.Size = New Size(42, 15)
@@ -939,7 +951,7 @@ Partial Class FinInd
         ' Label39
         ' 
         Label39.AutoSize = True
-        Label39.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        Label39.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         Label39.Location = New Point(3, 17)
         Label39.Name = "Label39"
         Label39.Size = New Size(231, 15)
@@ -967,7 +979,7 @@ Partial Class FinInd
         ' Label122
         ' 
         Label122.AutoSize = True
-        Label122.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        Label122.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         Label122.Location = New Point(474, 17)
         Label122.Name = "Label122"
         Label122.Size = New Size(42, 15)
@@ -1044,7 +1056,7 @@ Partial Class FinInd
         ' Label42
         ' 
         Label42.AutoSize = True
-        Label42.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        Label42.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         Label42.Location = New Point(13, 15)
         Label42.Name = "Label42"
         Label42.Size = New Size(184, 15)
@@ -1081,7 +1093,7 @@ Partial Class FinInd
         ' Label118
         ' 
         Label118.AutoSize = True
-        Label118.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        Label118.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         Label118.Location = New Point(475, 15)
         Label118.Name = "Label118"
         Label118.Size = New Size(42, 15)
@@ -1164,7 +1176,7 @@ Partial Class FinInd
         ' Label35
         ' 
         Label35.AutoSize = True
-        Label35.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        Label35.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         Label35.Location = New Point(12, 37)
         Label35.Name = "Label35"
         Label35.Size = New Size(110, 15)
@@ -1174,7 +1186,7 @@ Partial Class FinInd
         ' lblDaysCOH
         ' 
         lblDaysCOH.AutoSize = True
-        lblDaysCOH.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        lblDaysCOH.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         lblDaysCOH.Location = New Point(474, 37)
         lblDaysCOH.Name = "lblDaysCOH"
         lblDaysCOH.Size = New Size(42, 15)
@@ -1284,7 +1296,7 @@ Partial Class FinInd
         ' Label31
         ' 
         Label31.AutoSize = True
-        Label31.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        Label31.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         Label31.Location = New Point(3, 10)
         Label31.Name = "Label31"
         Label31.Size = New Size(71, 15)
@@ -1321,7 +1333,7 @@ Partial Class FinInd
         ' lblQuickRatioResult
         ' 
         lblQuickRatioResult.AutoSize = True
-        lblQuickRatioResult.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        lblQuickRatioResult.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         lblQuickRatioResult.Location = New Point(474, 10)
         lblQuickRatioResult.Name = "lblQuickRatioResult"
         lblQuickRatioResult.Size = New Size(42, 15)
@@ -1373,7 +1385,7 @@ Partial Class FinInd
         ' Label25
         ' 
         Label25.AutoSize = True
-        Label25.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        Label25.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         Label25.Location = New Point(8, 9)
         Label25.Name = "Label25"
         Label25.Size = New Size(101, 15)
@@ -1401,7 +1413,7 @@ Partial Class FinInd
         ' lblRoaResult
         ' 
         lblRoaResult.AutoSize = True
-        lblRoaResult.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        lblRoaResult.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         lblRoaResult.Location = New Point(476, 9)
         lblRoaResult.Name = "lblRoaResult"
         lblRoaResult.Size = New Size(42, 15)
@@ -1447,7 +1459,7 @@ Partial Class FinInd
         ' Label21
         ' 
         Label21.AutoSize = True
-        Label21.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        Label21.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         Label21.Location = New Point(5, 20)
         Label21.Name = "Label21"
         Label21.Size = New Size(100, 15)
@@ -1475,7 +1487,7 @@ Partial Class FinInd
         ' lblROEResult
         ' 
         lblROEResult.AutoSize = True
-        lblROEResult.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        lblROEResult.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         lblROEResult.Location = New Point(476, 20)
         lblROEResult.Name = "lblROEResult"
         lblROEResult.Size = New Size(42, 15)
@@ -1540,7 +1552,7 @@ Partial Class FinInd
         ' Label16
         ' 
         Label16.AutoSize = True
-        Label16.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        Label16.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         Label16.Location = New Point(6, 25)
         Label16.Name = "Label16"
         Label16.Size = New Size(303, 15)
@@ -1577,7 +1589,7 @@ Partial Class FinInd
         ' lblPeapctorResult
         ' 
         lblPeapctorResult.AutoSize = True
-        lblPeapctorResult.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        lblPeapctorResult.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         lblPeapctorResult.Location = New Point(476, 25)
         lblPeapctorResult.Name = "lblPeapctorResult"
         lblPeapctorResult.Size = New Size(42, 15)
@@ -1651,7 +1663,7 @@ Partial Class FinInd
         ' Label12
         ' 
         Label12.AutoSize = True
-        Label12.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        Label12.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         Label12.Location = New Point(9, 20)
         Label12.Name = "Label12"
         Label12.Size = New Size(85, 15)
@@ -1679,7 +1691,7 @@ Partial Class FinInd
         ' lblExcessMarginResult
         ' 
         lblExcessMarginResult.AutoSize = True
-        lblExcessMarginResult.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        lblExcessMarginResult.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         lblExcessMarginResult.Location = New Point(478, 20)
         lblExcessMarginResult.Name = "lblExcessMarginResult"
         lblExcessMarginResult.Size = New Size(42, 15)
@@ -1740,7 +1752,7 @@ Partial Class FinInd
         ' Label10
         ' 
         Label10.AutoSize = True
-        Label10.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        Label10.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         Label10.Location = New Point(-3, 19)
         Label10.Name = "Label10"
         Label10.Size = New Size(105, 15)
@@ -1768,7 +1780,7 @@ Partial Class FinInd
         ' lblOperatingMarginFinIndResult
         ' 
         lblOperatingMarginFinIndResult.AutoSize = True
-        lblOperatingMarginFinIndResult.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        lblOperatingMarginFinIndResult.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         lblOperatingMarginFinIndResult.Location = New Point(473, 19)
         lblOperatingMarginFinIndResult.Name = "lblOperatingMarginFinIndResult"
         lblOperatingMarginFinIndResult.Size = New Size(42, 15)
@@ -1925,7 +1937,7 @@ Partial Class FinInd
         ' Label4
         ' 
         Label4.AutoSize = True
-        Label4.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        Label4.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         Label4.Location = New Point(0, 15)
         Label4.Name = "Label4"
         Label4.Size = New Size(461, 15)
@@ -1972,7 +1984,7 @@ Partial Class FinInd
         ' lblEbitResult
         ' 
         lblEbitResult.AutoSize = True
-        lblEbitResult.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        lblEbitResult.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         lblEbitResult.Location = New Point(476, 15)
         lblEbitResult.Name = "lblEbitResult"
         lblEbitResult.Size = New Size(42, 15)
@@ -2036,7 +2048,7 @@ Partial Class FinInd
         ' lblTdtna
         ' 
         lblTdtna.AutoSize = True
-        lblTdtna.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        lblTdtna.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         lblTdtna.Location = New Point(482, 19)
         lblTdtna.Name = "lblTdtna"
         lblTdtna.Size = New Size(42, 15)
@@ -2055,7 +2067,7 @@ Partial Class FinInd
         ' Label72
         ' 
         Label72.AutoSize = True
-        Label72.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        Label72.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         Label72.Location = New Point(5, 19)
         Label72.Name = "Label72"
         Label72.Size = New Size(142, 15)
@@ -2099,7 +2111,7 @@ Partial Class FinInd
         ' Label27
         ' 
         Label27.AutoSize = True
-        Label27.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
+        Label27.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         Label27.Location = New Point(9, 19)
         Label27.Name = "Label27"
         Label27.Size = New Size(82, 15)
@@ -2157,19 +2169,18 @@ Partial Class FinInd
         GroupBox18.TabStop = False
         GroupBox18.Text = "."
         ' 
-        ' Label83
+        ' btnNavigation
         ' 
-        Label83.AutoSize = True
-        Label83.Font = New Font("Segoe UI", 9.0F, FontStyle.Bold)
-        Label83.Location = New Point(636, 36)
-        Label83.Name = "Label83"
-        Label83.Size = New Size(236, 15)
-        Label83.TabIndex = 294
-        Label83.Text = "FYI >> in parenthesis ( ) means negative -"
+        btnNavigation.Location = New Point(1141, 49)
+        btnNavigation.Name = "btnNavigation"
+        btnNavigation.Size = New Size(75, 27)
+        btnNavigation.TabIndex = 295
+        btnNavigation.Text = "Navigation"
+        btnNavigation.UseVisualStyleBackColor = True
         ' 
         ' FinInd
         ' 
-        AutoScaleDimensions = New SizeF(7.0F, 15.0F)
+        AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         AutoScroll = True
         BackColor = SystemColors.Control
@@ -2417,5 +2428,6 @@ Partial Class FinInd
     Friend WithEvents GroupBox9 As BoldGroupBox
     Friend WithEvents lblHN As Label
     Friend WithEvents Label83 As Label
+    Friend WithEvents btnNavigation As Button
 
 End Class

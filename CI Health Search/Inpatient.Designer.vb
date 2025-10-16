@@ -39,6 +39,7 @@ Partial Class Inpatient
         dgvNewApiTable = New DataGridView()
         lblHN = New Label()
         picLoad3 = New PictureBox()
+        btnNavigation = New Button()
         gbKeyAttending.SuspendLayout()
         CType(picLoad1, ComponentModel.ISupportInitialize).BeginInit()
         CType(dgvCeo, ComponentModel.ISupportInitialize).BeginInit()
@@ -206,11 +207,21 @@ Partial Class Inpatient
         picLoad3.TabStop = False
         picLoad3.Visible = False
         ' 
+        ' btnNavigation
+        ' 
+        btnNavigation.Location = New Point(1144, 102)
+        btnNavigation.Name = "btnNavigation"
+        btnNavigation.Size = New Size(75, 23)
+        btnNavigation.TabIndex = 104
+        btnNavigation.Text = "Navigation"
+        btnNavigation.UseVisualStyleBackColor = True
+        ' 
         ' Inpatient
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(1537, 1061)
+        Controls.Add(btnNavigation)
         Controls.Add(btnOutpatientInpatient)
         Controls.Add(btnQualityInpatient)
         Controls.Add(btnFinIndInpatient)
@@ -254,4 +265,5 @@ Partial Class Inpatient
     Friend WithEvents picLoad1 As PictureBox
     Friend WithEvents picLoad2 As PictureBox
     Friend WithEvents picLoad3 As PictureBox
+    Friend WithEvents btnNavigation As Button
 End Class

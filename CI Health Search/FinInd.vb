@@ -263,6 +263,16 @@ Public Class FinInd
         outpatientForm.Show()
     End Sub
 
+    Private Sub btnNavigation_Click(sender As Object, e As EventArgs)
+        Dim hosp = If(currentHospital, Results.SelectedHospital)
+        If hosp Is Nothing Then
+            MessageBox.Show("No hospital selected.")
+            Return
+        End If
+        Dim navPopup As New NavigationPopupForm(hosp)
+        navPopup.Show()
+    End Sub
+
     Private Sub btnProfileFinInd_Click(sender As Object, e As EventArgs) Handles btnProfileFinInd.Click
         Hide()
         Me.Hide()

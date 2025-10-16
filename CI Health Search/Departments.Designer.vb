@@ -61,6 +61,7 @@ Partial Class Departments
         btnFinancialDepartments = New Button()
         btnProfileDepartments = New Button()
         Button1 = New Button()
+        btnNavigation = New Button()
         gbStaffing.SuspendLayout()
         SuspendLayout()
         ' 
@@ -459,11 +460,21 @@ Partial Class Departments
         Button1.Text = "Return to Search"
         Button1.UseVisualStyleBackColor = True
         ' 
+        ' btnNavigation
+        ' 
+        btnNavigation.Location = New Point(1340, 527)
+        btnNavigation.Name = "btnNavigation"
+        btnNavigation.Size = New Size(75, 23)
+        btnNavigation.TabIndex = 101
+        btnNavigation.Text = "Navigation"
+        btnNavigation.UseVisualStyleBackColor = True
+        ' 
         ' Departments
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(1555, 670)
+        Controls.Add(btnNavigation)
         Controls.Add(Button1)
         Controls.Add(btnOutpatientDepartments)
         Controls.Add(btnInpatientDepartments)
@@ -527,4 +538,5 @@ Partial Class Departments
     Friend WithEvents Label13 As Label
     Friend WithEvents Label12 As Label
     Friend WithEvents lblDietNumResult As Label
+    Friend WithEvents btnNavigation As Button
 End Class

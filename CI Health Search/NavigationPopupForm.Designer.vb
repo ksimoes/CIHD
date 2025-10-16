@@ -30,6 +30,7 @@ Partial Class NavigationPopupForm
         btnInpatient = New Button()
         btnOutpatient = New Button()
         Button8 = New Button()
+        btnClose = New Button()
         SuspendLayout()
         ' 
         ' btnProfile
@@ -106,11 +107,22 @@ Partial Class NavigationPopupForm
         Button8.Text = "Back to Search"
         Button8.UseVisualStyleBackColor = False
         ' 
+        ' btnClose
+        ' 
+        btnClose.BackColor = SystemColors.ButtonHighlight
+        btnClose.Location = New Point(122, 326)
+        btnClose.Name = "btnClose"
+        btnClose.Size = New Size(164, 78)
+        btnClose.TabIndex = 20
+        btnClose.Text = "Close"
+        btnClose.UseVisualStyleBackColor = False
+        ' 
         ' NavigationPopupForm
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
-        ClientSize = New Size(427, 356)
+        ClientSize = New Size(427, 445)
+        Controls.Add(btnClose)
         Controls.Add(Button8)
         Controls.Add(btnOutpatient)
         Controls.Add(btnInpatient)
@@ -132,4 +144,5 @@ Partial Class NavigationPopupForm
     Friend WithEvents btnInpatient As Button
     Friend WithEvents btnOutpatient As Button
     Friend WithEvents Button8 As Button
+    Friend WithEvents btnClose As Button
 End Class

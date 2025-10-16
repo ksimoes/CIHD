@@ -96,11 +96,14 @@ Partial Class Financial
         btnProfileFinancial = New Button()
         Button1 = New Button()
         Panel1 = New Panel()
+        Label30 = New Label()
+        Label83 = New Label()
         lblHN = New Label()
         Label29 = New Label()
         GroupBox2 = New BoldGroupBox()
-        Label83 = New Label()
-        Label30 = New Label()
+        btnNavigation = New Button()
+        Button2 = New Button()
+        Button3 = New Button()
         GroupBox1.SuspendLayout()
         gbIncomeStatement.SuspendLayout()
         GroupBox3.SuspendLayout()
@@ -122,7 +125,7 @@ Partial Class Financial
         GroupBox1.Controls.Add(Label6)
         GroupBox1.Controls.Add(Label5)
         GroupBox1.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
-        GroupBox1.Location = New Point(11, 63)
+        GroupBox1.Location = New Point(10, 63)
         GroupBox1.Name = "GroupBox1"
         GroupBox1.Size = New Size(570, 321)
         GroupBox1.TabIndex = 0
@@ -873,6 +876,9 @@ Partial Class Financial
         ' 
         Panel1.AutoScroll = True
         Panel1.BackColor = Color.LightGray
+        Panel1.Controls.Add(Button3)
+        Panel1.Controls.Add(Button2)
+        Panel1.Controls.Add(btnNavigation)
         Panel1.Controls.Add(Label30)
         Panel1.Controls.Add(Label83)
         Panel1.Controls.Add(lblHN)
@@ -897,6 +903,26 @@ Partial Class Financial
         Panel1.Name = "Panel1"
         Panel1.Size = New Size(1572, 2500)
         Panel1.TabIndex = 22
+        ' 
+        ' Label30
+        ' 
+        Label30.AutoSize = True
+        Label30.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
+        Label30.Location = New Point(648, 8)
+        Label30.Name = "Label30"
+        Label30.Size = New Size(220, 15)
+        Label30.TabIndex = 296
+        Label30.Text = "FYI in parenthesis ( ) means negative - "
+        ' 
+        ' Label83
+        ' 
+        Label83.AutoSize = True
+        Label83.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
+        Label83.Location = New Point(668, 1243)
+        Label83.Name = "Label83"
+        Label83.Size = New Size(236, 15)
+        Label83.TabIndex = 295
+        Label83.Text = "FYI >> in parenthesis ( ) means negative -"
         ' 
         ' lblHN
         ' 
@@ -937,25 +963,32 @@ Partial Class Financial
         GroupBox2.TabStop = False
         GroupBox2.Text = "."
         ' 
-        ' Label83
+        ' btnNavigation
         ' 
-        Label83.AutoSize = True
-        Label83.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
-        Label83.Location = New Point(668, 1243)
-        Label83.Name = "Label83"
-        Label83.Size = New Size(236, 15)
-        Label83.TabIndex = 295
-        Label83.Text = "FYI >> in parenthesis ( ) means negative -"
+        btnNavigation.Location = New Point(749, 1239)
+        btnNavigation.Name = "btnNavigation"
+        btnNavigation.Size = New Size(75, 23)
+        btnNavigation.TabIndex = 297
+        btnNavigation.Text = "Navigation"
+        btnNavigation.UseVisualStyleBackColor = True
         ' 
-        ' Label30
+        ' Button2
         ' 
-        Label30.AutoSize = True
-        Label30.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
-        Label30.Location = New Point(648, 8)
-        Label30.Name = "Label30"
-        Label30.Size = New Size(220, 15)
-        Label30.TabIndex = 296
-        Label30.Text = "FYI in parenthesis ( ) means negative - "
+        Button2.Location = New Point(757, 1247)
+        Button2.Name = "Button2"
+        Button2.Size = New Size(75, 23)
+        Button2.TabIndex = 298
+        Button2.Text = "Navigation"
+        Button2.UseVisualStyleBackColor = True
+        ' 
+        ' Button3
+        ' 
+        Button3.Location = New Point(874, 36)
+        Button3.Name = "Button3"
+        Button3.Size = New Size(75, 23)
+        Button3.TabIndex = 101
+        Button3.Text = "Navigation"
+        Button3.UseVisualStyleBackColor = True
         ' 
         ' Financial
         ' 
@@ -1059,4 +1092,7 @@ Partial Class Financial
     Friend WithEvents Label29 As Label
     Friend WithEvents Label30 As Label
     Friend WithEvents Label83 As Label
+    Friend WithEvents Button3 As Button
+    Friend WithEvents Button2 As Button
+    Friend WithEvents btnNavigation As Button
 End Class

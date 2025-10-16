@@ -842,6 +842,16 @@ Public Class Profile
         End If
     End Sub
 
+    Private Sub btnNavigation_Click(sender As Object, e As EventArgs) Handles btnNavigation.Click
+        Dim hosp = If(currentHospital, Results.SelectedHospital)
+        If hosp Is Nothing Then
+            MessageBox.Show("No hospital selected.")
+            Return
+        End If
+        Dim navPopup As New NavigationPopupForm(hosp)
+        navPopup.Show()
+    End Sub
+
     ' Empty event handlers for designer compatibility
 
 
