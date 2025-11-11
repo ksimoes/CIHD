@@ -50,6 +50,11 @@ Public Class HospitalContext
     Public Property MarketSecurities As Decimal
     Public Property Investments As Decimal
 
+    Public Property Email As String
+    Public Property BedCount As Integer
+    Public Property TypeOfControl As String
+    Public Property EmergencyServices As Boolean
+
     Public Property LastDataRow As DataRow
 
     ' Add more fields as needed for new APIs or features

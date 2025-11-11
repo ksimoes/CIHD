@@ -236,7 +236,7 @@ Public Class Individual_Search
 
                         ' Set default selection
                         If cboTaxonomy.Items.Count > 0 Then
-                            cboTaxonomy.SelectedIndex = 0
+                            'cboTaxonomy.SelectedIndex = 0
                         End If
 
                         ' Show success message
@@ -605,14 +605,14 @@ Public Class Individual_Search
 
             Case "Medical School"
                 tbNpi.Visible = False
-                cboTaxonomy.Visible = False
+                cboTaxonomy.Visible = True
                 tbFirst.Visible = True
-                tbMiddle.Visible = False
-                tbLast.Visible = False
-                tbState.Visible = False
+                tbMiddle.Visible = True
+                tbLast.Visible = True
+                tbState.Visible = True
 
 
-                groupPersonal.Visible = False
+                groupPersonal.Visible = True
                 groupAddress.Visible = False
                 groupMedSchool.Visible = True
                 groupBoxOther.Visible = False
@@ -646,7 +646,7 @@ Public Class Individual_Search
     End Sub
 
     Private Sub cboTaxonomy_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboTaxonomy.SelectedIndexChanged
-        'LoadTaxonomyCombo()
+        LoadTaxonomyCombo()
     End Sub
 
 

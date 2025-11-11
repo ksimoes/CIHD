@@ -350,9 +350,9 @@ Partial Class IndividualProfileForm
         GroupBox2.Controls.Add(lblMailingCity)
         GroupBox2.Controls.Add(Label9)
         GroupBox2.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
-        GroupBox2.Location = New Point(277, 185)
+        GroupBox2.Location = New Point(357, 185)
         GroupBox2.Name = "GroupBox2"
-        GroupBox2.Size = New Size(352, 140)
+        GroupBox2.Size = New Size(272, 140)
         GroupBox2.TabIndex = 42
         GroupBox2.TabStop = False
         GroupBox2.Text = "Mailing Address"
@@ -462,9 +462,9 @@ Partial Class IndividualProfileForm
         groupPrimAdd.Controls.Add(lblPracticeZip)
         groupPrimAdd.Controls.Add(lblPracticeStreet)
         groupPrimAdd.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
-        groupPrimAdd.Location = New Point(277, 22)
+        groupPrimAdd.Location = New Point(357, 22)
         groupPrimAdd.Name = "groupPrimAdd"
-        groupPrimAdd.Size = New Size(352, 126)
+        groupPrimAdd.Size = New Size(272, 126)
         groupPrimAdd.TabIndex = 41
         groupPrimAdd.TabStop = False
         groupPrimAdd.Text = "Primary Practice Address"
