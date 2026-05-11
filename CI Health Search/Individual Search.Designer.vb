@@ -31,15 +31,15 @@ Partial Class Individual_Search
         Label17 = New Label()
         tbGradYear = New TextBox()
         groupMeds = New GroupBox()
-        tbDrugGeneric = New TextBox()
+        tbGenericDrug = New TextBox()
         lblBrand = New Label()
         Label20 = New Label()
-        tbDrug = New TextBox()
+        tbBrandDrug = New TextBox()
         Label19 = New Label()
         groupBoxOther = New GroupBox()
         tbHCPCS = New TextBox()
-        tbStLic = New TextBox()
-        tbStLicNum = New TextBox()
+        tbLicenseState = New TextBox()
+        tbLicenseNum = New TextBox()
         Label16 = New Label()
         Label15 = New Label()
         Label14 = New Label()
@@ -178,10 +178,10 @@ Partial Class Individual_Search
         ' groupMeds
         ' 
         groupMeds.BackColor = Color.DarkOrchid
-        groupMeds.Controls.Add(tbDrugGeneric)
+        groupMeds.Controls.Add(tbGenericDrug)
         groupMeds.Controls.Add(lblBrand)
         groupMeds.Controls.Add(Label20)
-        groupMeds.Controls.Add(tbDrug)
+        groupMeds.Controls.Add(tbBrandDrug)
         groupMeds.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         groupMeds.Location = New Point(834, 289)
         groupMeds.Name = "groupMeds"
@@ -190,12 +190,12 @@ Partial Class Individual_Search
         groupMeds.TabStop = False
         groupMeds.Text = "Medication Info"
         ' 
-        ' tbDrugGeneric
+        ' tbGenericDrug
         ' 
-        tbDrugGeneric.Location = New Point(179, 60)
-        tbDrugGeneric.Name = "tbDrugGeneric"
-        tbDrugGeneric.Size = New Size(143, 23)
-        tbDrugGeneric.TabIndex = 43
+        tbGenericDrug.Location = New Point(179, 60)
+        tbGenericDrug.Name = "tbGenericDrug"
+        tbGenericDrug.Size = New Size(143, 23)
+        tbGenericDrug.TabIndex = 43
         ' 
         ' lblBrand
         ' 
@@ -215,12 +215,12 @@ Partial Class Individual_Search
         Label20.TabIndex = 41
         Label20.Text = "Drug Name(Generic)"
         ' 
-        ' tbDrug
+        ' tbBrandDrug
         ' 
-        tbDrug.Location = New Point(179, 31)
-        tbDrug.Name = "tbDrug"
-        tbDrug.Size = New Size(143, 23)
-        tbDrug.TabIndex = 42
+        tbBrandDrug.Location = New Point(179, 31)
+        tbBrandDrug.Name = "tbBrandDrug"
+        tbBrandDrug.Size = New Size(143, 23)
+        tbBrandDrug.TabIndex = 42
         ' 
         ' Label19
         ' 
@@ -237,8 +237,8 @@ Partial Class Individual_Search
         ' 
         groupBoxOther.BackColor = Color.DarkOrchid
         groupBoxOther.Controls.Add(tbHCPCS)
-        groupBoxOther.Controls.Add(tbStLic)
-        groupBoxOther.Controls.Add(tbStLicNum)
+        groupBoxOther.Controls.Add(tbLicenseState)
+        groupBoxOther.Controls.Add(tbLicenseNum)
         groupBoxOther.Controls.Add(Label16)
         groupBoxOther.Controls.Add(Label15)
         groupBoxOther.Controls.Add(Label14)
@@ -261,19 +261,19 @@ Partial Class Individual_Search
         tbHCPCS.Size = New Size(143, 23)
         tbHCPCS.TabIndex = 22
         ' 
-        ' tbStLic
+        ' tbLicenseState
         ' 
-        tbStLic.Location = New Point(179, 56)
-        tbStLic.Name = "tbStLic"
-        tbStLic.Size = New Size(143, 23)
-        tbStLic.TabIndex = 23
+        tbLicenseState.Location = New Point(179, 56)
+        tbLicenseState.Name = "tbLicenseState"
+        tbLicenseState.Size = New Size(143, 23)
+        tbLicenseState.TabIndex = 23
         ' 
-        ' tbStLicNum
+        ' tbLicenseNum
         ' 
-        tbStLicNum.Location = New Point(179, 89)
-        tbStLicNum.Name = "tbStLicNum"
-        tbStLicNum.Size = New Size(143, 23)
-        tbStLicNum.TabIndex = 24
+        tbLicenseNum.Location = New Point(179, 89)
+        tbLicenseNum.Name = "tbLicenseNum"
+        tbLicenseNum.Size = New Size(143, 23)
+        tbLicenseNum.TabIndex = 24
         ' 
         ' Label16
         ' 
@@ -374,6 +374,8 @@ Partial Class Individual_Search
         ' ckExact
         ' 
         ckExact.AutoSize = True
+        ckExact.Checked = True
+        ckExact.CheckState = CheckState.Checked
         ckExact.Location = New Point(296, 305)
         ckExact.Name = "ckExact"
         ckExact.Size = New Size(94, 19)
@@ -685,8 +687,8 @@ Partial Class Individual_Search
     Friend WithEvents lblFirst As Label
     Friend WithEvents lblTax As Label
     Friend WithEvents lblNPI As Label
-    Friend WithEvents tbStLicNum As TextBox
-    Friend WithEvents tbStLic As TextBox
+    Friend WithEvents tbLicenseNum As TextBox
+    Friend WithEvents tbLicenseState As TextBox
     Friend WithEvents tbHCPCS As TextBox
     Friend WithEvents tbAddressType As TextBox
     Friend WithEvents tbZip As TextBox
@@ -722,10 +724,10 @@ Partial Class Individual_Search
     Friend WithEvents cboSearchType As ComboBox
     Friend WithEvents Label19 As Label
     Friend WithEvents groupMeds As GroupBox
-    Friend WithEvents tbDrugGeneric As TextBox
+    Friend WithEvents tbGenericDrug As TextBox
     Friend WithEvents lblBrand As Label
     Friend WithEvents Label20 As Label
-    Friend WithEvents tbDrug As TextBox
+    Friend WithEvents tbBrandDrug As TextBox
     Friend WithEvents groupMedSchool As GroupBox
     Friend WithEvents Label21 As Label
     Friend WithEvents tbAddressState As TextBox

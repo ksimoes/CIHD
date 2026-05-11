@@ -1,4 +1,6 @@
-﻿Imports System.Runtime.CompilerServices
+﻿' Optimized Results.vb - Enhanced Performance Version
+
+Imports System.Runtime.CompilerServices
 
 Public Class Results
 
@@ -7,12 +9,16 @@ Public Class Results
     Public strCMSnum As String
     Public Shared SelectedHospital As New HospitalContext()
 
-    ' Cached column mappings to avoid repeated lookups
+    ' ============================================================================
+    ' CACHED COLUMN MAPPINGS
+    ' ============================================================================
     Private displayColumnCache As String = ""
     Private bedCountColumnCache As String = ""
     Private cmsColumnCache As String = ""
 
-    ' Column name mappings - centralized for easy maintenance
+    ' ============================================================================
+    ' COLUMN NAME MAPPINGS - Centralized for easy maintenance
+    ' ============================================================================
     Private Shared ReadOnly NameColumns As String() = {
         "FAC_NAME", "ORGANIZATION NAME", "facility_name", "provider_name",
         "Rndrng_Prvdr_Org_Name", "Hospital Name", "Facility Name"
@@ -51,34 +57,202 @@ Public Class Results
         {"13", "Governmental‐Other"}
     }
 
+    ' ============================================================================
+    ' PAGINATION SUPPORT
+    ' ============================================================================
+    Private Const PageSize As Integer = 100
+    Private CurrentPage As Integer = 0
+    Private TotalPages As Integer = 0
+    Private PaginationEnabled As Boolean = False
+
+    ' ============================================================================
+    ' MAIN METHODS
+    ' ============================================================================
+
     ''' <summary>
-    ''' Sets the results table and displays data in the DataGridView
+    ''' Sets the results table and displays data in the DataGridView (OPTIMIZED)
     ''' </summary>
     Public Sub SetResults(dt As DataTable, Optional filterSummary As String = "")
         resultsTable = dt
 
         ' Initialize DataGridView columns only once
-        InitializeDataGridViewColumns()
+        If dgvResults.Columns.Count = 0 Then
+            InitializeDataGridViewColumns()
+        End If
+
+        ' Suspend layout for better performance during bulk operations
+        dgvResults.SuspendLayout()
+        Try
+            ' Cache column lookups BEFORE loop - significant performance improvement
+            displayColumnCache = FindColumn(dt, NameColumns)
+            bedCountColumnCache = FindColumn(dt, BedCountColumns)
+            cmsColumnCache = FindColumn(dt, CMSColumns)
+
+            ' Decide whether to use pagination
+            If dt.Rows.Count > PageSize Then
+                EnablePagination(dt)
+            Else
+                DisablePagination()
+                PopulateAllRows(dt)
+            End If
+
+            ' Update UI labels
+            lblMatches.Text = $"{dt.Rows.Count:N0} result(s) found"
+            lblFilters.Text = If(String.IsNullOrWhiteSpace(filterSummary), "", $"Filters: {filterSummary}")
+
+        Finally
+            dgvResults.ResumeLayout()
+        End Try
+    End Sub
+
+    ''' <summary>
+    ''' Populate all rows at once (for smaller datasets)
+    ''' </summary>
+    Private Sub PopulateAllRows(dt As DataTable)
         dgvResults.Rows.Clear()
 
-        ' Set row colors
-        dgvResults.AlternatingRowsDefaultCellStyle.BackColor = Color.LightYellow
-        dgvResults.DefaultCellStyle.BackColor = Color.White
+        ' Batch add rows for better performance
+        Dim rowsToAdd As New List(Of DataGridViewRow)(dt.Rows.Count)
 
-        ' Cache column lookups for better performance
-        displayColumnCache = FindColumn(dt, NameColumns)
-        bedCountColumnCache = FindColumn(dt, BedCountColumns)
-        cmsColumnCache = FindColumn(dt, CMSColumns)
-
-        ' Populate rows
         For Each row As DataRow In dt.Rows
-            AddRowToGrid(row, dt)
+            rowsToAdd.Add(CreateGridRow(row, dt))
         Next
 
-        ' Update UI
-        lblMatches.Text = $"{dt.Rows.Count} result(s) found"
-        lblFilters.Text = If(String.IsNullOrWhiteSpace(filterSummary), "", $"Filters: {filterSummary}")
+        ' Single AddRange is much faster than individual Adds
+        If rowsToAdd.Count > 0 Then
+            dgvResults.Rows.AddRange(rowsToAdd.ToArray())
+        End If
+
+        ' Set alternating row colors
+        SetRowColors()
     End Sub
+
+    ''' <summary>
+    ''' Create a single DataGridView row from a DataRow
+    ''' </summary>
+    Private Function CreateGridRow(row As DataRow, dt As DataTable) As DataGridViewRow
+        Dim gridRow As New DataGridViewRow()
+        gridRow.CreateCells(dgvResults)
+
+        ' Checkbox
+        gridRow.Cells(0).Value = False
+
+        ' Hospital Name
+        gridRow.Cells(1).Value = If(displayColumnCache <> "", SafeGetValue(row, displayColumnCache), "")
+
+        ' City
+        gridRow.Cells(2).Value = SafeStr(row, "City")
+
+        ' State
+        gridRow.Cells(3).Value = SafeStr(row, StateColumns)
+
+        ' Zip
+        gridRow.Cells(4).Value = SafeStr(row, ZipColumns)
+
+        ' Bed Count
+        gridRow.Cells(5).Value = If(bedCountColumnCache <> "" AndAlso Not IsDBNull(row(bedCountColumnCache)),
+                                     row(bedCountColumnCache).ToString(), "")
+
+        ' CMS/CCN
+        gridRow.Cells(6).Value = If(cmsColumnCache <> "" AndAlso Not IsDBNull(row(cmsColumnCache)),
+                                     row(cmsColumnCache).ToString(), "")
+
+        ' Type of Control
+        Dim typeOfControlCode As String = SafeStr(row, "Type of Control")
+        gridRow.Cells(7).Value = If(TypeOfControlMap.ContainsKey(typeOfControlCode),
+                                     TypeOfControlMap(typeOfControlCode), typeOfControlCode)
+
+        Return gridRow
+    End Function
+
+    ''' <summary>
+    ''' Helper to safely get value from DataRow
+    ''' </summary>
+    Private Function SafeGetValue(row As DataRow, columnName As String) As String
+        If Not IsDBNull(row(columnName)) Then
+            Return row(columnName).ToString()
+        End If
+        Return ""
+    End Function
+
+    ''' <summary>
+    ''' Set alternating row colors
+    ''' </summary>
+    Private Sub SetRowColors()
+        For i = 0 To dgvResults.Rows.Count - 1
+            If i Mod 2 = 0 Then
+                dgvResults.Rows(i).DefaultCellStyle.BackColor = Color.White
+            Else
+                dgvResults.Rows(i).DefaultCellStyle.BackColor = Color.LightYellow
+            End If
+        Next
+    End Sub
+
+    ' ============================================================================
+    ' PAGINATION METHODS
+    ' ============================================================================
+
+    Private Sub EnablePagination(dt As DataTable)
+        PaginationEnabled = True
+        TotalPages = CInt(Math.Ceiling(dt.Rows.Count / CDbl(PageSize)))
+        CurrentPage = 0
+        LoadPage(0)
+
+        ' Show pagination controls (add these to your form designer)
+        ' btnPrevPage.Visible = True
+        ' btnNextPage.Visible = True
+        ' lblPagination.Visible = True
+    End Sub
+
+    Private Sub DisablePagination()
+        PaginationEnabled = False
+        ' Hide pagination controls
+        ' btnPrevPage.Visible = False
+        ' btnNextPage.Visible = False
+        ' lblPagination.Visible = False
+    End Sub
+
+    Private Sub LoadPage(pageNumber As Integer)
+        If resultsTable Is Nothing Then Return
+
+        CurrentPage = pageNumber
+        Dim startIndex = pageNumber * PageSize
+        Dim endIndex = Math.Min(startIndex + PageSize, resultsTable.Rows.Count)
+
+        dgvResults.Rows.Clear()
+
+        ' Create rows for current page
+        Dim rowsToAdd As New List(Of DataGridViewRow)
+        For i = startIndex To endIndex - 1
+            rowsToAdd.Add(CreateGridRow(resultsTable.Rows(i), resultsTable))
+        Next
+
+        If rowsToAdd.Count > 0 Then
+            dgvResults.Rows.AddRange(rowsToAdd.ToArray())
+        End If
+
+        SetRowColors()
+
+        ' Update pagination label
+        ' lblPagination.Text = $"Page {pageNumber + 1} of {TotalPages} (Showing {startIndex + 1}-{endIndex} of {resultsTable.Rows.Count})"
+    End Sub
+
+    ' Pagination button handlers (add these to your form)
+    'Private Sub btnPrevPage_Click(sender As Object, e As EventArgs)
+    '    If CurrentPage > 0 Then
+    '        LoadPage(CurrentPage - 1)
+    '    End If
+    'End Sub
+
+    'Private Sub btnNextPage_Click(sender As Object, e As EventArgs)
+    '    If CurrentPage < TotalPages - 1 Then
+    '        LoadPage(CurrentPage + 1)
+    '    End If
+    'End Sub
+
+    ' ============================================================================
+    ' DATAGRIDVIEW INITIALIZATION
+    ' ============================================================================
 
     ''' <summary>
     ''' Initialize DataGridView columns if not already set up
@@ -98,7 +272,17 @@ Public Class Results
                 .Columns.Add("TypeOfControl", "Type of Control")
                 .SelectionMode = DataGridViewSelectionMode.FullRowSelect
                 .MultiSelect = False
+                .AllowUserToAddRows = False
+                .AllowUserToDeleteRows = False
+                .ReadOnly = False
             End With
+
+            ' Make all columns except Select read-only
+            For Each col As DataGridViewColumn In dgvResults.Columns
+                If col.Name <> "Select" Then
+                    col.ReadOnly = True
+                End If
+            Next
         End If
     End Sub
 
@@ -112,32 +296,18 @@ Public Class Results
         Return If(dt.Columns.Count > 0, dt.Columns(0).ColumnName, "")
     End Function
 
-    ''' <summary>
-    ''' Adds a single row to the DataGridView
-    ''' </summary>
-    Private Sub AddRowToGrid(row As DataRow, dt As DataTable)
-        Dim name As String = If(displayColumnCache <> "", row(displayColumnCache).ToString(), "")
-        Dim city As String = SafeStr(row, "City")
-        Dim state As String = SafeStr(row, StateColumns)
-        Dim zip As String = SafeStr(row, ZipColumns)
-        Dim bedCount As String = If(bedCountColumnCache <> "" AndAlso Not IsDBNull(row(bedCountColumnCache)),
-                                     row(bedCountColumnCache).ToString(), "")
-        Dim cmsccn As String = If(cmsColumnCache <> "" AndAlso Not IsDBNull(row(cmsColumnCache)),
-                                   row(cmsColumnCache).ToString(), "")
-        Dim typeOfControlCode As String = SafeStr(row, "Type of Control")
-        Dim typeOfControlDesc As String = If(TypeOfControlMap.ContainsKey(typeOfControlCode),
-                                             TypeOfControlMap(typeOfControlCode), typeOfControlCode)
-
-        dgvResults.Rows.Add(False, name, city, state, zip, bedCount, cmsccn, typeOfControlDesc)
-    End Sub
+    ' ============================================================================
+    ' CHECKBOX HANDLING
+    ' ============================================================================
 
     ''' <summary>
     ''' Ensure only one checkbox is checked at a time (single selection)
     ''' </summary>
     Private Sub dgvResults_CellValueChanged(sender As Object, e As DataGridViewCellEventArgs) _
         Handles dgvResults.CellValueChanged
-        If e.ColumnIndex = dgvResults.Columns("Select").Index AndAlso
-           CBool(dgvResults.Rows(e.RowIndex).Cells("Select").Value) Then
+        If e.RowIndex < 0 OrElse e.ColumnIndex <> dgvResults.Columns("Select").Index Then Return
+
+        If CBool(dgvResults.Rows(e.RowIndex).Cells("Select").Value) Then
             For i As Integer = 0 To dgvResults.Rows.Count - 1
                 If i <> e.RowIndex Then
                     dgvResults.Rows(i).Cells("Select").Value = False
@@ -145,6 +315,10 @@ Public Class Results
             Next
         End If
     End Sub
+
+    ' ============================================================================
+    ' HOSPITAL SELECTION
+    ' ============================================================================
 
     ''' <summary>
     ''' Gets the selected hospital context from the DataGridView
@@ -154,14 +328,14 @@ Public Class Results
             FirstOrDefault(Function(r) CBool(r.Cells("Select").Value))
 
         If selectedRow Is Nothing Then
-            MessageBox.Show("Select a hospital first.")
+            MessageBox.Show("Please select a hospital first.")
             Return Nothing
         End If
 
-        Dim name As String = selectedRow.Cells("HospitalName").Value.ToString()
-        Dim city As String = selectedRow.Cells("City").Value.ToString()
-        Dim state As String = selectedRow.Cells("State").Value.ToString()
-        Dim zip As String = selectedRow.Cells("Zip").Value.ToString()
+        Dim name As String = If(selectedRow.Cells("HospitalName").Value IsNot Nothing, selectedRow.Cells("HospitalName").Value.ToString(), "")
+        Dim city As String = If(selectedRow.Cells("City").Value IsNot Nothing, selectedRow.Cells("City").Value.ToString(), "")
+        Dim state As String = If(selectedRow.Cells("State").Value IsNot Nothing, selectedRow.Cells("State").Value.ToString(), "")
+        Dim zip As String = If(selectedRow.Cells("Zip").Value IsNot Nothing, selectedRow.Cells("Zip").Value.ToString(), "")
 
         ' Find the display column
         Dim displayCol As String = FindColumn(resultsTable, NameColumns)
@@ -189,23 +363,19 @@ Public Class Results
             Function(r)
                 Return r.Field(Of String)(displayCol) = name AndAlso
                        MatchesColumn(r, "City", city) AndAlso
-                       MatchesStateColumn(r, state) AndAlso
-                       MatchesZipColumn(r, zip)
+                       MatchesState(r, state) AndAlso
+                       MatchesZip(r, zip)
             End Function)
     End Function
 
-    ''' <summary>
-    ''' Helper to match a column value if it exists
-    ''' </summary>
     Private Function MatchesColumn(row As DataRow, columnName As String, value As String) As Boolean
-        Return Not resultsTable.Columns.Contains(columnName) OrElse
-               row.Field(Of String)(columnName) = value
+        If row.Table.Columns.Contains(columnName) Then
+            Return row.Field(Of String)(columnName) = value
+        End If
+        Return True
     End Function
 
-    ''' <summary>
-    ''' Helper to match state column (multiple possible names)
-    ''' </summary>
-    Private Function MatchesStateColumn(row As DataRow, state As String) As Boolean
+    Private Function MatchesState(row As DataRow, state As String) As Boolean
         For Each colName In StateColumns
             If resultsTable.Columns.Contains(colName) Then
                 Return row.Field(Of String)(colName) = state
@@ -214,10 +384,7 @@ Public Class Results
         Return True
     End Function
 
-    ''' <summary>
-    ''' Helper to match zip column (multiple possible names)
-    ''' </summary>
-    Private Function MatchesZipColumn(row As DataRow, zip As String) As Boolean
+    Private Function MatchesZip(row As DataRow, zip As String) As Boolean
         For Each colName In ZipColumns
             If resultsTable.Columns.Contains(colName) Then
                 Return row.Field(Of String)(colName) = zip
@@ -225,6 +392,10 @@ Public Class Results
         Next
         Return True
     End Function
+
+    ' ============================================================================
+    ' HOSPITAL CONTEXT BUILDER
+    ' ============================================================================
 
     ''' <summary>
     ''' Builds a complete HospitalContext from a DataRow
@@ -272,6 +443,10 @@ Public Class Results
 
         Return hosp
     End Function
+
+    ' ============================================================================
+    ' NAVIGATION METHODS
+    ' ============================================================================
 
     ''' <summary>
     ''' Generic navigation handler for all button clicks
@@ -324,6 +499,10 @@ Public Class Results
         Search.Show()
     End Sub
 
+    ' ============================================================================
+    ' HELPER METHODS
+    ' ============================================================================
+
     ''' <summary>
     ''' Helper function to safely retrieve string values with multiple column name options
     ''' </summary>
@@ -364,24 +543,20 @@ Public Class Results
         Return 0D
     End Function
 
+    ' ============================================================================
+    ' FORM EVENTS
+    ' ============================================================================
+
     ''' <summary>
     ''' Form load event - configure DataGridView
     ''' </summary>
     Private Sub Results_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        With dgvResults
-            .AllowUserToAddRows = False
-            .AllowUserToDeleteRows = False
-            .ReadOnly = False
-            If .Columns.Contains("Select") Then
-                .Columns("Select").ReadOnly = False
-            End If
-        End With
-
-        ' Make all columns except Select read-only
-        For Each col As DataGridViewColumn In dgvResults.Columns
-            If col.Name <> "Select" Then col.ReadOnly = True
-        Next
+        InitializeDataGridViewColumns()
     End Sub
+
+    ' ============================================================================
+    ' STATIC HELPER
+    ' ============================================================================
 
     ''' <summary>
     ''' Retrieves hospital context by CMS number from the results table

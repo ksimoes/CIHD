@@ -29,7 +29,7 @@ Partial Class Search
         picLoading = New PictureBox()
         lblCheckingStatus = New Label()
         lblstatus = New Label()
-        Button1 = New Button()
+        btnClear = New Button()
         btnSearchAll = New Button()
         GroupBox5 = New GroupBox()
         Label3 = New Label()
@@ -229,7 +229,7 @@ Partial Class Search
         TabPage5.Controls.Add(picLoading)
         TabPage5.Controls.Add(lblCheckingStatus)
         TabPage5.Controls.Add(lblstatus)
-        TabPage5.Controls.Add(Button1)
+        TabPage5.Controls.Add(btnClear)
         TabPage5.Controls.Add(btnSearchAll)
         TabPage5.Controls.Add(GroupBox5)
         TabPage5.Controls.Add(GroupBox2)
@@ -281,15 +281,15 @@ Partial Class Search
         lblstatus.TabIndex = 74
         lblstatus.Text = "."
         ' 
-        ' Button1
+        ' btnClear
         ' 
-        Button1.BackColor = Color.Red
-        Button1.Location = New Point(574, 517)
-        Button1.Name = "Button1"
-        Button1.Size = New Size(294, 55)
-        Button1.TabIndex = 95
-        Button1.Text = "Clear"
-        Button1.UseVisualStyleBackColor = False
+        btnClear.BackColor = Color.Red
+        btnClear.Location = New Point(574, 517)
+        btnClear.Name = "btnClear"
+        btnClear.Size = New Size(294, 55)
+        btnClear.TabIndex = 95
+        btnClear.Text = "Clear"
+        btnClear.UseVisualStyleBackColor = False
         ' 
         ' btnSearchAll
         ' 
@@ -2122,7 +2122,7 @@ Partial Class Search
     Friend WithEvents lblMaxSpecialAll As Label
     Friend WithEvents lblMaxAnnualDisAll As Label
     Friend WithEvents lblMaxTotalBedsAll As Label
-    Friend WithEvents Button1 As Button
+    Friend WithEvents btnClear As Button
     Friend WithEvents Button2 As Button
     Friend WithEvents Button3 As Button
     Friend WithEvents Button4 As Button

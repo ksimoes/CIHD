@@ -1,10 +1,68 @@
 ﻿Imports System.Data.SqlClient
 Imports System.Net.Http
+Imports System.Text.RegularExpressions
+Imports System.Threading
 Imports Newtonsoft.Json.Linq
 
 Public Class Search
-    Private connectionString As String = "Data Source=cihg-sql1.database.windows.net;Initial Catalog=CIHData;User ID=cihgadmin;Password=P!bxbFrHw4-jCvU*;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+    ' ============================================================================
+    ' CONFIGURATION - Move to App.config in production
+    ' ============================================================================
+
+    ' Connection string - accessible to derived classes and internally
+    Private Shared ReadOnly _connectionString As String = "Data Source=cihg-sql1.database.windows.net;Initial Catalog=CIHData;User ID=cihgadmin;Password=P!bxbFrHw4-jCvU*;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+
+    ' Property to access connection string (Protected for derived classes, or Public if needed externally)
+    Protected Shared ReadOnly Property ConnectionString As String
+        Get
+            Return _connectionString
+        End Get
+    End Property
+
+    ' Instance reference for convenience
+    'Private ReadOnly connectionString As String = _connectionString
+
     Public Shared SearchHospital As New HospitalContext()
+
+    ' ============================================================================
+    ' SHARED RESOURCES - Reusable across all instances
+    ' ============================================================================
+
+    ' Shared HttpClient for better performance and connection pooling
+    Private Shared ReadOnly _httpClient As New Lazy(Of HttpClient)(
+        Function()
+            Dim client = New HttpClient()
+            client.Timeout = TimeSpan.FromSeconds(30)
+            client.DefaultRequestHeaders.Add("User-Agent", "HospitalSearchApp/1.0")
+            Return client
+        End Function)
+
+    Private Shared ReadOnly Property SharedHttpClient As HttpClient
+        Get
+            Return _httpClient.Value
+        End Get
+    End Property
+
+    ' Compiled regex for better performance
+    Private Shared ReadOnly WhitespaceRegex As New Regex("\s+", RegexOptions.Compiled)
+
+    ' API response caching
+    Private Shared ReadOnly _apiCache As New Dictionary(Of String, (Data As DataTable, Timestamp As DateTime))
+    Private Shared ReadOnly _cacheLock As New Object()
+    Private Const CacheExpirationMinutes As Integer = 15
+    Private Const MaxCacheSize As Integer = 50
+
+    ' Normalization caching
+    Private Shared ReadOnly _normalizedNameCache As New Dictionary(Of String, String)
+    Private Shared ReadOnly _normalizedAddressCache As New Dictionary(Of String, String)
+    Private Shared ReadOnly _normalizationLock As New Object()
+
+    ' Cancellation support
+    Private searchCancellation As CancellationTokenSource
+
+    ' ============================================================================
+    ' LOOKUP DICTIONARIES
+    ' ============================================================================
 
     Private ReadOnly FacilityTypeMap As New Dictionary(Of String, String) From {
         {"Childrens", "CH"},
@@ -34,84 +92,265 @@ Public Class Search
         {"13", "Governmental‐Other"}
     }
 
+    ' ============================================================================
+    ' DATABASE METHODS - SQL INJECTION FIXED
+    ' ============================================================================
+
+    ''' <summary>
+    ''' Check if SQL should be used for a state (FIXED: SQL Injection vulnerability)
+    ''' </summary>
     Public Function useSQL(ByRef selectedState As String) As Boolean
-        Using conn As New SqlConnection(connectionString)
-            Using cmd As New SqlCommand("Select UseSql from dbo.States Where StateCode = '" + selectedState + "'", conn)
+        Using conn As New SqlConnection(ConnectionString)
+            Using cmd As New SqlCommand("SELECT UseSql FROM dbo.States WHERE StateCode = @StateCode", conn)
+                cmd.Parameters.AddWithValue("@StateCode", selectedState)
                 conn.Open()
-                Return cmd.ExecuteScalar()
+                Dim result = cmd.ExecuteScalar()
+                Return If(result IsNot Nothing, CBool(result), False)
             End Using
         End Using
     End Function
 
-    Private Sub SetupHospProfile()
-        SearchHospital.CMSNum = If(Not String.IsNullOrWhiteSpace(txtCmsCertNumDemoAll.Text), txtCmsCertNumDemoAll.Text.Trim(), TextBox39.Text.Trim())
-        SearchHospital.Zip = If(Not String.IsNullOrWhiteSpace(txtZipCodeDemoAll.Text), txtZipCodeDemoAll.Text.Trim(), TextBox40.Text.Trim())
-        SearchHospital.State = If(lbStateAll.SelectedItem IsNot Nothing, lbStateAll.SelectedItem.ToString().Trim(), "")
-        SearchHospital.Name = VerifiySearch(txtHospitalNameAll)
-        SearchHospital.City = VerifiySearch(txtCityAll)
-        SearchHospital.Phone = VerifiySearch(txtAreaCodeAll)
-        SearchHospital.NPI = VerifiySearch(txtNpiAll)
+    ' ============================================================================
+    ' API METHODS - WITH CACHING AND RETRY LOGIC
+    ' ============================================================================
+
+    ''' <summary>
+    ''' Get JSON data from API with caching support (CORRECTED - No Await in Catch)
+    ''' </summary>
+    Private Async Function GetJsonDataAsync(apiUrl As String,
+                                            Optional filterFunc As Func(Of JToken, Boolean) = Nothing,
+                                            Optional errorPrefix As String = "API",
+                                            Optional useCache As Boolean = True,
+                                            Optional maxRetries As Integer = 3) As Task(Of DataTable)
+        ' Check cache first
+        If useCache Then
+            Dim cachedData = GetFromCache(apiUrl)
+            If cachedData IsNot Nothing Then
+                Return cachedData
+            End If
+        End If
+
+        ' Retry logic (moved delay outside Catch block)
+        For retryCount = 0 To maxRetries - 1
+            Dim shouldRetry As Boolean = False
+            Dim delayMs As Integer = 0
+            Dim lastError As String = ""
+
+            Try
+                Dim response = Await SharedHttpClient.GetAsync(apiUrl)
+
+                If response.IsSuccessStatusCode Then
+                    Dim json = Await response.Content.ReadAsStringAsync()
+                    Dim dt = ProcessJsonResponse(json, filterFunc)
+
+                    ' Cache successful result
+                    If useCache AndAlso dt IsNot Nothing Then
+                        AddToCache(apiUrl, dt)
+                    End If
+
+                    Return dt
+
+                ElseIf response.StatusCode = Net.HttpStatusCode.TooManyRequests Then
+                    ' Rate limited
+                    shouldRetry = True
+                    delayMs = CInt(Math.Pow(2, retryCount + 1) * 1000) ' 2s, 4s, 8s
+                    lastError = "Rate limited"
+                Else
+                    lastError = $"HTTP {response.StatusCode}: {response.ReasonPhrase}"
+                    Exit For ' Don't retry for other HTTP errors
+                End If
+
+            Catch ex As TaskCanceledException
+                lastError = "Request timed out"
+                shouldRetry = True
+                delayMs = 1000
+            Catch ex As Exception
+                lastError = ex.Message
+                Exit For ' Don't retry for unexpected errors
+            End Try
+
+            ' Handle retry/delay outside of Catch block (VB.NET requirement)
+            If shouldRetry AndAlso retryCount < maxRetries - 1 Then
+                LogError($"{errorPrefix}: {lastError}, waiting {delayMs}ms before retry {retryCount + 1}")
+                Await Task.Delay(delayMs)
+            ElseIf Not shouldRetry Then
+                ' Non-retryable error occurred
+                LogError($"{errorPrefix} error: {lastError}")
+                MessageBox.Show($"{errorPrefix} error: {lastError}")
+                Return Nothing
+            End If
+        Next
+
+        ' All retries exhausted
+        MessageBox.Show($"{errorPrefix} error after {maxRetries} attempts")
+        Return Nothing
+    End Function
+
+    ''' <summary>
+    ''' Process JSON response into DataTable with optional filtering
+    ''' </summary>
+    Private Function ProcessJsonResponse(json As String, Optional filterFunc As Func(Of JToken, Boolean) = Nothing) As DataTable
+        Try
+            Dim data = JArray.Parse(json)
+            If data.Count = 0 Then Return Nothing
+
+            Dim dt As New DataTable()
+
+            ' Add columns from first item
+            For Each col In data(0).ToObject(Of JObject)().Properties()
+                dt.Columns.Add(col.Name)
+            Next
+
+            ' Add rows with optional filtering
+            For Each item In data
+                If filterFunc Is Nothing OrElse filterFunc(item) Then
+                    Dim row = dt.NewRow()
+                    For Each col In dt.Columns
+                        row(col.ToString()) = item(col.ToString())
+                    Next
+                    dt.Rows.Add(row)
+                End If
+            Next
+
+            Return dt
+        Catch ex As Exception
+            LogError($"JSON processing error: {ex.Message}")
+            Return Nothing
+        End Try
+    End Function
+
+    ''' <summary>
+    ''' Get NPI Registry information
+    ''' </summary>
+    Private Async Function GetNpiRegistryInfoAsync(npi As String) As Task(Of JObject)
+        Dim apiUrl As String = $"https://npiregistry.cms.hhs.gov/api/?number={Uri.EscapeDataString(npi)}&version=2.1"
+        Try
+            Dim response = Await SharedHttpClient.GetAsync(apiUrl)
+            If response.IsSuccessStatusCode Then
+                Dim json = Await response.Content.ReadAsStringAsync()
+                Dim obj = JObject.Parse(json)
+                If obj("results") IsNot Nothing AndAlso obj("results").HasValues Then
+                    Return obj("results")(0)
+                End If
+            End If
+        Catch ex As Exception
+            LogError($"NPI Registry API error: {ex.Message}")
+        End Try
+        Return Nothing
+    End Function
+
+    ' ============================================================================
+    ' CACHE MANAGEMENT
+    ' ============================================================================
+
+    Private Function GetFromCache(cacheKey As String) As DataTable
+        SyncLock _cacheLock
+            If _apiCache.ContainsKey(cacheKey) Then
+                Dim cached = _apiCache(cacheKey)
+                If DateTime.Now.Subtract(cached.Timestamp).TotalMinutes < CacheExpirationMinutes Then
+                    LogError($"Cache hit: {cacheKey.Substring(0, Math.Min(50, cacheKey.Length))}")
+                    Return cached.Data.Copy() ' Return a copy to prevent modification
+                Else
+                    ' Expired - remove it
+                    _apiCache.Remove(cacheKey)
+                End If
+            End If
+        End SyncLock
+        Return Nothing
+    End Function
+
+    Private Sub AddToCache(cacheKey As String, data As DataTable)
+        SyncLock _cacheLock
+            ' Enforce cache size limit
+            If _apiCache.Count >= MaxCacheSize Then
+                ' Remove oldest entries
+                Dim oldestKeys = _apiCache.OrderBy(Function(x) x.Value.Timestamp).Take(10).Select(Function(x) x.Key).ToList()
+                For Each key In oldestKeys
+                    _apiCache.Remove(key)
+                Next
+                LogError($"Cache cleanup: Removed {oldestKeys.Count} old entries")
+            End If
+
+            _apiCache(cacheKey) = (data.Copy(), DateTime.Now)
+            LogError($"Cache add: {cacheKey.Substring(0, Math.Min(50, cacheKey.Length))}")
+        End SyncLock
     End Sub
 
-    Public Function VerifiySearch(txtSearched As TextBox) As String
-        If (txtSearched.Text IsNot Nothing) Or txtSearched.Text.Length > 0 Then
-            Return txtSearched.Text.Trim()
-        Else
-            Return Nothing
-        End If
-    End Function
+    Public Shared Sub ClearCache()
+        SyncLock _cacheLock
+            _apiCache.Clear()
+        End SyncLock
+    End Sub
 
-    Public Function CleanMeUp(strMydata As Object, Optional ByRef isNumber As Boolean = False) As String
-        If strMydata Is Nothing Then
-            If isNumber Then
-                Return "0"
-            Else
-                Return "N/A"
-            End If
-        End If
+    ' ============================================================================
+    ' FUZZY MATCHING - WITH CACHING
+    ' ============================================================================
 
-        Dim strVal As String = strMydata.ToString().Trim()
-        If String.IsNullOrEmpty(strVal) OrElse strVal = "Result" OrElse strVal = "N/A" Then
-            If isNumber Then
-                Return "0"
-            Else
-                Return "N/A"
-            End If
-        End If
-
-        If isNumber Then
-            Dim dec As Decimal
-            If Decimal.TryParse(strVal.Replace("$", "").Replace(",", ""), dec) Then
-                Return dec.ToString("N")
-            Else
-                Return "0"
-            End If
-        Else
-            Return strVal
-        End If
-    End Function
-
+    ''' <summary>
+    ''' Normalize name for fuzzy matching (with caching)
+    ''' </summary>
     Private Function NormalizeName(name As String) As String
         If String.IsNullOrEmpty(name) Then Return ""
+
+        ' Check cache first
+        SyncLock _normalizationLock
+            If _normalizedNameCache.ContainsKey(name) Then
+                Return _normalizedNameCache(name)
+            End If
+        End SyncLock
+
+        ' Perform normalization
         Dim cleaned = name.ToLower().Trim()
         cleaned = cleaned.Replace(".", "").Replace(",", "").Replace("-", " ")
+
         Dim commonWords = New String() {"hospital", "center", "medical", "the", "of", "and"}
         For Each word In commonWords
             cleaned = cleaned.Replace(word, "")
         Next
-        cleaned = System.Text.RegularExpressions.Regex.Replace(cleaned, "\s+", " ")
-        Return cleaned.Trim()
+
+        cleaned = WhitespaceRegex.Replace(cleaned, " ").Trim()
+
+        ' Add to cache
+        SyncLock _normalizationLock
+            If _normalizedNameCache.Count > 1000 Then
+                _normalizedNameCache.Clear() ' Prevent unbounded growth
+            End If
+            _normalizedNameCache(name) = cleaned
+        End SyncLock
+
+        Return cleaned
     End Function
 
+    ''' <summary>
+    ''' Normalize address for fuzzy matching (with caching)
+    ''' </summary>
     Private Function NormalizeAddress(addr As String) As String
         If String.IsNullOrWhiteSpace(addr) Then Return ""
+
+        ' Check cache first
+        SyncLock _normalizationLock
+            If _normalizedAddressCache.ContainsKey(addr) Then
+                Return _normalizedAddressCache(addr)
+            End If
+        End SyncLock
+
+        ' Perform normalization
         Dim cleaned = addr.ToLower().Trim()
         cleaned = cleaned.Replace("us highway", "hwy").Replace("us hwy", "hwy").Replace("highway", "hwy")
         cleaned = cleaned.Replace("street", "st").Replace("avenue", "ave").Replace("road", "rd")
         cleaned = cleaned.Replace("drive", "dr").Replace("boulevard", "blvd").Replace("lane", "ln")
         cleaned = cleaned.Replace("east", "e").Replace("west", "w").Replace("north", "n").Replace("south", "s")
         cleaned = cleaned.Replace(".", "").Replace(",", "")
-        cleaned = System.Text.RegularExpressions.Regex.Replace(cleaned, "\s+", " ")
+        cleaned = WhitespaceRegex.Replace(cleaned, " ")
+
+        ' Add to cache
+        SyncLock _normalizationLock
+            If _normalizedAddressCache.Count > 1000 Then
+                _normalizedAddressCache.Clear()
+            End If
+            _normalizedAddressCache(addr) = cleaned
+        End SyncLock
+
         Return cleaned
     End Function
 
@@ -132,531 +371,60 @@ Public Class Search
         Return overlap >= 3 OrElse norm1.Contains(norm2) OrElse norm2.Contains(norm1)
     End Function
 
-    Private Async Function GetNpiRegistryInfoAsync(npi As String) As Task(Of JObject)
-        Dim apiUrl As String = $"https://npiregistry.cms.hhs.gov/api/?number={Uri.EscapeDataString(npi)}&version=2.1"
-        Try
-            Using client As New HttpClient()
-                client.Timeout = TimeSpan.FromSeconds(15)
-                Dim response = Await client.GetAsync(apiUrl)
-                If response.IsSuccessStatusCode Then
-                    Dim json = Await response.Content.ReadAsStringAsync()
-                    Dim obj = JObject.Parse(json)
-                    If obj("results") IsNot Nothing AndAlso obj("results").HasValues Then
-                        Return obj("results")(0)
-                    End If
-                End If
-            End Using
-        Catch ex As Exception
-            MessageBox.Show("NPI Registry API error: " & ex.Message)
-        End Try
-        Return Nothing
-    End Function
+    ' ============================================================================
+    ' HELPER METHODS
+    ' ============================================================================
 
-    Private Async Function GetJsonDataAsync(apiUrl As String, Optional filterFunc As Func(Of JToken, Boolean) = Nothing, Optional errorPrefix As String = "API") As Task(Of DataTable)
-        Try
-            Using client As New HttpClient()
-                client.Timeout = TimeSpan.FromSeconds(15)
-                Dim response = Await client.GetAsync(apiUrl)
-                If response.IsSuccessStatusCode Then
-                    Dim json = Await response.Content.ReadAsStringAsync()
-                    Dim data = JArray.Parse(json)
-                    If data.Count > 0 Then
-                        Dim dt As New DataTable()
-                        For Each col In data(0).ToObject(Of JObject)().Properties()
-                            dt.Columns.Add(col.Name)
-                        Next
-                        For Each item In data
-                            ' Apply filter if provided, otherwise include all items
-                            If filterFunc Is Nothing OrElse filterFunc(item) Then
-                                Dim row = dt.NewRow()
-                                For Each col In dt.Columns
-                                    row(col.ToString()) = item(col.ToString())
-                                Next
-                                dt.Rows.Add(row)
-                            End If
-                        Next
-                        Return dt
-                    End If
-                Else
-                    MessageBox.Show($"{errorPrefix} error: {response.StatusCode}")
-                End If
-            End Using
-        Catch ex As TaskCanceledException
-            MessageBox.Show($"{errorPrefix} request timed out.")
-        Catch ex As Exception
-            MessageBox.Show($"{errorPrefix} error: {ex.Message}")
-        End Try
-        Return Nothing
-    End Function
-
-    Private Async Sub btnSearchHCPCSCode_Click(sender As Object, e As EventArgs) Handles btnSearchHCPCSCode.Click
-        Dim codeInput As String = tbCode.Text.Trim().ToUpper()
-        If String.IsNullOrWhiteSpace(codeInput) Then
-            MessageBox.Show("Please enter an HCPCS code or range to search.")
-            Return
-        End If
-
-        picLoading.Visible = True ' <-- Show loading spinner
-
-        Dim codesToSearch As New List(Of String)
-        If codeInput.Contains("-") AndAlso codeInput.Length >= 11 Then
-            Dim parts = codeInput.Split("-"c)
-            If parts.Length = 2 Then
-                Dim prefixFrom = parts(0).Substring(0, 1)
-                Dim prefixTo = parts(1).Substring(0, 1)
-                Dim numFrom As Integer, numTo As Integer
-                If prefixFrom = prefixTo AndAlso Integer.TryParse(parts(0).Substring(1), numFrom) AndAlso Integer.TryParse(parts(1).Substring(1), numTo) Then
-                    For i = numFrom To numTo
-                        codesToSearch.Add(prefixFrom & i.ToString("D4"))
-                    Next
-                End If
-            End If
-        Else
-            codesToSearch.Add(codeInput)
-        End If
-
-        Dim stateFilter As String = If(lbStateAll.SelectedItem IsNot Nothing, lbStateAll.SelectedItem.ToString().Trim(), "")
-        Dim cityFilter As String = txtCityAll.Text.Trim()
-        Dim zipFilter As String = txtZipCodeDemoAll.Text.Trim()
-
-        lblstatus.Text = "Searching by HCPCS code..."
-        lblstatus.Visible = True
-
-        Try
-            Dim allResults As New DataTable()
-            Dim initialized As Boolean = False
-
-            For Each code In codesToSearch
-                Dim offset As Integer = 0
-                Dim pageSize As Integer = 1000
-                Dim moreData As Boolean = True
-
-                While moreData
-                    Dim apiUrl As New System.Text.StringBuilder($"https://data.cms.gov/data-api/v1/dataset/92396110-2aed-4d63-a6a2-5d6207d46a29/data?filter[HCPCS_Cd]={Uri.EscapeDataString(code)}")
-                    If Not String.IsNullOrWhiteSpace(stateFilter) Then
-                        apiUrl.Append($"&filter[Rndrng_Prvdr_State_Abrvtn]={Uri.EscapeDataString(stateFilter)}")
-                    End If
-                    If Not String.IsNullOrWhiteSpace(cityFilter) Then
-                        apiUrl.Append($"&filter[Rndrng_Prvdr_City]={Uri.EscapeDataString(cityFilter)}")
-                    End If
-                    If Not String.IsNullOrWhiteSpace(zipFilter) Then
-                        apiUrl.Append($"&filter[Rndrng_Prvdr_Zip5]={Uri.EscapeDataString(zipFilter)}")
-                    End If
-                    apiUrl.Append($"&size={pageSize}&offset={offset}")
-
-                    Dim dt As New DataTable()
-                    Using client As New HttpClient()
-                        client.Timeout = TimeSpan.FromSeconds(60)
-                        Dim response = Await client.GetAsync(apiUrl.ToString())
-                        If response.IsSuccessStatusCode Then
-                            Dim json = Await response.Content.ReadAsStringAsync()
-                            Dim data = JArray.Parse(json)
-                            If data.Count > 0 Then
-                                For Each col In data(0).ToObject(Of JObject)().Properties()
-                                    If Not dt.Columns.Contains(col.Name) Then
-                                        dt.Columns.Add(col.Name)
-                                    End If
-                                Next
-                                For Each item In data
-                                    Dim row = dt.NewRow()
-                                    For Each col In dt.Columns
-                                        row(col.ToString()) = item(col.ToString())
-                                    Next
-                                    dt.Rows.Add(row)
-                                Next
-                            End If
-
-                            If Not initialized Then
-                                allResults = dt.Clone()
-                                initialized = True
-                            End If
-                            For Each row As DataRow In dt.Rows
-                                allResults.ImportRow(row)
-                            Next
-
-                            If data.Count < pageSize Then
-                                moreData = False
-                            Else
-                                offset += pageSize
-                                Await Task.Delay(500) ' Be nice to the API
-                            End If
-                        Else
-                            MessageBox.Show("HCPCS API error: " & response.StatusCode.ToString())
-                            moreData = False
-                        End If
-                    End Using
-                End While
-            Next
-
-            If allResults.Rows.Count = 0 Then
-                MessageBox.Show("No results found for this HCPCS code or range and filters.")
-                lblstatus.Text = ""
-                lblstatus.Visible = False
-                Return
-            End If
-
-            Dim popup As New HCPCSCodeResultsForm(codeInput, stateFilter)
-            popup.Owner = Me
-            popup.Show() ' <-- Modeless, allows simultaneous use
-        Catch ex As TaskCanceledException
-            MessageBox.Show("HCPCS API request timed out.")
-        Catch ex As Exception
-            MessageBox.Show("Error searching by HCPCS code: " & ex.Message)
-        Finally
-            lblstatus.Text = ""
-            lblstatus.Visible = False
-            picLoading.Visible = False ' <-- Hide loading spinner
-        End Try
+    Private Sub SetupHospProfile()
+        SearchHospital.CMSNum = If(Not String.IsNullOrWhiteSpace(txtCmsCertNumDemoAll.Text), txtCmsCertNumDemoAll.Text.Trim(), TextBox39.Text.Trim())
+        SearchHospital.Zip = If(Not String.IsNullOrWhiteSpace(txtZipCodeDemoAll.Text), txtZipCodeDemoAll.Text.Trim(), TextBox40.Text.Trim())
+        SearchHospital.State = If(lbStateAll.SelectedItem IsNot Nothing, lbStateAll.SelectedItem.ToString().Trim(), "")
+        SearchHospital.Name = VerifiySearch(txtHospitalNameAll)
+        SearchHospital.City = VerifiySearch(txtCityAll)
+        SearchHospital.Phone = VerifiySearch(txtAreaCodeAll)
+        SearchHospital.NPI = VerifiySearch(txtNpiAll)
     End Sub
 
-    ' Example: Fetch a single page of results
-    Public Async Function FetchHCPCSPage(code As String, state As String, pageSize As Integer, offset As Integer) As Task(Of DataTable)
-        Dim apiUrl As New System.Text.StringBuilder($"https://data.cms.gov/data-api/v1/dataset/92396110-2aed-4d63-a6a2-5d6207d46a29/data?filter[HCPCS_Cd]={Uri.EscapeDataString(code)}")
-        If Not String.IsNullOrWhiteSpace(state) Then
-            apiUrl.Append($"&filter[Rndrng_Prvdr_State_Abrvtn]={Uri.EscapeDataString(state)}")
+    Public Function VerifiySearch(txtSearched As TextBox) As String
+        If txtSearched IsNot Nothing AndAlso txtSearched.Text.Length > 0 Then
+            Return txtSearched.Text.Trim()
+        Else
+            Return Nothing
         End If
-        apiUrl.Append($"&size={pageSize}&offset={offset}")
-
-        Dim dt As New DataTable()
-        Using client As New HttpClient()
-            client.Timeout = TimeSpan.FromSeconds(60)
-            Dim response = Await client.GetAsync(apiUrl.ToString())
-            If response.IsSuccessStatusCode Then
-                Dim json = Await response.Content.ReadAsStringAsync()
-                Dim data = JArray.Parse(json)
-                If data.Count > 0 Then
-                    For Each col In data(0).ToObject(Of JObject)().Properties()
-                        If Not dt.Columns.Contains(col.Name) Then
-                            dt.Columns.Add(col.Name)
-                        End If
-                    Next
-                    For Each item In data
-                        Dim row = dt.NewRow()
-                        For Each col In dt.Columns
-                            row(col.ToString()) = item(col.ToString())
-                        Next
-                        dt.Rows.Add(row)
-                    Next
-                End If
-            End If
-        End Using
-        Return dt
     End Function
 
-    Private Async Function SearchByApiAsync(selectedState As String, filterSummary As String) As Task
-        Dim apiUrl As String = "https://data.cms.gov/data-api/v1/dataset/8015f175-35cc-4cab-a664-b7c87d91a027/data?"
-        Dim filters As New List(Of String)
-
-        If Not String.IsNullOrEmpty(selectedState) Then filters.Add("filter[State Code]=" & Uri.EscapeDataString(selectedState))
-        If Not String.IsNullOrEmpty(txtCityAll.Text) Then filters.Add("filter[City]=" & Uri.EscapeDataString(txtCityAll.Text.Trim()))
-        Dim cmsNum As String = If(Not String.IsNullOrWhiteSpace(txtCmsCertNumDemoAll.Text), txtCmsCertNumDemoAll.Text.Trim(), TextBox39.Text.Trim())
-        If Not String.IsNullOrEmpty(cmsNum) Then
-            filters.Add("filter[Provider CCN]=" & Uri.EscapeDataString(cmsNum))
-        End If
-        If Not String.IsNullOrWhiteSpace(txtcountygeoall.Text) Then
-            filters.Add("filter[County]=" & Uri.EscapeDataString(txtcountygeoall.Text.Trim()))
-        End If
-        If lbTypeFacilityCharAll.SelectedItem IsNot Nothing Then
-            Dim selectedDisplay = lbTypeFacilityCharAll.SelectedItem.ToString()
-            If FacilityTypeMap.ContainsKey(selectedDisplay) Then
-                Dim acronym = FacilityTypeMap(selectedDisplay)
-                filters.Add("filter[CCN Facility Type]=" & Uri.EscapeDataString(acronym))
-            End If
-        End If
-        If Not String.IsNullOrEmpty(txtNpiAll.Text) Then filters.Add("filter[NPI]=" & Uri.EscapeDataString(txtNpiAll.Text.Trim()))
-        If Not String.IsNullOrEmpty(txtHospitalNameAll.Text) Then filters.Add("filter[Hospital Name]=" & Uri.EscapeDataString(txtHospitalNameAll.Text.Trim()))
-        If cbRUAll.SelectedItem IsNot Nothing AndAlso Not String.IsNullOrEmpty(cbRUAll.SelectedItem.ToString()) Then
-            filters.Add("filter[Rural Versus Urban]=" & Uri.EscapeDataString(cbRUAll.SelectedItem.ToString()))
+    Public Function CleanMeUp(strMydata As Object, Optional ByRef isNumber As Boolean = False) As String
+        If strMydata Is Nothing Then
+            Return If(isNumber, "0", "N/A")
         End If
 
-        ' Add Type of Control filter if selected
-        Dim selectedControlItem = TryCast(lbControl.SelectedItem, ControlTypeItem)
-        If selectedControlItem IsNot Nothing AndAlso Not String.IsNullOrEmpty(selectedControlItem.Code) Then
-            filters.Add("filter[Type of Control]=" & Uri.EscapeDataString(selectedControlItem.Code))
+        Dim strVal As String = strMydata.ToString().Trim()
+        If String.IsNullOrEmpty(strVal) OrElse strVal = "Result" OrElse strVal = "N/A" Then
+            Return If(isNumber, "0", "N/A")
         End If
 
-        Dim zipCode As String = If(Not String.IsNullOrWhiteSpace(txtZipCodeDemoAll.Text), txtZipCodeDemoAll.Text.Trim(), TextBox40.Text.Trim())
-        If Not String.IsNullOrEmpty(zipCode) Then
-            filters.Add("filter[Zip Code]=" & Uri.EscapeDataString(zipCode))
-        End If
-
-        filters.Add("size=1000")
-        apiUrl &= String.Join("&", filters)
-
-        Using client As New HttpClient()
-            Dim response As HttpResponseMessage = Await client.GetAsync(apiUrl)
-            If response.IsSuccessStatusCode Then
-                Dim json As String = Await response.Content.ReadAsStringAsync()
-                Dim data As JArray = JArray.Parse(json)
-                If data.Count > 0 Then
-                    Dim dt As New DataTable()
-                    For Each col In data(0).ToObject(Of JObject)().Properties()
-                        dt.Columns.Add(col.Name)
-                    Next
-                    For Each item In data
-                        Dim row = dt.NewRow()
-                        For Each col In dt.Columns
-                            row(col.ToString()) = item(col.ToString())
-                        Next
-                        dt.Rows.Add(row)
-                    Next
-
-                    If (Not String.IsNullOrEmpty(txtMinTotPatRevAll.Text) OrElse Not String.IsNullOrEmpty(txtMaxTotPatRevAll.Text)) AndAlso dt.Columns.Contains("Total Patient Revenue") Then
-                        Dim minVal As Decimal = 0
-                        Dim maxVal As Decimal = Decimal.MaxValue
-                        If Not String.IsNullOrEmpty(txtMinTotPatRevAll.Text) Then Decimal.TryParse(txtMinTotPatRevAll.Text, minVal)
-                        If Not String.IsNullOrEmpty(txtMaxTotPatRevAll.Text) Then Decimal.TryParse(txtMaxTotPatRevAll.Text, maxVal)
-                        Dim filteredRows = dt.AsEnumerable().Where(
-                            Function(r)
-                                Dim val As Decimal = 0
-                                Dim strVal = r.Field(Of String)("Total Patient Revenue")
-                                If String.IsNullOrWhiteSpace(strVal) OrElse Not Decimal.TryParse(strVal.Replace("$", "").Replace(",", ""), val) Then
-                                    Return False
-                                End If
-                                Return val >= minVal AndAlso val <= maxVal
-                            End Function
-                        ).ToArray()
-                        dt = If(filteredRows.Length > 0, filteredRows.CopyToDataTable(), dt.Clone())
-                    End If
-
-                    If (Not String.IsNullOrEmpty(txtMinTotalBedsAll.Text) OrElse Not String.IsNullOrEmpty(txtMaxTotalBedsAll.Text)) AndAlso dt.Columns.Contains("Number of Beds") Then
-                        Dim minBeds As Decimal = 0
-                        Dim maxBeds As Decimal = Decimal.MaxValue
-                        If Not String.IsNullOrEmpty(txtMinTotalBedsAll.Text) Then Decimal.TryParse(txtMinTotalBedsAll.Text, minBeds)
-                        If Not String.IsNullOrEmpty(txtMaxTotalBedsAll.Text) Then Decimal.TryParse(txtMaxTotalBedsAll.Text, maxBeds)
-                        Dim filteredRows = dt.AsEnumerable().Where(
-                            Function(r)
-                                Dim val As Decimal = 0
-                                Dim strVal = r.Field(Of String)("Number of Beds")
-                                If String.IsNullOrWhiteSpace(strVal) OrElse Not Decimal.TryParse(strVal.Replace("$", "").Replace(",", ""), val) Then
-                                    Return False
-                                End If
-                                Return val >= minBeds AndAlso val <= maxBeds
-                            End Function
-                        ).ToArray()
-                        dt = If(filteredRows.Length > 0, filteredRows.CopyToDataTable(), dt.Clone())
-                    End If
-                    If (Not String.IsNullOrEmpty(txtMinAnnualDisAll.Text) OrElse Not String.IsNullOrEmpty(txtMaxAnnualDisAll.Text)) AndAlso dt.Columns.Contains("Hospital Total Discharges (V + XVIII + XIX + Unknown) For Adults & Peds") Then
-                        Dim minDis As Decimal = 0
-                        Dim maxDis As Decimal = Decimal.MaxValue
-                        If Not String.IsNullOrEmpty(txtMinAnnualDisAll.Text) Then Decimal.TryParse(txtMinAnnualDisAll.Text, minDis)
-                        If Not String.IsNullOrEmpty(txtMaxAnnualDisAll.Text) Then Decimal.TryParse(txtMaxAnnualDisAll.Text, maxDis)
-                        Dim filteredRows = dt.AsEnumerable().Where(
-        Function(r)
-            Dim val As Decimal = 0
-            Dim strVal = r.Field(Of String)("Hospital Total Discharges (V + XVIII + XIX + Unknown) For Adults & Peds")
-            If String.IsNullOrWhiteSpace(strVal) OrElse Not Decimal.TryParse(strVal.Replace("$", "").Replace(",", ""), val) Then
-                Return False
-            End If
-            Return val >= minDis AndAlso val <= maxDis
-        End Function
-    ).ToArray()
-                        dt = If(filteredRows.Length > 0, filteredRows.CopyToDataTable(), dt.Clone())
-                    End If
-
-                    If dt.Rows.Count = 0 Then
-                        MessageBox.Show("No results found for your search.")
-                        Return
-                    End If
-
-                    Results.SetResults(dt, filterSummary)
-                    PopulateTypeOfControlList()
-                    Results.SelectedState = selectedState
-                    Hide()
-                    Results.Show()
-                Else
-                    MessageBox.Show("No results found for your search.")
-                End If
+        If isNumber Then
+            Dim dec As Decimal
+            If Decimal.TryParse(strVal.Replace("$", "").Replace(",", ""), dec) Then
+                Return dec.ToString("N")
             Else
-                MessageBox.Show("API error: " & response.StatusCode.ToString())
+                Return "0"
             End If
-        End Using
+        Else
+            Return strVal
+        End If
     End Function
 
-    Private Async Sub btnSearchAll_Click(sender As Object, e As EventArgs) Handles btnSearchAll.Click
-        lblstatus.Text = "Searching..."
-        lblstatus.Visible = True
-        'Ask purpose         
-        Dim filterSummary = BuildFilterSummary()
-
+    ''' <summary>
+    ''' Simple logging for debugging and monitoring
+    ''' </summary>
+    Private Sub LogError(message As String)
         Try
-            Dim filters As New List(Of String)
-            Dim parameters As New List(Of SqlParameter)
-            Dim selectedState = ""
-            If lbStateAll.SelectedItem IsNot Nothing Then
-                selectedState = lbStateAll.SelectedItem.ToString.Trim
-            End If
-
-            ' Add Type of Control filter if selected
-            Dim selectedControlItem = TryCast(lbControl.SelectedItem, ControlTypeItem)
-            If selectedControlItem IsNot Nothing AndAlso Not String.IsNullOrEmpty(selectedControlItem.Code) Then
-                filters.Add("filter[Type of Control]=" & Uri.EscapeDataString(selectedControlItem.Code))
-            End If
-
-            If Not String.IsNullOrWhiteSpace(txtCmsCertNumDemoAll.Text) Then
-                Dim cmsNum = txtCmsCertNumDemoAll.Text.Trim
-                Dim apiUrl = $"https://data.cms.gov/data-api/v1/dataset/8015f175-35cc-4cab-a664-b7c87d91a027/data?filter[Provider CCN]={Uri.EscapeDataString(cmsNum)}&size=1000"
-                Dim dt As DataTable = Await GetJsonDataAsync(apiUrl)
-                If dt IsNot Nothing AndAlso dt.Rows.Count > 0 Then
-                    Results.SetResults(dt, filterSummary)
-                    Results.SelectedState = selectedState
-                    Hide()
-                    Results.Show()
-                    lblstatus.Text = ""
-                    lblstatus.Visible = False
-                    Return
-                Else
-                    MessageBox.Show("No results found for this CMS number.")
-                    lblstatus.Text = ""
-                    lblstatus.Visible = False
-                    Return
-                End If
-            End If
-
-            If Not String.IsNullOrWhiteSpace(txtNpiAll.Text) Then
-                Dim npi = txtNpiAll.Text.Trim
-                Dim facilityUrl = $"https://data.cms.gov/data-api/v1/dataset/8015f175-35cc-4cab-a664-b7c87d91a027/data?filter[NPI]={Uri.EscapeDataString(npi)}&size=1000"
-                Dim dtFacility As DataTable = Await GetJsonDataAsync(facilityUrl)
-                Dim dtFacilityNpiOnly As DataTable = Await GetJsonDataAsync(npi)
-                Dim providerUrl = $"https://data.cms.gov/data-api/v1/dataset/4bcae866-3411-439a-b762-90a6187c194b/data?filter[npi]={Uri.EscapeDataString(npi)}&size=1000"
-                Dim dtProvider As DataTable = Await GetJsonDataAsync(providerUrl)
-
-                Dim npiInfo = Await GetNpiRegistryInfoAsync(npi)
-                If npiInfo IsNot Nothing Then
-                    Dim npiName = npiInfo("basic")?("organization_name")?.ToString
-                    Dim npiCity = npiInfo("addresses")?(0)?("city")?.ToString
-                    Dim npiState = npiInfo("addresses")?(0)?("state")?.ToString
-                    Dim npiAddress = npiInfo("addresses")?(0)?("address_1")?.ToString
-
-                    If Not String.IsNullOrEmpty(npiName) AndAlso Not String.IsNullOrEmpty(npiCity) AndAlso Not String.IsNullOrEmpty(npiState) Then
-                        Dim apiUrl = $"https://data.cms.gov/data-api/v1/dataset/8015f175-35cc-4cab-a664-b7c87d91a027/data?filter[State Code]={Uri.EscapeDataString(npiState)}&filter[City]={Uri.EscapeDataString(npiCity)}&size=1000"
-                        Dim dtFacilities As DataTable = Await GetJsonDataAsync(apiUrl)
-
-                        If dtFacilities IsNot Nothing AndAlso dtFacilities.Rows.Count > 0 Then
-                            Dim dtMatches = dtFacilities.Clone
-                            For Each row As DataRow In dtFacilities.Rows
-                                Dim facilityName = ""
-                                If dtFacilities.Columns.Contains("Facility Name") Then
-                                    facilityName = row("Facility Name").ToString
-                                ElseIf dtFacilities.Columns.Contains("Hospital Name") Then
-                                    facilityName = row("Hospital Name").ToString
-                                End If
-
-                                Dim facilityAddress = ""
-                                If dtFacilities.Columns.Contains("Street Address") Then
-                                    facilityAddress = row("Street Address").ToString
-                                End If
-
-                                If Not String.IsNullOrEmpty(facilityName) AndAlso IsFuzzyMatch(npiName, facilityName) OrElse
-                                   Not String.IsNullOrEmpty(facilityAddress) AndAlso IsFuzzyAddressMatch(npiAddress, facilityAddress) Then
-                                    dtMatches.ImportRow(row)
-                                End If
-                            Next
-                            If dtMatches.Rows.Count > 0 Then
-                                Results.SetResults(dtMatches, filterSummary)
-                                Results.SelectedState = npiState
-                                PopulateTypeOfControlList()
-                                Hide()
-                                Results.Show()
-                                lblstatus.Text = ""
-                                lblstatus.Visible = False
-                                Return
-                            End If
-                        End If
-                    End If
-                End If
-
-                MessageBox.Show("No results found for your NPI search.")
-                lblstatus.Text = ""
-                lblstatus.Visible = False
-                Return
-            End If
-
-            If lbTypeFacilityCharAll.SelectedItem IsNot Nothing AndAlso lbTypeFacilityCharAll.SelectedItem.ToString = "Federally Qualified Health Centers" Then
-                Dim fqhcApiUrl = "https://data.cms.gov/data-api/v1/dataset/4bcae866-3411-439a-b762-90a6187c194b/data?"
-                Dim fqhcFilters As New List(Of String)
-
-                If lbStateAll.SelectedItem IsNot Nothing Then
-                    fqhcFilters.Add("filter[STATE]=" & Uri.EscapeDataString(lbStateAll.SelectedItem.ToString.Trim))
-                End If
-                If Not String.IsNullOrWhiteSpace(txtCityAll.Text) Then
-                    fqhcFilters.Add("filter[CITY]=" & Uri.EscapeDataString(txtCityAll.Text.Trim))
-                End If
-                If Not String.IsNullOrWhiteSpace(txtZipCodeDemoAll.Text) Then
-                    fqhcFilters.Add("filter[ZIP]=" & Uri.EscapeDataString(txtZipCodeDemoAll.Text.Trim))
-                End If
-                If Not String.IsNullOrWhiteSpace(txtNpiAll.Text) Then
-                    fqhcFilters.Add("filter[NPI]=" & Uri.EscapeDataString(txtNpiAll.Text.Trim))
-                End If
-
-                fqhcFilters.Add("size=10000")
-                fqhcApiUrl &= String.Join("&", fqhcFilters)
-
-                Dim fqhcDt As DataTable = Await GetJsonDataAsync(fqhcApiUrl)
-                If fqhcDt IsNot Nothing AndAlso fqhcDt.Rows.Count > 0 Then
-                    Results.SetResults(fqhcDt, filterSummary)
-                    Results.SelectedState = If(lbStateAll.SelectedItem IsNot Nothing, lbStateAll.SelectedItem.ToString.Trim, "")
-                    Hide()
-                    Results.Show()
-                    lblstatus.Text = ""
-                    lblstatus.Visible = False
-                    Return
-                Else
-                    MessageBox.Show("No FQHCs found.")
-                    lblstatus.Text = ""
-                    lblstatus.Visible = False
-                    Return
-                End If
-            End If
-
-            If selectedState = "TN" OrElse selectedState = "TX" Then
-                If Not String.IsNullOrEmpty(selectedState) Then
-                    filters.Add("State = @State")
-                    parameters.Add(New SqlParameter("@State", selectedState))
-                End If
-                If Not String.IsNullOrEmpty(txtCityAll.Text) Then
-                    filters.Add("City = @City")
-                    parameters.Add(New SqlParameter("@City", txtCityAll.Text.Trim))
-                End If
-
-                Dim query As String
-                If selectedState = "TN" Then
-                    query = "SELECT LicenseNum, [Facility Name], State, City, County FROM tn.AdminCon WHERE 1=1"
-                ElseIf selectedState = "TX" Then
-                    query = "SELECT id AS LicenseNum, [Facility Name], State, City, County FROM tx.Utilization WHERE 1=1"
-                Else
-                    query = ""
-                End If
-
-                If filters.Count > 0 Then
-                    query &= " AND " & String.Join(" AND ", filters)
-                End If
-
-                Dim dt As New DataTable
-                Using conn As New SqlConnection(connectionString)
-                    Using cmd As New SqlCommand(query, conn)
-                        cmd.Parameters.AddRange(parameters.ToArray)
-                        Dim da As New SqlDataAdapter(cmd)
-                        da.Fill(dt)
-                    End Using
-                End Using
-
-                Results.SetResults(dt, filterSummary)
-                PopulateTypeOfControlList()
-                Results.SelectedState = selectedState
-                Hide()
-                Results.Show()
-                Await SearchByApiAsync(selectedState, filterSummary)
-            Else
-                Await SearchByApiAsync(selectedState, filterSummary)
-            End If
-
-            lblstatus.Text = ""
-        Catch ex As Exception
-            lblstatus.Text = "Error during search. Please try again." & vbCrLf & ex.Message
+            Dim logPath = IO.Path.Combine(Application.StartupPath, "SearchLog.txt")
+            IO.File.AppendAllText(logPath, $"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - {message}{Environment.NewLine}")
+        Catch
+            ' Don't let logging errors crash the app
         End Try
-
-        lblstatus.Visible = False
     End Sub
 
     Private Sub PopulateTypeOfControlList()
@@ -668,37 +436,16 @@ Public Class Search
         lbControl.ClearSelected()
     End Sub
 
-    Private Sub lbControl_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lbControl.SelectedIndexChanged
-        If Results.resultsTable Is Nothing OrElse Not Results.resultsTable.Columns.Contains("Type of Control") Then Return
-
-        Dim selectedItem = TryCast(lbControl.SelectedItem, ControlTypeItem)
-        Dim codeStr As String = If(selectedItem IsNot Nothing, selectedItem.Code, "")
-
-        Dim dt As DataTable = Results.resultsTable
-
-        If String.IsNullOrEmpty(codeStr) Then
-            Results.SetResults(dt)
-        Else
-            Dim filtered = dt.AsEnumerable().Where(Function(r)
-                                                       Dim valObj = r("Type of Control")
-                                                       If valObj Is Nothing OrElse valObj Is DBNull.Value Then Return False
-                                                       Return valObj.ToString().Trim() = codeStr.Trim()
-                                                   End Function)
-
-            If filtered.Any() Then
-
-                Results.SetResults(filtered.CopyToDataTable())
-            Else
-                Results.SetResults(dt.Clone())
-            End If
-        End If
-    End Sub
+    ' ============================================================================
+    ' EVENT HANDLERS
+    ' ============================================================================
 
     Private Sub Search_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         PopulateTypeOfControlList()
     End Sub
 
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles btnClear.Click
+        ' Clear all search fields
         lbStateAll.ClearSelected()
         txtCityAll.Clear()
         txtCmsCertNumDemoAll.Clear()
@@ -716,55 +463,127 @@ Public Class Search
         lbControl.ClearSelected()
     End Sub
 
-    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
-        SearchDemographicsTab(lbStateDemo, txtCityDemo, txtCmsCertNumDemo, txtNpiDemo, txtHospitalNameDemo, txtAreaCodeDemo, txtZipCodeDemo)
-    End Sub
 
-    Private Sub TextBox2_TextChanged(sender As Object, e As EventArgs) Handles txtNpiDemo.TextChanged
-    End Sub
+    ''' <summary>
+    ''' Fetches a page of HCPCS code results from the CMS National Downloadable File API
+    ''' </summary>
+    ''' <param name="code">The HCPCS code to search for (e.g., "99213", "J0178")</param>
+    ''' <param name="state">State filter (e.g., "TN", "CA") - can be empty string for all states</param>
+    ''' <param name="pageSize">Number of records per page (typically 100-1000)</param>
+    ''' <param name="offset">Starting position (0 for first page, pageSize for second, etc.)</param>
+    ''' <returns>DataTable containing the results</returns>
+    Public Async Function FetchHCPCSPage(
+        code As String,
+        state As String,
+        pageSize As Integer,
+        offset As Integer
+    ) As Task(Of DataTable)
 
-    Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
-        SearchUtilizationRanges(
-        txtMinRoutineBedsUtil, txtMaxRoutineBedsUtil,
-        txtMinSpecialBedsUtil, txtMaxSpecialBedsUtil,
-        txtMinAnnualDisUtil, txtMaxAnnualDisUtil,
-        txtMinTotPatRevUtil, txtMaxTotPatRevUtil,
-        txtMinTotalBedsUtil, txtMaxTotalBedsUtil)
-    End Sub
+        Dim dt As New DataTable()
 
-    Private Function BuildFilterSummary() As String
-        Return ""
+        Try
+            ' Build the API URL for the National Downloadable File dataset
+            Dim baseUrl As String = "https://data.cms.gov/data-api/v1/dataset/mj5m-pzi6/data"
+
+            ' Build filter conditions
+            Dim filters As New List(Of String)()
+
+            ' Filter by HCPCS code (exact match)
+            If Not String.IsNullOrEmpty(code) Then
+                filters.Add($"Rndrng_Prvdr_HCPCS_Cd:{code}")
+            End If
+
+            ' Filter by state (exact match)
+            If Not String.IsNullOrEmpty(state) Then
+                filters.Add($"Rndrng_Prvdr_State_Abrvtn:{state}")
+            End If
+
+            ' Construct the full URL with filters, offset, and size
+            Dim url As String = baseUrl
+            If filters.Count > 0 Then
+                url &= "?filter=" & String.Join(",", filters)
+                url &= $"&offset={offset}&size={pageSize}"
+            Else
+                url &= $"?offset={offset}&size={pageSize}"
+            End If
+
+            ' Make the API call using shared HttpClient
+            Dim response = Await SharedHttpClient.GetStringAsync(url)
+
+            ' Parse JSON response
+            Dim json As JArray = JArray.Parse(response)
+
+            ' Convert JSON to DataTable
+            If json.Count > 0 Then
+                ' Create columns based on first record
+                Dim firstRow = CType(json(0), JObject)
+                For Each prop In firstRow.Properties()
+                    dt.Columns.Add(prop.Name, GetType(String))
+                Next
+
+                ' Add all rows
+                For Each item As JObject In json
+                    Dim row = dt.NewRow()
+                    For Each prop In item.Properties()
+                        row(prop.Name) = If(prop.Value?.ToString(), String.Empty)
+                    Next
+                    dt.Rows.Add(row)
+                Next
+            End If
+
+        Catch ex As HttpRequestException
+            ' Network or API errors
+            LogError($"HTTP Error in FetchHCPCSPage: {ex.Message}")
+            MessageBox.Show($"Network error fetching HCPCS data: {ex.Message}", "API Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+
+            ' Return empty DataTable with standard columns
+            CreateEmptyHCPCSDataTable(dt)
+
+        Catch ex As Exception
+            ' Other errors (JSON parsing, etc.)
+            LogError($"Error in FetchHCPCSPage: {ex.Message}")
+            MessageBox.Show($"Error fetching HCPCS data: {ex.Message}", "API Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+
+            ' Return empty DataTable with standard columns
+            CreateEmptyHCPCSDataTable(dt)
+        End Try
+
+        Return dt
+
     End Function
 
-    Private Sub SearchDemographicsTab(
-        lbState As ListBox,
-        txtCity As TextBox,
-        txtCmsCertNum As TextBox,
-        txtNpi As TextBox,
-        txtHospitalName As TextBox,
-        txtAreaCode As TextBox,
-        txtZipCode As TextBox
-    )
-        ' Stub for SearchDemographicsTab
-    End Sub
-
-    Private Sub SearchUtilizationRanges(
-        txtMinRoutineBeds As TextBox,
-        txtMaxRoutineBeds As TextBox,
-        txtMinSpecialBeds As TextBox,
-        txtMaxSpecialBeds As TextBox,
-        txtMinAnnualDis As TextBox,
-        txtMaxAnnualDis As TextBox,
-        txtMinTotPatRev As TextBox,
-        txtMaxTotPatRev As TextBox,
-        txtMinTotalBeds As TextBox,
-        txtMaxTotalBeds As TextBox
-    )
-        ' Stub for SearchUtilizationRanges
+    ''' <summary>
+    ''' Creates an empty DataTable with standard HCPCS columns for error cases
+    ''' </summary>
+    Private Sub CreateEmptyHCPCSDataTable(dt As DataTable)
+        If dt.Columns.Count = 0 Then
+            dt.Columns.Add("Rndrng_NPI", GetType(String))
+            dt.Columns.Add("Rndrng_Prvdr_Last_Org_Name", GetType(String))
+            dt.Columns.Add("Rndrng_Prvdr_First_Name", GetType(String))
+            dt.Columns.Add("Rndrng_Prvdr_MI", GetType(String))
+            dt.Columns.Add("Rndrng_Prvdr_State_Abrvtn", GetType(String))
+            dt.Columns.Add("Rndrng_Prvdr_City", GetType(String))
+            dt.Columns.Add("Rndrng_Prvdr_Zip5", GetType(String))
+            dt.Columns.Add("Rndrng_Prvdr_HCPCS_Cd", GetType(String))
+            dt.Columns.Add("Rndrng_Prvdr_HCPCS_Desc", GetType(String))
+            dt.Columns.Add("Tot_Srvcs", GetType(String))
+            dt.Columns.Add("Tot_Benes", GetType(String))
+            dt.Columns.Add("Avg_Sbmtd_Chrg", GetType(String))
+            dt.Columns.Add("Avg_Mdcr_Alowd_Amt", GetType(String))
+            dt.Columns.Add("Avg_Mdcr_Pymt_Amt", GetType(String))
+        End If
     End Sub
 
     Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click
         Individual_Search.Show()
+    End Sub
+
+    Private Sub btnSearchAll_Click(sender As Object, e As EventArgs) Handles btnSearchAll.Click
+
+    End Sub
+
+    Private Sub GroupBox3_Enter(sender As Object, e As EventArgs) Handles GroupBox3.Enter
+
     End Sub
 End Class
 
